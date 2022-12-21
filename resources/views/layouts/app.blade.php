@@ -82,5 +82,6 @@
         @yield('content')
     </main>
 </div>
+@include('layouts.icons.symbols')
 </body>
 </html>
