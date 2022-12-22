@@ -3,7 +3,7 @@
     <div class="container p-0">
         <div class="justify-content-center">
             <div class="card shadow">
-                <ul class="card-header bg-primary bg-gradient list-inline">
+                <ul class="card-header bg-primary list-inline">
                     <li class="list-inline-item">
                         <a class="btn btn-link text-white"
                            href=""
@@ -178,7 +178,7 @@
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit"
-                                        class="btn btn-primary bg-gradient">
+                                        class="btn btn-primary">
                                     {{__('Register')}}
                                 </button>
                             </div>
