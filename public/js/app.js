@@ -34027,7 +34027,6 @@ reference element's position.
                 }
                 return baseObj;
             }
-
 // helper to dynamically append modifier runtime markers to event names.
 // ensure only append when value is already string, otherwise it will be cast
 // to string and cause the type check to miss.
