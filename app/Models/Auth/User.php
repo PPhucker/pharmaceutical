@@ -3,6 +3,7 @@
 namespace App\Models\Auth;
 
 use App\Notifications\ResetPassword;
+use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -47,5 +48,10 @@ class User extends Authenticatable
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPassword($token));
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail());
     }
 }
