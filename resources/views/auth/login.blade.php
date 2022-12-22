@@ -3,7 +3,7 @@
     <div class="container-fluid col-12 col-md-6">
         <div class="justify-content-center">
             <div class="card">
-                <div class="card-header bg-primary bg-gradient text-light">
+                <div class="card-header bg-primary text-light">
                     {{__('Login')}}
                 </div>
                 <div class="card-body">
@@ -66,8 +66,8 @@
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit"
-                                        class="btn btn-primary bg-gradient">
-                                    Войти
+                                        class="btn btn-primary">
+                                    {{__('Login')}}
                                 </button>
 
                                 @if (Route::has('password.request'))
