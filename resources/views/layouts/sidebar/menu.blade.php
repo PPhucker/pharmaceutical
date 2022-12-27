@@ -56,7 +56,7 @@
                    role="button"
                    aria-expanded="false"
                    aria-controls="production">
-                    {{'Production'}}
+                    {{__('Production')}}
                 </a>
             </h5>
         </div>
