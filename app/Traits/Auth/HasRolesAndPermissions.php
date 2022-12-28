@@ -16,7 +16,7 @@ trait HasRolesAndPermissions
      */
     final public function hasRole(array $roles): bool
     {
-        foreach ($roles as $role) {
+        foreach (collect($roles)->push('admin') as $role) {
             if ($this->roles->contains('slug', $role)) {
                 return true;
             }
@@ -64,7 +64,7 @@ trait HasRolesAndPermissions
      */
     final public function hasPermission(array $permissions): bool
     {
-        foreach ($permissions as $permission) {
+        foreach (collect($permissions)->push('all') as $permission) {
             if ($this->permissions->contains('slug', $permission)) {
                 return true;
             }
