@@ -14,6 +14,7 @@
         </button>
     </div>
     <div class="offcanvas-body ps-2 pe-2 pt-0">
+        @admin
         @foreach(
             [
                 'users',
@@ -22,6 +23,7 @@
             ] as $item)
             @include('layouts.sidebar.items.' . $item)
         @endforeach
+        @end_admin
         <div class="offcanvas-header pt-2 pb-2 ps-2">
             <h5 class="offcanvas-title text-primary">
                 <a class="btn-link"
