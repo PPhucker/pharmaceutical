@@ -5,12 +5,56 @@ namespace App\Models\Auth;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\PersonalAccessToken;
 
+/**
+ * App\Models\Auth\User
+ *
+ * @property int                                                        $id
+ * @property string                                                     $name
+ * @property string                                                     $email
+ * @property Carbon|null                                                $emailVerifiedAt
+ * @property string                                                     $password
+ * @property string|null                                                $rememberToken
+ * @property Carbon|null                                                $createdAt
+ * @property Carbon|null                                                $updatedAt
+ * @property Carbon|null                                                $deletedAt
+ * @property-read DatabaseNotificationCollection|DatabaseNotification[] $notifications
+ * @property-read int|null                                              $notificationsCount
+ * @property-read Collection|Permission[]                               $permissions
+ * @property-read int|null                                              $permissionsCount
+ * @property-read Collection|Role[]                                     $roles
+ * @property-read int|null                                              $rolesCount
+ * @property-read Collection|PersonalAccessToken[]                      $tokens
+ * @property-read int|null                                              $tokensCount
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User onlyTrashed()
+ * @method static Builder|User query()
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User withTrashed()
+ * @method static Builder|User withoutTrashed()
+ * @mixin Builder
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions, SoftDeletes;
