@@ -28,7 +28,7 @@ class LoginRequest extends FormRequest
                 'required',
                 'string',
                 'email',
-                'ends_with:' . env('CORPORATE_MAIL_DOMAIN'),
+                'ends_with:' . config('mail.domain'),
                 'max:60'
             ],
 
