@@ -115,4 +115,5 @@ return [
         ],
     ],
 
+    'domain' => env('MAIL_DOMAIN', '@example.com')
 ];
