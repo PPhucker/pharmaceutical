@@ -21,7 +21,7 @@ class Link extends Component
     public function __construct($route, string $title)
     {
         $this->route = $route;
-        $this->title = __($title);
+        $this->title = $title;
     }
 
     /**
