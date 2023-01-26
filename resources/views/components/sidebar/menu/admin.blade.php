@@ -15,7 +15,7 @@
     <x-sidebar.menu.dropdown.item icon="bi bi-people-fill"
                                   title="Users">
         <x-sidebar.menu.dropdown.link title="List"
-                                      route="#"/>
+                                      route="{{route('users.index')}}"/>
         <x-sidebar.menu.dropdown.link title="Register"
                                       route="{{route('users.register')}}"/>
     </x-sidebar.menu.dropdown.item>
