@@ -1,12 +1,4 @@
-body, html {
-    font-family: Roboto, math;
-}
-
-.fs-7 {
-    font-size: 0.8rem;
-}
-
-.btn-outline-primary {
+.btn-hover {
     --bs-btn-color: var(--bs-primary);
     --bs-btn-border-color: #fff;
     --bs-btn-hover-color: var(--bs-primary);
@@ -21,21 +13,27 @@ body, html {
     --bs-btn-disabled-bg: transparent;
     --bs-btn-disabled-border-color: var(--bs-primary);
     --bs-gradient: none;
+    --bs-btn-padding-y: .15rem;
+    --bs-btn-padding-x: .4rem;
+    --bs-btn-font-size: .75rem;
 }
 
-#navbar-brand {
-    fill: var(--bs-primary);
+table.dataTable tbody tr.row-selected {
+    background-color: #CFF4FCFF;
+    color: var(--bs-primary);
 }
 
-#navbar-brand g path {
-    stroke-width: 0.2;
-    stroke: var(--bs-primary);
+div.dataTables_wrapper div.dt-buttons.btn-group div.btn-group button.dt-btn-split-drop:last-child {
+    border: 1px solid #ffffff;
 }
 
-th.sorted[data-order="-1"]::after {
-    content: "▼"
+.buttons-print, .btn-colvis {
+    --bs-btn-padding-y: .15rem;
+    --bs-btn-padding-x: .4rem;
+    --bs-btn-font-size: .75rem;
+    border: 1px solid #ffffff;
 }
 
-th.sorted[data-order="1"]::after {
-    content: "▲"
+.dt-buttons {
+    margin-bottom: none;
 }
