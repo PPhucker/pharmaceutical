@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -42,9 +42,13 @@
                                           title="Logout"/>
         </x-sidebar.menu>
     @endauth
-    <main class="py-4">
-        @yield('content')
-    </main>
+    <div class="container-fluid">
+        <main class="col pt-2" role="main">
+            <div class="container-sm p-0">
+                @yield('content')
+            </div>
+        </main>
+    </div>
 </div>
 </body>
 </html>

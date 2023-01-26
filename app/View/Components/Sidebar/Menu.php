@@ -39,8 +39,8 @@ class Menu extends Component
 
         $this->position = $position;
         $this->id = $id;
-        $this->label = __($label);
-        $this->title = __($title);
+        $this->label = $label;
+        $this->title = $title;
     }
 
     /**

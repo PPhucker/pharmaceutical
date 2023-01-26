@@ -18,7 +18,7 @@ class Item extends Component
     public function __construct(string $icon, string $title)
     {
         $this->icon = $icon;
-        $this->title = __($title);
+        $this->title = $title;
     }
 
     /**

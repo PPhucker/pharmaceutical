@@ -70,7 +70,7 @@ class RegisterController extends Controller
         return redirect($this->redirectTo)
             ->with(
                 'success',
-                __('admin.user.register.success', ['name' => $user->name])
+                __('users.action.register.success', ['name' => $user->name])
             );
     }
 

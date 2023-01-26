@@ -4,7 +4,7 @@
         <div class="justify-content-center">
             <div class="card">
                 <div class="card-header bg-primary text-light">
-                    {{__('Login')}}
+                    {{__('auth.login.action')}}
                 </div>
                 <div class="card-body">
                     <form method="POST"
@@ -40,7 +40,7 @@
                         <div class="row mb-3">
                             <label for="password"
                                    class="col-md-4 col-form-label text-md-end">
-                                {{__('Password')}}
+                                {{__('auth.passwords.password')}}
                             </label>
 
                             <div class="col-md-6">
@@ -67,13 +67,13 @@
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit"
                                         class="btn btn-primary">
-                                    {{__('Login')}}
+                                    {{__('auth.login.button')}}
                                 </button>
 
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link"
                                        href="{{ route('password.request') }}">
-                                        {{ __('Forgot your password?') }}
+                                        {{ __('auth.passwords.forgot') }}
                                     </a>
                                 @endif
                             </div>

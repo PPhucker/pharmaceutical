@@ -22,7 +22,7 @@ class SubmitButton extends Component
         $this->route = $route;
         $this->formId = $formId;
         $this->icon = $icon;
-        $this->title = __($title);
+        $this->title = $title;
     }
 
     /**

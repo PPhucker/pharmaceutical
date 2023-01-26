@@ -5,7 +5,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        {{ __('Reset Password') }}
+                        {{ __('auth.passwords.reset.action') }}
                     </div>
                     <div class="card-body">
                         <form method="POST"
@@ -40,7 +40,7 @@
                             <div class="row mb-3">
                                 <label for="password"
                                        class="col-md-4 col-form-label text-md-end">
-                                    {{ __('Password') }}
+                                    {{ __('auth.passwords.password') }}
                                 </label>
                                 <div class="col-md-6">
                                     <input id="password"
@@ -62,7 +62,7 @@
                             <div class="row mb-3">
                                 <label for="password-confirm"
                                        class="col-md-4 col-form-label text-md-end">
-                                    {{ __('Confirm Password') }}
+                                    {{ __('auth.passwords.confirm.action') }}
                                 </label>
                                 <div class="col-md-6">
                                     <input id="password-confirm"
@@ -76,7 +76,7 @@
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit"
                                             class="btn btn-primary">
-                                        {{ __('Reset Password') }}
+                                        {{ __('auth.passwords.reset.button') }}
                                     </button>
                                 </div>
                             </div>

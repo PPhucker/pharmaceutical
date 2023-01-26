@@ -5,7 +5,6 @@ namespace App\Models\Auth;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
-use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -59,6 +58,8 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions, SoftDeletes;
 
+    protected $dates = ['email_verified_at',];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -97,5 +98,10 @@ class User extends Authenticatable
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail());
+    }
+
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::create($date)->format('d.m.Y');
     }
 }

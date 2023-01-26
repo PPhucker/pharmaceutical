@@ -5,7 +5,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        {{ __('Reset Password') }}
+                        {{ __('auth.passwords.reset.action') }}
                     </div>
                     <div class="card-body">
                         @if (session('status'))
@@ -44,7 +44,7 @@
                                 <div class="col-md-6 offset-md-4">
                                     <button type="submit"
                                             class="btn btn-primary">
-                                        {{ __('Send Password Reset Link') }}
+                                        {{ __('auth.passwords.email') }}
                                     </button>
                                 </div>
                             </div>
