@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('content')
     <x-form title="{{__('users.users')}}">
-        <x-table id="users">
+        <x-table id="users"
+                 targets='-1,-2'>
+            <x-slot name="filter">
+                <x-filters.trashed-filter tableId="users"/>
+            </x-slot>
             <thead class="bg-secondary">
             <tr class="text-primary">
                 <th scope="col"
