@@ -1,27 +1,22 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Filters;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class TrashedFilter extends Component
 {
-    public $id;
-    /**
-     * @var mixed|null
-     */
-    public $targets;
+    public $tableId;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $targets = null)
+    public function __construct($tableId)
     {
-        $this->id = $id;
-        $this->targets = $targets;
+        $this->tableId = $tableId;
     }
 
     /**
@@ -31,6 +26,6 @@ class Table extends Component
      */
     public function render()
     {
-        return view('components.table');
+        return view('components.filters.trashed-filter');
     }
 }

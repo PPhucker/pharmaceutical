@@ -2,22 +2,24 @@
 
 return [
     'entries' => [
-        'entries' => 'Entries',
         'all' => 'All',
-        'of' => 'of',
+        'entries' => 'Entries',
         'no' => 'No Entries',
         'no_to_find' => 'No Entries To Find',
+        'of' => 'of',
         'show' => 'Show',
+        'trashed' => 'Trashed',
         'working' => 'Working',
-        'trashed' => 'Trashed'
     ],
     'buttons' => [
-        'hide' => 'Hide',
-        'save_as' => 'Save As',
         'delete' => 'Delete',
         'edit' => 'Edit',
-        'restore' => 'Retore'
+        'hide' => 'Hide',
+        'restore' => 'Retore',
+        'save_as' => 'Save As',
     ],
+    'filter' => 'Filter',
+    'interval' => 'Interval',
     'search' => 'Search',
-    'wait' => 'Wait'
+    'wait' => 'Wait',
 ];

@@ -35,5 +35,8 @@
         <x-sidebar.menu.dropdown.link title="List"
                                       route="#"/>
     </x-sidebar.menu.dropdown.item>
+    <x-sidebar.menu.link title="Logs"
+                         route="{{route('logs.index')}}"
+                         icon="bi bi-webcam-fill"/>
 </div>
 @end_admin

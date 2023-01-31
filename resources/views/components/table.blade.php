@@ -6,8 +6,14 @@
             @endif
         </x-filter>
     </div>
-    <input id="tableId" type="hidden" value="{{$id}}">
-    <table id="{{$id}}" class="table table-sm table-bordered table-hover text-nowrap w-100 mt-0">
+    <input id="tableId"
+           type="hidden"
+           value="{{$id}}">
+    <input id="targets"
+           type="hidden"
+           value="{{$targets}}">
+    <table id="{{$id}}"
+           class="table table-sm table-bordered table-hover text-nowrap w-100 mt-0">
         {{$slot}}
     </table>
 </div>
@@ -26,8 +32,11 @@
             wait: '{{__('datatable.wait')}}',
         };
 
+        const targets = document.getElementById('targets').value;
+
         const dt = new DataTable(
             document.getElementById('tableId').value,
+            targets.split(',').map(Number),
             localization,
         );
         dt.render();

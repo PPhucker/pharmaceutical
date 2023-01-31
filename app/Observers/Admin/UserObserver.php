@@ -20,13 +20,13 @@ class UserObserver
     }
 
     /**
-     * Handle the User "deleting" event.
+     * Handle the User "deleted" event.
      *
      * @param User $user
      *
      * @return void
      */
-    public function deleting(User $user)
+    public function deleted(User $user)
     {
         Logger::userActionNotice('destroy', $user);
     }

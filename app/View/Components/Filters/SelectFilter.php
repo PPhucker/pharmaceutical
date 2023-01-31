@@ -1,27 +1,24 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Filters;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class SelectFilter extends Component
 {
-    public $id;
-    /**
-     * @var mixed|null
-     */
-    public $targets;
+    public $title;
+    public $name;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $targets = null)
+    public function __construct($title, $name)
     {
-        $this->id = $id;
-        $this->targets = $targets;
+        $this->title = $title;
+        $this->name = $name;
     }
 
     /**
@@ -31,6 +28,6 @@ class Table extends Component
      */
     public function render()
     {
-        return view('components.table');
+        return view('components.filters.select-filter');
     }
 }
