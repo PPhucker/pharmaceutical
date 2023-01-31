@@ -28,9 +28,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export class DataTable {
     __tableId;
     __localization;
+    __targets;
 
-    constructor(tableId, localization) {
+    constructor(tableId, targets, localization) {
         this.__tableId = tableId;
+        this.__targets = targets;
         this.__localization = localization;
     }
 
@@ -210,14 +212,15 @@ export class DataTable {
      * @private
      */
     get __columnDefs() {
+
         return [
             {
                 orderable: false,
-                targets: [-1, -2],
+                targets: this.__targets,
             },
             {
                 searchable: false,
-                targets: [-1, -2],
+                targets: this.__targets,
             },
         ];
     }
