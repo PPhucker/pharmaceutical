@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Collection;
+
 class Model
 {
     /**
@@ -23,5 +25,23 @@ class Model
         }
 
         return $changedAttributes;
+    }
+
+    /**
+     * Returns all declared models.
+     *
+     * @return Collection
+     */
+    public static function all()
+    {
+        return collect(get_declared_classes())
+            ->filter(function ($item) {
+                return (
+                    strpos(
+                        $item,
+                        'App\Models\\'
+                    ) === 0
+                );
+            });
     }
 }
