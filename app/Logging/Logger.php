@@ -32,8 +32,8 @@ class Logger
             return collect(
                 [
                     'ip' => $clientIp,
-                    'user_id' => $user->id,
-                    'user_name' => $user->name
+                    'id' => $user->id,
+                    'name' => $user->name
                 ]
             );
         }
@@ -41,8 +41,8 @@ class Logger
         return collect(
             [
                 'ip' => $clientIp,
-                'user_id' => null,
-                'user_name' => 'unauthorized user'
+                'id' => null,
+                'name' => 'unauthorized user'
             ]
         );
     }
@@ -52,6 +52,7 @@ class Logger
      *
      * @param string $fromDate
      * @param string $toDate
+     * @param array  $filters
      * @param array  $messages
      *
      * @return Collection|string
@@ -59,6 +60,7 @@ class Logger
     public static function parse(
         string $fromDate,
         string $toDate,
+        array $filters = [],
         array $messages = [self::USER_ACTION_NOTICE_MESSAGE]
     ) {
         $interval = new DatePeriod(
@@ -78,8 +80,6 @@ class Logger
                 continue;
             }
 
-            $parsed->put($day->format('d.m.Y'), collect());
-
             try {
                 $log = $logsStorage->get($logname);
             } catch (FileNotFoundException $exception) {
@@ -88,29 +88,61 @@ class Logger
 
             foreach (explode("\n", trim($log)) as $row) {
                 try {
-                    $row = collect(json_decode($row, false, 512, JSON_THROW_ON_ERROR));
+                    $row = collect(
+                        json_decode(
+                            $row,
+                            false,
+                            512,
+                            JSON_THROW_ON_ERROR
+                        )
+                    );
 
                     if (!in_array($row->get('message'), $messages, true)) {
                         continue;
                     }
 
-                    $parsed->get($day->format('d.m.Y'))
-                        ->push(
-                            collect(
-                                [
-                                    'context' => $row->get('context'),
-                                    'datetime' => Carbon::create($row->get('datetime'))
-                                        ->format('d.m.Y H:i:s')
-                                ]
-                            )
-                        );
+                    $context = $row->get('context');
+
+
+                    if (
+                        isset($filters['user'])
+                        && (int)$filters['user'] !== $context->user->id
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        isset($filters['action'])
+                        && $filters['action'] !== $context->action
+                    ) {
+                        continue;
+                    }
+
+                    if (
+                        isset($filters['model'])
+                        && $filters['model'] !== $context->model
+                    ) {
+                        continue;
+                    }
+
+                    $parsed->push(
+                        collect(
+                            [
+                                'context' => $context,
+                                'datetime' => Carbon::create($row->get('datetime'))
+                                    ->format('d.m.Y H:i:s')
+                            ]
+                        )
+                    );
                 } catch (JsonException $exception) {
                     return $exception->getMessage();
                 }
             }
         }
 
-        return $parsed;
+        return collect(
+            compact('parsed',)
+        );
     }
 
     /**
@@ -128,26 +160,44 @@ class Logger
                 'action' => $action,
                 'user' => self::user(),
                 'model' => get_class($model),
+                'table' => $model->getTable(),
             ]
         );
 
         switch ($action) {
             case 'create':
-                $info->put('attributes', $model->getAttributes());
+                $info->put(
+                    'changes',
+                    [
+                        'id' => $model->id,
+                        'attributes' => $model->getAttributes()
+                    ]
+                );
                 break;
             case 'update':
-                if ($model->isDirty() && $model->isClean('deleted_at')) {
-                    $info->put('changes', Model::getDirtyAttributes($model));
+                if (
+                    $model->isDirty()
+                    && !array_key_exists('deleted_at', $model->getChanges())
+                ) {
+                    $info->put(
+                        'changes',
+                        [
+                            'id' => $model->id,
+                            'attributes' => Model::getDirtyAttributes($model)
+                        ]
+                    );
                 }
                 break;
             case 'destroy' || 'restore':
-                $info->put('item_id', $model->id);
+                $info->put('changes', ['id' => $model->id]);
                 break;
         }
 
-        logger()->notice(
-            self::USER_ACTION_NOTICE_MESSAGE,
-            $info->toArray()
-        );
+        if ($info->get('changes')) {
+            logger()->notice(
+                self::USER_ACTION_NOTICE_MESSAGE,
+                $info->toArray()
+            );
+        }
     }
 }
