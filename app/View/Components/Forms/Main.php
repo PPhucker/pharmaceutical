@@ -1,22 +1,24 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Forms;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Filter extends Component
+class Main extends Component
 {
-    public $tableId;
+    public $title;
+    public $back;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($tableId)
+    public function __construct($title, $back = '#')
     {
-        $this->tableId = $tableId;
+        $this->back = $back;
+        $this->title = $title;
     }
 
     /**
@@ -26,6 +28,6 @@ class Filter extends Component
      */
     public function render()
     {
-        return view('components.filter');
+        return view('components.forms.main');
     }
 }

@@ -1,27 +1,24 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Forms;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class Alert extends Component
 {
-    public $id;
-    /**
-     * @var mixed|null
-     */
-    public $targets;
+    public $success;
+    public $fail;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $targets = null)
+    public function __construct($success = 'success', $fail = 'fail')
     {
-        $this->id = $id;
-        $this->targets = $targets;
+        $this->success = $success;
+        $this->fail = $fail;
     }
 
     /**
@@ -31,6 +28,6 @@ class Table extends Component
      */
     public function render()
     {
-        return view('components.table');
+        return view('components.forms.alert');
     }
 }

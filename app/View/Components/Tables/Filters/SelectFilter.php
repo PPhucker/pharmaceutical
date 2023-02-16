@@ -1,20 +1,24 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Tables\Filters;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Alert extends Component
+class SelectFilter extends Component
 {
+    public $title;
+    public $name;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($title, $name)
     {
-        //
+        $this->title = $title;
+        $this->name = $name;
     }
 
     /**
@@ -24,6 +28,6 @@ class Alert extends Component
      */
     public function render()
     {
-        return view('components.alert');
+        return view('components.tables.filters.select-filter');
     }
 }

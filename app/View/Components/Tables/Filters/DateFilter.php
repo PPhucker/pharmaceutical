@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Filters;
+namespace App\View\Components\Tables\Filters;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -30,6 +30,6 @@ class DateFilter extends Component
      */
     public function render()
     {
-        return view('components.filters.date-filter');
+        return view('components.tables.filters.date-filter');
     }
 }

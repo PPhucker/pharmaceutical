@@ -1,11 +1,11 @@
 <?php
 
-namespace App\View\Components\Filters;
+namespace App\View\Components\Tables\Filters;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class TrashedFilter extends Component
+class Main extends Component
 {
     public $tableId;
 
@@ -26,6 +26,6 @@ class TrashedFilter extends Component
      */
     public function render()
     {
-        return view('components.filters.trashed-filter');
+        return view('components.tables.filters.main');
     }
 }

@@ -1,20 +1,28 @@
+@aware(['title'])
 <div class="table-responsive p-0">
     <div class="list-inline">
-        <x-filter tableId="{{$id}}">
+        <x-tables.filters.main tableId="{{$id}}">
             @if (isset($filter))
                 {{$filter}}
             @endif
-        </x-filter>
+        </x-tables.filters.main>
     </div>
-    <input id="tableId"
+    <input id="tableId_{{$id}}"
            type="hidden"
            value="{{$id}}">
-    <input id="targets"
+    <input id="targets_{{$id}}"
            type="hidden"
            value="{{$targets}}">
+    <input id="domOrderType_{{$id}}"
+           type="hidden"
+           value="{{$domOrderType}}">
     <table id="{{$id}}"
            class="table table-sm table-bordered table-hover text-nowrap w-100 mt-0">
         {{$slot}}
+        <caption id="caption_{{$id}}"
+                 class="d-none d-print-none">
+            {{$title}}
+        </caption>
     </table>
 </div>
 <script>
@@ -32,21 +40,26 @@
             wait: '{{__('datatable.wait')}}',
         };
 
-        const targets = document.getElementById('targets').value;
+        const id = '{{$id}}';
+
+        const tableId = document.getElementById('tableId_' + id).value;
+        const targets = document.getElementById('targets_' + id).value;
+        const domOrderType = document.getElementById('domOrderType_' + id).value;
 
         const dt = new DataTable(
-            document.getElementById('tableId').value,
+            tableId,
+            domOrderType,
             targets.split(',').map(Number),
             localization,
         );
         dt.render();
 
         const wrapper = document.getElementById(
-            '{{$id}}' + '_' + 'wrapper');
+            id + '_' + 'wrapper');
 
         const listInline = wrapper.getElementsByClassName('list-inline')[0];
 
-        const filter = document.getElementById('filter');
+        const filter = document.getElementById('filter_' + id);
 
         listInline.append(filter);
     });
