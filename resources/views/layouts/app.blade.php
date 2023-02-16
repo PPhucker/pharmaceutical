@@ -29,6 +29,7 @@
                         label="MenuLabel"
                         title="Main Menu">
             <x-sidebar.menu.admin/>
+            <x-sidebar.menu.classifiers/>
             <x-sidebar.menu.docs.shipment/>
             <x-sidebar.menu.production/>
         </x-sidebar.menu>
@@ -42,13 +43,13 @@
                                           title="Logout"/>
         </x-sidebar.menu>
     @endauth
-    <div class="container-fluid">
-        <main class="col pt-2" role="main">
-            <div class="container-sm p-0">
-                @yield('content')
-            </div>
-        </main>
-    </div>
+    {{--<div class="container-fluid">--}}
+    <main class="col {{--pt-2--}} p-3" role="main">
+        {{--<div class="container-sm p-0">--}}
+        @yield('content')
+        {{--</div>--}}
+    </main>
+    {{--</div>--}}
 </div>
 </body>
 </html>
