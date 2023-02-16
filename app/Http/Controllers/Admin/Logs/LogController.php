@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Logs;
 
 use App\Helpers\Date;
 use App\Helpers\Model;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\LogRequest;
+use App\Http\Requests\Admin\Logs\LogRequest;
 use App\Logging\Logger;
 use App\Models\Auth\User;
 use Illuminate\Contracts\View\View;

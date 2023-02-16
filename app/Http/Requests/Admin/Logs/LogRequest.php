@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Logs;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
@@ -55,7 +55,7 @@ class LogRequest extends FormRequest
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
-                    'fail',
+                    'logs.fail',
                     __('logs.fail')
                 );
             }

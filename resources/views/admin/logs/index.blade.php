@@ -1,41 +1,41 @@
 @extends('layouts.app')
 @section('content')
-    <x-form title="{{__('logs.logs')}}">
-        <x-table id="logs"
-                 targets="-1">
+    <x-forms.main title="{{__('logs.logs')}}">
+        <x-tables.main id="logs"
+                       targets="-1">
             <x-slot name="filter">
                 <div class="list-inline-item">
                     <form action="{{route('logs.index')}}"
                           method="GET">
-                        <x-filters.date-filter fromDate="{{$fromDate}}"
-                                               toDate="{{$toDate}}"/>
+                        <x-tables.filters.date-filter fromDate="{{$fromDate}}"
+                                                      toDate="{{$toDate}}"/>
 
-                        <x-filters.select-filter title="{{__('users.user')}}"
-                                                 name="user">
+                        <x-tables.filters.select-filter title="{{__('users.user')}}"
+                                                        name="user">
                             @foreach($users as $user)
                                 <option value="{{$user->id}}" @if((int)request('user') === $user->id) selected @endif>
                                     {{$user->name}}
                                 </option>
                             @endforeach
-                        </x-filters.select-filter>
+                        </x-tables.filters.select-filter>
 
-                        <x-filters.select-filter title="{{__('logs.actions.action')}}"
-                                                 name="action">
+                        <x-tables.filters.select-filter title="{{__('logs.actions.action')}}"
+                                                        name="action">
                             @foreach($actions as $action)
                                 <option value="{{$action}}" @if(request('action') === $action) selected @endif>
                                     {{__('logs.actions.' . $action)}}
                                 </option>
                             @endforeach
-                        </x-filters.select-filter>
+                        </x-tables.filters.select-filter>
 
-                        <x-filters.select-filter title="{{__('logs.model')}}"
-                                                 name="model">
+                        <x-tables.filters.select-filter title="{{__('logs.model')}}"
+                                                        name="model">
                             @foreach($models as $model)
                                 <option value="{{$model}}" @if(request('model') === $model) selected @endif>
                                     {{$model}}
                                 </option>
                             @endforeach
-                        </x-filters.select-filter>
+                        </x-tables.filters.select-filter>
 
                         <button type="submit"
                                 class="btn btn-sm btn-primary">
@@ -64,7 +64,7 @@
                 </th>
                 <th scope="col"
                     class="text-center">
-                    {{__('logs.item_id')}}
+                    {{__('logs.primary_key')}}
                 </th>
                 <th scope="col"
                     class="text-center">
@@ -91,7 +91,7 @@
                         {{mb_substr($log->get('context')->model, 11)}}
                     </td>
                     <td class="align-middle text-center">
-                        {{$log->get('context')->changes->id}}
+                        {{$log->get('context')->primary_key}}
                     </td>
                     <td class="align-middle text-center">
                         {{$log->get('datetime')}}
@@ -109,7 +109,7 @@
                 </tr>
             @endforeach
             </tbody>
-        </x-table>
+        </x-tables.main>
         @foreach($logs as $key => $log)
             <div class="collapse mt-2" id="log{{$key}}">
                 <form class="form-control form-control-sm text-primary">
@@ -210,12 +210,12 @@
                     <div class="row mb-3">
                         <label for="f-item-id"
                                class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('logs.item_id')}}
+                            {{__('logs.primary_key')}}
                         </label>
                         <div class="col-md">
                             <input id="f-item-id"
                                    class="form-control form-control-sm"
-                                   value="{{ $log->get('context')->changes->id}}"
+                                   value="{{ $log->get('context')->primary_key}}"
                                    disabled>
                         </div>
                     </div>
@@ -266,5 +266,5 @@
                 </form>
             </div>
         @endforeach
-    </x-form>
+    </x-forms.main>
 @endsection

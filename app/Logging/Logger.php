@@ -140,9 +140,7 @@ class Logger
             }
         }
 
-        return collect(
-            compact('parsed',)
-        );
+        return collect(compact('parsed'));
     }
 
     /**
@@ -160,6 +158,7 @@ class Logger
                 'action' => $action,
                 'user' => self::user(),
                 'model' => get_class($model),
+                'primary_key' => $model->getKey(),
                 'table' => $model->getTable(),
             ]
         );
@@ -169,7 +168,6 @@ class Logger
                 $info->put(
                     'changes',
                     [
-                        'id' => $model->id,
                         'attributes' => $model->getAttributes()
                     ]
                 );
@@ -182,22 +180,18 @@ class Logger
                     $info->put(
                         'changes',
                         [
-                            'id' => $model->id,
                             'attributes' => Model::getDirtyAttributes($model)
                         ]
                     );
                 }
                 break;
             case 'destroy' || 'restore':
-                $info->put('changes', ['id' => $model->id]);
                 break;
         }
 
-        if ($info->get('changes')) {
-            logger()->notice(
-                self::USER_ACTION_NOTICE_MESSAGE,
-                $info->toArray()
-            );
-        }
+        logger()->notice(
+            self::USER_ACTION_NOTICE_MESSAGE,
+            $info->toArray()
+        );
     }
 }
