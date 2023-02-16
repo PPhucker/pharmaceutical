@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-    <x-form back="{{route('users.index')}}"
-            title="{{__('users.action.edit', ['name' => $user->name])}}">
+    <x-forms.main back="{{route('users.index')}}"
+                  title="{{__('users.action.edit', ['name' => $user->name])}}">
         <form method="POST"
               action="{{ route('users.update', ['user' => $user->id]) }}">
             @csrf
@@ -127,5 +127,5 @@
                 </div>
             </div>
         </form>
-    </x-form>
+    </x-forms.main>
 @endsection

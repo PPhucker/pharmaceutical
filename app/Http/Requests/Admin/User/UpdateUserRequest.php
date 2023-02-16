@@ -69,7 +69,7 @@ class UpdateUserRequest extends FormRequest
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
-                    'fail',
+                    'update.fail',
                     __('users.action.update.fail', ['name' => $this->input('name')])
                 );
             }
