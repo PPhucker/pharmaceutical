@@ -13,7 +13,7 @@ return [
     'before' => 'Before',
     'changes' => 'Changes',
     'fail' => 'Failed to apply filter',
-    'item_id' => 'Item ID',
+    'primary_key' => 'Key value',
     'log' => 'Log',
     'logs' => 'Logs',
     'model' => 'Model',
