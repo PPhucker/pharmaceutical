@@ -98,10 +98,10 @@ return [
         ],
     ],
 
-    'name' => 'Название',
-    'inn' => 'ИНН',
-    'okpo' => 'ОКПО',
-    'contacts' => 'Контакты',
-    'card' => 'Карточка контрагента',
-    'main_information' => 'Основная информация'
+    'name' => 'Name',
+    'inn' => 'NIP Number',
+    'okpo' => 'Russian Business and Organization Classification',
+    'contacts' => 'Contacts',
+    'card' => 'Counterparty card',
+    'main_information' => 'Main information'
 ];
