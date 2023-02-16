@@ -22,6 +22,16 @@ require('datatables.net-select-bs5');
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
+/* Create an array with the values of all the input boxes in a column */
+$.fn.dataTable.ext.order['dom-text'] = function(settings, col) {
+    return this.api().
+        column(col, {order: 'index'}).
+        nodes().
+        map(function(td) {
+            return $('input', td).val();
+        });
+};
+
 /**
  * https://datatables.net/
  */
@@ -29,9 +39,11 @@ export class DataTable {
     __tableId;
     __localization;
     __targets;
+    __domOrderType;
 
-    constructor(tableId, targets, localization) {
+    constructor(tableId, domOrderType, targets, localization) {
         this.__tableId = tableId;
+        this.__domOrderType = domOrderType;
         this.__targets = targets;
         this.__localization = localization;
     }
@@ -55,7 +67,7 @@ export class DataTable {
     /**
      * https://datatables.net/reference/option/
      *
-     * @returns {{scrollCollapse: boolean, colReorder: {enable: boolean, fixedColumnsRight: number}, renderer: string, dom: string, buttons: {dom: {button: {className: string}}, buttons: [{extend: string, split: [{extend: string, exportOptions: {columns: string}, text: HTMLUListElement},{extend: string, exportOptions: {columns: string}, text: HTMLUListElement},{extend: string, exportOptions: {columns: string}, text: HTMLUListElement}], exportOptions: {columns: string}, text: HTMLUListElement},{split: {extend: string, text}[], className: string, text: HTMLUListElement}]}, select: {style: string, items: string, blurable: boolean, info: boolean}, pageLength: number, language: {loadingRecords: *, search, infoEmpty: string, zeroRecords: string, paginate: {next: string, previous: string, last: string, first: string}, processing: *, emptyTable: string, infoFiltered: string, lengthMenu: string, info: string}, lengthMenu: (number[]|(number|*)[])[], fixedHeader: boolean, orderClasses: boolean, pagingType: string, orderCellsTop: boolean, processing: boolean, columnDefs: [{orderable: boolean, targets: number[]},{targets: number[], searchable: boolean}], order: (number|string)[][]}}
+     * @returns {{scrollCollapse: boolean, renderer: string, dom: string, buttons: {dom: {button: {className: string}}, buttons: [{extend: string, split: [{extend: string, exportOptions: {columns: string}, text: HTMLUListElement},{extend: string, exportOptions: {columns: string}, text: HTMLUListElement},{extend: string, exportOptions: {columns: string}, text: HTMLUListElement}], exportOptions: {columns: string}, text: HTMLUListElement},{split: {extend: string, text}[], className: string, text: HTMLUListElement}]}, select: {style: string, items: string, blurable: boolean, info: boolean}, pageLength: number, deferRender: boolean, language: {loadingRecords: *, search, infoEmpty: string, zeroRecords: string, paginate: {next: string, previous: string, last: string, first: string}, processing: *, emptyTable: string, infoFiltered: string, lengthMenu: string, info: string}, lengthMenu: (number[]|(number|*)[])[], fixedHeader: boolean, orderClasses: boolean, pagingType: string, orderCellsTop: boolean, processing: boolean, columnDefs: ({orderable: boolean, targets, searchable: boolean}[]|{orderDataType: string, type: string, targets: string}[]), order: (number|string)[][]}}
      * @private
      */
     get __options() {
@@ -69,6 +81,7 @@ export class DataTable {
                 },
                 buttons: this.__buttons,
             },
+            deferRender: this.__deferRender,
             columnDefs: this.__columnDefs,
             language: this.__language,
             lengthMenu: this.__lengthMenu,
@@ -80,10 +93,19 @@ export class DataTable {
             renderer: this.__renderer,
             processing: this.__processing,
             scrollCollapse: this.__scrollCollapse,
-            colReorder: this.__colReorder,
             fixedHeader: this.__fixedHeader,
             select: this.__select,
         };
+    }
+
+    /**
+     * https://datatables.net/reference/option/deferRender
+     *
+     * @returns {boolean}
+     * @private
+     */
+    get __deferRender() {
+        return true;
     }
 
     /**
@@ -110,14 +132,33 @@ export class DataTable {
      */
     get __buttons() {
         const saveAs = this.__localization.saveAs;
+        const caption = document.getElementById('caption_' + this.__tableId);
+        const title = '<div class=\'text-center fw-bold fs-5\'>' +
+            caption.innerText + '</div>';
+        const exportTitle = caption.innerText;
+
+        caption.innerText = '';
 
         return [
             {
                 extend: 'print',
                 exportOptions: {
                     columns: ':visible',
+                    rows: function(idx, data, node) {
+                        return (!$(node).hasClass('trashed'));
+                    },
+                    format: {
+                        body: function(data, row, column, node) {
+                            const span = $(node).children('span.d-none');
+                            return span.length > 0 ?
+                                span.get(0).innerText :
+                                data;
+                        },
+                    },
                 },
                 text: this.__createButton('bi-printer'),
+                title: title,
+                autoPrint: true,
 
                 split: [
                     {
@@ -127,6 +168,7 @@ export class DataTable {
                         },
                         text: this.__createButton('bi-filetype-csv',
                             saveAs + ' CSV'),
+                        title: exportTitle,
                     },
                     {
                         extend: 'excel',
@@ -135,6 +177,7 @@ export class DataTable {
                         },
                         text: this.__createButton('bi-filetype-xls',
                             saveAs + ' EXCEL'),
+                        title: exportTitle,
                     },
                     {
                         extend: 'pdf',
@@ -143,6 +186,7 @@ export class DataTable {
                         },
                         text: this.__createButton('bi-filetype-pdf',
                             saveAs + ' PDF'),
+                        title: exportTitle,
                     },
                 ],
             },
@@ -187,20 +231,6 @@ export class DataTable {
         };
     }
 
-    /**
-     * https://datatables.net/reference/option/colReorder
-     *
-     * @returns {{enable: boolean, fixedColumnsRight: number}}
-     * @private
-     */
-    get __colReorder() {
-        return {
-            enable: true,
-            fixedColumnsRight: 2,
-            realtime: true,
-        };
-    }
-
     get __fixedHeader() {
         return true;
     }
@@ -208,17 +238,26 @@ export class DataTable {
     /**
      * https://datatables.net/reference/option/columnDefs
      *
-     * @returns {[{orderable: boolean, targets: number[]},{targets: number[], searchable: boolean}]}
+     * @returns {[{orderable: boolean, targets, searchable: boolean}]|[{orderDataType: string, type: string, targets: string}]}
      * @private
      */
     get __columnDefs() {
 
+        if (this.__domOrderType) {
+            return [
+                {
+                    targets: this.__targets,
+                    orderable: false,
+                    searchable: false,
+                    orderDataType: 'dom-text',
+                    type: 'string',
+                },
+            ];
+        }
+
         return [
             {
                 orderable: false,
-                targets: this.__targets,
-            },
-            {
                 searchable: false,
                 targets: this.__targets,
             },
@@ -232,7 +271,7 @@ export class DataTable {
      * @private
      */
     get __pageLength() {
-        return 20;
+        return 10;
     }
 
     /**
@@ -243,8 +282,8 @@ export class DataTable {
      */
     get __lengthMenu() {
         return [
-            [this.__pageLength, 50, 100, -1],
-            [this.__pageLength, 50, 100, this.__localization.all],
+            [this.__pageLength, 20, 50, 100, -1],
+            [this.__pageLength, 20, 50, 100, this.__localization.all],
         ];
     }
 
@@ -265,9 +304,10 @@ export class DataTable {
      * @private
      */
     get __order() {
-        return [
+        /*return [
             [0, 'asc'],
-        ];
+        ];*/
+        return [];
     }
 
     /**
@@ -351,6 +391,7 @@ export class DataTable {
     }
 
     render() {
+
         new dt('#' + this.__tableId, this.__options);
 
         for (const button of document.getElementsByClassName(
