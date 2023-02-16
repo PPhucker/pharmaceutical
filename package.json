@@ -35,6 +35,7 @@
         "datatables.net-select-bs5": "^1.5.0",
         "jquery": "^3.6.3",
         "jszip": "^3.10.1",
-        "pdfmake": "^0.2.7"
+        "pdfmake": "^0.2.7",
+        "suggestions-jquery": "^22.6.0"
     }
 }
