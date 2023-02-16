@@ -23,7 +23,7 @@ return [
 
     'banks' => [
         'banks' => 'Banks',
-        'BIC' => 'BIK',
+        'BIC' => 'RCBIC',
         'correspondent_account' => 'Correspondent Account',
         'name' => 'Name',
 
