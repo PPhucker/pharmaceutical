@@ -2,13 +2,16 @@
 
 namespace App\Models\Auth;
 
+use App\Models\Admin\Organizations\BankAccountDetail;
+use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organizations\PlaceOfBusiness as OrganizationPlaceOfBusiness;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\DatabaseNotificationCollection;
@@ -20,8 +23,8 @@ use Laravel\Sanctum\PersonalAccessToken;
 /**
  * App\Models\Auth\User
  *
- * @property int                                                        $id
- * @property string                                                     $name
+ * @property int    $id
+ * @property string $name
  * @property string                                                     $email
  * @property Carbon|null                                                $emailVerifiedAt
  * @property string                                                     $password
@@ -89,6 +92,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function organizations()
+    {
+        return $this->hasMany(Organization::class)
+            ->withTrashed();
+    }
+
+    public function organizationsPlacesOfBusiness()
+    {
+        return $this->hasMany(OrganizationPlaceOfBusiness::class)
+            ->withTrashed();
+    }
+
+    public function bankAccountDetails()
+    {
+        return $this->hasMany(BankAccountDetail::class)
+            ->withTrashed();
+    }
 
     public function sendPasswordResetNotification($token)
     {

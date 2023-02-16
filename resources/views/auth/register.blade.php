@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-    <x-form back="{{route('users.index')}}"
-            title="{{__('auth.register.action')}}">
+    <x-forms.main back="{{route('users.index')}}"
+                  title="{{__('auth.register.action')}}">
         @if (session('success'))
             <div class="alert alert-success m-1 p-1"
                  role="alert">
@@ -168,5 +168,5 @@
                 </div>
             </div>
         </form>
-    </x-form>
+    </x-forms.main>
 @endsection

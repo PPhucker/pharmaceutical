@@ -13,13 +13,13 @@
 </div>
 <div class="collapsed" id="admin">
     <x-sidebar.menu.dropdown.item icon="bi bi-people-fill"
-                                  title="Users">
-        <x-sidebar.menu.dropdown.link title="List"
+                                  title="{{__('users.users')}}">
+        <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                       route="{{route('users.index')}}"/>
-        <x-sidebar.menu.dropdown.link title="Register"
+        <x-sidebar.menu.dropdown.link title="{{__('auth.register.action')}}"
                                       route="{{route('users.register')}}"/>
     </x-sidebar.menu.dropdown.item>
-    <x-sidebar.menu.dropdown.item icon="bi bi-person-vcard-fill"
+    {{--<x-sidebar.menu.dropdown.item icon="bi bi-person-vcard-fill"
                                   title="Counterparties">
         <x-sidebar.menu.dropdown.link title="Add"
                                       route="#"/>
@@ -27,15 +27,15 @@
                                       route="#"/>
         <x-sidebar.menu.dropdown.link title="Legal Forms"
                                       route="#"/>
-    </x-sidebar.menu.dropdown.item>
+    </x-sidebar.menu.dropdown.item>--}}
     <x-sidebar.menu.dropdown.item icon="bi bi-building-fill"
-                                  title="Organizations">
-        <x-sidebar.menu.dropdown.link title="Add"
-                                      route="#"/>
-        <x-sidebar.menu.dropdown.link title="List"
-                                      route="#"/>
+                                  title="{{__('contractors.organizations.organizations')}}">
+        <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
+                                      route="{{route('organizations.create')}}"/>
+        <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
+                                      route="{{route('organizations.index')}}"/>
     </x-sidebar.menu.dropdown.item>
-    <x-sidebar.menu.link title="Logs"
+    <x-sidebar.menu.link title="{{__('logs.logs')}}"
                          route="{{route('logs.index')}}"
                          icon="bi bi-webcam-fill"/>
 </div>

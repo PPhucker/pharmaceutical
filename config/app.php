@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Moscow',
 
     /*
     |--------------------------------------------------------------------------
@@ -179,6 +179,9 @@ return [
         App\Providers\RoleServiceProvider::class,
         App\Providers\PermissionServiceProvider::class,
 
+        App\Providers\ClassifierServiceProvider::class,
+
+        App\Providers\Contractors\OrganizationServiceProvider::class,
     ],
 
     /*
