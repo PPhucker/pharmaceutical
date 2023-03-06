@@ -5,6 +5,9 @@ namespace App\Models\Auth;
 use App\Models\Admin\Organizations\BankAccountDetail;
 use App\Models\Admin\Organizations\Organization;
 use App\Models\Admin\Organizations\PlaceOfBusiness as OrganizationPlaceOfBusiness;
+use App\Models\Contractors\ContactPerson;
+use App\Models\Contractors\Contractor;
+use App\Models\Contractors\PlaceOfBusiness;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
@@ -124,5 +127,29 @@ class User extends Authenticatable
     public function getCreatedAtAttribute($date)
     {
         return Carbon::create($date)->format('d.m.Y');
+    }
+
+    public function contractors()
+    {
+        return $this->hasMany(Contractor::class)
+            ->withTrashed();
+    }
+
+    public function contractorsPlacesOfBusiness()
+    {
+        return $this->hasMany(PlaceOfBusiness::class)
+            ->withTrashed();
+    }
+
+    public function contractorsBankAccountDetails()
+    {
+        return $this->hasMany(\App\Models\Contractors\BankAccountDetail::class)
+            ->withTrashed();
+    }
+
+    public function contactPersons()
+    {
+        return $this->hasMany(ContactPerson::class)
+            ->withTrashed();
     }
 }
