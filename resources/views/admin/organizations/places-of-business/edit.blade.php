@@ -1,4 +1,4 @@
-<x-forms.collapse.card route="{{route('places_of_business.update')}}"
+<x-forms.collapse.card route="{{route('organizations.places_of_business.update')}}"
                        cardId="card_places_of_business"
                        formId="form_places_of_business"
                        title="{{__('contractors.places_of_business.places_of_business')}}">

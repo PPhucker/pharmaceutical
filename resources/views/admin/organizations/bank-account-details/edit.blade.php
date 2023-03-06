@@ -1,4 +1,4 @@
-<x-forms.collapse.card route="{{route('bank_account_details.update')}}"
+<x-forms.collapse.card route="{{route('organizations.bank_account_details.update')}}"
                        cardId="card_bank_account_details"
                        formId="form_bank_account_details"
                        title="{{__('contractors.bank_account_details.bank_account_details')}}">
@@ -41,7 +41,7 @@
                             {{$account->bankClassifier->name}}
                         </span>
                         <select name="bank_account_details[{{$key}}][bank]"
-                                class="form-control form-control-sm text-primary
+                                class="form-control form-control-sm text-primary mt-1 mb-1
                                 @error('bank_account_details.' . $key . '.bank') is-invalid @enderror">
                             @foreach($banks as $bank)
                                 <option value="{{$bank->BIC}}"
@@ -58,7 +58,7 @@
                         <input name="bank_account_details[{{$key}}][payment_account]"
                                type="text"
                                value="{{$account->payment_account}}"
-                               class="form-control form-control-sm text-primary
+                               class="form-control form-control-sm text-primary mt-1 mb-1
                                    @error('bank_account_details.' . $key . '.payment_account') is-invalid @enderror"
                                required>
                         <x-forms.span-error name="bank_account_details.{{$key}}.payment_account"/>
