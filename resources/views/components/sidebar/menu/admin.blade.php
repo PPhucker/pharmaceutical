@@ -11,7 +11,7 @@
         </a>
     </h5>
 </div>
-<div class="collapsed" id="admin">
+<div class="show" id="admin">
     <x-sidebar.menu.dropdown.item icon="bi bi-people-fill"
                                   title="{{__('users.users')}}">
         <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
@@ -19,15 +19,6 @@
         <x-sidebar.menu.dropdown.link title="{{__('auth.register.action')}}"
                                       route="{{route('users.register')}}"/>
     </x-sidebar.menu.dropdown.item>
-    {{--<x-sidebar.menu.dropdown.item icon="bi bi-person-vcard-fill"
-                                  title="Counterparties">
-        <x-sidebar.menu.dropdown.link title="Add"
-                                      route="#"/>
-        <x-sidebar.menu.dropdown.link title="List"
-                                      route="#"/>
-        <x-sidebar.menu.dropdown.link title="Legal Forms"
-                                      route="#"/>
-    </x-sidebar.menu.dropdown.item>--}}
     <x-sidebar.menu.dropdown.item icon="bi bi-building-fill"
                                   title="{{__('contractors.organizations.organizations')}}">
         <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
