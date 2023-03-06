@@ -29,6 +29,7 @@
                         label="MenuLabel"
                         title="Main Menu">
             <x-sidebar.menu.admin/>
+            <x-sidebar.menu.contractors/>
             <x-sidebar.menu.classifiers/>
             <x-sidebar.menu.docs.shipment/>
             <x-sidebar.menu.production/>
