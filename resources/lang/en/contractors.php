@@ -2,6 +2,28 @@
 
 return [
     'contractors' => 'Contractors',
+    'contractor' => 'Contractor',
+
+    'actions' => [
+        'create' => [
+            'success' => 'Contractor :name added successfully',
+            'fail' => 'Failed to add contractor :name'
+        ],
+        'update' => [
+            'success' => 'Contractor :name updated successfully',
+            'fail' => 'Failed to update contractor :name'
+        ],
+        'destroy' => [
+            'success' => 'Contractor :name deleted successfully'
+        ],
+        'restore' => [
+            'success' => 'Contractor :name restored successfully'
+        ],
+    ],
+    'titles' => [
+        'create' => 'Adding a new contractor'
+    ],
+
     'organizations' => [
         'organizations' => 'Organizations',
         'actions' => [
@@ -98,9 +120,35 @@ return [
         ],
     ],
 
+    'contact_persons' => [
+        'contact_persons' => 'Contact Persons',
+        'contact_person' => 'Contact Person',
+        'name' => 'Name',
+        'post' => 'Post',
+        'phone' => 'Phone',
+        'email' => 'E-mail',
+
+        'actions' => [
+            'create' => [
+                'success' => 'Contact person :name added successfully',
+                'fail' => 'Failed to add contact person :name'
+            ],
+            'update' => [
+                'success' => 'Contacts updated successfully',
+                'fail' => 'Failed to update contacts',
+            ],
+            'destroy' => [
+                'success' => 'Contact person :name deleted successfully'
+            ],
+            'restore' => [
+                'success' => 'Contact person :name successfully restored'
+            ],
+        ],
+    ],
+
     'name' => 'Name',
     'inn' => 'NIP Number',
-    'okpo' => 'Russian Business and Organization Classification',
+    'okpo' => ' OKPO code',
     'contacts' => 'Contacts',
     'card' => 'Counterparty card',
     'main_information' => 'Main information'
