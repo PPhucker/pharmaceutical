@@ -120,4 +120,9 @@ class BankAccountDetailController extends CoreController
                 )
             );
     }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
+    }
 }

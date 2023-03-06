@@ -7,7 +7,7 @@ use App\Http\Requests\Admin\Organizations\PlacesOfBusiness\StorePlaceOfBusinessR
 use App\Http\Requests\Admin\Organizations\PlacesOfBusiness\UpdatePlaceOfBusinessRequest;
 use App\Models\Admin\Organizations\PlaceOfBusiness;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
 class PlaceOfBusinessController extends CoreController
@@ -126,5 +126,10 @@ class PlaceOfBusinessController extends CoreController
                     ['name' => $places_of_business->address]
                 )
             );
+    }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
     }
 }

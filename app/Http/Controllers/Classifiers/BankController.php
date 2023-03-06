@@ -54,7 +54,7 @@ class BankController extends CoreController
 
         return back()
             ->with(
-                'store.success',
+                'success',
                 __('classifiers.banks.actions.create.success'),
             );
     }
@@ -85,8 +85,13 @@ class BankController extends CoreController
 
         return back()
             ->with(
-                'update.success',
+                'success',
                 __('classifiers.banks.actions.update.success')
             );
+    }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
     }
 }

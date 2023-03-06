@@ -24,8 +24,19 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        $this->defineAutodiscoverPolicies();
+        $this->createVerifiedDirective();
+    }
 
+    private function defineAutodiscoverPolicies()
+    {
+        Gate::guessPolicyNamesUsing(static function ($class) {
+            return str_replace("App\\Models", "App\\Policies", $class) . 'Policy';
+        });
+    }
+
+    private function createVerifiedDirective()
+    {
         Blade::directive('verified', static function () {
             return "<?php if(auth()->check() && auth()->user()->hasVerifiedEmail()) : ?>";
         });

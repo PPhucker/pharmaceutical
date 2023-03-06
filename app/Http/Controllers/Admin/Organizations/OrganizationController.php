@@ -189,4 +189,9 @@ class OrganizationController extends CoreController
                 __($key, ['name' => "$organization->legal_form_type $organization->name"])
             );
     }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
+    }
 }

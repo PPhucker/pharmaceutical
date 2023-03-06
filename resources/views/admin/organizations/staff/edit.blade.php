@@ -37,7 +37,7 @@
                                 {{$staff->placeOfBusiness->address}}
                             </span>
                         <select name="staff[{{$key}}][organization_place_of_business_id]"
-                                class="form-control form-control-sm text-primary
+                                class="form-control form-control-sm text-primary mt-1 mb-1
                                 @error('staff.' . $key . '.organization_place_of_business_id') is-invalid @enderror">
                             @foreach($organization->placesOfBusiness as $place)
                                 <option value="{{$place->id}}"
@@ -54,7 +54,7 @@
                         <input type="text"
                                name="staff[{{$key}}][name]"
                                value="{{$staff->name}}"
-                               class="form-control form-control-sm text-primary
+                               class="form-control form-control-sm text-primary mt-1 mb-1
                                @error('staff.' . $key . '.name') is-invalid @enderror">
                         <x-forms.span-error name="staff.{{$key}}.name"/>
                     </td>
@@ -63,7 +63,7 @@
                             {{$employees[$staff->post]}}
                         </span>
                         <select name="staff[{{$key}}][post]"
-                                class="form-control form-control-sm text-primary
+                                class="form-control form-control-sm text-primary mt-1 mb-1
                                 @error('staff.' . $key . '.post') is-invalid @enderror">
                             @foreach($employees as $value => $employee)
                                 <option value="{{$value}}"

@@ -87,4 +87,9 @@ class LegalFormController extends CoreController
                 __('classifiers.legal_forms.actions.update.success')
             );
     }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
+    }
 }

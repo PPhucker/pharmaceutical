@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\CoreRepository;
+use Illuminate\Auth\Access\AuthorizationException;
 
 abstract class CoreController extends Controller
 {
@@ -20,6 +21,8 @@ abstract class CoreController extends Controller
             ]
         );
 
+        app($this->getPolicy());
+
         $this->repository = app($this->getRepository());
     }
 
@@ -28,4 +31,5 @@ abstract class CoreController extends Controller
      */
     abstract protected function getRepository();
 
+    abstract protected function getPolicy();
 }

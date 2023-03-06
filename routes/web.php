@@ -49,5 +49,6 @@ Route::middleware(['auth', 'verified'])->group(
     static function () {
         require_once __DIR__ . '/admin/web.php';
         require_once __DIR__ . '/classifiers/web.php';
+        require_once __DIR__ . '/contractors/web.php';
     }
 );

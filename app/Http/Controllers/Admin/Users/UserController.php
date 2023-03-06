@@ -119,4 +119,9 @@ class UserController extends CoreController
             __('users.action.restore', ['name' => $user->name])
         );
     }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
+    }
 }

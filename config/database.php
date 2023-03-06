@@ -63,6 +63,74 @@ return [
             ]) : [],
         ],
 
+        'mysql@dev' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DEV_DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('DEV_DB_DATABASE'),
+            'username' => env('DEV_DB_USERNAME'),
+            'password' => env('DEV_DB_PASSWORD'),
+            'charset' => env('DEV_DB_CHARSET'),
+            'collation' => env('DEV_DB_COLLATION'),
+            'dump' => [
+                'use_single_transaction',
+                'timeout' => 60 * 5,
+                'useSingleTransaction' => true,
+            ]
+        ],
+
+        'mysql@mdpl01' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('MDLP_DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('MDLP_DB_DATABASE'),
+            'username' => env('MDLP_DB_USERNAME'),
+            'password' => env('MDLP_DB_PASSWORD'),
+            'charset' => env('MDLP_DB_CHARSET'),
+            'collation' => env('MDLP_DB_COLLATION'),
+            'dump' => [
+                'use_single_transaction',
+                'timeout' => 60 * 5,
+                'useSingleTransaction' => true,
+            ]
+        ],
+
+        'mysql@mdpl01_a' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('MDLP_A_DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('MDLP_A_DB_DATABASE'),
+            'username' => env('MDLP_A_DB_USERNAME'),
+            'password' => env('MDLP_A_DB_PASSWORD'),
+            'charset' => env('MDLP_A_DB_CHARSET'),
+            'collation' => env('MDLP_A_DB_COLLATION'),
+            'dump' => [
+                'use_single_transaction',
+                'timeout' => 60 * 5,
+                'useSingleTransaction' => true,
+            ]
+        ],
+
+        'mysql@rb' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('RB_DB_HOST'),
+            'port' => env('DB_PORT'),
+            'database' => env('RB_DB_DATABASE'),
+            'username' => env('RB_DB_USERNAME'),
+            'password' => env('RB_A_DB_PASSWORD'),
+            'charset' => env('RB_DB_CHARSET'),
+            'collation' => env('RB_DB_COLLATION'),
+            'dump' => [
+                'use_single_transaction',
+                'timeout' => 60 * 5,
+                'useSingleTransaction' => true,
+            ]
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

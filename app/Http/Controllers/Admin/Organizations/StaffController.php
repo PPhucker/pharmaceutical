@@ -118,4 +118,9 @@ class StaffController extends CoreController
                 )
             );
     }
+
+    protected function getPolicy()
+    {
+        // TODO: Implement getPolicy() method.
+    }
 }
