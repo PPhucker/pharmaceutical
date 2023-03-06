@@ -182,6 +182,7 @@ return [
         App\Providers\ClassifierServiceProvider::class,
 
         App\Providers\Contractors\OrganizationServiceProvider::class,
+        \App\Providers\Contractors\ContractorServiceProvider::class,
     ],
 
     /*
