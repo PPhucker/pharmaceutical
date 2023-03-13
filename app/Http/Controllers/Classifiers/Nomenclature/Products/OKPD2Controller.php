@@ -86,7 +86,8 @@ class OKPD2Controller extends CoreController
                     'code' => $item['code'],
                     'name' => $item['name']
                 ]
-            );
+            )
+                ->save();
         }
 
         return back()
