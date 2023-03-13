@@ -98,7 +98,7 @@
                                    @error('okpd2.' . $key . '.code') is-invalid @enderror"
                                    value="{{$item->code}}"
                                    required>
-                            @error('$okpd2.' . $key . '.code')
+                            @error('okpd2.' . $key . '.code')
                             <span class="invalid-feedback"
                                   role="alert">
                             <strong>
