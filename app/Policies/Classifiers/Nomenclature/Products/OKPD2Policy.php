@@ -58,7 +58,6 @@ class OKPD2Policy
      */
     public function update(User $user)
     {
-        /*return $user->hasRole(self::ROLES);*/
-        return true;
+        return $user->hasRole(self::ROLES);
     }
 }
