@@ -2,6 +2,7 @@
 
 namespace App\Models\Classifiers\Nomenclature;
 
+use App\Models\Classifiers\Nomenclature\Materials\Material;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,4 +19,10 @@ class OKEI extends Model
     protected $fillable = ['code', 'unit', 'symbol'];
 
     public $timestamps = false;
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class, 'okei_code')
+            ->withTrashed();
+    }
 }

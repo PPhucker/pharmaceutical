@@ -16,4 +16,10 @@ class TypeOfMaterial extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+
+    public function materials()
+    {
+        return $this->hasMany(Material::class, 'type_id')
+            ->withTrashed();
+    }
 }
