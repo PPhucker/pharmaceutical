@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class StoreInternationalNameOfEndProductRequest extends FormRequest
 {
@@ -33,5 +34,24 @@ class StoreInternationalNameOfEndProductRequest extends FormRequest
                 'unique:classifier_international_names_of_end_products,name'
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                $validator->errors()->add(
+                    'fail',
+                    __('classifiers.fail')
+                );
+            }
+        });
     }
 }

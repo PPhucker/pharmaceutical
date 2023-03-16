@@ -4,6 +4,7 @@ namespace App\Http\Requests\Classifiers\Nomenclature\Products\InternationalNameO
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Validator;
 
 class UpdateInternationalNameOfEndProductRequest extends FormRequest
 {
@@ -39,5 +40,24 @@ class UpdateInternationalNameOfEndProductRequest extends FormRequest
                     ->whereNotIn('name', $this->input($prefix . 'name')),
             ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                $validator->errors()->add(
+                    'fail',
+                    __('classifiers.fail')
+                );
+            }
+        });
     }
 }
