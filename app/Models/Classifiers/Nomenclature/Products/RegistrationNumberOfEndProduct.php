@@ -16,4 +16,9 @@ class RegistrationNumberOfEndProduct extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+
+    public function endProducts()
+    {
+        return $this->hasMany(EndProduct::class, 'registration_number_id');
+    }
 }

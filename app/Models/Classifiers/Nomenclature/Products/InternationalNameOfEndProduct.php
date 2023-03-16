@@ -16,4 +16,9 @@ class InternationalNameOfEndProduct extends Model
     protected $fillable = ['name'];
 
     protected $guarded = ['id'];
+
+    public function endProducts()
+    {
+        return $this->hasMany(EndProduct::class, 'international_name_id');
+    }
 }

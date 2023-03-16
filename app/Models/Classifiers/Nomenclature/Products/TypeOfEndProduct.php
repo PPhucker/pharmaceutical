@@ -16,4 +16,10 @@ class TypeOfEndProduct extends Model
     protected $guarded = ['id'];
 
     public $timestamps = false;
+
+    public function endProducts()
+    {
+        return $this->hasMany(EndProduct::class, 'type_id')
+            ->withTrashed();
+    }
 }

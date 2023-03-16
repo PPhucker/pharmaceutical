@@ -20,4 +20,9 @@ class OKPD2 extends Model
     public $timestamps = false;
 
     protected $fillable = ['code', 'name'];
+
+    public function endProducts()
+    {
+        return $this->hasMany(EndProduct::class, 'okpd2_code');
+    }
 }

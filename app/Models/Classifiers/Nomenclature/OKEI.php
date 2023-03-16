@@ -3,6 +3,7 @@
 namespace App\Models\Classifiers\Nomenclature;
 
 use App\Models\Classifiers\Nomenclature\Materials\Material;
+use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +25,10 @@ class OKEI extends Model
     {
         return $this->hasMany(Material::class, 'okei_code')
             ->withTrashed();
+    }
+
+    public function endProducts()
+    {
+        return $this->hasMany(EndProduct::class, 'okei_code');
     }
 }
