@@ -249,7 +249,7 @@
                                                            value="{{$attribute->after}}"
                                                            disabled>
                                                 </div>
-                                            @elseif($log->get('context')->action === 'create')
+                                            @elseif(in_array($log->get('context')->action, ['create', 'attach', 'detach']))
                                                 <div class="col-md">
                                                     <input id="f-attribute-{{$name}}"
                                                            class="form-control form-control-sm"

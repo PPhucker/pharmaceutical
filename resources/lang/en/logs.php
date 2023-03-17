@@ -7,6 +7,8 @@ return [
         'destroy' => 'Deleting',
         'restore' => 'Restoring',
         'update' => 'Updating',
+        'attach' => 'Attaching',
+        'detach' => 'Detaching',
     ],
 
     'after' => 'After',

@@ -34,7 +34,7 @@ class EndProductObserver
     /**
      * Handle the EndProduct "deleted" event.
      *
-     * @param EndProduct  $endProduct
+     * @param EndProduct $endProduct
      *
      * @return void
      */
@@ -44,9 +44,21 @@ class EndProductObserver
     }
 
     /**
+     * Handle the EndProduct "deleting" event.
+     *
+     * @param EndProduct $endProduct
+     *
+     * @return void
+     */
+    public function deleting(EndProduct $endProduct)
+    {
+        $endProduct->materials()->sync([]);
+    }
+
+    /**
      * Handle the EndProduct "restored" event.
      *
-     * @param  EndProduct  $endProduct
+     * @param EndProduct $endProduct
      *
      * @return void
      */

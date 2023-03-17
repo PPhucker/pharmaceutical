@@ -4,13 +4,15 @@ namespace App\Models\Classifiers\Nomenclature\Products;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\OKEI;
+use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class EndProduct extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasMaterials;
 
     protected $table = 'classifier_end_products';
 
@@ -33,6 +35,18 @@ class EndProduct extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public function getUpdatedAtAttribute($date)
+    {
+        return Carbon::parse($date)
+            ->format('d.m.Y H:i:s');
+    }
 
     public function user()
     {

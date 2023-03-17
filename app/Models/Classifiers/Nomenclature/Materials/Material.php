@@ -3,9 +3,11 @@
 namespace App\Models\Classifiers\Nomenclature\Materials;
 
 use App\Models\Classifiers\Nomenclature\OKEI;
+use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Carbon;
 
 class Material extends Model
 {
@@ -17,6 +19,11 @@ class Material extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::create($date)
+            ->format('d.m.Y');
+    }
     public function type()
     {
         return $this->belongsTo(TypeOfMaterial::class, 'type_id');
@@ -25,5 +32,15 @@ class Material extends Model
     public function okei()
     {
         return $this->belongsTo(OKEI::class, 'okei_code');
+    }
+
+    public function endProducts()
+    {
+        return $this->belongsToMany(
+            EndProduct::class,
+            'end_products_materials'
+        )
+            ->withPivot('user_id')
+            ->withTimestamps();
     }
 }

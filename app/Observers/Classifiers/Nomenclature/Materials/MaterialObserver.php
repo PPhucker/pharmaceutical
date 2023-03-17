@@ -44,6 +44,18 @@ class MaterialObserver
     }
 
     /**
+     * Handle the Material "deleting" event.
+     *
+     * @param Material  $material
+     *
+     * @return void
+     */
+    public function deleting(Material $material)
+    {
+        $material->endProducts()->sync([]);
+    }
+
+    /**
      * Handle the Material "restored" event.
      *
      * @param  Material  $material

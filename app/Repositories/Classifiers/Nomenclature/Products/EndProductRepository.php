@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
+use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\Classifiers\Nomenclature\OKEIRepository;
 use App\Repositories\CoreRepository;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct as Model;
@@ -11,7 +12,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class EndProductRepository extends CoreRepository
 {
-
     /**
      * @return string
      */
@@ -54,7 +54,7 @@ class EndProductRepository extends CoreRepository
         $endProduct->load(
             [
                 'user' => static function ($query) {
-                    $query->select('name')
+                    $query->select(['id', 'name'])
                         ->orderBy('name');
                 },
                 'type' => static function ($query) {
@@ -70,13 +70,25 @@ class EndProductRepository extends CoreRepository
                         ->orderBy('number');
                 },
                 'okei' => static function ($query) {
-                    $query->select('code', 'symbol')
+                    $query->select(['code', 'symbol'])
                         ->orderBy('symbol');
                 },
                 'okpd2' => static function ($query) {
                     $query->select(['code', 'name'])
                         ->orderBy('name');
-                }
+                },
+                'materials' => static function ($query) {
+                    $query->select(
+                        [
+                            'id',
+                            'type_id',
+                            'okei_code',
+                            'name'
+                        ]
+                    )
+                        ->orderBy('type_id')
+                        ->orderBy('name');
+                },
             ]
         );
 
@@ -90,6 +102,7 @@ class EndProductRepository extends CoreRepository
                 'registration_numbers' => $classifiers['registration_numbers'],
                 'okei' => $classifiers['okei'],
                 'okpd2' => $classifiers['okpd2'],
+                'materials' => $classifiers['materials'],
             ]
         );
     }
@@ -111,6 +124,7 @@ class EndProductRepository extends CoreRepository
             ->getAll();
         $okpd2 = (new OKPD2Repository())
             ->getAll();
+        $materials = (new MaterialRepository())->getForEndProduct();
 
         return collect(
             [
@@ -118,7 +132,8 @@ class EndProductRepository extends CoreRepository
                 'international_names' => $internationalNames,
                 'registration_numbers' => $registrationNumbers,
                 'okei' => $okei,
-                'okpd2' => $okpd2
+                'okpd2' => $okpd2,
+                'materials' => $materials,
             ]
         );
     }

@@ -31,4 +31,17 @@ class MaterialRepository extends CoreRepository
             ->with('okei:code,symbol')
             ->get();
     }
+
+    /**
+     * @return Collection
+     */
+    public function getForEndProduct()
+    {
+        return $this->clone()
+            ->orderBy('type_id')
+            ->orderBy('name')
+            ->with('type:id,name')
+            ->with('okei:code,symbol')
+            ->get();
+    }
 }

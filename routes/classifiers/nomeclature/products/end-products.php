@@ -10,4 +10,8 @@ Route::controller(Controller::class)
         Route::post('/end_products/{end_product}/restore', 'restore')
             ->name('end_products.restore')
             ->withTrashed();
+        Route::patch('/end_products/{end_product}/attach_material', 'attachMaterial')
+            ->name('end_products.attach_material');
+        Route::patch('/end_products/{end_product}/detach_material', 'detachMaterial')
+            ->name('end_products.detach_material');
     });

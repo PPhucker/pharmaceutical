@@ -194,8 +194,28 @@
                 </div>
             </x-slot>
             <x-slot name="footer">
-                <x-buttons.save formId="form_main_info"/>
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item text-md-end">
+                        <x-buttons.save formId="form_main_info"/>
+                    </li>
+                    <li class="list-inline-item text-primary">
+                        <small>
+                            {{__('form.last_updated')}}:
+                        </small>
+                    </li>
+                    <li class="list-inline-item text-primary">
+                        <small>
+                            {{$end_product->updated_at}}
+                        </small>
+                    </li>
+                    <li class="list-inline-item text-primary">
+                        <small>
+                            {{$end_product->user->name}}
+                        </small>
+                    </li>
+                </ul>
             </x-slot>
         </x-forms.collapse.card>
+        @include('classifiers.nomenclature.products.end-products.materials')
     </x-forms.main>
 @endsection
