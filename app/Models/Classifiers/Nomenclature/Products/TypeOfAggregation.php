@@ -18,4 +18,13 @@ class TypeOfAggregation extends Model
     public $timestamps = false;
 
     protected $fillable = ['code', 'name'];
+
+    public function endProducts()
+    {
+        return $this->belongsToMany(
+            EndProduct::class,
+            'end_products_types_of_aggregation'
+        )
+            ->withPivot('product_quantity');
+    }
 }

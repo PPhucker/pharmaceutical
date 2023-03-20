@@ -53,6 +53,7 @@ class EndProductObserver
     public function deleting(EndProduct $endProduct)
     {
         $endProduct->materials()->sync([]);
+        $endProduct->aggregationTypes()->sync([]);
     }
 
     /**

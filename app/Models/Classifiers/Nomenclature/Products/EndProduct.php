@@ -4,6 +4,7 @@ namespace App\Models\Classifiers\Nomenclature\Products;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\OKEI;
+use App\Traits\Classifiers\Nomenclature\Products\HasAggregationTypes;
 use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Support\Carbon;
 
 class EndProduct extends Model
 {
-    use HasFactory, SoftDeletes, HasMaterials;
+    use HasFactory, SoftDeletes, HasMaterials, HasAggregationTypes;
 
     protected $table = 'classifier_end_products';
 

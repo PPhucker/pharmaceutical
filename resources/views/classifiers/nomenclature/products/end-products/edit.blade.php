@@ -217,5 +217,6 @@
             </x-slot>
         </x-forms.collapse.card>
         @include('classifiers.nomenclature.products.end-products.materials')
+        @include('classifiers.nomenclature.products.end-products.aggregation-types')
     </x-forms.main>
 @endsection
