@@ -5,6 +5,9 @@ namespace App\Models\Auth;
 use App\Models\Admin\Organizations\BankAccountDetail;
 use App\Models\Admin\Organizations\Organization;
 use App\Models\Admin\Organizations\PlaceOfBusiness as OrganizationPlaceOfBusiness;
+use App\Models\Classifiers\Nomenclature\Products\EndProduct;
+use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
 use App\Models\Contractors\ContactPerson;
 use App\Models\Contractors\Contractor;
 use App\Models\Contractors\PlaceOfBusiness;
@@ -150,6 +153,24 @@ class User extends Authenticatable
     public function contactPersons()
     {
         return $this->hasMany(ContactPerson::class)
+            ->withTrashed();
+    }
+
+    public function endProducts()
+    {
+        return $this->hasMany(EndProduct::class, 'user_id')
+            ->withTrashed();
+    }
+
+    public function catalogProducts()
+    {
+        return $this->hasMany(ProductCatalog::class, 'user_id')
+            ->withTrashed();
+    }
+
+    public function productPrices()
+    {
+        return $this->hasMany(ProductPrice::class, 'user_id')
             ->withTrashed();
     }
 }

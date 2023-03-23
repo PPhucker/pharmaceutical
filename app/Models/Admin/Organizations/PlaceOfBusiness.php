@@ -3,6 +3,7 @@
 namespace App\Models\Admin\Organizations;
 
 use App\Models\Auth\User;
+use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -51,6 +52,12 @@ class PlaceOfBusiness extends Model
     public function staff()
     {
         return $this->hasMany(Staff::class, 'organization_place_of_business_id')
+            ->withTrashed();
+    }
+
+    public function catalogProducts()
+    {
+        return $this->hasMany(ProductCatalog::class, 'place_of_business_id')
             ->withTrashed();
     }
 }

@@ -146,12 +146,13 @@ class Logger
     /**
      * Create user action notice.
      *
-     * @param string $action
-     * @param        $model
+     * @param string     $action
+     * @param            $model
+     * @param array|null $relations
      *
      * @return void
      */
-    public static function userActionNotice(string $action, $model)
+    public static function userActionNotice(string $action, $model, ?array $relations = [])
     {
         $info = collect(
             [
@@ -184,6 +185,17 @@ class Logger
                         ]
                     );
                 }
+                break;
+            case 'attach' || 'detach':
+                $info->put(
+                    'changes',
+                    [
+                        'attributes' => [
+                            'table' => $relations ? $relations['table'] : null,
+                            'id' => $relations ? $relations['id'] : null
+                        ]
+                    ]
+                );
                 break;
             case 'destroy' || 'restore':
                 break;

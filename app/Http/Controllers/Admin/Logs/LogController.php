@@ -47,7 +47,9 @@ class LogController extends Controller
             'create',
             'update',
             'destroy',
-            'restore'
+            'restore',
+            'attach',
+            'detach',
         ];
 
         $models = Model::all();
