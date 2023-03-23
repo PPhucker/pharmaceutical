@@ -117,13 +117,16 @@
                                 name="registration_number_id">
                             <option class="form-control form-control-sm"
                                     value="{{null}}"
-                                    @if(!$end_product->registrationNumber->id) selected @endif>
+                                    @if(!isset($end_product->registrationNumber->id)) selected @endif>
                                 {{__('classifiers.nomenclature.products.registration_numbers.without_registration_number')}}
                             </option>
                             @foreach($registration_numbers as $registrationNumber)
                                 <option class="form-control form-control-sm"
                                         value="{{$registrationNumber->id}}"
-                                        @if($registrationNumber->id === $end_product->registrationNumber->id) selected @endif>
+                                        @if(isset($end_product->registrationNumber->id)
+                                            && $registrationNumber->id === $end_product->registrationNumber->id)
+                                            selected
+                                    @endif>
                                     {{$registrationNumber->id}} - {{$registrationNumber->number}}
                                 </option>
                             @endforeach
@@ -216,7 +219,5 @@
                 </ul>
             </x-slot>
         </x-forms.collapse.card>
-        @include('classifiers.nomenclature.products.end-products.materials')
-        @include('classifiers.nomenclature.products.end-products.aggregation-types')
     </x-forms.main>
 @endsection
