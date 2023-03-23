@@ -14,7 +14,7 @@
             @method('PATCH')
             <input type="text"
                    value="{{$detachId}}"
-                   name="{{$detachName}}[id]">
+                   name="{{$detachName}}">
         </form>
     </a>
 </div>

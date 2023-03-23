@@ -1,6 +1,6 @@
 @admin
 <div class="offcanvas-header pt-2 pb-2 ps-2">
-    <h5 class="offcanvas-title text-primary">
+    <h4 class="offcanvas-title text-primary">
         <a class="btn-link"
            data-bs-toggle="collapse"
            href="#admin"
@@ -9,7 +9,7 @@
            aria-controls="admin">
             {{'Administrator'}}
         </a>
-    </h5>
+    </h4>
 </div>
 <div class="show" id="admin">
     <x-sidebar.menu.dropdown.item icon="bi bi-people-fill"
