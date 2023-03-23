@@ -23,7 +23,8 @@ class PlaceOfBusinessRepository extends CoreRepository
     public function getAll()
     {
         return $this->clone()
-            ->orderBy('organizations_places_of_business.registered')
+            ->orderBy('organizations_places_of_business.organization_id')
+            ->orderBy('organizations_places_of_business.registered', 'desc')
             ->get();
     }
 

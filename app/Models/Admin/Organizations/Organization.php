@@ -4,6 +4,8 @@ namespace App\Models\Admin\Organizations;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
+use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -64,5 +66,16 @@ class Organization extends Model
     {
         return $this->hasMany(Staff::class)
             ->withTrashed();
+    }
+
+    public function catalogProducts()
+    {
+        return $this->hasMany(ProductCatalog::class, 'organization_id')
+            ->withTrashed();
+    }
+
+    public function productPrices()
+    {
+        return $this->hasMany(ProductPrice::class, 'organization_id');
     }
 }

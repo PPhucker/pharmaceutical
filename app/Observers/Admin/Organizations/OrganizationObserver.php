@@ -10,7 +10,9 @@ class OrganizationObserver
     private const RELATIONS = [
         'placesOfBusiness',
         'bankAccountDetails',
-        'staff'
+        'staff',
+        'catalogProducts',
+        'productPrices',
     ];
 
     /**

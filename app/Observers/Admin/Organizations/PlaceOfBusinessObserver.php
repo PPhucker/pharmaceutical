@@ -8,7 +8,8 @@ use App\Models\Admin\Organizations\PlaceOfBusiness;
 class PlaceOfBusinessObserver
 {
     private const RELATIONS = [
-        'staff'
+        'staff',
+        'catalogProducts',
     ];
 
     /**
