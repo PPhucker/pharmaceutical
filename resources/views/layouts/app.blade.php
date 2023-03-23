@@ -31,8 +31,8 @@
             <x-sidebar.menu.admin/>
             <x-sidebar.menu.contractors/>
             <x-sidebar.menu.classifiers/>
-            <x-sidebar.menu.docs.shipment/>
-            <x-sidebar.menu.production/>
+            {{--<x-sidebar.menu.docs.shipment/>
+            <x-sidebar.menu.production/>--}}
         </x-sidebar.menu>
         <x-sidebar.menu position="end"
                         id="Account"
