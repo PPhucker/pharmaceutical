@@ -14,6 +14,7 @@ class CreateProductCatalogTable extends Migration
     public function up()
     {
         Schema::create('product_catalog', static function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('user_id')
                 ->default(1)
                 ->nullable()
@@ -40,15 +41,6 @@ class CreateProductCatalogTable extends Migration
                 ->references('id')
                 ->on('organizations_places_of_business')
                 ->cascadeOnDelete();
-            $table->float('retail_price')
-                ->comment('Розничная цена');
-            $table->float('trade_price')
-                ->comment('Оптовая цена');
-            $table->float('nds')
-                ->default(0.1)
-                ->comment('НДС');
-            $table->integer('trade_quantity')
-                ->comment('Кол-во продукции для оптовой цены');
             $table->timestamps();
             $table->softDeletes();
         });
