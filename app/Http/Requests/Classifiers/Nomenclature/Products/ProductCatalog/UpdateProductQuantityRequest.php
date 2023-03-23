@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct;
+namespace App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
