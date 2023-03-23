@@ -11,4 +11,5 @@ return [
         'list' => 'List'
     ],
     'collapse' => 'Expand/Collapse',
+    'last_updated' => 'Last Updated',
 ];
