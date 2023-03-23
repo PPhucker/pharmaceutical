@@ -59,12 +59,6 @@ class CreateClassifierEndProductsTable extends Migration
                 ->on('classifier_okpd2')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
-            /*$table->unsignedBigInteger('mdlp_id')
-                ->nullable()
-                ->comment('ID из mdlp.iz');*/
-            /*$table->char('GTIN', 14)
-                ->nullable()
-                ->comment('Global Trade Item Number');*/
             $table->string('short_name', 50)
                 ->comment('Краткое название');
             $table->string('full_name', 150)
