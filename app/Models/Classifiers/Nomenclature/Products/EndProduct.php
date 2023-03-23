@@ -4,8 +4,6 @@ namespace App\Models\Classifiers\Nomenclature\Products;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\OKEI;
-use App\Traits\Classifiers\Nomenclature\Products\HasAggregationTypes;
-use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +11,7 @@ use Illuminate\Support\Carbon;
 
 class EndProduct extends Model
 {
-    use HasFactory, SoftDeletes, HasMaterials, HasAggregationTypes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'classifier_end_products';
 
@@ -78,5 +76,10 @@ class EndProduct extends Model
     public function okpd2()
     {
         return $this->belongsTo(OKPD2::class, 'okpd2_code');
+    }
+
+    public function catalogProducts()
+    {
+        return $this->hasMany(ProductCatalog::class, 'product_id');
     }
 }

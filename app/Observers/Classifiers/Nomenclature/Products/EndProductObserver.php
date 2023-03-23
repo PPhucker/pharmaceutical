@@ -32,6 +32,20 @@ class EndProductObserver
     }
 
     /**
+     * Handle the EndProduct "deleting" event.
+     *
+     * @param EndProduct $endProduct
+     *
+     * @return void
+     */
+    public function deleting(EndProduct $endProduct)
+    {
+        foreach ($endProduct->catalogProducts()->get() as $catalogProduct) {
+            $catalogProduct->delete();
+        }
+    }
+
+    /**
      * Handle the EndProduct "deleted" event.
      *
      * @param EndProduct $endProduct
@@ -44,19 +58,6 @@ class EndProductObserver
     }
 
     /**
-     * Handle the EndProduct "deleting" event.
-     *
-     * @param EndProduct $endProduct
-     *
-     * @return void
-     */
-    public function deleting(EndProduct $endProduct)
-    {
-        $endProduct->materials()->sync([]);
-        $endProduct->aggregationTypes()->sync([]);
-    }
-
-    /**
      * Handle the EndProduct "restored" event.
      *
      * @param EndProduct $endProduct
@@ -65,6 +66,10 @@ class EndProductObserver
      */
     public function restored(EndProduct $endProduct)
     {
+        foreach ($endProduct->catalogProducts()->get() as $catalogProduct) {
+            $catalogProduct->restore();
+        }
+
         Logger::userActionNotice('restore', $endProduct);
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct;
+namespace App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class DetachAggregationTypeRequest extends FormRequest
+class UpdateProductCatalogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,15 +17,26 @@ class DetachAggregationTypeRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
-        $prefix = 'aggregation_type.';
-
         return [
-            $prefix . 'code' => [
+            'product_id' => [
                 'required',
-                'string',
-                'max:10'
+                'numeric',
+            ],
+            'place_of_business_id' => [
+                'required',
+                'numeric',
+            ],
+            'GTIN' => [
+                'nullable',
+                'numeric',
+                'digits:14'
             ],
         ];
     }

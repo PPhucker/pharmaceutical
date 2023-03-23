@@ -16,8 +16,8 @@ trait HasMaterials
     {
         return $this->belongsToMany(
             Material::class,
-            'end_products_materials',
-            'end_product_id',
+            'product_catalog_materials',
+            'product_catalog_id',
             'material_id'
         )
             ->withPivot('user_id')
@@ -42,7 +42,7 @@ trait HasMaterials
             'attach',
             $this,
             [
-                'table' => 'end_products_materials',
+                'table' => 'product_catalog_materials',
                 'id' => $material->id
             ]
         );
@@ -68,7 +68,7 @@ trait HasMaterials
             'detach',
             $this,
             [
-                'table' => 'end_products_materials',
+                'table' => 'product_catalog_materials',
                 'id' => $material->id
             ]
         );

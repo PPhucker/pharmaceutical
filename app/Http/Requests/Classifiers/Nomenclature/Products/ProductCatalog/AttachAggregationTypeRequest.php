@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct;
+namespace App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class AttachMaterialRequest extends FormRequest
+class AttachAggregationTypeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,12 +19,18 @@ class AttachMaterialRequest extends FormRequest
 
     public function rules()
     {
-        $prefix = 'material.';
+        $prefix = 'aggregation_type.';
 
         return [
-            $prefix . 'id' => [
+            $prefix . 'code' => [
                 'required',
-                'numeric'
+                'string',
+                'max:10'
+            ],
+            $prefix . 'product_quantity' => [
+                'required',
+                'numeric',
+                'min:1'
             ],
         ];
     }

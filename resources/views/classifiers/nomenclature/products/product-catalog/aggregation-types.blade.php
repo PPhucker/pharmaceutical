@@ -1,10 +1,10 @@
-@if($errors->any()){{dd($errors)}} @enderror
+{{--@if($errors->any()){{dd($errors)}} @enderror--}}
 <x-forms.collapse.creation cardId="div_attach_aggregation_type"
                            errorName="aggregation_type.*">
     <x-slot name="cardBody">
         <form id="form_attach_aggregation_type"
               method="POST"
-              action="{{route('end_products.attach_aggregation_type', ['end_product' => $end_product->id])}}">
+              action="{{route('product_catalog.attach_aggregation_type', ['product_catalog' => $product->id])}}">
             @method('PATCH')
             @csrf
             <x-forms.row id="code"
@@ -36,7 +36,7 @@
         <x-buttons.save formId="form_attach_aggregation_type"/>
     </x-slot>
 </x-forms.collapse.creation>
-<x-forms.collapse.card route="{{route('end_products.update_product_quantity', ['end_product' => $end_product->id])}}"
+<x-forms.collapse.card route="{{route('product_catalog.update_product_quantity', ['product_catalog' => $product->id])}}"
                        cardId="card_aggregation_types"
                        formId="form_aggregation_types"
                        title="{{__('classifiers.nomenclature.products.types_of_aggregation.types_of_aggregation')}}">
@@ -61,7 +61,7 @@
             </tr>
             </thead>
             <tbody class="text-primary">
-            @foreach($end_product->aggregationTypes as $key => $type)
+            @foreach($product->aggregationTypes as $key => $type)
                 <tr>
                     <input type="hidden"
                            name="aggregation_types[{{$key}}][code]"
@@ -91,7 +91,7 @@
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.detach
-                            route="{{route('end_products.detach_aggregation_type', ['end_product' => $end_product->id])}}"
+                            route="{{route('product_catalog.detach_aggregation_type', ['product_catalog' => $product->id])}}"
                             itemId="detach-aggregation-type-{{$type->code}}"
                             detachId="{{$type->code}}"
                             detachName="aggregation_type[code]"/>
@@ -103,7 +103,7 @@
     </x-slot>
     <x-slot name="footer">
         <x-buttons.collapse formId="div_attach_aggregation_type"/>
-        @if(count($end_product->aggregationTypes) > 0)
+        @if(count($product->aggregationTypes) > 0)
             <x-buttons.save formId="form_aggregation_types"/>
         @endif
     </x-slot>

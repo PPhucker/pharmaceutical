@@ -3,7 +3,7 @@
     <x-slot name="cardBody">
         <form id="form_attach_material"
               method="POST"
-              action="{{route('end_products.attach_material', ['end_product' => $end_product->id])}}">
+              action="{{route('product_catalog.attach_material', ['product_catalog' => $product->id])}}">
             @method('PATCH')
             @csrf
             <x-forms.row id="id"
@@ -51,7 +51,7 @@
             </tr>
             </thead>
             <tbody class="text-primary">
-            @foreach($end_product->materials as $key => $material)
+            @foreach($product->materials as $key => $material)
                 <tr>
                     <td class="text-center">
                     <span class="d-none">
@@ -73,10 +73,10 @@
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.detach
-                            route="{{route('end_products.detach_material', ['end_product' => $end_product->id])}}"
+                            route="{{route('product_catalog.detach_material', ['product_catalog' => $product->id])}}"
                             itemId="detach-material-{{$material->id}}"
                             detachId="{{$material->id}}"
-                            detachName="material"/>
+                            detachName="material[id]"/>
                     </td>
                 </tr>
             @endforeach

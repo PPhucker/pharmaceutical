@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
-use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\Classifiers\Nomenclature\OKEIRepository;
 use App\Repositories\CoreRepository;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct as Model;
@@ -29,13 +28,16 @@ class EndProductRepository extends CoreRepository
             ->select(
                 [
                     'classifier_end_products.id',
+                    'classifier_end_products.type_id',
                     'classifier_end_products.full_name',
                     'classifier_end_products.created_at',
                     'classifier_end_products.updated_at',
                     'classifier_end_products.deleted_at'
                 ]
             )
+            ->with('type:id,color')
             ->withTrashed()
+            ->orderBy('classifier_end_products.type_id')
             ->orderBy('classifier_end_products.full_name')
             ->get();
     }
@@ -58,7 +60,13 @@ class EndProductRepository extends CoreRepository
                         ->orderBy('name');
                 },
                 'type' => static function ($query) {
-                    $query->select(['id', 'name'])
+                    $query->select(
+                        [
+                            'id',
+                            'name',
+                            'color',
+                        ]
+                    )
                         ->orderBy('name');
                 },
                 'internationalName' => static function ($query) {
@@ -77,29 +85,6 @@ class EndProductRepository extends CoreRepository
                     $query->select(['code', 'name'])
                         ->orderBy('name');
                 },
-                'materials' => static function ($query) {
-                    $query->select(
-                        [
-                            'id',
-                            'type_id',
-                            'okei_code',
-                            'name'
-                        ]
-                    )
-                        ->orderBy('type_id')
-                        ->orderBy('name')
-                        ->with('okei:code,symbol')
-                        ->get();
-                },
-                'aggregationTypes' => static function ($query) {
-                    $query->select(
-                        [
-                            'code',
-                            'name',
-                        ]
-                    )
-                        ->orderBy('code');
-                },
             ]
         );
 
@@ -113,8 +98,6 @@ class EndProductRepository extends CoreRepository
                 'registration_numbers' => $classifiers['registration_numbers'],
                 'okei' => $classifiers['okei'],
                 'okpd2' => $classifiers['okpd2'],
-                'materials' => $classifiers['materials'],
-                'aggregation_types' => $classifiers['aggregation_types'],
             ]
         );
     }
@@ -136,10 +119,6 @@ class EndProductRepository extends CoreRepository
             ->getAll();
         $okpd2 = (new OKPD2Repository())
             ->getAll();
-        $materials = (new MaterialRepository())
-            ->getForEndProduct();
-        $aggregationTypes = (new TypeOfAggregationRepository())
-            ->getAll();
 
         return collect(
             [
@@ -148,8 +127,6 @@ class EndProductRepository extends CoreRepository
                 'registration_numbers' => $registrationNumbers,
                 'okei' => $okei,
                 'okpd2' => $okpd2,
-                'materials' => $materials,
-                'aggregation_types' => $aggregationTypes
             ]
         );
     }

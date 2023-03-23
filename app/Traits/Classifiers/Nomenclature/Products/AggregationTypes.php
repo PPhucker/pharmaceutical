@@ -2,28 +2,28 @@
 
 namespace App\Traits\Classifiers\Nomenclature\Products;
 
-use App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct\AttachAggregationTypeRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct\DetachAggregationTypeRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct\UpdateProductQuantityRequest;
-use App\Models\Classifiers\Nomenclature\Products\EndProduct;
+use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\AttachAggregationTypeRequest;
+use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\DetachAggregationTypeRequest;
+use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\UpdateProductQuantityRequest;
+use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Classifiers\Nomenclature\Products\TypeOfAggregation;
 use Illuminate\Http\RedirectResponse;
 
 trait AggregationTypes
 {
     /**
-     * @param EndProduct                   $endProduct
+     * @param ProductCatalog               $productCatalog
      * @param AttachAggregationTypeRequest $request
      *
      * @return RedirectResponse
      */
-    public function attachAggregationType(EndProduct $endProduct, AttachAggregationTypeRequest $request)
+    public function attachAggregationType(ProductCatalog $productCatalog, AttachAggregationTypeRequest $request)
     {
         $validated = $request->validated()['aggregation_type'];
 
         $aggregationType = TypeOfAggregation::find($validated['code']);
 
-        $endProduct->attachAggregationType(
+        $productCatalog->attachAggregationType(
             $aggregationType,
             (int)$validated['product_quantity']
         );
@@ -39,18 +39,18 @@ trait AggregationTypes
     }
 
     /**
-     * @param EndProduct                   $endProduct
+     * @param ProductCatalog               $productCatalog
      * @param DetachAggregationTypeRequest $request
      *
      * @return RedirectResponse
      */
-    public function detachAggregationType(EndProduct $endProduct, DetachAggregationTypeRequest $request)
+    public function detachAggregationType(ProductCatalog $productCatalog, DetachAggregationTypeRequest $request)
     {
         $validated = $request->validated()['aggregation_type'];
 
         $aggregationType = TypeOfAggregation::find($validated['code']);
 
-        $endProduct->detachAggregationType($aggregationType);
+        $productCatalog->detachAggregationType($aggregationType);
 
         return back()
             ->with(
@@ -63,17 +63,17 @@ trait AggregationTypes
     }
 
     /**
-     * @param EndProduct                   $endProduct
+     * @param ProductCatalog               $productCatalog
      * @param UpdateProductQuantityRequest $request
      *
      * @return RedirectResponse
      */
-    public function updateProductQuantity(EndProduct $endProduct, UpdateProductQuantityRequest $request)
+    public function updateProductQuantity(ProductCatalog $productCatalog, UpdateProductQuantityRequest $request)
     {
         $validated = $request->validated();
 
         foreach ($validated['aggregation_types'] as $aggregationType) {
-            $endProduct->aggregationTypes()->syncWithPivotValues(
+            $productCatalog->aggregationTypes()->syncWithPivotValues(
                 $aggregationType['code'],
                 [
                     'product_quantity' => (int)$aggregationType['product_quantity'],

@@ -7,16 +7,12 @@ use App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct\StoreEndProdu
 use App\Http\Requests\Classifiers\Nomenclature\Products\EndProduct\UpdateEndProductRequest;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use App\Repositories\Classifiers\Nomenclature\Products\EndProductRepository;
-use App\Traits\Classifiers\Nomenclature\Products\AggregationTypes;
-use App\Traits\Classifiers\Nomenclature\Products\Materials;
 use Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class EndProductController extends CoreController
 {
-    use Materials, AggregationTypes;
-
     /**
      * @return string
      */
@@ -127,8 +123,6 @@ class EndProductController extends CoreController
                 'registration_numbers' => $data['registration_numbers'],
                 'okei' => $data['okei'],
                 'okpd2' => $data['okpd2'],
-                'materials' => $data['materials'],
-                'aggregation_types' => $data['aggregation_types'],
             ]
         );
     }

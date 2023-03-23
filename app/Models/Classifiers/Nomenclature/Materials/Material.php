@@ -3,7 +3,7 @@
 namespace App\Models\Classifiers\Nomenclature\Materials;
 
 use App\Models\Classifiers\Nomenclature\OKEI;
-use App\Models\Classifiers\Nomenclature\Products\EndProduct;
+use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -37,8 +37,8 @@ class Material extends Model
     public function endProducts()
     {
         return $this->belongsToMany(
-            EndProduct::class,
-            'end_products_materials'
+            ProductCatalog::class,
+            'product_catalog_materials'
         )
             ->withPivot('user_id')
             ->withTimestamps();

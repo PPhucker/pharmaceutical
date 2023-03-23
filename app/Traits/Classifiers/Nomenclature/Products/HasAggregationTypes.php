@@ -15,8 +15,8 @@ trait HasAggregationTypes
     {
         return $this->belongsToMany(
             TypeOfAggregation::class,
-            'end_products_types_of_aggregation',
-            'end_product_id',
+            'product_catalog_types_of_aggregation',
+            'product_catalog_id',
             'aggregation_type'
         )
             ->withPivot('product_quantity');
@@ -41,7 +41,7 @@ trait HasAggregationTypes
             'attach',
             $this,
             [
-                'table' => 'end_products_types_of_aggregation',
+                'table' => 'product_catalog_types_of_aggregation',
                 'id' => $typeOfAggregation->code
             ]
         );
@@ -62,7 +62,7 @@ trait HasAggregationTypes
             'detach',
             $this,
             [
-                'table' => 'end_products_types_of_aggregation',
+                'table' => 'product_catalog_types_of_aggregation',
                 'id' => $typeOfAggregation->code
             ]
         );
