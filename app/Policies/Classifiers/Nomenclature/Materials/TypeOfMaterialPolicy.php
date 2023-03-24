@@ -12,7 +12,7 @@ class TypeOfMaterialPolicy
 
     private const ROLES = [
         'marketing',
-        'planning'
+        'planning',
     ];
 
     /**

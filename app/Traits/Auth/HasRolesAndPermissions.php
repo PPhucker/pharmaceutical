@@ -186,4 +186,20 @@ trait HasRolesAndPermissions
     {
         return Role::whereIn('slug', $roles)->get();
     }
+
+    /**
+     * @return bool
+     */
+    public function canDelete()
+    {
+        return $this->hasPermission(['deleting']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canRestore()
+    {
+        return $this->hasPermission(['restoring']);
+    }
 }

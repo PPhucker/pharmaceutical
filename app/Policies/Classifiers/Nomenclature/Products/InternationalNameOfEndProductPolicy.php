@@ -11,7 +11,8 @@ class InternationalNameOfEndProductPolicy
     use HandlesAuthorization;
 
     private const ROLES = [
-        'marketing'
+        'marketing',
+        'planning',
     ];
 
     /**

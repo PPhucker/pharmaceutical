@@ -71,7 +71,7 @@ class ProductPricePolicy
      */
     public function delete(User $user)
     {
-        return $user->isAdmin();
+        return $user->canDelete();
     }
 
     /**
@@ -83,6 +83,6 @@ class ProductPricePolicy
      */
     public function restore(User $user)
     {
-        return $user->isAdmin();
+        return $user->canRestore();
     }
 }

@@ -11,7 +11,7 @@ class MaterialPolicy
 
     private const ROLES = [
         'marketing',
-        'planning'
+        'planning',
     ];
 
     /**
@@ -71,7 +71,7 @@ class MaterialPolicy
      */
     public function delete(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->canDelete();
     }
 
     /**
@@ -83,6 +83,6 @@ class MaterialPolicy
      */
     public function restore(User $user)
     {
-        return $user->hasRole(['planning']) || $user->isAdmin();
+        return $user->canRestore();
     }
 }

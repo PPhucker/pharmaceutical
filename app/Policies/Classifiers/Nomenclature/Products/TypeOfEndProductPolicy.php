@@ -10,7 +10,8 @@ class TypeOfEndProductPolicy
     use HandlesAuthorization;
 
     private const ROLES = [
-        'marketing'
+        'marketing',
+        'planning',
     ];
 
     /**

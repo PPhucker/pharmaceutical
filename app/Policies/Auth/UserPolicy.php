@@ -1,18 +1,13 @@
 <?php
 
-namespace App\Policies\Classifiers\Nomenclature\Products;
+namespace App\Policies\Auth;
 
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RegistrationNumberOfEndProductPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'planning',
-    ];
 
     /**
      * Determine whether the user can view any models.
@@ -23,7 +18,7 @@ class RegistrationNumberOfEndProductPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->isAdmin();
     }
 
     /**
@@ -35,7 +30,7 @@ class RegistrationNumberOfEndProductPolicy
      */
     public function view(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->isAdmin();
     }
 
     /**
@@ -47,7 +42,7 @@ class RegistrationNumberOfEndProductPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->isAdmin();
     }
 
     /**
@@ -59,6 +54,30 @@ class RegistrationNumberOfEndProductPolicy
      */
     public function update(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can delete the model.
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function delete(User $user)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can restore the model.
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function restore(User $user)
+    {
+        return $user->isAdmin();
     }
 }

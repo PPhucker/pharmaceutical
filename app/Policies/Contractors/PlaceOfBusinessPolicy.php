@@ -8,9 +8,10 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class PlaceOfBusinessPolicy
 {
     use HandlesAuthorization;
+
     private const ROLES = [
         'digital_communication',
-        'marketing'
+        'marketing',
     ];
 
     /**
@@ -28,7 +29,7 @@ class PlaceOfBusinessPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  User           $user
+     * @param User $user
      *
      * @return bool
      */
@@ -52,7 +53,7 @@ class PlaceOfBusinessPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  User $user
+     * @param User $user
      *
      * @return bool
      */
@@ -64,24 +65,24 @@ class PlaceOfBusinessPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  User  $user
+     * @param User $user
      *
      * @return bool
      */
     public function delete(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->canDelete();
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  User $user
+     * @param User $user
      *
      * @return bool
      */
     public function restore(User $user)
     {
-        return $user->isAdmin();
+        return $user->canRestore();
     }
 }

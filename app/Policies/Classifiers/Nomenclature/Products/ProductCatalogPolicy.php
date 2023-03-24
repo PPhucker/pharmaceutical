@@ -74,7 +74,7 @@ class ProductCatalogPolicy
      */
     public function delete(User $user, ProductCatalog $productCatalog)
     {
-        return $user->isAdmin();
+        return $user->canDelete();
     }
 
     /**
@@ -86,6 +86,6 @@ class ProductCatalogPolicy
      */
     public function restore(User $user)
     {
-        return $user->isAdmin();
+        return $user->canRestore();
     }
 }

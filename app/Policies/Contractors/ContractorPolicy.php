@@ -12,7 +12,7 @@ class ContractorPolicy
     private const ROLES = [
         'bookkeeping',
         'digital_communication',
-        'marketing'
+        'marketing',
     ];
 
     /**
@@ -72,7 +72,7 @@ class ContractorPolicy
      */
     public function delete(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->canDelete();
     }
 
     /**
@@ -84,18 +84,6 @@ class ContractorPolicy
      */
     public function restore(User $user)
     {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function forceDelete(User $user)
-    {
-        return $user->isAdmin();
+        return $user->canRestore();
     }
 }
