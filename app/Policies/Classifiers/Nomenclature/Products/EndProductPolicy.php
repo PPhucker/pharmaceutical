@@ -12,7 +12,6 @@ class EndProductPolicy
     private const ROLES = [
         'marketing',
         'planning',
-        'digital_communication'
     ];
 
     /**
@@ -72,7 +71,7 @@ class EndProductPolicy
      */
     public function delete(User $user)
     {
-        return $user->hasRole(['planning']);
+        return $user->canDelete();
     }
 
     /**
@@ -84,6 +83,6 @@ class EndProductPolicy
      */
     public function restore(User $user)
     {
-        return $user->isAdmin();
+        return $user->canRestore();
     }
 }

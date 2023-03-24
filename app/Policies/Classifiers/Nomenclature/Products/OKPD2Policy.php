@@ -10,7 +10,8 @@ class OKPD2Policy
     use HandlesAuthorization;
 
     private const ROLES = [
-        'marketing'
+        'marketing',
+        'planning',
     ];
 
     /**

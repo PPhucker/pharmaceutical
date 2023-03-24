@@ -11,7 +11,8 @@ class BankAccountDetailPolicy
 
     private const ROLES = [
         'digital_communication',
-        'marketing'
+        'marketing',
+        'bookkeping',
     ];
 
     /**
@@ -71,7 +72,7 @@ class BankAccountDetailPolicy
      */
     public function delete(User $user)
     {
-        return $user->hasRole(self::ROLES);
+        return $user->canDelete();
     }
 
     /**
@@ -83,6 +84,6 @@ class BankAccountDetailPolicy
      */
     public function restore(User $user)
     {
-        return $user->isAdmin();
+        return $user->canRestore();
     }
 }

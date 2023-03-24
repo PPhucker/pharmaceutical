@@ -12,8 +12,7 @@ class TypeOfAggregationPolicy
     use HandlesAuthorization;
 
     private const ROLES = [
-        'planning',
-        'digital_communication'
+        'digital_communication',
     ];
 
     /**

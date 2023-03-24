@@ -10,7 +10,8 @@ class RegistrationNumberOfEndProductPolicy
     use HandlesAuthorization;
 
     private const ROLES = [
-        'marketing'
+        'marketing',
+        'planning',
     ];
 
     /**
