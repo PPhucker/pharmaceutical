@@ -4,6 +4,7 @@ namespace App\Models\Contractors;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
+use App\Traits\Contractors\Notifications;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +12,7 @@ use Illuminate\Support\Carbon;
 
 class Contractor extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Notifications;
 
     protected $table = 'contractors';
 
@@ -34,7 +35,7 @@ class Contractor extends Model
     public function getCreatedAtAttribute($date)
     {
         return Carbon::create($date)
-            ->format('d.m.Y');
+            ->format('d.m.Y H:i:s');
     }
 
     public function user()

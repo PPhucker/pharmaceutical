@@ -9,21 +9,25 @@ use App\Models\Contractors\Contractor;
 use App\Repositories\Classifiers\BankRepository;
 use App\Repositories\Classifiers\LegalFormRepository;
 use App\Repositories\Contractors\ContractorRepository;
-use Dadata\DadataClient;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class ContractorController extends CoreController
 {
+    /**
+     * @return void
+     */
     protected function getPolicy()
     {
         $this->authorizeResource(Contractor::class, 'contractor');
     }
 
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return ContractorRepository::class;

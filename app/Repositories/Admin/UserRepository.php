@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Admin;
 
+use App\Models\Auth\Permission;
 use App\Repositories\CoreRepository;
 use App\Models\Auth\User as Model;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository extends CoreRepository
@@ -50,5 +50,18 @@ class UserRepository extends CoreRepository
         return $this->clone()
             ->find($id)
             ->load('roles', 'permissions');
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getForEmailCreatedContractorNotification()
+    {
+        $permissions = Permission::whereIn('slug', ['all', 'verification_contractors'])
+            ->first();
+
+        return $permissions->usersForEmailNotification()
+            ->get();
+
     }
 }

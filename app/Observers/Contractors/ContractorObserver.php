@@ -23,6 +23,8 @@ class ContractorObserver
     public function created(Contractor $contractor)
     {
         Logger::userActionNotice('create', $contractor);
+
+        $contractor->sendEmailCreatedNotification();
     }
 
     /**
