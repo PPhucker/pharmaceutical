@@ -12,6 +12,17 @@ use Illuminate\Http\RedirectResponse;
 
 class PlaceOfBusinessController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(PlaceOfBusiness::class, 'places_of_business');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return PlaceOfBusinessRepository::class;
@@ -126,10 +137,5 @@ class PlaceOfBusinessController extends CoreController
                     ['name' => $places_of_business->address]
                 )
             );
-    }
-
-    protected function getPolicy()
-    {
-        // TODO: Implement getPolicy() method.
     }
 }

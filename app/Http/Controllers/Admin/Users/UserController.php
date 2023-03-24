@@ -14,6 +14,17 @@ use Illuminate\Http\RedirectResponse;
 
 class UserController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return UserRepository::class;
@@ -118,10 +129,5 @@ class UserController extends CoreController
             'success',
             __('users.action.restore', ['name' => $user->name])
         );
-    }
-
-    protected function getPolicy()
-    {
-        // TODO: Implement getPolicy() method.
     }
 }

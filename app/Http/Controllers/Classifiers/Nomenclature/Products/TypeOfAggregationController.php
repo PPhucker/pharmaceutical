@@ -12,14 +12,23 @@ use Illuminate\Http\RedirectResponse;
 
 class TypeOfAggregationController extends CoreController
 {
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return TypeOfAggregationRepository::class;
     }
 
-    protected function getPolicy()
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
     {
-        $this->authorizeResource(TypeOfAggregation::class, 'types_of_aggregation');
+        $this->authorizeResource(
+            TypeOfAggregation::class,
+            'types_of_aggregation'
+        );
     }
 
     /**
@@ -74,16 +83,18 @@ class TypeOfAggregationController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateTypeOfAggregationRequest $request, TypeOfAggregation $types_of_aggregation = null)
-    {
+    public function update(
+        UpdateTypeOfAggregationRequest $request,
+        TypeOfAggregation $types_of_aggregation = null
+    ) {
         $validated = $request->validated();
 
-        foreach ($validated['types_of_aggregation'] as $item) {
-            TypeOfAggregation::find($item['original_code'])
+        foreach ($validated['types_of_aggregation'] as $type) {
+            TypeOfAggregation::find($type['original_code'])
                 ->fill(
                     [
-                        'code' => $item['code'],
-                        'name' => $item['name'],
+                        'code' => $type['code'],
+                        'name' => $type['name'],
                     ]
                 )
                 ->save();

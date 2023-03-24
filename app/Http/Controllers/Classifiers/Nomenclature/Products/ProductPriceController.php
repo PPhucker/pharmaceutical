@@ -12,14 +12,20 @@ use Illuminate\Http\RedirectResponse;
 
 class ProductPriceController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(ProductPrice::class, 'product_price');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return ProductPriceRepository::class;
-    }
-
-    protected function getPolicy()
-    {
-        $this->authorizeResource(ProductPrice::class, 'product_price');
     }
 
     /**
@@ -65,17 +71,17 @@ class ProductPriceController extends CoreController
     {
         $validated = $request->validated();
 
-        foreach ($validated['product_prices'] as $item) {
-            ProductPrice::find((int)$item['id'])
+        foreach ($validated['product_prices'] as $productPrice) {
+            ProductPrice::find((int)$productPrice['id'])
                 ->fill(
                     [
                         'user_id' => Auth::user()->id,
-                        'product_catalog_id' => (int)$item['product_catalog_id'],
-                        'organization_id' => (int)$item['organization_id'],
-                        'retail_price' => (float)$item['retail_price'],
-                        'trade_price' => (float)$item['trade_price'],
-                        'trade_quantity' => (int)$item['trade_quantity'],
-                        'nds' => (float)((int)$item['nds'] / 100),
+                        'product_catalog_id' => (int)$productPrice['product_catalog_id'],
+                        'organization_id' => (int)$productPrice['organization_id'],
+                        'retail_price' => (float)$productPrice['retail_price'],
+                        'trade_price' => (float)$productPrice['trade_price'],
+                        'trade_quantity' => (int)$productPrice['trade_quantity'],
+                        'nds' => (float)((int)$productPrice['nds'] / 100),
                     ]
                 )
                 ->save();

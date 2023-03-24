@@ -18,6 +18,17 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class OrganizationController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(Organization::class, 'organization');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return OrganizationRepository::class;
@@ -188,10 +199,5 @@ class OrganizationController extends CoreController
                 'success',
                 __($key, ['name' => "$organization->legal_form_type $organization->name"])
             );
-    }
-
-    protected function getPolicy()
-    {
-        // TODO: Implement getPolicy() method.
     }
 }

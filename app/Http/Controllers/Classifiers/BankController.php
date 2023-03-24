@@ -12,6 +12,17 @@ use Illuminate\Http\RedirectResponse;
 
 class BankController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(Bank::class, 'bank');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return BankRepository::class;
@@ -88,10 +99,5 @@ class BankController extends CoreController
                 'success',
                 __('classifiers.banks.actions.update.success')
             );
-    }
-
-    protected function getPolicy()
-    {
-        // TODO: Implement getPolicy() method.
     }
 }

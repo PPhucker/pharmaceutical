@@ -16,14 +16,20 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class MaterialController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(Material::class, 'material');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return MaterialRepository::class;
-    }
-
-    protected function getPolicy()
-    {
-        $this->authorizeResource(Material::class, 'material');
     }
 
     /**

@@ -14,19 +14,19 @@ use Illuminate\Http\RedirectResponse;
 class EndProductController extends CoreController
 {
     /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(EndProduct::class, 'end_product');
+    }
+
+    /**
      * @return string
      */
     protected function getRepository()
     {
         return EndProductRepository::class;
-    }
-
-    /**
-     * @return void
-     */
-    protected function getPolicy()
-    {
-        $this->authorizeResource(EndProduct::class, 'end_product');
     }
 
     /**

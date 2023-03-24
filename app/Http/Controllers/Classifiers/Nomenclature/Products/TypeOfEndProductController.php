@@ -13,14 +13,20 @@ use Illuminate\Http\RedirectResponse;
 class TypeOfEndProductController extends CoreController
 {
 
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(TypeOfEndProduct::class, 'types_of_end_product');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return TypeOfEndProductRepository::class;
-    }
-
-    protected function getPolicy()
-    {
-        $this->authorizeResource(TypeOfEndProduct::class, 'types_of_end_product');
     }
 
     /**
@@ -78,14 +84,14 @@ class TypeOfEndProductController extends CoreController
     {
         $validated = $request->validated();
 
-        foreach ($validated['types_of_end_products'] as $item) {
-            $typeOfEndProduct = TypeOfEndProduct::find($item['id']);
-            $typeOfEndProduct->fill(
-                [
-                    'name' => $item['name'],
-                    'color' => $item['color']
-                ]
-            )
+        foreach ($validated['types_of_end_products'] as $type) {
+            TypeOfEndProduct::find((int)$type['id'])
+                ->fill(
+                    [
+                        'name' => $type['name'],
+                        'color' => $type['color']
+                    ]
+                )
                 ->save();
         }
 

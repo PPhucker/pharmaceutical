@@ -20,7 +20,7 @@ class ContractorController extends CoreController
     /**
      * @return void
      */
-    protected function getPolicy()
+    protected function authorizeActions()
     {
         $this->authorizeResource(Contractor::class, 'contractor');
     }

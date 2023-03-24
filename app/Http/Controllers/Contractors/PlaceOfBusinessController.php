@@ -12,11 +12,17 @@ use Illuminate\Support\Facades\Auth;
 
 class PlaceOfBusinessController extends CoreController
 {
-    protected function getPolicy()
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
     {
         $this->authorizeResource(PlaceOfBusiness::class, 'places_of_business');
     }
 
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return PlaceOfBusinessRepository::class;
@@ -60,11 +66,14 @@ class PlaceOfBusinessController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdatePlaceOfBusinessRequest $request
+     * @param PlaceOfBusiness|null         $places_of_business
      *
      * @return RedirectResponse
      */
-    public function update(UpdatePlaceOfBusinessRequest $request, PlaceOfBusiness $places_of_business = null)
-    {
+    public function update(
+        UpdatePlaceOfBusinessRequest $request,
+        PlaceOfBusiness $places_of_business = null
+    ) {
         $validated = $request->validated();
 
         foreach ($validated['places_of_business'] as $item) {

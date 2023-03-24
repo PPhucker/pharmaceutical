@@ -11,6 +11,17 @@ use Illuminate\Http\RedirectResponse;
 
 class StaffController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(Staff::class, 'staff');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return StaffRepozitory::class;
@@ -57,16 +68,15 @@ class StaffController extends CoreController
     {
         $validated = $request->validated();
 
-        foreach ($validated['staff'] as $item) {
-            $staff = Staff::find((int)$item['id']);
-
-            $staff->fill(
-                [
-                    'organization_place_of_business_id' => $item['organization_place_of_business_id'],
-                    'name' => $item['name'],
-                    'post' => $item['post'],
-                ]
-            )
+        foreach ($validated['staff'] as $staff) {
+            Staff::find((int)$staff['id'])
+                ->fill(
+                    [
+                        'organization_place_of_business_id' => $staff['organization_place_of_business_id'],
+                        'name' => $staff['name'],
+                        'post' => $staff['post'],
+                    ]
+                )
                 ->save();
         }
 
@@ -117,10 +127,5 @@ class StaffController extends CoreController
                     ['name' => $staff->name]
                 )
             );
-    }
-
-    protected function getPolicy()
-    {
-        // TODO: Implement getPolicy() method.
     }
 }

@@ -12,7 +12,10 @@ use Illuminate\Http\RedirectResponse;
 
 class InternationalNameOfEndProductController extends CoreController
 {
-    protected function getPolicy()
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
     {
         $this->authorizeResource(
             InternationalNameOfEndProduct::class,
@@ -20,6 +23,9 @@ class InternationalNameOfEndProductController extends CoreController
         );
     }
 
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return InternationalNameOfEndProductRepository::class;
@@ -81,14 +87,13 @@ class InternationalNameOfEndProductController extends CoreController
     ) {
         $validated = $request->validated();
 
-        foreach ($validated['international_names_of_end_products'] as $item) {
-            $internationalNameOfEndProduct = InternationalNameOfEndProduct::find((int)$item['id']);
-
-            $internationalNameOfEndProduct->fill(
-                [
-                    'name' => $item['name'],
-                ]
-            )
+        foreach ($validated['international_names_of_end_products'] as $internationlName) {
+            InternationalNameOfEndProduct::find((int)$internationlName['id'])
+                ->fill(
+                    [
+                        'name' => $internationlName['name'],
+                    ]
+                )
                 ->save();
         }
 

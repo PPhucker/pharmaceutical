@@ -6,21 +6,26 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Okei\StoreOKEIRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Okei\UpdateOKEIRequest;
 use App\Models\Classifiers\Nomenclature\OKEI;
-use App\Repositories\Classifiers\Nomenclature\OKEIRepository as Repository;
-use App\Models\Classifiers\Nomenclature\OKEI as Model;
+use App\Repositories\Classifiers\Nomenclature\OKEIRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class OKEIController extends CoreController
 {
-    protected function getRepository()
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
     {
-        return Repository::class;
+        $this->authorizeResource(OKEI::class, 'okei');
     }
 
-    protected function getPolicy()
+    /**
+     * @return string
+     */
+    protected function getRepository()
     {
-        $this->authorizeResource(Model::class, 'okei');
+        return OKEIRepository::class;
     }
 
     /**
@@ -49,7 +54,7 @@ class OKEIController extends CoreController
     {
         $validated = $request->validated()['okei'];
 
-        $okei = Model::create(
+        $okei = OKEI::create(
             [
                 'code' => $validated['code'],
                 'unit' => $validated['unit'],
@@ -71,7 +76,7 @@ class OKEIController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdateOKEIRequest $request
-     * @param Model|null        $okei
+     * @param OKEI|null         $okei
      *
      * @return RedirectResponse
      */
@@ -80,15 +85,14 @@ class OKEIController extends CoreController
         $validated = $request->validated();
 
         foreach ($validated['okei'] as $item) {
-            $okeiClassifier = Model::find($item['original_code']);
-
-            $okeiClassifier->fill(
-                [
-                    'code' => $item['code'],
-                    'unit' => $item['unit'],
-                    'symbol' => $item['symbol'],
-                ]
-            );
+            OKEI::find($item['original_code'])
+                ->fill(
+                    [
+                        'code' => $item['code'],
+                        'unit' => $item['unit'],
+                        'symbol' => $item['symbol'],
+                    ]
+                );
         }
 
         return back()

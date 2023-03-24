@@ -12,14 +12,20 @@ use Illuminate\Http\RedirectResponse;
 
 class OKPD2Controller extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(OKPD2::class, 'okpd2');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return OKPD2Repository::class;
-    }
-
-    protected function getPolicy()
-    {
-        $this->authorizeResource(OKPD2::class, 'okpd2');
     }
 
     /**
@@ -78,15 +84,14 @@ class OKPD2Controller extends CoreController
     {
         $validated = $request->validated();
 
-        foreach ($validated['okpd2'] as $item) {
-            $classifierItem = OKPD2::find($item['original_code']);
-
-            $classifierItem->fill(
-                [
-                    'code' => $item['code'],
-                    'name' => $item['name']
-                ]
-            )
+        foreach ($validated['okpd2'] as $classifier) {
+            OKPD2::find($classifier['original_code'])
+                ->fill(
+                    [
+                        'code' => $classifier['code'],
+                        'name' => $classifier['name']
+                    ]
+                )
                 ->save();
         }
 

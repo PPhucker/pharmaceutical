@@ -12,14 +12,20 @@ use Illuminate\Support\Facades\Auth;
 
 class BankAccountDetailController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(BankAccountDetail::class, 'bank_account_detail');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return BankAccountDetailRepository::class;
-    }
-
-    protected function getPolicy()
-    {
-        $this->authorizeResource(BankAccountDetail::class, 'bank_account_detail');
     }
 
     /**
@@ -60,20 +66,21 @@ class BankAccountDetailController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateBankAccountDetailRequest $request, BankAccountDetail $bank_account_detail = null)
-    {
+    public function update(
+        UpdateBankAccountDetailRequest $request,
+        BankAccountDetail $bank_account_detail = null
+    ) {
         $validated = $request->validated();
 
-        foreach ($validated['bank_account_details'] as $item) {
-            $bankAccountDetail = BankAccountDetail::find((int)$item['id']);
-
-            $bankAccountDetail->fill(
-                [
-                    'user_id' => Auth::user()->id,
-                    'bank' => $item['bank'],
-                    'payment_account' => $item['payment_account'],
-                ]
-            )
+        foreach ($validated['bank_account_details'] as $account) {
+            BankAccountDetail::find((int)$account['id'])
+                ->fill(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'bank' => $account['bank'],
+                        'payment_account' => $account['payment_account'],
+                    ]
+                )
                 ->save();
         }
 

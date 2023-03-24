@@ -5,21 +5,27 @@ namespace App\Http\Controllers\Classifiers\Nomenclature\Materials;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Materials\TypeOfMaterial\StoreTypeOfMaterialRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Materials\TypeOfMaterial\UpdateTypeOfMaterialRequest;
-use App\Models\Classifiers\Nomenclature\Materials\TypeOfMaterial as Model;
-use App\Repositories\Classifiers\Nomenclature\Materials\TypeOfMaterialRepository as Repository;
+use App\Models\Classifiers\Nomenclature\Materials\TypeOfMaterial;
+use App\Repositories\Classifiers\Nomenclature\Materials\TypeOfMaterialRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class TypeOfMaterialController extends CoreController
 {
-    protected function getRepository()
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
     {
-        return Repository::class;
+        $this->authorizeResource(TypeOfMaterial::class, 'types_of_material');
     }
 
-    protected function getPolicy()
+    /**
+     * @return string
+     */
+    protected function getRepository()
     {
-        $this->authorizeResource(Model::class, 'types_of_material');
+        return TypeOfMaterialRepository::class;
     }
 
     /**
@@ -48,7 +54,7 @@ class TypeOfMaterialController extends CoreController
     {
         $validated = $request->validated()['type_of_material'];
 
-        $typeOfMaterial = Model::create(
+        $typeOfMaterial = TypeOfMaterial::create(
             [
                 'name' => $validated['name'],
             ]
@@ -68,21 +74,23 @@ class TypeOfMaterialController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdateTypeOfMaterialRequest $request
-     * @param Model|null                  $types_of_material
+     * @param TypeOfMaterial|null         $types_of_material
      *
      * @return RedirectResponse
      */
-    public function update(UpdateTypeOfMaterialRequest $request, Model $types_of_material = null)
-    {
+    public function update(
+        UpdateTypeOfMaterialRequest $request,
+        TypeOfMaterial $types_of_material = null
+    ) {
         $validated = $request->validated();
 
-        foreach ($validated['types_of_materials'] as $item) {
-            $typeOfMaterial = Model::find((int)$item['id']);
-            $typeOfMaterial->fill(
-                [
-                    'name' => $item['name'],
-                ]
-            )
+        foreach ($validated['types_of_materials'] as $type) {
+            TypeOfMaterial::find((int)$type['id'])
+                ->fill(
+                    [
+                        'name' => $type['name'],
+                    ]
+                )
                 ->save();
         }
 

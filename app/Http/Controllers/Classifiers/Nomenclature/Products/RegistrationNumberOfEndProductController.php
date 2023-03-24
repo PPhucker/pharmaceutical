@@ -12,14 +12,23 @@ use Illuminate\Http\RedirectResponse;
 
 class RegistrationNumberOfEndProductController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(
+            RegistrationNumberOfEndProduct::class,
+            'registration_number'
+        );
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return RegistrationNumberOfEndProductRepository::class;
-    }
-
-    protected function getPolicy()
-    {
-        $this->authorizeResource(RegistrationNumberOfEndProduct::class, 'registration_number');
     }
 
     /**
@@ -78,14 +87,13 @@ class RegistrationNumberOfEndProductController extends CoreController
     ) {
         $validated = $request->validated();
 
-        foreach ($validated['registration_numbers'] as $item) {
-            $registrationNumber = RegistrationNumberOfEndProduct::find((int)$item['id']);
-
-            $registrationNumber->fill(
-                [
-                    'number' => $item['number'],
-                ]
-            )
+        foreach ($validated['registration_numbers'] as $registrationNumber) {
+            RegistrationNumberOfEndProduct::find((int)$registrationNumber['id'])
+                ->fill(
+                    [
+                        'number' => $registrationNumber['number'],
+                    ]
+                )
                 ->save();
         }
 

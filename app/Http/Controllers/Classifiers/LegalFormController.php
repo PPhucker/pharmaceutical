@@ -12,6 +12,17 @@ use Illuminate\Http\RedirectResponse;
 
 class LegalFormController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(LegalForm::class, 'legal_form');
+    }
+
+    /**
+     * @return string
+     */
     protected function getRepository()
     {
         return LegalFormRepository::class;
@@ -70,14 +81,13 @@ class LegalFormController extends CoreController
         $validated = $request->validated();
 
         foreach ($validated['legal_forms'] as $item) {
-            $legalForm = LegalForm::find($item['original_abbreviation']);
-
-            $legalForm->fill(
-                [
-                    'abbreviation' => $item['abbreviation'],
-                    'decoding' => $item['decoding'],
-                ]
-            )
+            LegalForm::find($item['original_abbreviation'])
+                ->fill(
+                    [
+                        'abbreviation' => $item['abbreviation'],
+                        'decoding' => $item['decoding'],
+                    ]
+                )
                 ->save();
         }
 
@@ -86,10 +96,5 @@ class LegalFormController extends CoreController
                 'update.success',
                 __('classifiers.legal_forms.actions.update.success')
             );
-    }
-
-    protected function getPolicy()
-    {
-        // TODO: Implement getPolicy() method.
     }
 }

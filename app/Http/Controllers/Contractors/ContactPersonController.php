@@ -2,14 +2,31 @@
 
 namespace App\Http\Controllers\Contractors;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\ContactPersons\StoreContactPersonRequest;
 use App\Http\Requests\Contractors\ContactPersons\UpdateContactPersonRequest;
 use App\Models\Contractors\ContactPerson;
+use App\Repositories\Contractors\ContactPersonRepository;
 use Illuminate\Http\RedirectResponse;
 
-class ContactPersonController extends Controller
+class ContactPersonController extends CoreController
 {
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(ContactPerson::class, 'contact_person');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepository()
+    {
+        return ContactPersonRepository::class;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -54,17 +71,16 @@ class ContactPersonController extends Controller
     {
         $validated = $request->validated();
 
-        foreach ($validated['contact_persons'] as $item) {
-            $contactPerson = ContactPerson::find((int)$item['id']);
-
-            $contactPerson->fill(
-                [
-                    'name' => $item['name'],
-                    'post' => $item['post'],
-                    'phone' => $item['phone'],
-                    'email' => $item['email']
-                ]
-            )
+        foreach ($validated['contact_persons'] as $person) {
+            ContactPerson::find((int)$person['id'])
+                ->fill(
+                    [
+                        'name' => $person['name'],
+                        'post' => $person['post'],
+                        'phone' => $person['phone'],
+                        'email' => $person['email']
+                    ]
+                )
                 ->save();
         }
 
@@ -96,6 +112,13 @@ class ContactPersonController extends Controller
             );
     }
 
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param ContactPerson $contactPerson
+     *
+     * @return RedirectResponse
+     */
     public function restore(ContactPerson $contactPerson)
     {
         $contactPerson->restore();

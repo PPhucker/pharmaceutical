@@ -23,19 +23,19 @@ class ProductCatalogController extends CoreController
     use Materials, AggregationTypes;
 
     /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(ProductCatalog::class, 'product_catalog');
+    }
+
+    /**
      * @return string
      */
     protected function getRepository()
     {
         return ProductCatalogRepository::class;
-    }
-
-    /**
-     * @return void
-     */
-    protected function getPolicy()
-    {
-        $this->authorizeResource(ProductCatalog::class, 'product_catalog');
     }
 
     /**
