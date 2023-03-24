@@ -5,6 +5,7 @@ namespace App\Models\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -37,8 +38,21 @@ class Permission extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * @return BelongsTo
+     */
     final public function roles(): BelongsTo
     {
         return $this->belongsTo(Role::class, 'roles_permissions');
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function usersForEmailNotification()
+    {
+        return $this->belongsToMany(User::class, 'users_permissions')
+            ->withTimestamps()
+            ->withoutTrashed();
     }
 }
