@@ -20,7 +20,7 @@ abstract class CoreController extends Controller
             ]
         );
 
-        app($this->authorize());
+        app($this->authorizeActions());
 
         $this->repository = app($this->getRepository());
     }
