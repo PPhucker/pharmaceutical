@@ -1,5 +1,6 @@
 <li>
-    <a class="btn-link border-0 bg-white"
+    <a class="dropdown-item"
+       role="button"
        href="{{$route}}">
         {{$title}}
     </a>

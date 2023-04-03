@@ -14,32 +14,29 @@
            href="{{ url('/') }}">
             {{ config('app.name', 'Laravel') }}
         </a>
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false">
-            <span class="navbar-toggler-icon text-primary"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto"></ul>
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                 @auth
-                    <!-- Authentication Links -->
-                    <li class="nav-item dropdown">
-                        <button class="btn border-0 text-primary"
-                                type="button"
-                                data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasAccount"
-                                aria-controls="offcanvasAccount">
-                            {{ Auth::user()->name }}
-                        </button>
+                    <li class="nav-item">
+                    <span class="text-primary me-2">
+                        {{auth()->user()->name}}
+                    </span>
                     </li>
                 @endauth
             </ul>
         </div>
+        @auth()
+            <button class="me-3 navbar-toggler"
+                    data-bs-toggle="offcanvas"
+                    href="#offcanvasAccount"
+                    type="button"
+                    aria-controls="offcanvasAccount"
+                    style="display: block">
+                <span class="navbar-toggler-icon text-primary"></span>
+            </button>
+        @endauth
     </div>
 </nav>
