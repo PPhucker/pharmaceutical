@@ -27,30 +27,24 @@
         <x-sidebar.menu position="start"
                         id="Sidebar"
                         label="MenuLabel"
-                        title="Main Menu">
+                        title="{{__('sidebar.main_menu')}}">
             <x-sidebar.menu.admin/>
             <x-sidebar.menu.contractors/>
             <x-sidebar.menu.classifiers/>
-            {{--<x-sidebar.menu.docs.shipment/>
-            <x-sidebar.menu.production/>--}}
         </x-sidebar.menu>
         <x-sidebar.menu position="end"
                         id="Account"
                         label="AccountLabel"
-                        title="Account">
+                        title="{{__('sidebar.account.account')}}">
             <x-sidebar.menu.submit-button route="{{route('logout')}}"
                                           formId="logoutForm"
                                           icon="bi bi-door-open-fill"
-                                          title="Logout"/>
+                                          title="{{__('sidebar.account.logout')}}"/>
         </x-sidebar.menu>
     @endauth
-    {{--<div class="container-fluid">--}}
     <main class="col {{--pt-2--}} p-3" role="main">
-        {{--<div class="container-sm p-0">--}}
         @yield('content')
-        {{--</div>--}}
     </main>
-    {{--</div>--}}
 </div>
 </body>
 </html>
