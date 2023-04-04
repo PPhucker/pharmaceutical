@@ -14,6 +14,7 @@ class ProductCatalogPolicy
         'marketing',
         'planning',
         'bookkeeping',
+        'digital_communication',
     ];
 
     /**
