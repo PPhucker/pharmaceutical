@@ -7,8 +7,8 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,20 +28,13 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('admin');
     }
 
     final public function showRegistrationForm()
@@ -61,13 +54,11 @@ class RegisterController extends Controller
 
         event(new Registered($user = $this->create($validated)));
 
-        $this->guard()->login($user);
-
         if ($response = $this->registered($request, $user)) {
             return $response;
         }
 
-        return redirect($this->redirectTo)
+        return back()
             ->with(
                 'success',
                 __('users.action.register.success', ['name' => $user->name])
@@ -79,7 +70,7 @@ class RegisterController extends Controller
      *
      * @param array $data
      *
-     * @return mixed
+     * @return Model|User
      */
     final public function create(array $data)
     {
