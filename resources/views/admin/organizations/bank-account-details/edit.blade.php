@@ -69,7 +69,7 @@
                     <td class="text-center align-middle">
                         {{$account->bankClassifier->correspondent_account}}
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if($account->trashed())
                             <x-buttons.restore
                                 route="{{route('bank_account_details.restore', ['bank_account_detail' => $account->id])}}"
@@ -79,7 +79,7 @@
                                 route="{{route('bank_account_details.destroy', ['bank_account_detail' => $account->id])}}"
                                 itemId="bankAccount-details-{{$account->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>

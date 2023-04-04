@@ -16,16 +16,8 @@
                     class="text-center">
                     {{__('classifiers.nomenclature.products.full_name')}}
                 </th>
-                <th>
-                    <span class="d-none">
-                        {{__('datatable.buttons.delete')}}
-                    </span>
-                </th>
-                <th>
-                    <span class="d-none">
-                        {{__('datatable.buttons.edit')}}
-                    </span>
-                </th>
+                <x-tables.columns.thead.edit/>
+                <x-tables.columns.thead.delete/>
             </tr>
             </thead>
             <tbody class="text-primary">
@@ -41,7 +33,7 @@
                         <x-buttons.edit route="{{route('end_products.edit', ['end_product' => $product->id])}}"
                                         disabled="{{$product->trashed()}}"/>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($product->trashed())
                             <x-buttons.restore
                                 route="{{route('end_products.restore', ['end_product' => $product->id])}}"
@@ -52,7 +44,7 @@
                                 formId="destroy"
                                 itemId="{{$product->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>

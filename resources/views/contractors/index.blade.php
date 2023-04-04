@@ -26,14 +26,10 @@
                 </th>
                 <th>
                     <span class="d-none">
-                        {{__('datatable.buttons.delete')}}
-                    </span>
-                </th>
-                <th>
-                    <span class="d-none">
                         {{__('datatable.buttons.edit')}}
                     </span>
                 </th>
+                <x-tables.columns.thead.delete/>
             </tr>
             </thead>
             <tbody class="text-primary">
@@ -55,7 +51,7 @@
                         <x-buttons.edit route="{{route('contractors.edit', ['contractor' => $contractor->id])}}"
                                         disabled="{{$contractor->trashed()}}"/>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($contractor->trashed())
                             <x-buttons.restore
                                 route="{{route('contractors.restore', ['contractor' => $contractor->id])}}"
@@ -66,7 +62,7 @@
                                 formId="destroy"
                                 itemId="{{$contractor->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>

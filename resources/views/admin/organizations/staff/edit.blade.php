@@ -74,7 +74,7 @@
                         </select>
                         <x-forms.span-error name="staff.{{$key}}.post"/>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if($staff->trashed())
                             <x-buttons.restore
                                 route="{{route('staff.restore', ['staff' => $staff->id])}}"
@@ -84,7 +84,7 @@
                                 route="{{route('staff.destroy', ['staff' => $staff->id])}}"
                                 itemId="staff-{{$staff->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>
