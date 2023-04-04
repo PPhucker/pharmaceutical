@@ -1,3 +1,4 @@
+@planning
 <x-forms.collapse.creation cardId="div_attach_material"
                            errorName="material.*">
     <x-slot name="cardBody">
@@ -87,3 +88,4 @@
         <x-buttons.collapse formId="div_attach_material"/>
     </x-slot>
 </x-forms.collapse.card>
+@end_planning

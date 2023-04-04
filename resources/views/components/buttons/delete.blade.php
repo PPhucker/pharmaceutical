@@ -1,3 +1,4 @@
+@deleting
 <div>
     <a class="btn btn-hover"
        href="{{$route}}"
@@ -15,5 +16,5 @@
         </form>
     </a>
 </div>
-
+@end_deleting
 

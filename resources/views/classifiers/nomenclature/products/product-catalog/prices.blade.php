@@ -1,3 +1,4 @@
+@roles(['marketing', 'bookkeeping'])
 <x-forms.collapse.creation cardId="div_add_price"
                            errorName="product_price.*">
     <x-slot name="cardBody">
@@ -219,7 +220,7 @@
                             <x-forms.span-error name="{{'product_prices.' .$key. '.nds'}}"/>
                         </div>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($price->trashed())
                             <x-buttons.restore
                                 route="{{route('product_prices.restore', ['product_price' => $price->id])}}"
@@ -230,7 +231,7 @@
                                 formId="destroy"
                                 itemId="{{$price->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>
@@ -243,3 +244,4 @@
         @endif
     </x-slot>
 </x-forms.collapse.card>
+@end_roles

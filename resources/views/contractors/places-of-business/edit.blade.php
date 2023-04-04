@@ -11,10 +11,12 @@
             </x-slot>
             <thead class="bg-secondary">
             <tr class="text-primary">
+                @digital_communication
                 <th scope="col"
                     class="text-center">
                     {{__('contractors.places_of_business.identifier')}}
                 </th>
+                @end_digital_communication
                 <th scope="col"
                     class="text-center">
                     {{__('contractors.places_of_business.index')}}
@@ -40,6 +42,7 @@
                            name="places_of_business[{{$key}}][contractor_id]"
                            value="{{$place->contractor_id}}">
 
+                    @digital_communication
                     <td class="border-start">
                         <span class="d-none">
                             {{$place->identifier}}
@@ -51,6 +54,7 @@
                                value="{{$place->identifier}}">
                         <x-forms.span-error name="places_of_business.{{$key}}.identifier"/>
                     </td>
+                    @end_digital_communication
                     <td>
                         <span class="d-none">
                             {{$place->index}}
@@ -86,7 +90,7 @@
                                @error('registered') is-invalid @enderror"
                                @if($place->registered) checked @endif>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($place->trashed())
                             <x-buttons.restore
                                 route="{{route('places_of_business.restore', ['places_of_business' => $place->id])}}"
@@ -96,7 +100,7 @@
                                 route="{{route('places_of_business.destroy', ['places_of_business' => $place->id])}}"
                                 itemId="places-of-business-{{$place->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>

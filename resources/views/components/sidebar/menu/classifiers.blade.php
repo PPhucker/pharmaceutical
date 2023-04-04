@@ -12,6 +12,7 @@
     </div>
     {{--Классификаторы--}}
     <div class="card-body pt-1 pb-1 show" id="classifiers">
+        @roles(['marketing', 'bookkeeping'])
         <x-sidebar.menu.dropdown.item icon="bi bi-archive-fill"
                                       title="{{__('classifiers.legal_forms.legal_forms')}}">
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
@@ -22,6 +23,7 @@
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                           route="{{route('banks.index')}}"/>
         </x-sidebar.menu.dropdown.item>
+        @end_marketing
         {{--Номенклатура--}}
         <div class="card border-0">
             <div class="card-header d-grid gap-2 bg-white p-1 border-0">
@@ -36,11 +38,13 @@
                 </button>
             </div>
             <div class="card-body pt-1 pb-1 show" id="nomenclature">
+                @roles(['marketing', 'planning'])
                 <x-sidebar.menu.dropdown.item icon="bi bi-archive-fill"
                                               title="{{__('classifiers.nomenclature.okei.okei')}}">
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                   route="{{route('okei.index')}}"/>
                 </x-sidebar.menu.dropdown.item>
+                @end_roles
                 {{--Готовая продукция--}}
                 <div class="card border-0">
                     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
@@ -62,6 +66,7 @@
                             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                           route="{{route('product_catalog.index')}}"/>
                         </x-sidebar.menu.dropdown.item>
+                        @marketing
                         <x-sidebar.menu.dropdown.item icon="bi bi-file-post"
                                                       title="{{__('classifiers.nomenclature.products.products')}}">
                             <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
@@ -89,6 +94,7 @@
                             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                           route="{{route('registration_numbers.index')}}"/>
                         </x-sidebar.menu.dropdown.item>
+                        @end_marketing
                         <x-sidebar.menu.dropdown.item icon="bi bi-archive-fill"
                                                       title="{{__('classifiers.nomenclature.products.types_of_aggregation.types_of_aggregation')}}">
                             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
@@ -97,6 +103,7 @@
 
                     </div>
                 </div>
+                @roles(['planning', 'marketing'])
                 {{--Комплектующие--}}
                 <div class="card border-0">
                     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
@@ -123,6 +130,7 @@
                         </x-sidebar.menu.dropdown.item>
                     </div>
                 </div>
+                @end_roles
             </div>
         </div>
     </div>

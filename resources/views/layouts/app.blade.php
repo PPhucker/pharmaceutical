@@ -24,6 +24,7 @@
     <x-navbar/>
     @include('layouts.symbols')
     @auth
+        @verified()
         <x-sidebar.menu position="start"
                         id="Sidebar"
                         label="MenuLabel"
@@ -41,8 +42,9 @@
                                           icon="bi bi-door-open-fill"
                                           title="{{__('sidebar.account.logout')}}"/>
         </x-sidebar.menu>
+        @endverified
     @endauth
-    <main class="col {{--pt-2--}} p-3" role="main">
+    <main class="col p-3" role="main">
         @yield('content')
     </main>
 </div>
