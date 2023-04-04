@@ -18,8 +18,9 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])
-    ->middleware(['auth', 'verified']);
+Route::get('/', static function () {
+    return view('welcome');
+});
 
 Auth::routes();
 
