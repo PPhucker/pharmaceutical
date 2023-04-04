@@ -1,3 +1,4 @@
+@roles(['marketing', 'bookkeeping'])
 <x-forms.collapse.card route="{{route('bank_account_details.update', ['bank_account_detail' => 1])}}"
                        cardId="card_bank_account_details"
                        formId="form_bank_account_details"
@@ -69,7 +70,7 @@
                     <td class="text-center align-middle">
                         {{$account->bankClassifier->correspondent_account}}
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if($account->trashed())
                             <x-buttons.restore
                                 route="{{route('bank_account_details.restore', ['bank_account_detail' => $account->id])}}"
@@ -79,7 +80,7 @@
                                 route="{{route('bank_account_details.destroy', ['bank_account_detail' => $account->id])}}"
                                 itemId="bankAccount-details-{{$account->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>
@@ -92,3 +93,4 @@
         <x-buttons.collapse formId="div_add_bank_account_detail"/>
     </x-slot>
 </x-forms.collapse.card>
+@end_roles

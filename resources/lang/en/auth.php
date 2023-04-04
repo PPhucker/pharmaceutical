@@ -39,8 +39,13 @@ return [
 
     'verify' => [
         'action' => 'E-mail confirmation',
+        'link' => 'Link successfully sent to your e-mail',
         'button' => 'Send link again',
         'message' => 'Please check your corporate email for a confirmation link before proceeding',
+        'mail' => [
+            'verify' => 'Please click the button below to verify your email address.',
+            'no_verify' => 'If you have not created an account, do not take any action.'
+        ],
     ],
 
     'register' => [

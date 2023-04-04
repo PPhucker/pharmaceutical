@@ -1,3 +1,4 @@
+@marketing
 <x-forms.collapse.card route="{{route('contact_persons.update', ['contact_person' => 1])}}"
                        cardId="card_contact_persons"
                        formId="form_contact_persons"
@@ -80,8 +81,7 @@
                                @error('contact_persons.' . $key . '.email') is-invalid @enderror">
                         <x-forms.span-error name="contact_persons.{{$key}}.email"/>
                     </td>
-
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if($contactPerson->trashed())
                             <x-buttons.restore
                                 route="{{route('contact_persons.restore', ['contact_person' => $contactPerson->id])}}"
@@ -91,7 +91,7 @@
                                 route="{{route('contact_persons.destroy', ['contact_person' => $contactPerson->id])}}"
                                 itemId="staff-{{$contactPerson->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>
@@ -104,3 +104,4 @@
         <x-buttons.collapse formId="div_add_contact_person"/>
     </x-slot>
 </x-forms.collapse.card>
+@end_marketing

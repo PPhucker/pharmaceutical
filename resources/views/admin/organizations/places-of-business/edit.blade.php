@@ -86,7 +86,7 @@
                                @error('registered') is-invalid @enderror"
                                @if($place->registered) checked @endif>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($place->trashed())
                             <x-buttons.restore
                                 route="{{route('places_of_business.restore', ['places_of_business' => $place->id])}}"
@@ -96,7 +96,7 @@
                                 route="{{route('places_of_business.destroy', ['places_of_business' => $place->id])}}"
                                 itemId="places-of-business-{{$place->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>

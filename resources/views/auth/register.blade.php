@@ -2,24 +2,6 @@
 @section('content')
     <x-forms.main back="{{route('users.index')}}"
                   title="{{__('auth.register.action')}}">
-        @if (session('success'))
-            <div class="alert alert-success m-1 p-1"
-                 role="alert">
-                <svg class="bi flex-shrink-0 me-2"
-                     width="24"
-                     height="24"
-                     role="img"
-                     aria-label="Success:">
-                    <use xlink:href="#check-circle-fill"/>
-                </svg>
-                {{ __(session('success')) }}
-                <button type="button"
-                        class="btn-close btn-sm align-middle"
-                        data-bs-dismiss="alert"
-                        aria-label="Close">
-                </button>
-            </div>
-        @endif
         <form method="POST"
               action="{{ route('register') }}">
             @csrf

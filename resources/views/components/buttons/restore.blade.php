@@ -1,3 +1,4 @@
+@restoring
 <div>
     <a class="btn btn-hover"
        href="{{$route}}"
@@ -13,3 +14,4 @@
         @csrf
     </form>
 </div>
+@end_restoring

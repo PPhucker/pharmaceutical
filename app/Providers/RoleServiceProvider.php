@@ -28,6 +28,13 @@ class RoleServiceProvider extends ServiceProvider
                     return "<?php endif; ?>";
                 });
             }
+            Blade::directive('roles', static function ($roles) {
+                return "<?php if(auth()->check() && auth()->user()->hasRole({$roles})) : ?>";
+            });
+
+            Blade::directive('end_roles', static function () {
+                return "<?php endif; ?>";
+            });
         }
     }
 }

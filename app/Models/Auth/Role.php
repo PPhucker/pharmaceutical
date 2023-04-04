@@ -35,6 +35,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Role withTrashed()
  * @method static Builder|Role withoutTrashed()
  * @mixin Builder
+ * @mixin \Eloquent
  */
 class Role extends Model
 {

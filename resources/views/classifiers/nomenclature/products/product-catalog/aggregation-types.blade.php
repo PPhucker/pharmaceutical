@@ -1,4 +1,4 @@
-{{--@if($errors->any()){{dd($errors)}} @enderror--}}
+@digital_communication
 <x-forms.collapse.creation cardId="div_attach_aggregation_type"
                            errorName="aggregation_type.*">
     <x-slot name="cardBody">
@@ -89,13 +89,13 @@
                                value="{{$type->pivot->product_quantity}}"
                                required>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         <x-buttons.detach
                             route="{{route('product_catalog.detach_aggregation_type', ['product_catalog' => $product->id])}}"
                             itemId="detach-aggregation-type-{{$type->code}}"
                             detachId="{{$type->code}}"
                             detachName="aggregation_type[code]"/>
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>
@@ -108,3 +108,4 @@
         @endif
     </x-slot>
 </x-forms.collapse.card>
+@end_digital_communication

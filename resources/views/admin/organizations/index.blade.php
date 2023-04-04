@@ -28,16 +28,8 @@
                     class="text-center">
                     {{__('contractors.contacts')}}
                 </th>
-                <th>
-                    <span class="d-none">
-                        {{__('datatable.buttons.delete')}}
-                    </span>
-                </th>
-                <th>
-                    <span class="d-none">
-                        {{__('datatable.buttons.edit')}}
-                    </span>
-                </th>
+                <x-tables.columns.thead.edit/>
+                <x-tables.columns.thead.delete/>
             </tr>
             </thead>
             <tbody class="text-primary">
@@ -62,7 +54,7 @@
                         <x-buttons.edit route="{{route('organizations.edit', ['organization' => $organization->id])}}"
                                         disabled="{{$organization->trashed()}}"/>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($organization->trashed())
                             <x-buttons.restore
                                 route="{{route('organizations.restore', ['organization' => $organization->id])}}"
@@ -73,7 +65,7 @@
                                 formId="destroy"
                                 itemId="{{$organization->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>

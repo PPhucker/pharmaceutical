@@ -2,9 +2,26 @@
 
 namespace App\Models\Classifiers\Nomenclature\Materials;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Classifiers\Nomenclature\Materials\TypeOfMaterial
+ *
+ * @property int                                                          $id
+ * @property string                                                       $name Тип материалов
+ * @property-read Collection<int, Material> $materials
+ * @property-read int|null                                                $materialsCount
+ * @method static Builder|TypeOfMaterial newModelQuery()
+ * @method static Builder|TypeOfMaterial newQuery()
+ * @method static Builder|TypeOfMaterial query()
+ * @method static Builder|TypeOfMaterial whereId($value)
+ * @method static Builder|TypeOfMaterial whereName($value)
+ * @mixin Eloquent
+ */
 class TypeOfMaterial extends Model
 {
     use HasFactory;

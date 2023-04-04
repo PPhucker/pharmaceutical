@@ -80,14 +80,17 @@ class UserController extends CoreController
     {
         $validated = $request->validated();
 
+        $roles = $validated['roles'] ?? null;
+        $permissions = $validated['permissions'] ?? null;
+
         $user->fill(
             [
                 'name' => $validated['name'],
                 'email' => $validated['email']
             ]
         )
-            ->refreshRoles($validated['roles'])
-            ->refreshPermissions($validated['permissions'])
+            ->refreshRoles($roles)
+            ->refreshPermissions($permissions)
             ->save();
 
         return back()

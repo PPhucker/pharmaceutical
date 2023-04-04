@@ -65,10 +65,16 @@ class VerifyEmail extends Notification
     protected function buildMailMessage(string $url)
     {
         return (new MailMessage)
-            ->subject(__('Email Verification'))
-            ->line(__('Please click the button below to verify your email address.'))
-            ->action(__('Email Verification'), $url)
-            ->line(__('If you have not created an account, do not take any action.'));
+            ->subject(__('auth.verify.action'))
+            ->greeting(__('notifications.greeting'))
+            ->line(__('auth.verify.mail.verify'))
+            ->action(__('auth.verify.action'), $url)
+            ->line(__('auth.verify.mail.no_verify'))
+            ->salutation(
+                __('notifications.salutation')
+                . ', '
+                . config('app.name')
+            );
     }
 
     /**

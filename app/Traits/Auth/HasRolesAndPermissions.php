@@ -4,6 +4,7 @@ namespace App\Traits\Auth;
 
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
+use App\Models\Auth\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
@@ -86,29 +87,21 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * Remove user permissions.
-     *
-     * @param ...$permissions mixed Список прав.
-     *
-     * @return $this
-     */
-    final public function deletePermissions(...$permissions): self
-    {
-        $permissions = $this->getAllPermissions($permissions);
-        $this->permissions()->detach($permissions);
-        return $this;
-    }
-
-    /**
      * Get all permissions.
      *
      * @param $permissions
      *
-     * @return \Illuminate\Database\Eloquent\Collection|Builder[]|Collection|Permission[]
+     * @return Builder[]|Collection|HasRolesAndPermissions|\Illuminate\Database\Eloquent\Collection|Permission[]
      */
     final public function getAllPermissions($permissions)
     {
-        return Permission::whereIn('slug', $permissions)->get();
+        $permissions = Permission::whereIn('slug', $permissions)->get();
+
+        if (!$permissions) {
+            return $this;
+        }
+
+        return $permissions;
     }
 
     final public function permissions()
@@ -138,11 +131,12 @@ trait HasRolesAndPermissions
      */
     final public function givePermissionsTo($permissions)
     {
-        $permissions = $this->getAllPermissions($permissions);
-
         if ($permissions === null) {
             return $this;
         }
+
+        $permissions = $this->getAllPermissions($permissions);
+
         $this->permissions()->saveMany($permissions);
         return $this;
     }
@@ -167,10 +161,11 @@ trait HasRolesAndPermissions
 
     final public function giveRolesTo($roles)
     {
-        $roles = $this->getAllRoles($roles);
         if ($roles === null) {
             return $this;
         }
+
+        $roles = $this->getAllRoles($roles);
         $this->roles()->saveMany($roles);
         return $this;
     }
@@ -180,11 +175,17 @@ trait HasRolesAndPermissions
      *
      * @param $roles
      *
-     * @return Builder[]|Collection|\Illuminate\Database\Eloquent\Collection|Role[]
+     * @return Builder[]|Collection|HasRolesAndPermissions|\Illuminate\Database\Eloquent\Collection|Role[]
      */
     final public function getAllRoles($roles)
     {
-        return Role::whereIn('slug', $roles)->get();
+        $roles = Role::whereIn('slug', $roles)->get();
+
+        if (!$roles) {
+            return $this;
+        }
+
+        return $roles;
     }
 
     /**

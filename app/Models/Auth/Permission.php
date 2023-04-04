@@ -2,6 +2,8 @@
 
 namespace App\Models\Auth;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +35,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Permission withTrashed()
  * @method static Builder|Permission withoutTrashed()
  * @mixin Builder
+ * @property-read Collection<int, User> $usersForEmailNotification
+ * @property-read int|null                                            $usersForEmailNotificationCount
+ * @mixin Eloquent
  */
 class Permission extends Model
 {

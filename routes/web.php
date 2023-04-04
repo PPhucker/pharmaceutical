@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\HomeController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,16 +41,15 @@ Route::get('/email/verify/{id}/{hash}', static function (EmailVerificationReques
 Route::post('/email/verification-notification', static function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()
-        ->with('success', __('passwords.send'));
+        ->with('success', __('auth.verify.link'));
 })
     ->middleware(['auth', 'throttle:6,1'])
     ->name('verification.send');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
-    ->name('home');
-
 Route::middleware(['auth', 'verified'])->group(
     static function () {
+        Route::get('/home', [HomeController::class, 'index'])
+            ->name('home');
         require_once __DIR__ . '/admin/web.php';
         require_once __DIR__ . '/classifiers/web.php';
         require_once __DIR__ . '/contractors/web.php';

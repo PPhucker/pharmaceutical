@@ -5,11 +5,53 @@ namespace App\Models\Contractors;
 use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
 use App\Traits\Contractors\Notifications;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Contractors\Contractor
+ *
+ * @property int                                     $id
+ * @property int|null                                $userId
+ * @property string|null                             $legalFormType
+ * @property string                                  $name
+ * @property string                                  $INN
+ * @property string                                  $OKPO
+ * @property string|null                             $contacts
+ * @property Carbon|null                             $createdAt
+ * @property Carbon|null                             $updatedAt
+ * @property Carbon|null                             $deletedAt
+ * @property-read Collection<int, BankAccountDetail> $bankAccountDetails
+ * @property-read int|null                           $bankAccountDetailsCount
+ * @property-read Collection<int, ContactPerson>     $contactPersons
+ * @property-read int|null                           $contactPersonsCount
+ * @property-read LegalForm|null                     $legalForm
+ * @property-read Collection<int, PlaceOfBusiness>   $placesOfBusiness
+ * @property-read int|null                           $placesOfBusinessCount
+ * @property-read User|null                          $user
+ * @method static Builder|Contractor newModelQuery()
+ * @method static Builder|Contractor newQuery()
+ * @method static Builder|Contractor onlyTrashed()
+ * @method static Builder|Contractor query()
+ * @method static Builder|Contractor whereContacts($value)
+ * @method static Builder|Contractor whereCreatedAt($value)
+ * @method static Builder|Contractor whereDeletedAt($value)
+ * @method static Builder|Contractor whereINN($value)
+ * @method static Builder|Contractor whereId($value)
+ * @method static Builder|Contractor whereLegalFormType($value)
+ * @method static Builder|Contractor whereName($value)
+ * @method static Builder|Contractor whereOKPO($value)
+ * @method static Builder|Contractor whereUpdatedAt($value)
+ * @method static Builder|Contractor whereUserId($value)
+ * @method static Builder|Contractor withTrashed()
+ * @method static Builder|Contractor withoutTrashed()
+ * @mixin Eloquent
+ */
 class Contractor extends Model
 {
     use HasFactory, SoftDeletes, Notifications;

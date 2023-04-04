@@ -47,7 +47,7 @@
                         <x-buttons.edit route="{{route('product_catalog.edit', ['product_catalog' => $product->id])}}"
                                         disabled="{{$product->trashed()}}"/>
                     </td>
-                    <td class="text-center align-middle">
+                    <x-tables.columns.tbody.delete>
                         @if ($product->trashed())
                             <x-buttons.restore
                                 route="{{route('product_catalog.restore', ['product_catalog' => $product->id])}}"
@@ -58,7 +58,7 @@
                                 formId="destroy"
                                 itemId="{{$product->id}}"/>
                         @endif
-                    </td>
+                    </x-tables.columns.tbody.delete>
                 </tr>
             @endforeach
             </tbody>
