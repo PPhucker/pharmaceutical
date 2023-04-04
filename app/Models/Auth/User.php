@@ -14,6 +14,7 @@ use App\Models\Contractors\PlaceOfBusiness;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -63,7 +64,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User withoutTrashed()
  * @mixin Builder
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions, SoftDeletes;
 
