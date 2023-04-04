@@ -28,6 +28,13 @@ class PermissionServiceProvider extends ServiceProvider
                     return "<?php endif; ?>";
                 });
             }
+            Blade::directive('permissions', static function ($permissions) {
+                return "<?php if(auth()->check() && (auth()->user()->hasRole({$permissions}))) : ?>";
+            });
+
+            Blade::directive('end_permissions', static function () {
+                return "<?php endif; ?>";
+            });
         }
     }
 }
