@@ -6,11 +6,57 @@ use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Admin\Organizations\Organization
+ *
+ * @property int                                     $id
+ * @property int|null                                $userId
+ * @property string|null                             $legalFormType
+ * @property string                                  $name
+ * @property string                                  $INN
+ * @property string                                  $OKPO
+ * @property string|null                             $contacts
+ * @property Carbon|null                             $createdAt
+ * @property Carbon|null                             $updatedAt
+ * @property Carbon|null                             $deletedAt
+ * @property-read Collection<int, BankAccountDetail> $bankAccountDetails
+ * @property-read int|null                           $bankAccountDetailsCount
+ * @property-read Collection<int, ProductCatalog>    $catalogProducts
+ * @property-read int|null                           $catalogProductsCount
+ * @property-read LegalForm|null                     $legalForm
+ * @property-read Collection<int, PlaceOfBusiness>   $placesOfBusiness
+ * @property-read int|null                           $placesOfBusinessCount
+ * @property-read Collection<int, ProductPrice>      $productPrices
+ * @property-read int|null                           $productPricesCount
+ * @property-read Collection<int, Staff>             $staff
+ * @property-read int|null                           $staffCount
+ * @property-read User|null                                                          $user
+ * @method static Builder|Organization newModelQuery()
+ * @method static Builder|Organization newQuery()
+ * @method static Builder|Organization onlyTrashed()
+ * @method static Builder|Organization query()
+ * @method static Builder|Organization whereContacts($value)
+ * @method static Builder|Organization whereCreatedAt($value)
+ * @method static Builder|Organization whereDeletedAt($value)
+ * @method static Builder|Organization whereINN($value)
+ * @method static Builder|Organization whereId($value)
+ * @method static Builder|Organization whereLegalFormType($value)
+ * @method static Builder|Organization whereName($value)
+ * @method static Builder|Organization whereOKPO($value)
+ * @method static Builder|Organization whereUpdatedAt($value)
+ * @method static Builder|Organization whereUserId($value)
+ * @method static Builder|Organization withTrashed()
+ * @method static Builder|Organization withoutTrashed()
+ * @mixin Eloquent
+ */
 class Organization extends Model
 {
     use HasFactory, SoftDeletes;

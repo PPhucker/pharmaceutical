@@ -63,6 +63,27 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @method static Builder|User withTrashed()
  * @method static Builder|User withoutTrashed()
  * @mixin Builder
+ * @property-read Collection<int, BankAccountDetail> $bankAccountDetails
+ * @property-read int|null $bankAccountDetailsCount
+ * @property-read Collection<int, ProductCatalog> $catalogProducts
+ * @property-read int|null $catalogProductsCount
+ * @property-read Collection<int, ContactPerson> $contactPersons
+ * @property-read int|null $contactPersonsCount
+ * @property-read Collection<int, Contractor> $contractors
+ * @property-read int|null $contractorsCount
+ * @property-read Collection<int, \App\Models\Contractors\BankAccountDetail> $contractorsBankAccountDetails
+ * @property-read int|null $contractorsBankAccountDetailsCount
+ * @property-read Collection<int, PlaceOfBusiness> $contractorsPlacesOfBusiness
+ * @property-read int|null $contractorsPlacesOfBusinessCount
+ * @property-read Collection<int, EndProduct> $endProducts
+ * @property-read int|null $endProductsCount
+ * @property-read Collection<int, Organization> $organizations
+ * @property-read int|null $organizationsCount
+ * @property-read Collection<int, OrganizationPlaceOfBusiness> $organizationsPlacesOfBusiness
+ * @property-read int|null $organizationsPlacesOfBusinessCount
+ * @property-read Collection<int, ProductPrice> $productPrices
+ * @property-read int|null $productPricesCount
+ * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
