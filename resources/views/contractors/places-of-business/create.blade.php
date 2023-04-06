@@ -61,13 +61,15 @@
     </x-slot>
 </x-forms.collapse.creation>
 <script>
-    $('#address, #index').suggestions({
-        token: $('#dadata_token').val(),
-        type: 'ADDRESS',
-        onSelect: function(suggestion) {
-            const address = suggestion.data;
-            $('#index').val(DaData.showPostalCode(address));
-            $('#address').val(DaData.showAddress(address));
-        },
+    document.addEventListener('DOMContentLoaded', () => {
+        $('#address, #index').suggestions({
+            token: $('#dadata_token').val(),
+            type: 'ADDRESS',
+            onSelect: function(suggestion) {
+                const address = suggestion.data;
+                $('#index').val(DaData.showPostalCode(address));
+                $('#address').val(DaData.showAddress(address));
+            },
+        });
     });
 </script>
