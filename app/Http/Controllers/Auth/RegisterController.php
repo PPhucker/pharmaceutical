@@ -52,7 +52,9 @@ class RegisterController extends Controller
     {
         $validated = $request->validated();
 
-        event(new Registered($user = $this->create($validated)));
+        $user = $this->create($validated);
+
+        event(new Registered($user));
 
         if ($response = $this->registered($request, $user)) {
             return $response;
@@ -74,17 +76,17 @@ class RegisterController extends Controller
      */
     final public function create(array $data)
     {
-        $user = User::create(
+        $roles = $data['roles'] ?? null;
+        $permissions = $data['permissions'] ?? null;
+
+        return User::create(
             [
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password'])
             ]
-        );
-
-        $user->giveRolesTo($data['roles']);
-        $user->givePermissionsTo($data['permissions']);
-
-        return $user;
+        )
+            ->refreshRoles($roles)
+            ->refreshPermissions($permissions);
     }
 }
