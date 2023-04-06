@@ -11,9 +11,9 @@
             </button>
         @endauth
         <a class="navbar-brand text-primary"
-           href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }}
-        </a>
+               href="{{ url('/') }}">
+                {{ config('app.name', 'Laravel') }}
+            </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto"></ul>
@@ -21,7 +21,7 @@
             <ul class="navbar-nav ms-auto">
                 @auth
                     <li class="nav-item">
-                    <span class="text-primary me-2">
+                    <span class="text-primary me-2 text-muted">
                         {{auth()->user()->name}}
                     </span>
                     </li>
@@ -32,7 +32,7 @@
                     </li>
                     @foreach(auth()->user()->roles as $role)
                         <li class="nav-item">
-                            <span class="text-primary me-3">
+                            <span class="text-primary text-muted me-3">
                                 {{$role->name}}
                             </span>
                         </li>
