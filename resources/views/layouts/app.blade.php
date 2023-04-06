@@ -10,21 +10,21 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.min.js')}}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.min.css') }}" rel="stylesheet">
 </head>
 <body>
 <div id="app">
+    @verified()
     <x-navbar/>
     @include('layouts.symbols')
-    @auth
-        @verified()
+
         <x-sidebar.menu position="start"
                         id="Sidebar"
                         label="MenuLabel"
@@ -42,9 +42,8 @@
                                           icon="bi bi-door-open-fill"
                                           title="{{__('sidebar.account.logout')}}"/>
         </x-sidebar.menu>
-        @endverified
-    @endauth
-    <main class="col p-3" role="main">
+    @endverified
+    <main class="" role="main" style="max-height: 100vh; max-width: 100vw">
         @yield('content')
     </main>
 </div>

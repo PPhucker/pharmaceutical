@@ -46,10 +46,10 @@ class RegisterRequest extends FormRequest
             ],
 
             'roles' => [
-                'required'
+                'nullable'
             ],
             'permissions' => [
-                'required'
+                'nullable'
             ],
         ];
     }

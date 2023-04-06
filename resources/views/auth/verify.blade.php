@@ -1,16 +1,18 @@
-@extends('layouts.app')
-@section('content')
-    <x-forms.main back=""
-                  title="{{ __('auth.verify.action') }}">
+@extends('layouts.auth')
+@section('auth')
+        <h1 class="text-primary mb-3">
+            {{ __('auth.verify.action') }}
+        </h1>
         <form class="d-inline"
               method="POST"
               action="{{ route('verification.send') }}">
             @csrf
-            {{__('auth.verify.message')}}
+            <p class="fw-lighter fs-5">
+                {{__('auth.verify.message')}}
+            </p>
             <button type="submit"
-                    class="btn btn-link p-0 m-0 align-baseline">
-                {{ __('auth.verify.button') }}.
+                    class="btn btn-primary">
+                {{ __('auth.verify.button') }}
             </button>
         </form>
-    </x-forms.main>
 @endsection

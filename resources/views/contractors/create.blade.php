@@ -95,18 +95,20 @@
         </x-slot>
     </x-forms.main>
     <script>
-        $('#name, #INN').suggestions({
-            token: $('#dadata_token').val(),
-            type: 'PARTY',
-            onSelect: function(suggestion) {
-                let name = suggestion.data.name.short
-                    ? suggestion.data.name.short
-                    : suggestion.data.name.full;
-                $('#name').val('"' + name + '"');
-                $('#legal_form_type').val(suggestion.data.opf.short);
-                $('#INN').val(suggestion.data.inn);
-                $('#OKPO').val(suggestion.data.okpo);
-            },
+        document.addEventListener('DOMContentLoaded', () => {
+            $('#name, #INN').suggestions({
+                token: $('#dadata_token').val(),
+                type: 'PARTY',
+                onSelect: function(suggestion) {
+                    let name = suggestion.data.name.short
+                        ? suggestion.data.name.short
+                        : suggestion.data.name.full;
+                    $('#name').val('"' + name + '"');
+                    $('#legal_form_type').val(suggestion.data.opf.short);
+                    $('#INN').val(suggestion.data.inn);
+                    $('#OKPO').val(suggestion.data.okpo);
+                },
+            });
         });
     </script>
 @endsection

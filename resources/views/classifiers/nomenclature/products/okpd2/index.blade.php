@@ -138,13 +138,15 @@
         </form>
     </x-forms.main>
     <script>
-        $('#code, #name').suggestions({
-            token: $('#dadata_token').val(),
-            type: 'okpd2',
-            onSelect: function(suggestion) {
-                $('#code').val(suggestion.data.kod);
-                $('#name').val(suggestion.data.name);
-            },
+        document.addEventListener('DOMContentLoaded', () => {
+            $('#code, #name').suggestions({
+                token: $('#dadata_token').val(),
+                type: 'okpd2',
+                onSelect: function(suggestion) {
+                    $('#code').val(suggestion.data.kod);
+                    $('#name').val(suggestion.data.name);
+                },
+            });
         });
     </script>
 @endsection

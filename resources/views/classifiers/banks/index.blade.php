@@ -185,14 +185,16 @@
         </form>
     </x-forms.main>
     <script>
-        $('#name, #BIC').suggestions({
-            token: $('#dadata_token').val(),
-            type: 'BANK',
-            onSelect: function(suggestion) {
-                $('#name').val(suggestion.value);
-                $('#BIC').val(suggestion.data.bic);
-                $('#correspondent_account').val(suggestion.data.correspondent_account);
-            },
+        document.addEventListener('DOMContentLoaded', () => {
+            $('#name, #BIC').suggestions({
+                token: $('#dadata_token').val(),
+                type: 'BANK',
+                onSelect: function(suggestion) {
+                    $('#name').val(suggestion.value);
+                    $('#BIC').val(suggestion.data.bic);
+                    $('#correspondent_account').val(suggestion.data.correspondent_account);
+                },
+            });
         });
     </script>
 @endsection

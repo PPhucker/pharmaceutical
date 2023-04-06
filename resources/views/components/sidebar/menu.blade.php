@@ -4,10 +4,10 @@
      id="offcanvas{{$id}}"
      aria-labelledby="sidebar{{$label}}">
     <div class="offcanvas-header pb-2">
-        <h5 class="offcanvas-title text-primary"
+        <h4 class="offcanvas-title text-primary"
             id="sidebar{{$label}}">
             {{$title}}
-        </h5>
+        </h4>
         <button type="button"
                 class="btn-close text-reset"
                 data-bs-dismiss="offcanvas"

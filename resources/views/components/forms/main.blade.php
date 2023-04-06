@@ -1,6 +1,6 @@
 @props(['title'])
-<div class="justify-content-center">
-    <div class="card shadow">
+<div class="d-flex justify-content-center m-3">
+    <div class="card shadow w-100">
         <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
             <li class="list-inline-item">
                 <a class="btn btn-link text-white"
