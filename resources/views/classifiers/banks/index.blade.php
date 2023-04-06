@@ -87,7 +87,7 @@
     <x-forms.main title="{{__('classifiers.banks.banks')}}">
         <form id="form_banks"
               method="POST"
-              action="{{route('banks.update')}}">
+              action="{{route('banks.update', ['bank' => $banks->first()->BIC ?? '044525196'])}}">
             @method('PATCH')
             @csrf
             <x-tables.main id="table_banks"

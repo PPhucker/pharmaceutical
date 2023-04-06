@@ -62,7 +62,7 @@
     <x-forms.main title="{{__('classifiers.legal_forms.legal_forms')}}">
         <form id="form_legal_forms"
               method="POST"
-              action="{{route('legal_forms.update')}}">
+              action="{{route('legal_forms.update', ['legal_form' => $legalForms->first()->abbreviation ?? 'ООО'])}}">
             @method('PATCH')
             @csrf
             <x-tables.main id="table_legal_forms"
