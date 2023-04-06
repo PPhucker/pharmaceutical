@@ -74,17 +74,17 @@ class BankController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdateBankRequest $request
+     * @param Bank|null         $bank
      *
      * @return RedirectResponse
      */
-    public function update(UpdateBankRequest $request)
+    public function update(UpdateBankRequest $request, Bank $bank = null)
     {
         $validated = $request->validated();
 
         foreach ($validated['banks'] as $item) {
-            $bank = Bank::find($item['original_BIC']);
-
-            $bank->fill(
+            Bank::find($item['original_BIC'])
+            ->fill(
                 [
                     'BIC' => $item['BIC'],
                     'correspondent_account' => $item['correspondent_account'],

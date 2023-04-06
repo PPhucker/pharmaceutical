@@ -63,7 +63,7 @@ class LegalFormController extends CoreController
 
         return back()
             ->with(
-                'store.success',
+                'success',
                 __('classifiers.legal_forms.actions.create.success'),
             );
     }
@@ -73,10 +73,11 @@ class LegalFormController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdateLegalFormRequest $request
+     * @param LegalForm|null         $legal_form
      *
      * @return RedirectResponse
      */
-    public function update(UpdateLegalFormRequest $request)
+    public function update(UpdateLegalFormRequest $request, LegalForm $legal_form = null)
     {
         $validated = $request->validated();
 
@@ -93,7 +94,7 @@ class LegalFormController extends CoreController
 
         return back()
             ->with(
-                'update.success',
+                'success',
                 __('classifiers.legal_forms.actions.update.success')
             );
     }
