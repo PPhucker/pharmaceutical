@@ -25,7 +25,12 @@ return [
         ],
         'reset' => [
             'action' => 'Password reset',
-            'button' => 'Reset the password'
+            'button' => 'Reset the password',
+            'mail' => [
+                'message' => 'You received this email because we have received a password reset request for your account record.',
+                'expire' => 'The password reset link will expire in :count minutes..'
+            ],
+
         ],
         'email' => 'Send password reset link',
         'forgot' => 'Forgot your password?',
