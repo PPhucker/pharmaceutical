@@ -101,17 +101,15 @@ class ResetPassword extends Notification
     final public function buildMailMessage(string $url)
     {
         return (new MailMessage)
-            ->subject(__('Reset Password'))
+            ->subject(__('auth.passwords.reset.action'))
+            ->greeting(__('notifications.greeting'))
             ->line(
-                __(
-                    'You received this email because we have received a password reset request
-                for your account record.'
-                )
+                __('auth.passwords.reset.mail.message')
             )
-            ->action(__('Reset Password'), $url)
+            ->action(__('auth.passwords.reset.action'), $url)
             ->line(
                 __(
-                    'The password reset link will expire in :count minutes.',
+                    'auth.passwords.reset.mail.expire',
                     [
                         'count' => config(
                             'auth.passwords.' . config('auth.defaults.passwords') . '.expire'
@@ -119,7 +117,11 @@ class ResetPassword extends Notification
                     ]
                 )
             )
-            ->line(__('If you did not request a password reset, do not take any further action.'));
+            ->salutation(
+                __('notifications.salutation')
+                . ', '
+                . config('app.name')
+            );
     }
 
     /**
