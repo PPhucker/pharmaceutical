@@ -41,7 +41,8 @@ export class DataTable {
     __targets;
     __domOrderType;
 
-    constructor(tableId, domOrderType, targets, localization) {
+    constructor(
+        tableId, domOrderType = null, targets = null, localization = null) {
         this.__tableId = tableId;
         this.__domOrderType = domOrderType;
         this.__targets = targets;
@@ -238,30 +239,29 @@ export class DataTable {
     /**
      * https://datatables.net/reference/option/columnDefs
      *
-     * @returns {[{orderable: boolean, targets, searchable: boolean}]|[{orderDataType: string, type: string, targets: string}]}
+     * @returns {{}[]}
      * @private
      */
     get __columnDefs() {
 
-        if (this.__domOrderType) {
-            return [
-                {
-                    targets: this.__targets,
-                    orderable: false,
-                    searchable: false,
-                    orderDataType: 'dom-text',
-                    type: 'string',
-                },
-            ];
+        let columnDefs = {};
+
+        if (this.__targets) {
+            columnDefs.targets = this.__targets;
+            columnDefs.orderable = false;
+            columnDefs.searchable = false;
+        } else {
+            columnDefs.targets = null;
+            columnDefs.orderable = true;
+            columnDefs.searchable = true;
         }
 
-        return [
-            {
-                orderable: false,
-                searchable: false,
-                targets: this.__targets,
-            },
-        ];
+        if (this.__domOrderType) {
+            columnDefs.orderDataType = 'dom-text';
+            columnDefs.type = 'string';
+        }
+
+        return [columnDefs];
     }
 
     /**

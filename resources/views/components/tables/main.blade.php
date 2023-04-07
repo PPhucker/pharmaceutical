@@ -43,13 +43,15 @@
         const id = '{{$id}}';
 
         const tableId = document.getElementById('tableId_' + id).value;
-        const targets = document.getElementById('targets_' + id).value;
+        let targets = document.getElementById('targets_' + id).value;
         const domOrderType = document.getElementById('domOrderType_' + id).value;
+
+        targets = targets ? targets.split(',').map(Number) : null;
 
         const dt = new DataTable(
             tableId,
             domOrderType,
-            targets.split(',').map(Number),
+            targets,
             localization,
         );
         dt.render();
