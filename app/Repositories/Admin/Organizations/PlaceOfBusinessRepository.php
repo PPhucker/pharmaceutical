@@ -2,19 +2,14 @@
 
 namespace App\Repositories\Admin\Organizations;
 
-use App\Repositories\CoreRepository;
 use App\Models\Admin\Organizations\PlaceOfBusiness as Model;
+use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class PlaceOfBusinessRepository extends CoreRepository
 {
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
     /**
      * @return Collection
      * @throws ContainerExceptionInterface
@@ -43,5 +38,50 @@ class PlaceOfBusinessRepository extends CoreRepository
                 $organizationId
             )
             ->get();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getStaff($id)
+    {
+        $place = $this->clone()
+            ->where(
+                'organizations_places_of_business.id',
+                $id
+            )
+            ->with('staff')
+            ->first();
+
+        if (count($place->staff) === 0) {
+            return collect(
+                [
+                    'director' => '',
+                    'bookkeeper' => '',
+                ]
+            );
+        }
+
+        return collect(
+            [
+                'director' => $place
+                    ->staff
+                    ->where('post', 'director')
+                    ->first()
+                    ->name,
+                'bookkeeper' => $place
+                    ->staff
+                    ->where('post', 'bookkeeper')
+                    ->first()
+                    ->name,
+            ]
+        );
+    }
+
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }
