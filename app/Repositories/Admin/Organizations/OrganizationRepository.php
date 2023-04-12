@@ -36,6 +36,23 @@ class OrganizationRepository extends CoreRepository
             ->get();
     }
 
+    public function getForDocument()
+    {
+        return $this->clone()
+            ->select(
+                [
+                    'organizations.id',
+                    'organizations.legal_form_type',
+                    'organizations.name',
+                    'organizations.deleted_at'
+                ]
+            )
+            ->orderBy('organizations.name')
+            ->withoutTrashed()
+            ->with('legalForm:abbreviation')
+            ->get();
+    }
+
     /**
      * @param $id
      *
