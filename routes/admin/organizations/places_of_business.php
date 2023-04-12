@@ -11,4 +11,5 @@ Route::controller(Controller::class)->group(static function () {
     Route::post('/places_of_business/{places_of_business}/restore', 'restore')
         ->name('places_of_business.restore')
         ->withTrashed();
+    Route::get('/places_of_business/staff/{places_of_business}', 'getStaff');
 });
