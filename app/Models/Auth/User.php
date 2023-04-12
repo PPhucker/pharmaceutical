@@ -13,6 +13,7 @@ use App\Models\Contractors\Contractor;
 use App\Models\Contractors\PlaceOfBusiness;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
+use App\Traits\Auth\Documents\HasDocuments;
 use App\Traits\Auth\HasRolesAndPermissions;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -87,7 +88,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  */
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions, HasDocuments, SoftDeletes;
 
     protected $dates = ['email_verified_at',];
 
