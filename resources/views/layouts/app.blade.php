@@ -31,6 +31,7 @@
                         title="{{__('sidebar.main_menu')}}">
             <x-sidebar.menu.admin/>
             <x-sidebar.menu.contractors/>
+            <x-sidebar.menu.documents/>
             <x-sidebar.menu.classifiers/>
         </x-sidebar.menu>
         <x-sidebar.menu position="end"

@@ -2,7 +2,7 @@
 @section('content')
     <x-forms.main title="{{__('contractors.contractors')}}">
         <x-tables.main id="table_contractors"
-                       targets="-1,-2">
+                       targets="-1,-2,-3">
             <x-slot name="filter">
                 <x-tables.filters.trashed-filter tableId="table_contractors"/>
             </x-slot>
@@ -20,9 +20,14 @@
                     class="text-center">
                     {{__('contractors.inn')}}
                 </th>
-                <th scope="col"
+                {{--<th scope="col"
                     class="text-center">
                     {{__('contractors.okpo')}}
+                </th>--}}
+                <th>
+                    <span class="d-none">
+                        {{__('documents.invoices_for_payment.buttons.create')}}
+                    </span>
                 </th>
                 <th>
                     <span class="d-none">
@@ -44,8 +49,14 @@
                     <td class="align-middle text-center">
                         {{$contractor->INN}}
                     </td>
-                    <td class="align-middle text-center">
+                    {{--<td class="align-middle text-center">
                         {{$contractor->OKPO}}
+                    </td>--}}
+                    <td class="text-center align-middle">
+                        <x-buttons.href
+                            route="{{route('invoices_for_payment.create', ['contractor' => $contractor->id])}}"
+                            title="{{__('documents.invoices_for_payment.buttons.create')}}"
+                            icon="{{'bi bi-file-earmark-fill'}}"/>
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.edit route="{{route('contractors.edit', ['contractor' => $contractor->id])}}"
