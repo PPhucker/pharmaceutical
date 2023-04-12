@@ -4,7 +4,9 @@ return [
     'button' => [
         'save' => 'Save',
         'add' => 'Add',
-        'hide' => 'Hide'
+        'hide' => 'Hide',
+        'show' => 'Show',
+        'open'=> 'Open',
     ],
     'titles' => [
         'add' => 'Add',
