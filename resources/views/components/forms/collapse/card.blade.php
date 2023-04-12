@@ -23,7 +23,8 @@
         <div class="card-body p-2">
             <form id="{{$formId}}"
                   method="POST"
-                  action="{{$route}}">
+                  action="{{$route}}"
+                  enctype="multipart/form-data">
                 @if(isset($cardBody))
                     {{$cardBody}}
                 @endif

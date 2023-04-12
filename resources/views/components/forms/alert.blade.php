@@ -8,6 +8,16 @@
                 aria-label="Close"></button>
     </div>
 @endif
+@if (session('fail'))
+    <div class="alert alert-danger mb-2" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="16" height="16" role="img" aria-label="Dunger:">
+            <use xlink:href="#check-circle-fill"/>
+        </svg>
+        {{ __(session('fail')) }}
+        <button type="button" class="btn-close btn-sm align-middle" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+    </div>
+@endif
 @error('fail')
 <div class="alert alert-danger mb-2" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="16" height="16" role="img" aria-label="Danger:">
