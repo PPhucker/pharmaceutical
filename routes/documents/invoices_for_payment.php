@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Documents\InvoiceForPaymentController as Controller;
+use App\Http\Controllers\Documents\InvoicesForPayment\InvoiceForPaymentController as Controller;
 
 Route::resource('invoices_for_payment', Controller::class)
     ->except(['create'])
