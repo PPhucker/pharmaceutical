@@ -2,10 +2,10 @@
 <div class="d-flex justify-content-center m-3">
     <div class="card shadow w-100">
         <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
-            <li class="list-inline-item">
-                <a class="btn btn-link text-white"
+            <li class="list-inline-item ms-2">
+                <a class="btn btn-sm btn-primary text-white"
                    href="{{$back}}"
-                   title="">
+                   title="{{__('form.button.back')}}">
                     <i class="bi bi-arrow-90deg-left align-middle fs-6"></i>
                 </a>
             </li>
