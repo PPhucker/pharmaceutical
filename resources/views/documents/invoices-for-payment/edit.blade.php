@@ -1,7 +1,6 @@
 @php use Illuminate\Support\Carbon; @endphp
 @extends('layouts.app')
 @section('content')
-    {{--@if($errors->any()){{dd($errors)}}@endif--}}
     <x-forms.main back="{{route('invoices_for_payment.index')}}"
                   title="
                   {{__('documents.invoices_for_payment.invoice_for_payment')
@@ -244,5 +243,6 @@
                 </ul>
             </x-slot>
         </x-forms.collapse.card>
+        @include('documents.invoices-for-payment.data.products.edit')
     </x-forms.main>
 @endsection
