@@ -83,6 +83,22 @@
                     </div>
                 </div>
                 <div class="row mb-2">
+                    <label for="kpp"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('contractors.kpp')}}
+                    </label>
+                    <div class="col-md-6">
+                        <input id="kpp"
+                               type="text"
+                               class="form-control form-control-sm text-primary
+                           @error('kpp') is-invalid @enderror"
+                               name="kpp"
+                               value="{{$contractor->kpp}}"
+                               required>
+                        <x-forms.span-error name="kpp"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
                     <label for="contacts"
                            class="col-md-4 col-form-label text-md-end">
                         {{__('contractors.contacts')}}

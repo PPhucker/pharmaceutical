@@ -83,6 +83,7 @@ class ContractorController extends CoreController
                 'name' => $validated['name'],
                 'INN' => $validated['INN'],
                 'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
                 'contacts' => $validated['contacts']
             ]
         );
@@ -144,6 +145,7 @@ class ContractorController extends CoreController
                 'name' => $validated['name'],
                 'INN' => $validated['INN'],
                 'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
                 'contacts' => $validated['contacts']
             ]
         )

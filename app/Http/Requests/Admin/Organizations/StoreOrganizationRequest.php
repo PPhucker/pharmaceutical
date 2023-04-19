@@ -42,6 +42,11 @@ class StoreOrganizationRequest extends FormRequest
                 'digits_between:10,12',
                 Rule::unique('organizations', 'INN'),
             ],
+            'kpp' => [
+                'required',
+                'numeric',
+                'digits:9',
+            ],
             'OKPO' => [
                 'required',
                 'numeric',

@@ -50,6 +50,11 @@ class UpdateOrganizationRequest extends FormRequest
                 Rule::unique('organizations', 'OKPO')
                     ->ignore($this->input('id'))
             ],
+            'kpp' => [
+                'required',
+                'numeric',
+                'digits:9',
+            ],
             'contacts' => [
                 'nullable',
                 'string',

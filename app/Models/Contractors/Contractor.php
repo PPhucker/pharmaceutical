@@ -65,6 +65,7 @@ class Contractor extends Model
         'name',
         'INN',
         'OKPO',
+        'kpp',
         'contacts'
     ];
 

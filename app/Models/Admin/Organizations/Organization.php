@@ -71,6 +71,7 @@ class Organization extends Model
         'name',
         'INN',
         'OKPO',
+        'kpp',
         'contacts'
     ];
 
