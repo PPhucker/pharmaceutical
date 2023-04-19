@@ -3,7 +3,7 @@
         <svg class="bi flex-shrink-0 me-2" width="16" height="16" role="img" aria-label="Success:">
             <use xlink:href="#check-circle-fill"/>
         </svg>
-        {{ __(session('success')) }}
+        <small>{{ __(session('success')) }}</small>
         <button type="button" class="btn-close btn-sm align-middle" data-bs-dismiss="alert"
                 aria-label="Close"></button>
     </div>
@@ -13,7 +13,7 @@
         <svg class="bi flex-shrink-0 me-2" width="16" height="16" role="img" aria-label="Dunger:">
             <use xlink:href="#check-circle-fill"/>
         </svg>
-        {{ __(session('fail')) }}
+        <small>{{ __(session('fail')) }}</small>
         <button type="button" class="btn-close btn-sm align-middle" data-bs-dismiss="alert"
                 aria-label="Close"></button>
     </div>
@@ -23,7 +23,7 @@
     <svg class="bi flex-shrink-0 me-2" width="16" height="16" role="img" aria-label="Danger:">
         <use xlink:href="#exclamation-triangle-fill"/>
     </svg>
-    {{ $message }}
+    <small>{{ $message }}</small>
     <button type="button" class="btn-close btn-sm align-middle" data-bs-dismiss="alert"
             aria-label="Close"></button>
 </div>
