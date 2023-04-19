@@ -81,8 +81,8 @@ class StoreInvoiceForPaymentRequest extends FormRequest
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
-                    'documents.invoices_for_payment.actions.create.fail',
-                    __('fail', ['name' => $this->name])
+                    'fail',
+                    __('documents.invoices_for_payment.actions.create.fail', ['name' => $this->name])
                 );
             }
         });

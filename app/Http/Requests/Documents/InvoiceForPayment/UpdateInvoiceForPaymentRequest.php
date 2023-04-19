@@ -83,8 +83,8 @@ class UpdateInvoiceForPaymentRequest extends FormRequest
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
-                    'documents.invoices_for_payment.actions.update.fail',
-                    __('fail', ['name' => $this->name])
+                    'fail',
+                    __('documents.invoices_for_payment.actions.update.fail', ['name' => $this->name])
                 );
             }
         });
