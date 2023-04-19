@@ -39,5 +39,31 @@ return [
         'titles' => [
             'create' => 'Invoicing for payment',
         ],
+        'data' => [
+            'data' => 'Invoice for payment production',
+            'product_catalog_id' => 'Product',
+            'quantity' => 'Quantity',
+            'price' => 'Price with VAT',
+            'nds' => 'VAT',
+            'fails' => [
+                'quantity' => 'Quantity must be a multiple of :quantity'
+            ],
+            'actions' => [
+                'create' => [
+                    'success' => 'Product :name added to invoice successfully',
+                    'fail' => 'Failed to add product to invoice',
+                ],
+                'update' => [
+                    'success' => 'Invoice products updated successfully',
+                    'fail' => 'Failed to update products',
+                ],
+                'delete' => [
+                    'success' => 'Product :name has been successfully removed from the invoice',
+                ],
+                'restore' => [
+                    'success' => 'Product :name restored successfully',
+                ],
+            ],
+        ],
     ],
 ];

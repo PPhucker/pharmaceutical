@@ -149,6 +149,7 @@ return [
     'name' => 'Name',
     'inn' => 'NIP Number',
     'okpo' => ' OKPO code',
+    'kpp' => 'KPP',
     'contacts' => 'Contacts',
     'card' => 'Counterparty card',
     'main_information' => 'Main information'
