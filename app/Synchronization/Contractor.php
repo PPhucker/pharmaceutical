@@ -3,10 +3,10 @@
 namespace App\Synchronization;
 
 use App\Helpers\Dadata\DadataClient;
-use App\Models\Contractors\BankAccountDetail;
-use App\Models\Contractors\PlaceOfBusiness;
 use App\Models\Classifiers\Bank;
 use App\Models\Classifiers\LegalForm;
+use App\Models\Contractors\BankAccountDetail;
+use App\Models\Contractors\PlaceOfBusiness;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -17,6 +17,49 @@ use Illuminate\Support\Collection;
  */
 class Contractor
 {
+    /**
+     * Синхронизация.
+     *
+     * @return void
+     */
+    public function sync()
+    {
+        $innList = $this->getSyncInnList();
+
+        foreach ($innList as $inn) {
+            $this->create($inn);
+        }
+    }
+
+    /**
+     * Получение списка контрагентов, которых нет в БД проекта.
+     *
+     * @return array
+     */
+    private function getSyncInnList()
+    {
+        return array_unique(
+            DB::connection('mysql@dev')
+                ->table('clients')
+                ->select(
+                    'inn'
+                )->whereNull('deleted_at')
+                ->get()
+                ->map(function ($inn) {
+                    return $inn->inn;
+                })
+                ->diff(
+                    \App\Models\Contractors\Contractor::select('INN')
+                        ->whereNull('deleted_at')
+                        ->get()
+                        ->map(function ($inn) {
+                            return $inn->INN;
+                        })
+                )
+                ->all()
+        );
+    }
+
     /**
      * @param string $inn
      *
@@ -57,7 +100,8 @@ class Contractor
                 'name' => '"' . $client->get('name') . '"',
                 'INN' => $client->get('inn'),
                 'OKPO' => $client->get('okpo'),
-                'contacts' => $this->getSyncContacts($client->get('inn'))
+                'contacts' => $this->getSyncContacts($client->get('inn')),
+                'kpp' => $client->get('kpp'),
             ]
         );
 
@@ -142,35 +186,6 @@ class Contractor
     }
 
     /**
-     * Получение списка контрагентов, которых нет в БД проекта.
-     *
-     * @return array
-     */
-    private function getSyncInnList()
-    {
-        return array_unique(
-            DB::connection('mysql@dev')
-                ->table('clients')
-                ->select(
-                    'inn'
-                )->whereNull('deleted_at')
-                ->get()
-                ->map(function ($inn) {
-                    return $inn->inn;
-                })
-                ->diff(
-                    \App\Models\Contractors\Contractor::select('INN')
-                        ->whereNull('deleted_at')
-                        ->get()
-                        ->map(function ($inn) {
-                            return $inn->INN;
-                        })
-                )
-                ->all()
-        );
-    }
-
-    /**
      * Получение контактов контрагента, которых нет в БД проекта.
      *
      * @param string $inn
@@ -185,23 +200,6 @@ class Contractor
             ->where('inn', $inn)
             ->whereNull('deleted_at')
             ->first()->contacts;
-    }
-
-    /**
-     * Получение юр. адреса контрагента, которого нет в БД проекта.
-     *
-     * @param string $inn
-     *
-     * @return Model|Builder|object|null
-     */
-    private function getSyncRegisterAddress(string $inn)
-    {
-        return DB::connection('mysql@dev')
-            ->table('clients')
-            ->select(['legal_address', 'index'])
-            ->where('inn', $inn)
-            ->whereNull('deleted_at')
-            ->first();
     }
 
     /**
@@ -220,6 +218,23 @@ class Contractor
                                 WHERE b.client_id = c.id AND c.inn = $inn;"
                 )
             );
+    }
+
+    /**
+     * Получение юр. адреса контрагента, которого нет в БД проекта.
+     *
+     * @param string $inn
+     *
+     * @return Model|Builder|object|null
+     */
+    private function getSyncRegisterAddress(string $inn)
+    {
+        return DB::connection('mysql@dev')
+            ->table('clients')
+            ->select(['legal_address', 'index'])
+            ->where('inn', $inn)
+            ->whereNull('deleted_at')
+            ->first();
     }
 
     /**
@@ -248,16 +263,27 @@ class Contractor
     }
 
     /**
-     * Синхронизация.
-     *
      * @return void
      */
-    public function sync()
+    public function syncKpp()
     {
-        $innList = $this->getSyncInnList();
+        $devContractors = DB::connection('mysql@dev')
+            ->table('clients')
+            ->select(['inn', 'kpp'])
+            ->whereNull('deleted_at')
+            ->get();
 
-        foreach ($innList as $inn) {
-            $this->create($inn);
+        foreach ($devContractors as $devContractor) {
+            $contractor = \App\Models\Contractors\Contractor::where('INN', $devContractor->inn)->first();
+            if (!$contractor) {
+                continue;
+            }
+            $contractor->fill(
+                [
+                    'kpp' => $devContractor->kpp
+                ]
+            )
+                ->save();
         }
     }
 }
