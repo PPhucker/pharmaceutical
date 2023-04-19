@@ -70,9 +70,32 @@ trait HasAggregationTypes
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function getachAllAggregationTypes()
     {
         $this->aggregationTypes()->detach();
         return $this;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return int
+     */
+    public function getQuantityInAggregationType(string $type)
+    {
+        $aggregationType = $this->aggregationTypes()
+            ->where('product_catalog_types_of_aggregation.aggregation_type', $type)
+            ->first();
+
+        if (!$aggregationType) {
+            return 1;
+        }
+
+        return $aggregationType
+            ->pivot
+            ->product_quantity;
     }
 }

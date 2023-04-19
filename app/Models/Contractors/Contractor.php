@@ -4,6 +4,7 @@ namespace App\Models\Contractors;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
+use App\Traits\Contractors\Documents\HasDocuments;
 use App\Traits\Contractors\Notifications;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -54,7 +55,7 @@ use Illuminate\Support\Carbon;
  */
 class Contractor extends Model
 {
-    use HasFactory, SoftDeletes, Notifications;
+    use HasFactory, HasDocuments, SoftDeletes, Notifications;
 
     protected $table = 'contractors';
 
@@ -64,6 +65,7 @@ class Contractor extends Model
         'name',
         'INN',
         'OKPO',
+        'kpp',
         'contacts'
     ];
 

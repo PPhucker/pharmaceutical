@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\Organizations\PlacesOfBusiness\StorePlaceOfBusinessR
 use App\Http\Requests\Admin\Organizations\PlacesOfBusiness\UpdatePlaceOfBusinessRequest;
 use App\Models\Admin\Organizations\PlaceOfBusiness;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 
@@ -137,5 +138,22 @@ class PlaceOfBusinessController extends CoreController
                     ['name' => $places_of_business->address]
                 )
             );
+    }
+
+    /**
+     * @param PlaceOfBusiness $placesOfBusiness
+     *
+     * @return JsonResponse
+     */
+    public function getStaff(PlaceOfBusiness $placesOfBusiness)
+    {
+        $staff = $this->repository->getStaff($placesOfBusiness->id);
+
+        return new JsonResponse(
+            [
+                $staff
+            ],
+            200
+        );
     }
 }

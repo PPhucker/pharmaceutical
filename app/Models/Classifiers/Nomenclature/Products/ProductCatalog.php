@@ -7,6 +7,7 @@ use App\Models\Admin\Organizations\PlaceOfBusiness;
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\Materials\Material;
 use App\Traits\Classifiers\Nomenclature\Products\HasAggregationTypes;
+use App\Traits\Classifiers\Nomenclature\Products\HasDocuments;
 use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -57,7 +58,7 @@ use Illuminate\Support\Carbon;
  */
 class ProductCatalog extends Model
 {
-    use HasFactory, SoftDeletes, HasMaterials, HasAggregationTypes;
+    use HasFactory, SoftDeletes, HasMaterials, HasAggregationTypes, HasDocuments;
 
     protected $table = 'product_catalog';
 
@@ -111,6 +112,4 @@ class ProductCatalog extends Model
         return $this->hasMany(ProductPrice::class, 'product_catalog_id')
             ->withTrashed();
     }
-
-
 }

@@ -48,6 +48,11 @@ class StoreContractorRequest extends FormRequest
                 'digits_between:8,10',
                 Rule::unique('contractors', 'OKPO')
             ],
+            'kpp' => [
+                'required',
+                'numeric',
+                'digits:9',
+            ],
             'contacts' => [
                 'nullable',
                 'string',

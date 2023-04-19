@@ -71,4 +71,26 @@ class ContractorRepository extends CoreRepository
 
         return $contractor;
     }
+
+    /**
+     * @return Collection|null
+     */
+    public function getRegisteredAddress(int $id)
+    {
+        $registered = $this->clone()
+            ->find($id)
+            ->placesOfBusiness()
+            ->where('registered', 1)
+            ->first();
+
+        if (!$registered) {
+            return null;
+        }
+        return collect(
+            [
+                'index' => $registered->index,
+                'address' => $registered->address,
+            ]
+        );
+    }
 }

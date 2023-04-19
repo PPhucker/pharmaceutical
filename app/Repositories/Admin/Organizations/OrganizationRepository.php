@@ -8,11 +8,6 @@ use Illuminate\Support\Collection;
 
 class OrganizationRepository extends CoreRepository
 {
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
     /**
      * @return Collection
      */
@@ -26,12 +21,33 @@ class OrganizationRepository extends CoreRepository
                     'organizations.name',
                     'organizations.INN',
                     'organizations.OKPO',
+                    'organizations.kpp',
                     'organizations.contacts',
                     'organizations.deleted_at'
                 ]
             )
             ->orderBy('organizations.name')
             ->withTrashed()
+            ->with('legalForm:abbreviation')
+            ->get();
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getForDocument()
+    {
+        return $this->clone()
+            ->select(
+                [
+                    'organizations.id',
+                    'organizations.legal_form_type',
+                    'organizations.name',
+                    'organizations.deleted_at'
+                ]
+            )
+            ->orderBy('organizations.name')
+            ->withoutTrashed()
             ->with('legalForm:abbreviation')
             ->get();
     }
@@ -64,5 +80,35 @@ class OrganizationRepository extends CoreRepository
         ]);
 
         return $organization;
+    }
+
+    /**
+     * @return Collection|null
+     */
+    public function getRegisteredAddress(int $id)
+    {
+        $registered = $this->clone()
+            ->find($id)
+            ->placesOfBusiness()
+            ->where('registered', 1)
+            ->first();
+
+        if (!$registered) {
+            return null;
+        }
+        return collect(
+            [
+                'index' => $registered->index,
+                'address' => $registered->address,
+            ]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }

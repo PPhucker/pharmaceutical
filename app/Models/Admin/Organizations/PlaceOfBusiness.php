@@ -4,6 +4,7 @@ namespace App\Models\Admin\Organizations;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Traits\Organizations\PlacesOfBusiness\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -51,7 +52,7 @@ use Illuminate\Support\Carbon;
  */
 class PlaceOfBusiness extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasDocuments, SoftDeletes;
 
     protected $table = 'organizations_places_of_business';
 
@@ -92,7 +93,7 @@ class PlaceOfBusiness extends Model
     public function staff()
     {
         return $this->hasMany(Staff::class, 'organization_place_of_business_id')
-            ->withTrashed();
+            ->withoutTrashed();
     }
 
     public function catalogProducts()

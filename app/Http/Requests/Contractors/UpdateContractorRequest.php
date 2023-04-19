@@ -50,6 +50,11 @@ class UpdateContractorRequest extends FormRequest
                 Rule::unique('contractors', 'OKPO')
                     ->ignore($this->input('id'))
             ],
+            'kpp' => [
+                'required',
+                'numeric',
+                'digits:9',
+            ],
             'contacts' => [
                 'nullable',
                 'string',

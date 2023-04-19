@@ -4,6 +4,7 @@ namespace App\Models\Admin\Organizations;
 
 use App\Models\Auth\User;
 use App\Models\Classifiers\Bank;
+use App\Traits\Organizations\BankAccountDetails\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,7 +44,7 @@ use Illuminate\Support\Carbon;
  */
 class BankAccountDetail extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasDocuments, SoftDeletes;
 
     protected $table = 'organizations_bank_account_details';
 

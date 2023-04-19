@@ -7,4 +7,5 @@ return [
         'account' => 'Профиль',
         'logout' => 'Выйти'
     ],
+    'documents' => 'Документы',
 ];

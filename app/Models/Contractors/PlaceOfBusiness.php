@@ -3,6 +3,7 @@
 namespace App\Models\Contractors;
 
 use App\Models\Auth\User;
+use App\Traits\Contractors\PlacesOfBusiness\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,7 +46,7 @@ use Illuminate\Support\Carbon;
  */
 class PlaceOfBusiness extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasDocuments, SoftDeletes;
 
     protected $table = 'contractors_places_of_business';
 

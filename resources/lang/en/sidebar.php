@@ -2,9 +2,10 @@
 
 return [
     'main_menu' => 'Main Menu',
-    'administrator' => 'Администратор',
+    'administrator' => 'Administrator',
     'account' => [
         'account' => 'Account',
         'logout' => 'Logout'
     ],
+    'documents' => 'Documents',
 ];

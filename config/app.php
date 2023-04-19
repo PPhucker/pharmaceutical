@@ -187,6 +187,8 @@ return [
         App\Providers\Nomenclature\ProductProvider::class,
         App\Providers\Nomenclature\OKEIProvider::class,
         App\Providers\Nomenclature\MaterialProvider::class,
+
+        App\Providers\Documents\InvoiceForPaymentProvider::class,
     ],
 
     /*

@@ -6,11 +6,13 @@ use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
+use App\Traits\Organizations\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -59,7 +61,7 @@ use Illuminate\Support\Carbon;
  */
 class Organization extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasDocuments, SoftDeletes;
 
     protected $table = 'organizations';
 
@@ -69,6 +71,7 @@ class Organization extends Model
         'name',
         'INN',
         'OKPO',
+        'kpp',
         'contacts'
     ];
 
@@ -85,6 +88,9 @@ class Organization extends Model
             ->format('d.m.Y');
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class)

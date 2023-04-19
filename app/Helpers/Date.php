@@ -19,11 +19,11 @@ class Date
     {
         $fromDate = $request->input('fromDate')
             ? Carbon::create($request->input('fromDate'))
-            : Carbon::now()->startOfWeek();
+            : Carbon::now()->startOfMonth();
 
         $toDate = $request->input('toDate')
             ? Carbon::create($request->input('toDate'))
-            : Carbon::now()->endOfWeek();
+            : Carbon::now()->endOfMonth();
 
         $fromDate = $fromDate->format('Y-m-d');
         $toDate = $toDate->format('Y-m-d');

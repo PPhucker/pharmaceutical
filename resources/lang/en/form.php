@@ -4,7 +4,11 @@ return [
     'button' => [
         'save' => 'Save',
         'add' => 'Add',
-        'hide' => 'Hide'
+        'hide' => 'Hide',
+        'show' => 'Show',
+        'open'=> 'Open',
+        'print' => 'Print',
+        'back' => 'Back',
     ],
     'titles' => [
         'add' => 'Add',
@@ -12,4 +16,5 @@ return [
     ],
     'collapse' => 'Expand/Collapse',
     'last_updated' => 'Last Updated',
+    'zoom' => 'Zoom',
 ];

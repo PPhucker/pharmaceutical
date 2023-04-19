@@ -11,7 +11,9 @@ use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Classifiers\BankRepository;
 use App\Repositories\Classifiers\LegalFormRepository;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -67,6 +69,21 @@ class OrganizationController extends CoreController
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param Organization $organization
+     *
+     * @return JsonResponse
+     */
+    public function show(Organization $organization)
+    {
+        return new JsonResponse(
+            ['organization' => $this->repository->getForEdit($organization->id)],
+            200
+        );
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param StoreOrganizationRequest $request
@@ -84,6 +101,7 @@ class OrganizationController extends CoreController
                 'name' => $validated['name'],
                 'INN' => $validated['INN'],
                 'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
                 'contacts' => $validated['contacts']
             ]
         );
@@ -147,6 +165,7 @@ class OrganizationController extends CoreController
                 'name' => $validated['name'],
                 'INN' => $validated['INN'],
                 'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
                 'contacts' => $validated['contacts']
             ]
         )

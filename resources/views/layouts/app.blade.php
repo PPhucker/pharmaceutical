@@ -31,6 +31,7 @@
                         title="{{__('sidebar.main_menu')}}">
             <x-sidebar.menu.admin/>
             <x-sidebar.menu.contractors/>
+            <x-sidebar.menu.documents/>
             <x-sidebar.menu.classifiers/>
         </x-sidebar.menu>
         <x-sidebar.menu position="end"
@@ -43,7 +44,8 @@
                                           title="{{__('sidebar.account.logout')}}"/>
         </x-sidebar.menu>
     @endverified
-    <main class="" role="main" style="max-height: 100vh; max-width: 100vw">
+    <main role="main"
+          style="max-height: 100vh; max-width: 100vw">
         @yield('content')
     </main>
 </div>

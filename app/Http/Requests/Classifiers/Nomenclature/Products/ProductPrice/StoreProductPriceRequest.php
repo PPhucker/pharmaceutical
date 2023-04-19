@@ -37,6 +37,7 @@ class StoreProductPriceRequest extends FormRequest
                 'numeric',
                 Rule::unique('product_prices', 'organization_id')
                 ->where('organization_id', $this->input($prefix . 'organization_id'))
+                ->where('product_catalog_id', $this->input($prefix . 'product_catalog_id'))
             ],
             $prefix . 'retail_price' => [
                 'required',

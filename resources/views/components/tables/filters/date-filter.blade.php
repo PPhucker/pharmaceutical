@@ -13,5 +13,8 @@
                class="form-control form-control-sm align-middle"
                id="toDate"
                name="toDate">
+        <span class="input-group-text alert alert-primary mb-0">
+            {{__('filters.date.default')}}
+        </span>
     </div>
 </div>

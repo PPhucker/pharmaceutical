@@ -2,48 +2,15 @@
 
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
+use App\Models\Classifiers\Nomenclature\Products\ProductCatalog as Model;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Products\ProductCatalog as Model;
 use Illuminate\Support\Collection;
 
 class ProductCatalogRepository extends CoreRepository
 {
-
-    /**
-     * @return string
-     */
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getAll()
-    {
-        return $this->clone()
-            ->select(
-                [
-                    'product_catalog.id',
-                    'product_catalog.organization_id',
-                    'product_catalog.place_of_business_id',
-                    'product_catalog.product_id',
-                    'product_catalog.GTIN',
-                    'product_catalog.deleted_at',
-                ]
-            )
-            ->withTrashed()
-            ->with('endProduct:id,full_name')
-            ->with('organization:id,name')
-            ->with('placeOfBusiness:id,address')
-            ->get()
-            ->sortBy('endProduct.full_name')
-            ->sortBy('organization.name');
-    }
 
     public function getForEdit(int $id)
     {
@@ -101,5 +68,137 @@ class ProductCatalogRepository extends CoreRepository
                 'organizations' => (new OrganizationRepository())->getAll(),
             ]
         );
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAll()
+    {
+        return $this->clone()
+            ->select(
+                [
+                    'product_catalog.id',
+                    'product_catalog.organization_id',
+                    'product_catalog.place_of_business_id',
+                    'product_catalog.product_id',
+                    'product_catalog.GTIN',
+                    'product_catalog.deleted_at',
+                ]
+            )
+            ->withTrashed()
+            ->with('endProduct:id,full_name')
+            ->with('organization:id,name')
+            ->with('placeOfBusiness:id,address')
+            ->get()
+            ->sortBy('endProduct.full_name')
+            ->sortBy('organization.name');
+    }
+
+    /**
+     * @param float $nds
+     * @param array $invoiceProducts
+     *
+     * @return Collection
+     */
+    public function getForInvoiceForPayment(float $nds = 0, array $invoiceProducts = [])
+    {
+        $catalog = $this->clone()
+            ->select(
+                [
+                    'product_catalog.id',
+                    'product_catalog.organization_id',
+                    'product_catalog.place_of_business_id',
+                    'product_catalog.product_id',
+                    'product_catalog.GTIN',
+                ]
+            );
+
+        if ($nds) {
+            $catalog->whereHas(
+                'prices',
+                static function ($query) use ($nds) {
+                    $query->where('nds', '=', $nds);
+                }
+            );
+        }
+
+        if ($invoiceProducts) {
+            $catalog->whereNotIn('product_catalog.id', $invoiceProducts);
+        }
+
+        $catalog->with(
+            [
+                'endProduct' => static function ($query) {
+                    $query->select(
+                        'id',
+                        'short_name',
+                        'type_id',
+                    )
+                        ->with('type:id,color');
+                },
+            ]
+        );
+
+        return $catalog->with(
+            [
+                'organization:id,name',
+                'placeOfBusiness:id,address',
+            ]
+        )
+            ->get()
+            ->sortBy('endProduct.short_name')
+            ->sortBy('organization.name');
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Collection
+     */
+    public function getPriceList(int $id, int $quantity)
+    {
+        $productCatalog = $this->clone()->find($id);
+
+        $priceList = $productCatalog->prices->where(
+            'organization_id',
+            $productCatalog->organization_id
+        )
+            ->first();
+
+        $nds = $priceList ? $priceList->nds : 0;
+
+        if (!$priceList) {
+            return collect(
+                [
+                    'price' => 0,
+                    'nds' => $nds
+                ]
+            );
+        }
+
+        if ($quantity < $priceList->trade_quantity) {
+            return collect(
+                [
+                    'price' => $priceList->retail_price,
+                    'nds' => $nds,
+                ]
+            );
+        }
+
+        return collect(
+            [
+                'price' => $priceList->trade_price,
+                'nds' => $nds,
+            ]
+        );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }
