@@ -44,7 +44,8 @@
                                           title="{{__('sidebar.account.logout')}}"/>
         </x-sidebar.menu>
     @endverified
-    <main class="" role="main" style="max-height: 100vh; max-width: 100vw">
+    <main role="main"
+          style="max-height: 100vh; max-width: 100vw">
         @yield('content')
     </main>
 </div>
