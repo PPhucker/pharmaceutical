@@ -2,7 +2,7 @@
 
 namespace App\Traits\Organizations\BankAccountDetails\Documents;
 
-use App\Models\Documents\InvoiceForPayment;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasDocuments

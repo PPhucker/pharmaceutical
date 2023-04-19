@@ -2,7 +2,7 @@
 
 namespace App\Traits\Contractors\PlacesOfBusiness\Documents;
 
-use App\Models\Documents\InvoiceForPayment;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 
 trait HasDocuments
 {
