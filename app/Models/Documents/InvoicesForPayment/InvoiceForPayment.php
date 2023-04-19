@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Documents;
+namespace App\Models\Documents\InvoicesForPayment;
 
 use App\Models\Auth\User;
 use App\Traits\Documents\InvoicesForPayment\HasContractor;
@@ -8,6 +8,7 @@ use App\Traits\Documents\InvoicesForPayment\HasOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -50,15 +51,34 @@ class InvoiceForPayment extends Model
             ->withTrashed();
     }
 
+    /**
+     * @param $date
+     *
+     * @return string
+     */
     public function getUpdatedAtAttribute($date)
     {
         return Carbon::parse($date)
             ->format('d.m.Y H:i');
     }
 
+    /**
+     * @param $date
+     *
+     * @return string
+     */
     public function getDateAttribute($date)
     {
         return Carbon::parse($date)
             ->format('d.m.Y');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function production()
+    {
+        return $this->hasMany(InvoiceForPaymentProduct::class, 'invoice_for_payment_id')
+            ->withTrashed();
     }
 }

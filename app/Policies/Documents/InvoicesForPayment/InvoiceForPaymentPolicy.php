@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Policies\Documents;
+namespace App\Policies\Documents\InvoicesForPayment;
 
 use App\Models\Auth\User;
-use App\Models\Documents\InvoiceForPayment;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class InvoiceForPaymentPolicy

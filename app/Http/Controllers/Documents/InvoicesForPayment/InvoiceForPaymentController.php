@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Documents;
+namespace App\Http\Controllers\Documents\InvoicesForPayment;
 
 use App\Helpers\Date;
+use App\Helpers\Documents\InvoiceForPaymentCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\InvoiceForPayment\IndexInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoiceForPayment\StoreInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoiceForPayment\UpdateInvoiceForPaymentRequest;
 use App\Models\Contractors\Contractor;
-use App\Models\Documents\InvoiceForPayment;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
-use App\Repositories\Documents\InvoiceForPaymentRepository;
+use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -117,9 +119,13 @@ class InvoiceForPaymentController extends CoreController
      */
     public function show(InvoiceForPayment $invoiceForPayment)
     {
+        $creator = new InvoiceForPaymentCreator($invoiceForPayment);
+
+        $data = $creator->getData();
+
         return view(
             'documents.invoices-for-payment.show',
-            compact('invoiceForPayment')
+            compact('invoiceForPayment', 'data')
         );
     }
 
@@ -134,9 +140,21 @@ class InvoiceForPaymentController extends CoreController
     {
         $invoiceForPayment = $this->repository->getForEdit($invoiceForPayment->id);
 
+        $invoiceProducts = $invoiceForPayment->production;
+
+        if (count($invoiceProducts) > 0) {
+            $production = (new ProductCatalogRepository())
+                ->getForInvoiceForPayment(
+                    (float)$invoiceProducts->first()->nds,
+                    $invoiceProducts->pluck('product_catalog_id')->toArray()
+                );
+        } else {
+            $production = (new ProductCatalogRepository())->getForInvoiceForPayment();
+        }
+
         return view(
             'documents.invoices-for-payment.edit',
-            compact('invoiceForPayment')
+            compact('invoiceForPayment', 'production')
         );
     }
 

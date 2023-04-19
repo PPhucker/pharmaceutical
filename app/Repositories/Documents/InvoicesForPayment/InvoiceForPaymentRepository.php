@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\Documents;
+namespace App\Repositories\Documents\InvoicesForPayment;
 
-use App\Models\Documents\InvoiceForPayment as Model;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment as Model;
 use App\Repositories\CoreRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -130,6 +130,50 @@ class InvoiceForPaymentRepository extends CoreRepository
                     )
                         ->with('bankClassifier:BIC,name');
                 },
+                'production' => static function ($query) {
+                    $query->select(
+                        [
+                            'id',
+                            'product_catalog_id',
+                            'invoice_for_payment_id',
+                            'quantity',
+                            'price',
+                            'nds',
+                            'deleted_at',
+                        ]
+                    )
+                        ->with(
+                            [
+                                'productCatalog' => static function ($query) {
+                                    $query->select(
+                                        [
+                                            'id',
+                                            'product_id',
+                                            'organization_id',
+                                            'place_of_business_id'
+                                        ]
+                                    )
+                                        ->with(
+                                            [
+                                                'endProduct' => static function ($query) {
+                                                    $query->select(
+                                                        [
+                                                            'id',
+                                                            'short_name',
+                                                            'okei_code',
+                                                        ]
+                                                    )
+                                                        ->with('okei:code,symbol');
+                                                },
+                                                'organization:id,name',
+                                                'placeOfBusiness:id,address'
+                                            ]
+                                        );
+                                }
+                            ]
+                        )
+                        ->orderBy('product_catalog_id');
+                }
             ]
         );
 
