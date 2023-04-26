@@ -13,29 +13,12 @@ use App\Repositories\Classifiers\LegalFormRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 class OrganizationController extends CoreController
 {
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Organization::class, 'organization');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return OrganizationRepository::class;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -52,23 +35,6 @@ class OrganizationController extends CoreController
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function create()
-    {
-        $legalForms = (new LegalFormRepository())->getAll();
-
-        return view(
-            'admin.organizations.create',
-            compact('legalForms')
-        );
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param Organization $organization
@@ -78,7 +44,7 @@ class OrganizationController extends CoreController
     public function show(Organization $organization)
     {
         return new JsonResponse(
-            ['organization' => $this->repository->getForEdit($organization->id)],
+            ['organization' => $this->repository->getById($organization->id)],
             200
         );
     }
@@ -120,6 +86,23 @@ class OrganizationController extends CoreController
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function create()
+    {
+        $legalForms = (new LegalFormRepository())->getAll();
+
+        return view(
+            'admin.organizations.create',
+            compact('legalForms')
+        );
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param Organization $organization
@@ -130,7 +113,7 @@ class OrganizationController extends CoreController
      */
     public function edit(Organization $organization)
     {
-        $organization = $this->repository->getForEdit($organization->id);
+        $organization = $this->repository->getById($organization->id);
         $legalForms = (new LegalFormRepository())->getAll();
         $banks = (new BankRepository())->getAll();
         $employees = Staff::STAFF;
@@ -218,5 +201,21 @@ class OrganizationController extends CoreController
                 'success',
                 __($key, ['name' => "$organization->legal_form_type $organization->name"])
             );
+    }
+
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(Organization::class, 'organization');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepository()
+    {
+        return OrganizationRepository::class;
     }
 }
