@@ -184,11 +184,14 @@ return [
         App\Providers\Contractors\OrganizationServiceProvider::class,
         App\Providers\Contractors\ContractorServiceProvider::class,
 
+        //Nomenclature
         App\Providers\Nomenclature\ProductProvider::class,
         App\Providers\Nomenclature\OKEIProvider::class,
         App\Providers\Nomenclature\MaterialProvider::class,
 
+        //Documents
         App\Providers\Documents\InvoiceForPaymentProvider::class,
+        App\Providers\Documents\ShipmentProvider::class,
     ],
 
     /*
