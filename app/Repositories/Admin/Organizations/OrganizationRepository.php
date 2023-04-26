@@ -57,7 +57,7 @@ class OrganizationRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForEdit($id)
+    public function getById($id)
     {
         $organization = $this->model::find($id);
 
