@@ -138,7 +138,7 @@ class InvoiceForPaymentController extends CoreController
      */
     public function edit(InvoiceForPayment $invoiceForPayment)
     {
-        $invoiceForPayment = $this->repository->getForEdit($invoiceForPayment->id);
+        $invoiceForPayment = $this->repository->getById($invoiceForPayment->id);
 
         $invoiceProducts = $invoiceForPayment->production;
 
