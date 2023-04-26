@@ -60,7 +60,7 @@ class InvoiceForPaymentRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForEdit(int $id)
+    public function getById(int $id)
     {
         $invoice = $this->model::find($id);
 
@@ -161,9 +161,15 @@ class InvoiceForPaymentRepository extends CoreRepository
                                                             'id',
                                                             'short_name',
                                                             'okei_code',
+                                                            'type_id',
                                                         ]
                                                     )
-                                                        ->with('okei:code,symbol');
+                                                        ->with(
+                                                            [
+                                                                'okei:code,symbol',
+                                                                'type:id,color',
+                                                            ]
+                                                        );
                                                 },
                                                 'organization:id,name',
                                                 'placeOfBusiness:id,address'
