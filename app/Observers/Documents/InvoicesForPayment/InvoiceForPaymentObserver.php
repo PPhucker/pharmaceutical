@@ -49,6 +49,18 @@ class InvoiceForPaymentObserver
                 $item->delete();
             }
         }
+
+        /**
+         * Удаление товарной накладной при удалении счета на оплату
+         */
+        foreach ($invoiceForPayment->packingListProdiction as $packingListProduct) {
+            $packingList = $packingListProduct->packingList;
+            if ($packingList->trashed()) {
+                continue;
+            }
+            $packingList->delete();
+        }
+
         Logger::userActionNotice('destroy', $invoiceForPayment);
     }
 
@@ -65,6 +77,17 @@ class InvoiceForPaymentObserver
             foreach ($invoiceForPayment->$relation()->get() as $item) {
                 $item->restore();
             }
+        }
+
+        /**
+         * Удаление товарной накладной при удалении счета на оплату
+         */
+        foreach ($invoiceForPayment->packingListProdiction as $packingListProduct) {
+            $packingList = $packingListProduct->packingList;
+            if (!$packingList->trashed()) {
+                continue;
+            }
+            $packingList->restore();
         }
         Logger::userActionNotice('restore', $invoiceForPayment);
     }
