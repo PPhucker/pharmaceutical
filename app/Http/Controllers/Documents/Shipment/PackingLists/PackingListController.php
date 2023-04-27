@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Documents\Shipment\PackingLists;
 
 use App\Helpers\Date;
+use App\Helpers\Documents\Shipment\PackingListCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\Shipment\PackingList\CreatePackingListRequest;
@@ -169,7 +170,14 @@ class PackingListController extends CoreController
      */
     public function show(PackingList $packingList)
     {
-        //
+        $creator = new PackingListCreator($packingList);
+
+        $data = $creator->getData();
+
+        return view(
+            'documents.shipment.packing-lists.show',
+            compact('packingList', 'data')
+        );
     }
 
     /**
