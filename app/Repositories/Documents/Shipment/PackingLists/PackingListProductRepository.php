@@ -33,6 +33,59 @@ class PackingListProductRepository extends CoreRepository
     }
 
     /**
+     * @param int $id
+     *
+     * @return Collection
+     */
+    public function getFullInfo(int $id)
+    {
+        $packingListProduct = $this->model::find($id);
+
+        $packingListProduct->load(
+            [
+                'productCatalog' => static function ($query) {
+                    $query->select(
+                        [
+                            'id',
+                            'product_id',
+                            'GTIN'
+                        ]
+                    )
+                        ->with(
+                            [
+                                'endProduct' => static function ($query) {
+                                    $query->select(
+                                        [
+                                            'id',
+                                            'international_name_id',
+                                            'registration_number_id',
+                                            'okei_code',
+                                            'okpd2_code',
+                                            'full_name',
+                                            'best_before_date',
+                                        ]
+                                    )
+                                        ->with(
+                                            [
+                                                'internationalName:id,name',
+                                                'registrationNumber:id,number',
+                                                'okei:code,unit,symbol',
+                                                'okpd2:code,name',
+
+                                            ]
+                                        );
+                                },
+                            ]
+                        );
+                },
+            ]
+        )
+            ->first();
+
+        return $packingListProduct;
+    }
+
+    /**
      * @return string
      */
     protected function getModelClass()
