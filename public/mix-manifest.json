@@ -1,7 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/css/invoice_for_payment.css": "/css/invoice_for_payment.css",
+    "/css/templates/documents/shipment/packing_list.css": "/css/templates/documents/shipment/packing_list.css",
+    "/css/templates/documents/invoice_for_payment.css": "/css/templates/documents/invoice_for_payment.css",
     "/js/app.min.js": "/js/app.min.js",
     "/css/app.min.css": "/css/app.min.css"
 }
