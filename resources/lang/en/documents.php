@@ -34,7 +34,7 @@ return [
             ],
         ],
         'buttons' => [
-            'create' => 'Create Invoice'
+            'create_based_on' => 'Create based on',
         ],
         'titles' => [
             'create' => 'Invoicing for payment',
@@ -63,6 +63,82 @@ return [
                 'restore' => [
                     'success' => 'Product :name restored successfully',
                 ],
+            ],
+        ],
+    ],
+    'shipment' => [
+        'shipment' => 'Shipment',
+        'invoice_for_payment_id' => 'Invoice for payment',
+        'number' => 'Number',
+        'date' => 'Data',
+        'organization_id' => 'Supplier',
+        'organization_place_id' => 'Shipper`s address',
+        'organization_bank_id' => 'Supplier details',
+        'contractor_id' => 'Buyer',
+        'contractor_place_id' => 'Consingee address',
+        'contractor_bank_id' => 'Buyer address',
+        'director' => 'Director',
+        'bookkeeper' => 'Bookkeeper',
+        'storekeeper' => 'Storekeeper',
+        'filename' => 'File',
+        'approved' => 'Appoved',
+        'comment' => 'Comment',
+        'packing_lists' => [
+            'packing_lists' => 'Packing lists',
+            'packing_list' => 'Packing list',
+            'errors' => [
+                'invoice_for_payment_id' => 'You must select at least one invoice for payment',
+                'organization_id' => 'Different suppliers on invoices for payment',
+                'contractor_id' => 'Different buyers on invoices for payment',
+            ],
+            'titles' => [
+                'create' => 'Create a packing list',
+            ],
+            'warning' => 'Attention! When deleting a packing list, the entire package of shipping documents is automatically deleted!',
+            'actions' => [
+                'create' => [
+                    'success' => 'Packing list :number created successfully',
+                    'fail' => 'Failed to create packing list',
+                ],
+                'update' => [
+                    'success' => 'Packing list :number updated successfully',
+                    'fail' => 'Failed to update packing list',
+                ],
+                'delete' => [
+                    'success' => 'Packing list :number deleted successfully'
+                ],
+                'restore' => [
+                    'success' => 'Packing list :number restored successfully'
+                ],
+            ],
+            'data' => [
+                'actions' => [
+                    'create' => [
+                        'success' => 'Product :name successfully added to the packing list',
+                        'fail' => 'Failed to add product to packing list',
+                    ],
+                    'update' => [
+                        'success' => 'Packing list products updated successfully',
+                        'fail' => 'Failed to update packing list products',
+                    ],
+                    'delete' => [
+                        'success' => 'Product :name was successfully removed from the packing list',
+                    ],
+                    'restore' => [
+                        'success' => 'Product :name restored successfully',
+                    ],
+                ],
+            ],
+        ],
+        'data' => [
+            'production' => 'Production',
+            'product_catalog_id' => 'Fullname',
+            'series' => 'Series',
+            'quantity' => 'Quantity',
+            'price' => 'Price with VAT',
+            'nds' => 'VAT',
+            'titles' => [
+                'choose_products' => '`Select products from invoices for payment`',
             ],
         ],
     ],
