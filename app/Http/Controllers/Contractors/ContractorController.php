@@ -112,7 +112,7 @@ class ContractorController extends CoreController
      */
     public function edit(Contractor $contractor)
     {
-        $contractor = $this->repository->getForEdit($contractor->id);
+        $contractor = $this->repository->getById($contractor->id);
         $legalForms = (new LegalFormRepository())->getAll();
         $banks = (new BankRepository())->getAll();
 

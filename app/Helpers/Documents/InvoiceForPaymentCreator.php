@@ -2,9 +2,6 @@
 
 namespace App\Helpers\Documents;
 
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Contractors\Contractor;
-use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Contractors\ContractorRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
@@ -12,15 +9,6 @@ use Illuminate\Support\Str;
 
 class InvoiceForPaymentCreator extends Creator
 {
-    /**
-     * @var InvoiceForPayment
-     */
-    private $invoiceForPayment;
-
-    public function __construct(InvoiceForPayment $invoiceForPayment)
-    {
-        $this->invoiceForPayment = $invoiceForPayment;
-    }
 
     /**
      * @return object
@@ -28,27 +16,27 @@ class InvoiceForPaymentCreator extends Creator
     public function getData()
     {
         $organizationAccountDetails = $this->getOrganizationAccountDetails(
-            $this->invoiceForPayment->organizationBankAccountDetail
+            $this->document->organizationBankAccountDetail
         );
         $contractorAccountDetails = $this->getContractorAccountDetails(
-            $this->invoiceForPayment->contractorBankAccountDetail
+            $this->document->contractorBankAccountDetail
         );
 
-        $organization = $this->invoiceForPayment->organization;
-        $contractor = $this->invoiceForPayment->contractor;
+        $organization = $this->document->organization;
+        $contractor = $this->document->contractor;
 
         $production = $this->getProduction();
 
         return (object)
         [
-            'invoice' => $this->getInvoiceForPayment($this->invoiceForPayment),
+            'invoice' => $this->getInvoiceForPayment($this->document),
             'production' => $production,
             'total' => $this->getTotal(),
             'contractor' =>
                 (object)[
                     'bank' => $contractorAccountDetails,
-                    'buyer' => $this->getBuyerField($contractor),
-                    'consignee' => $this->getConsigneeField($contractor),
+                    'buyer' => $this->getBuyerField(),
+                    'consignee' => $this->getConsigneeField(),
                 ],
             'organization' =>
                 (object)[
@@ -60,11 +48,11 @@ class InvoiceForPaymentCreator extends Creator
                         'full' => $organization->legalForm->decoding,
                     ],
                     'name' => $organization->name,
-                    'supplier' => $this->getSupplierField($organization),
-                    'shipper' => $this->getShipperField($organization),
+                    'supplier' => $this->getSupplierField(),
+                    'shipper' => $this->getShipperField(),
                 ],
-            'director' => $this->invoiceForPayment->director,
-            'bookkeeper' => $this->invoiceForPayment->bookkeeper,
+            'director' => $this->document->director,
+            'bookkeeper' => $this->document->bookkeeper,
         ];
     }
 
@@ -77,7 +65,7 @@ class InvoiceForPaymentCreator extends Creator
 
         foreach (
             (new InvoiceForPaymentProductRepository())
-                ->getInvoiceForPaymentProduction($this->invoiceForPayment->id) as $key => $invoiceProduct
+                ->getInvoiceForPaymentProduction($this->document->id) as $key => $invoiceProduct
         ) {
             $endProduct = $invoiceProduct->productCatalog->endProduct;
             $production[] = (object)[
@@ -108,7 +96,7 @@ class InvoiceForPaymentCreator extends Creator
         $nds = 0;
 
         foreach (
-            $invoiceProduction = $this->invoiceForPayment->production()->withoutTrashed()->get() as $invoiceProduct
+            $invoiceProduction = $this->document->production()->withoutTrashed()->get() as $invoiceProduct
         ) {
             $sum = $invoiceProduct->price * $invoiceProduct->quantity;
             $total += $sum;
@@ -126,13 +114,16 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
-     * @param Contractor $contractor
-     *
      * @return string
      */
-    protected function getBuyerField(Contractor $contractor)
+    protected function getBuyerField()
     {
-        $registered = (new ContractorRepository())->getRegisteredAddress($contractor->id);
+        $contractor = $this->document->contractor;
+
+        $registered = (new ContractorRepository())
+            ->getRegisteredAddress(
+                $contractor->id
+            );
 
         return $contractor->legalForm->abbreviation
             . ' '
@@ -150,13 +141,12 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
-     * @param Contractor $contractor
-     *
      * @return string
      */
-    protected function getConsigneeField(Contractor $contractor)
+    protected function getConsigneeField()
     {
-        $placeOfBusiness = $this->invoiceForPayment->contractorPlaceOfBusiness;
+        $contractor = $this->document->contractor;
+        $placeOfBusiness = $this->document->contractorPlaceOfBusiness;
 
         return $contractor->legalForm->abbreviation
             . ' '
@@ -174,13 +164,14 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
-     * @param Organization $organization
-     *
      * @return string
      */
-    protected function getSupplierField(Organization $organization)
+    protected function getSupplierField()
     {
-        $registered = (new OrganizationRepository())->getRegisteredAddress($organization->id);
+        $organization = $this->document->organization;
+
+        $registered = (new OrganizationRepository())
+            ->getRegisteredAddress($organization->id);
 
         return $organization->legalForm->abbreviation
             . ' '
@@ -198,13 +189,12 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
-     * @param Organization $organization
-     *
      * @return string
      */
-    protected function getShipperField(Organization $organization)
+    protected function getShipperField()
     {
-        $organizationPlaceOfBusiness = $this->invoiceForPayment->organizationPlaceOfBusiness;
+        $organization = $this->document->organization;
+        $placeOfBusiness = $this->document->organizationPlaceOfBusiness;
 
         return $organization->legalForm->abbreviation
             . ' '
@@ -214,9 +204,9 @@ class InvoiceForPaymentCreator extends Creator
             . ', КПП '
             . $organization->kpp
             . ', '
-            . $organizationPlaceOfBusiness->index
+            . $placeOfBusiness->index
             . ', '
-            . $organizationPlaceOfBusiness->address
+            . $placeOfBusiness->address
             . ', тел.: '
             . $organization->contacts;
     }

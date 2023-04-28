@@ -60,6 +60,7 @@ class PlaceOfBusinessRepository extends CoreRepository
                 [
                     'director' => '',
                     'bookkeeper' => '',
+                    'storekeeper' => ''
                 ]
             );
         }
@@ -74,6 +75,11 @@ class PlaceOfBusinessRepository extends CoreRepository
                 'bookkeeper' => $place
                     ->staff
                     ->where('post', 'bookkeeper')
+                    ->first()
+                    ->name,
+                'storekeeper' => $place
+                    ->staff
+                    ->where('post', 'storekeeper')
                     ->first()
                     ->name,
             ]

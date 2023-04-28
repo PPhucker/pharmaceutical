@@ -46,7 +46,7 @@ class ContractorRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForEdit(int $id)
+    public function getById(int $id)
     {
         $contractor = $this->model::find($id);
 

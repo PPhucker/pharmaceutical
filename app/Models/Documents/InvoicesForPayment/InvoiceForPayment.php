@@ -3,6 +3,7 @@
 namespace App\Models\Documents\InvoicesForPayment;
 
 use App\Models\Auth\User;
+use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Traits\Documents\InvoicesForPayment\HasContractor;
 use App\Traits\Documents\InvoicesForPayment\HasOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -79,6 +80,15 @@ class InvoiceForPayment extends Model
     public function production()
     {
         return $this->hasMany(InvoiceForPaymentProduct::class, 'invoice_for_payment_id')
+            ->withTrashed();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function packingListProdiction()
+    {
+        return $this->hasMany(PackingListProduct::class, 'invoice_for_payment_id')
             ->withTrashed();
     }
 }

@@ -41,6 +41,16 @@ class InvoiceForPaymentProductRepository extends CoreRepository
                                 ]
                             );
                     },
+                    'invoiceForPayment' => static function ($query) {
+                        $query->select(
+                            [
+                                'id',
+                                'number',
+                                'date'
+                            ]
+                        )
+                            ->get();
+                    },
                 ]
             )
             ->orderBy('documents_invoices_for_payment_production.id')

@@ -9,6 +9,7 @@ return [
         'open'=> 'Open',
         'print' => 'Print',
         'back' => 'Back',
+        'create' => 'Create',
     ],
     'titles' => [
         'add' => 'Add',

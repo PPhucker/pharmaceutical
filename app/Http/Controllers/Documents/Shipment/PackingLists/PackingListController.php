@@ -1,0 +1,317 @@
+<?php
+
+namespace App\Http\Controllers\Documents\Shipment\PackingLists;
+
+use App\Helpers\Date;
+use App\Helpers\Documents\Shipment\PackingListCreator;
+use App\Helpers\File;
+use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\Shipment\PackingList\CreatePackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingList\IndexPackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingList\StorePackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingList\UpdatePackingListRequest;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
+use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
+use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
+use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
+use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+
+class PackingListController extends CoreController
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return View
+     */
+    public function index(IndexPackingListRequest $request)
+    {
+        $validated = $request->validated();
+
+        $date = Date::filter($request);
+
+        $fromDate = $date->get('fromDate');
+        $toDate = $date->get('toDate');
+
+        $filters = [
+            'organization_id' => $validated['organization_id'] ?? null,
+            'from_date' => $fromDate,
+            'to_date' => $toDate,
+        ];
+
+        $organizations = (new OrganizationRepository())->getAll();
+        $packingLists = $this->repository->getAll($filters);
+
+        return view(
+            'documents.shipment.packing-lists.index',
+            compact(
+                'packingLists',
+                'organizations',
+                'fromDate',
+                'toDate',
+            )
+        );
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param StorePackingListRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function store(StorePackingListRequest $request)
+    {
+        $validated = $request->validated();
+
+        $packingList = PackingList::create(
+            [
+                'created_by_id' => Auth::user()->id,
+                'updated_by_id' => Auth::user()->id,
+                'organization_id' => (int)$validated['organization_id'],
+                'organization_place_id' => (int)$validated['organization_place_id'],
+                'organization_bank_id' => (int)$validated['organization_bank_id'],
+                'contractor_id' => (int)$validated['contractor_id'],
+                'contractor_place_id' => (int)$validated['contractor_place_id'],
+                'contractor_bank_id' => (int)$validated['contractor_bank_id'],
+                'number' => $validated['number'],
+                'date' => $validated['date'],
+                'director' => $validated['director'],
+                'bookkeeper' => $validated['bookkeeper'],
+                'storekeeper' => $validated['storekeeper'],
+            ]
+        );
+
+        foreach ($validated['invoice_for_payment_product'] as $product) {
+            PackingListProduct::create(
+                [
+                    'user_id' => Auth::user()->id,
+                    'invoice_for_payment_id' => (int)$product['invoice_for_payment_id'],
+                    'packing_list_id' => (int)$packingList->id,
+                    'product_id' => (int)$product['product_catalog_id'],
+                    'series' => $product['series'],
+                    'price' => (float)$product['price'],
+                    'quantity' => (int)$product['quantity'],
+                    'nds' => (int)$product['nds'] / 100,
+                ]
+            );
+        }
+
+        return redirect()
+            ->route(
+                'packing_lists.edit',
+                ['packing_list' => $packingList->id]
+            )
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.packing_lists.actions.create.success',
+                    ['number' => $packingList->number]
+                )
+            );
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param CreatePackingListRequest $request
+     *
+     * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function create(CreatePackingListRequest $request)
+    {
+        $validated = $request->validated()['invoice_for_payment_id'];
+
+        $organization = null;
+        $contractor = null;
+        $production = [];
+
+        foreach ($validated as $invoiceForPaymentId) {
+            $invoiceForPayment = InvoiceForPayment::find($invoiceForPaymentId);
+            $production[] = (new InvoiceForPaymentProductRepository())
+                ->getInvoiceForPaymentProduction($invoiceForPaymentId);
+            if (!$organization) {
+                $organization = (new OrganizationRepository())
+                    ->getById($invoiceForPayment->organization->id);
+                $contractor = (new ContractorRepository())
+                    ->getById($invoiceForPayment->contractor->id);
+            }
+        }
+
+        $series = (new PackingListProductRepository())->getSeriesNumbers();
+
+        return view(
+            'documents.shipment.packing-lists.create',
+            compact(
+                'organization',
+                'contractor',
+                'production',
+                'series'
+            )
+        );
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param PackingList $packingList
+     *
+     * @return View
+     */
+    public function show(PackingList $packingList)
+    {
+        $creator = new PackingListCreator($packingList);
+
+        $data = $creator->getData();
+
+        return view(
+            'documents.shipment.packing-lists.show',
+            compact('packingList', 'data')
+        );
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param PackingList $packingList
+     *
+     * @return View
+     */
+    public function edit(PackingList $packingList)
+    {
+        $packingList = $this->repository->getById($packingList->id);
+
+        $invoicesForPaymentProduction = [];
+        $invoicesForPaymentId = [];
+
+        foreach ($packingList->production as $product) {
+            $invoicesForPaymentId[] = $product->invoice_for_payment_id;
+        }
+
+        foreach (array_unique($invoicesForPaymentId) as $invoiceForPaymentId) {
+            $invoiceForPayment = (new InvoiceForPaymentRepository())->getById($invoiceForPaymentId);
+            $invoicesForPaymentProduction[] = $invoiceForPayment->production;
+        }
+
+        return view(
+            'documents.shipment.packing-lists.edit',
+            compact('packingList', 'invoicesForPaymentProduction')
+        );
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param UpdatePackingListRequest $request
+     * @param PackingList              $packingList
+     *
+     * @return RedirectResponse
+     */
+    public function update(UpdatePackingListRequest $request, PackingList $packingList)
+    {
+        $validated = $request->validated();
+
+        $file = $validated['filename'] ?? null;
+
+        $packingList->fill(
+            [
+                'updated_by_id' => Auth::user()->id,
+                'number' => $validated['number'],
+                'date' => $validated['date'],
+                'organization_place_id' => (int)$validated['organization_place_id'],
+                'organization_bank_id' => (int)$validated['organization_bank_id'],
+                'contractor_place_id' => (int)$validated['contractor_place_id'],
+                'contractor_bank_id' => (int)$validated['contractor_bank_id'],
+                'director' => $validated['director'],
+                'bookkeeper' => $validated['bookkeeper'],
+                'storekeeper' => $validated['storekeeper'],
+            ]
+        );
+
+        $packingList->save();
+
+        if ($file) {
+            $fileStorage = $this->repository->getStorage($packingList->id);
+            $directory = $fileStorage->get('directory');
+            $filename = $fileStorage->get('filename');
+            File::attach($directory, $file, $filename);
+            $packingList->filename = $directory . $filename;
+            $packingList->save();
+        }
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.packing_lists.actions.update.success',
+                    ['number' => $packingList->number]
+                )
+            );
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param PackingList $packingList
+     *
+     * @return RedirectResponse
+     */
+    public function destroy(PackingList $packingList)
+    {
+        $packingList->delete();
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.packing_lists.actions.delete.success',
+                    ['number' => $packingList->number]
+                )
+            );
+    }
+
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param PackingList $packingList
+     *
+     * @return RedirectResponse
+     */
+    public function restore(PackingList $packingList)
+    {
+        $packingList->restore();
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.packing_lists.actions.restore.success',
+                    ['number' => $packingList->number]
+                )
+            );
+    }
+
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(PackingList::class, 'packing_list');
+    }
+
+    protected function getRepository()
+    {
+        return PackingListRepository::class;
+    }
+}
