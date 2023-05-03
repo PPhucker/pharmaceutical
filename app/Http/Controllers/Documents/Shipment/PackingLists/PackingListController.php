@@ -6,10 +6,11 @@ use App\Helpers\Date;
 use App\Helpers\Documents\Shipment\PackingListCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Documents\Shipment\PackingList\CreatePackingListRequest;
-use App\Http\Requests\Documents\Shipment\PackingList\IndexPackingListRequest;
-use App\Http\Requests\Documents\Shipment\PackingList\StorePackingListRequest;
-use App\Http\Requests\Documents\Shipment\PackingList\UpdatePackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\CreatePackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\IndexPackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\RedirectPackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\StorePackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\UpdatePackingListRequest;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
@@ -300,6 +301,23 @@ class PackingListController extends CoreController
                     ['number' => $packingList->number]
                 )
             );
+    }
+
+    /**
+     * @param RedirectPackingListRequest $request
+     *
+     * @return RedirectResponse
+     */
+    public function redirect(RedirectPackingListRequest $request)
+    {
+        $validated = $request->validated();
+
+        $document = $validated['document'];
+
+        return redirect()
+            ->route($document . '.create', [
+                'packing_list_id' => $validated['packing_list_id']
+            ]);
     }
 
     /**

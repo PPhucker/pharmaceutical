@@ -86,10 +86,14 @@ return [
         'packing_lists' => [
             'packing_lists' => 'Packing lists',
             'packing_list' => 'Packing list',
+            'buttons' => [
+                'create_based_on' => 'Create based on packing list',
+            ],
             'errors' => [
                 'invoice_for_payment_id' => 'You must select at least one invoice for payment',
                 'organization_id' => 'Different suppliers on invoices for payment',
                 'contractor_id' => 'Different buyers on invoices for payment',
+                'failed_document' => 'Failed to create shipping document',
             ],
             'titles' => [
                 'create' => 'Create a packing list',
@@ -127,6 +131,35 @@ return [
                     'restore' => [
                         'success' => 'Product :name restored successfully',
                     ],
+                ],
+            ],
+        ],
+        'bills' => [
+            'bills' => 'Bills',
+            'bill' => 'Bill',
+            'errors' => [
+                'packing_list_id' => [
+                    'required' => 'You need to select a packing list',
+                    'unique' => 'You can only create one bill per packing list.',
+                ],
+            ],
+            'titles' => [
+                'create' => 'Creating bill',
+            ],
+            'actions' => [
+                'create' => [
+                    'success' => 'Bill №:number created successfully',
+                    'fail' => 'Failed to create bill',
+                ],
+                'update' => [
+                    'success' => 'Bill №:number updated successfully',
+                    'fail' => 'Failed to update bill',
+                ],
+                'delete' => [
+                    'success' => 'Bill №:number deleted successfully'
+                ],
+                'restore' => [
+                    'success' => 'Bill №:number restored successfully'
                 ],
             ],
         ],

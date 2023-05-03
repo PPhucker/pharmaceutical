@@ -11,7 +11,7 @@
 @error('fail')
     <div class="alert alert-danger mb-2" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="16" height="16" role="img" aria-label="Dunger:">
-            <use xlink:href="#check-circle-fill"/>
+            <use xlink:href="#exclamation-triangle-fill"/>
         </svg>
         <small>{{ $message }}</small>
         <button type="button" class="btn-close btn-sm align-middle" data-bs-dismiss="alert"

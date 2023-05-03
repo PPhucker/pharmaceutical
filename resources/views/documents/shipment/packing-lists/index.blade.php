@@ -2,25 +2,25 @@
 @section('content')
     <x-forms.main title="{{__('documents.shipment.packing_lists.packing_lists')}}">
         <x-forms.warning message="{{__('documents.shipment.packing_lists.warning')}}"/>
-       {{-- <form id="form_create_shipment_document"
-              method="GET"
-              action="{{route('packing_lists.create')}}">
+        <form id="form_create_shipment_document"
+              method="POST"
+              action="{{route('packing_lists.redirect')}}">
             @csrf
             <div class="input-group input-group-sm mb-1">
                 <span class="input-group-text">
-                    {{__('documents.invoices_for_payment.buttons.create_based_on')}}
+                    {{__('documents.shipment.packing_lists.buttons.create_based_on')}}
                 </span>
-                <select name="documents"
+                <select name="document"
                         class="form-control form-control-sm text-primary">
-                    <option value="shipping-invoices">
-                        {{__('documents.shipment.packing_lists.packing_list')}}
+                    <option value="bills">
+                        {{__('documents.shipment.bills.bill')}}
                     </option>
                 </select>
                 <button type="submit"
                         class="btn btn-sm btn-primary">
                     {{__('form.button.create')}}
                 </button>
-            </div>--}}
+            </div>
             <x-tables.main id="table_packing_lists"
                            targets="0,-1,-2,-3">
                 <x-slot name="filter">
@@ -138,6 +138,6 @@
                 @endforeach
                 </tbody>
             </x-tables.main>
-        {{--</form>--}}
+        </form>
     </x-forms.main>
 @endsection

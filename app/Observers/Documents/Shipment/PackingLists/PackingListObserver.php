@@ -11,6 +11,10 @@ class PackingListObserver
         'production',
     ];
 
+    private const SHIPMENT_DOCUMENTS = [
+        'bill',
+    ];
+
     /**
      * Handle the PackingList "created" event.
      *
@@ -38,7 +42,7 @@ class PackingListObserver
     /**
      * Handle the PackingList "deleted" event.
      *
-     * @param PackingList  $packingList
+     * @param PackingList $packingList
      *
      * @return void
      */
@@ -49,13 +53,18 @@ class PackingListObserver
                 $item->delete();
             }
         }
+
+        foreach (self::SHIPMENT_DOCUMENTS as $document) {
+            $packingList->$document()->first()->delete();
+        }
+
         Logger::userActionNotice('destroy', $packingList);
     }
 
     /**
      * Handle the PackingList "restored" event.
      *
-     * @param PackingList  $packingList
+     * @param PackingList $packingList
      *
      * @return void
      */
@@ -65,6 +74,10 @@ class PackingListObserver
             foreach ($packingList->$relation()->get() as $item) {
                 $item->restore();
             }
+        }
+
+        foreach (self::SHIPMENT_DOCUMENTS as $document) {
+            $packingList->$document()->first()->restore();
         }
 
         Logger::userActionNotice('restore', $packingList);

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Documents\Shipment\PackingLists;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Documents\Shipment\PackingList\Data\Products\StorePackingListProductRequest;
-use App\Http\Requests\Documents\Shipment\PackingList\Data\Products\UpdatePackingListProductRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\Data\Products\StorePackingListProductRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\Data\Products\UpdatePackingListProductRequest;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;

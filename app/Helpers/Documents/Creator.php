@@ -3,12 +3,17 @@
 namespace App\Helpers\Documents;
 
 use App\Models\Admin\Organizations\BankAccountDetail as OrganizationAccount;
+use App\Models\Admin\Organizations\Organization;
+use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use App\Models\Contractors\BankAccountDetail as ContractorAccount;
+use App\Models\Contractors\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
+use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Contractors\ContractorRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Creator
@@ -35,12 +40,6 @@ class Creator
         'production' => [],
         'total' => self::TOTAL_FIELDS_ON_PAGE,
     ];
-
-    /**
-     * Кол-во продукции на каждой странице документа.
-     */
-    protected const COUNT_PRODUCTS_ON_PAGES = [2, 6];
-
     /**
      * Поля для форматирования.
      */
@@ -51,7 +50,10 @@ class Creator
         'sum_without_nds',
         'sum_nds',
     ];
-
+    /**
+     * Кол-во продукции на каждой странице документа.
+     */
+    protected $countProductsOnPages = [2, 6];
     /**
      * @var mixed
      */
@@ -116,9 +118,7 @@ class Creator
 
         $bank = $this->getOrganizationAccountDetails($this->document->organizationBankAccountDetail);
 
-        return $organization->legalForm->abbreviation
-            . ' '
-            . $organization->name
+        return $this->getOrganizationFullName($organization)
             . ', ИНН '
             . $organization->INN
             . ', '
@@ -158,18 +158,23 @@ class Creator
     /**
      * @return string
      */
+    protected function getOrganizationFullName(Organization $organization)
+    {
+        return $organization->legalForm->abbreviation . ' ' . $organization->name;
+    }
+
+    /**
+     * @return string
+     */
     protected function getSupplierField()
     {
         $organization = $this->document->organization;
 
-        $registered = (new OrganizationRepository())
-            ->getRegisteredAddress($organization->id);
+        $registered = $this->getOrganizationRegisteredAddress($organization);
 
         $bank = $this->getOrganizationAccountDetails($this->document->organizationBankAccountDetail);
 
-        return $organization->legalForm->abbreviation
-            . ' '
-            . $organization->name
+        return $this->getOrganizationFullName($organization)
             . ', ИНН '
             . $organization->INN
             . ', КПП '
@@ -191,6 +196,17 @@ class Creator
     }
 
     /**
+     * @param $organization
+     *
+     * @return Collection|null
+     */
+    protected function getOrganizationRegisteredAddress($organization)
+    {
+        return (new OrganizationRepository())
+            ->getRegisteredAddress($organization->id);
+    }
+
+    /**
      * @return string
      */
     protected function getConsigneeField()
@@ -201,9 +217,7 @@ class Creator
 
         $bank = $this->getContractorAccountDetails($this->document->contractorBankAccountDetail);
 
-        return $contractor->legalForm->abbreviation
-            . ' '
-            . $contractor->name
+        return $this->getContractorFullName($contractor)
             . ', ИНН '
             . $contractor->INN
             . ', '
@@ -243,18 +257,23 @@ class Creator
     /**
      * @return string
      */
+    protected function getContractorFullName(Contractor $contractor)
+    {
+        return $contractor->legalForm->abbreviation . ' ' . $contractor->name;
+    }
+
+    /**
+     * @return string
+     */
     protected function getBuyerField()
     {
         $contractor = $this->document->contractor;
 
-        $registered = (new ContractorRepository())
-            ->getRegisteredAddress($contractor->id);
+        $registered = $this->getContractorRegisteredAddress($contractor);
 
         $bank = $this->getContractorAccountDetails($this->document->contractorBankAccountDetail);
 
-        return $contractor->legalForm->abbreviation
-            . ' '
-            . $contractor->name
+        return $this->getContractorFullName($contractor)
             . ', ИНН '
             . $contractor->INN
             . ', КПП '
@@ -273,6 +292,12 @@ class Creator
             . $bank->BIC
             . ', к/с '
             . $bank->correspondent_account;
+    }
+
+    protected function getContractorRegisteredAddress(Contractor $contractor)
+    {
+        return (new ContractorRepository())
+            ->getRegisteredAddress($contractor->id);
     }
 
     /**
@@ -294,7 +319,7 @@ class Creator
      */
     protected function getProductionOnPage()
     {
-        foreach (self::COUNT_PRODUCTS_ON_PAGES as $page => $count) {
+        foreach ($this->countProductsOnPages as $page => $count) {
             $this->pages[$page] = self::PRODUCTS_ON_PAGE;
         }
 
@@ -306,7 +331,7 @@ class Creator
             /**
              * Если порядковый номер продукта меньше или равен допустимому кол-ву продукции на странице документа.
              */
-            if ($i <= self::COUNT_PRODUCTS_ON_PAGES[$pageKey]) {
+            if ($i <= $this->countProductsOnPages[$pageKey]) {
                 $this->pages[$pageKey]['production'][$i] = $this->getProduct($product->id);
             }
 
@@ -314,7 +339,7 @@ class Creator
              * Если существует следующая страница и порядковый номер продукта больше или равен
              * допустимому кол-ву продукции на странице документа.
              */
-            if (isset($this->pages[$pageKey + 1]) && $i >= self::COUNT_PRODUCTS_ON_PAGES[$pageKey]) {
+            if (isset($this->pages[$pageKey + 1]) && $i >= $this->countProductsOnPages[$pageKey]) {
                 $pageKey++;
             }
         }
@@ -372,9 +397,7 @@ class Creator
         );
 
         return (object)[
-            'full_name' => $endProduct->full_name
-                . ' код ОКПД2 '
-                . $endProduct->okpd2->code,
+            'full_name' => $this->getProductFullName($endProduct, $product),
             'GTIN' => $productCatalog->GTIN,
             'series' => $product->series,
             'best_before_date' => $bestBeforeDate,
@@ -414,6 +437,19 @@ class Creator
         return $seriesDate
             ->addMonths($bestBeforeDateProduct)
             ->format('d.m.Y');
+    }
+
+    /**
+     * @param EndProduct         $endProduct
+     * @param PackingListProduct $packingListProduct
+     *
+     * @return string
+     */
+    protected function getProductFullName(EndProduct $endProduct, PackingListProduct $packingListProduct)
+    {
+        return $endProduct->full_name
+            . ' код ОКПД2 '
+            . $endProduct->okpd2->code;
     }
 
     /**

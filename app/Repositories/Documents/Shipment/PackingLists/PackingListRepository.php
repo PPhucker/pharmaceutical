@@ -33,15 +33,17 @@ class PackingListRepository extends CoreRepository
                 ]
             );
 
+        if (!$withTrashed) {
+            $packingLists->withoutTrashed();
+        } else {
+            $packingLists->withTrashed();
+        }
+
         if (isset($filters['organization_id'])) {
             $packingLists->where(
                 'documents_shipment_packing_lists.organization_id',
                 (int)$filters['organization_id']
             );
-        }
-
-        if (!$withTrashed) {
-            $packingLists->withoutTrashed();
         }
 
         return $packingLists->whereBetween(
