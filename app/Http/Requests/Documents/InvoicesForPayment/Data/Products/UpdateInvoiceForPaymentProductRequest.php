@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Documents\Shipment\PackingList\Data\Products;
+namespace App\Http\Requests\Documents\InvoicesForPayment\Data\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
-use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class StorePackingListProductRequest extends FormRequest
+class UpdateInvoiceForPaymentProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,28 +25,27 @@ class StorePackingListProductRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = 'packing_list_product.';
+        $prefix = 'invoice_for_payment_products.*.';
 
         return [
-            $prefix . 'packing_list_id' => [
+            $prefix . 'id' => [
                 'required',
                 'numeric',
             ],
-            $prefix . 'invoice_for_payment_product_id' => [
+            $prefix . 'product_catalog_id' => [
                 'required',
                 'numeric',
             ],
             $prefix . 'quantity' => [
                 'required',
                 'numeric',
-                'min:1',
                 function ($attribute, $value, $fail) use ($prefix) {
-                    $invoiceProduct = InvoiceForPaymentProduct::find(
-                        (int)$this->input($prefix . 'invoice_for_payment_product_id')
-                    );
+                    $key = (int)mb_substr($attribute, 29, 1);
+
+                    $productCatalogId = (int)$this->input($prefix . 'product_catalog_id')[$key];
 
                     $productCatalog = ProductCatalog::find(
-                        $invoiceProduct->productCatalog->id
+                        $productCatalogId
                     );
 
                     $quantity = $productCatalog->getQuantityInAggregationType('sscc01');
@@ -62,10 +60,13 @@ class StorePackingListProductRequest extends FormRequest
                     }
                 },
             ],
-            $prefix . 'series' => [
+            $prefix . 'nds' => [
                 'required',
                 'numeric',
-                'digits_between:5,7',
+            ],
+            $prefix . 'price' => [
+                'required',
+                'numeric',
             ],
         ];
     }
@@ -81,7 +82,7 @@ class StorePackingListProductRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',
-                    __('documents.shipment.packing_lists.data.actions.create.fail')
+                    __('documents.invoices_for_payment.data.actions.update.fail')
                 );
             }
         });

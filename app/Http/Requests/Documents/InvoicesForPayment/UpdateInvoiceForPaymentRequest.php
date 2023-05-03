@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Documents\InvoiceForPayment;
+namespace App\Http\Requests\Documents\InvoicesForPayment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class StoreInvoiceForPaymentRequest extends FormRequest
+class UpdateInvoiceForPaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class StoreInvoiceForPaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'organization_id' => [
+            'id' => [
                 'required',
                 'numeric',
             ],
@@ -34,10 +34,6 @@ class StoreInvoiceForPaymentRequest extends FormRequest
                 'numeric',
             ],
             'organization_bank_id' => [
-                'required',
-                'numeric',
-            ],
-            'contractor_id' => [
                 'required',
                 'numeric',
             ],
@@ -68,6 +64,12 @@ class StoreInvoiceForPaymentRequest extends FormRequest
                 'string',
                 'max:60',
             ],
+            'filename' => [
+                'nullable',
+                'file',
+                'mimes:pdf',
+                'max:15000',
+            ],
         ];
     }
 
@@ -82,7 +84,7 @@ class StoreInvoiceForPaymentRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',
-                    __('documents.invoices_for_payment.actions.create.fail', ['name' => $this->name])
+                    __('documents.invoices_for_payment.actions.update.fail', ['name' => $this->name])
                 );
             }
         });

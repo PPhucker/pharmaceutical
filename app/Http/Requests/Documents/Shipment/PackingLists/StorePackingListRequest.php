@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Documents\Shipment\PackingList;
+namespace App\Http\Requests\Documents\Shipment\PackingLists;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use Illuminate\Foundation\Http\FormRequest;

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Documents\Shipment\PackingList;
+namespace App\Http\Requests\Documents\Shipment\PackingLists;
 
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
 
 class CreatePackingListRequest extends FormRequest
 {
@@ -69,5 +70,24 @@ class CreatePackingListRequest extends FormRequest
                 'documents.shipment.packing_lists.errors.invoice_for_payment_id'
             ),
         ];
+    }
+
+    /**
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            if ($validator->errors()->isNotEmpty()) {
+                foreach ($validator->errors()->get('invoice_for_payment_id') as $message) {
+                    $validator->errors()->add(
+                        'alert-errors',
+                        $message
+                    );
+                }
+            }
+        });
     }
 }

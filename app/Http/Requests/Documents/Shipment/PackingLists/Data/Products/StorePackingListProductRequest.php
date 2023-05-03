@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Documents\InvoiceForPayment\Data\Products;
+namespace App\Http\Requests\Documents\Shipment\PackingLists\Data\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class UpdateInvoiceForPaymentProductRequest extends FormRequest
+class StorePackingListProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,27 +26,28 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = 'invoice_for_payment_products.*.';
+        $prefix = 'packing_list_product.';
 
         return [
-            $prefix . 'id' => [
+            $prefix . 'packing_list_id' => [
                 'required',
                 'numeric',
             ],
-            $prefix . 'product_catalog_id' => [
+            $prefix . 'invoice_for_payment_product_id' => [
                 'required',
                 'numeric',
             ],
             $prefix . 'quantity' => [
                 'required',
                 'numeric',
+                'min:1',
                 function ($attribute, $value, $fail) use ($prefix) {
-                    $key = (int)mb_substr($attribute, 29, 1);
-
-                    $productCatalogId = (int)$this->input($prefix . 'product_catalog_id')[$key];
+                    $invoiceProduct = InvoiceForPaymentProduct::find(
+                        (int)$this->input($prefix . 'invoice_for_payment_product_id')
+                    );
 
                     $productCatalog = ProductCatalog::find(
-                        $productCatalogId
+                        $invoiceProduct->productCatalog->id
                     );
 
                     $quantity = $productCatalog->getQuantityInAggregationType('sscc01');
@@ -60,13 +62,10 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
                     }
                 },
             ],
-            $prefix . 'nds' => [
+            $prefix . 'series' => [
                 'required',
                 'numeric',
-            ],
-            $prefix . 'price' => [
-                'required',
-                'numeric',
+                'digits_between:5,7',
             ],
         ];
     }
@@ -82,7 +81,7 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',
-                    __('documents.invoices_for_payment.data.actions.update.fail')
+                    __('documents.shipment.packing_lists.data.actions.create.fail')
                 );
             }
         });

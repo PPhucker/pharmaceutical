@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Documents\InvoiceForPayment\Data\Products;
+namespace App\Http\Requests\Documents\Shipment\PackingLists\Data\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class StoreInvoiceForPaymentProductRequest extends FormRequest
+class UpdatePackingListProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,28 +26,28 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
      */
     public function rules()
     {
-        $productCatalog = ProductCatalog::find(
-            (int)$this->input('invoice_for_payment_product.product_catalog_id')
-        );
-
-        $quantity = $productCatalog->getQuantityInAggregationType('sscc01');
-
-        $prefix = 'invoice_for_payment_product.';
+        $prefix = 'packing_list_products.*.';
 
         return [
-            $prefix . 'invoice_for_payment_id' => [
+            $prefix . 'id' => [
                 'required',
-                'numeric',
-            ],
-            $prefix . 'product_catalog_id' => [
-                'required',
-                'numeric',
+                'numeric'
             ],
             $prefix . 'quantity' => [
                 'required',
                 'numeric',
                 'min:1',
-                static function ($attribute, $value, $fail) use ($quantity) {
+                function ($attribute, $value, $fail) use ($prefix) {
+                    $key = (int)mb_substr($attribute, 22, 1);
+
+                    $packingListProduct = PackingListProduct::find((int)$this->input($prefix . 'id')[$key]);
+
+                    $productCatalog = ProductCatalog::find(
+                        $packingListProduct->product_id
+                    );
+
+                    $quantity = $productCatalog->getQuantityInAggregationType('sscc01');
+
                     if ($value % $quantity !== 0) {
                         $fail(
                             __(
@@ -56,6 +57,21 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
                         );
                     }
                 },
+            ],
+            $prefix . 'series' => [
+                'required',
+                'numeric',
+                'digits_between:5,7',
+            ],
+            $prefix . 'price' => [
+                'required',
+                'numeric',
+                'min:1',
+            ],
+            $prefix . 'nds' => [
+                'required',
+                'numeric',
+                'min:1',
             ],
         ];
     }
@@ -71,7 +87,7 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',
-                    __('documents.invoices_for_payment.data.actions.create.fail')
+                    __('documents.shipment.packing_lists.data.actions.update.fail')
                 );
             }
         });

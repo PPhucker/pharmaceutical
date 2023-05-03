@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Documents\Shipment\PackingList;
+namespace App\Http\Requests\Documents\InvoicesForPayment;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IndexPackingListRequest extends FormRequest
+class IndexInvoiceForPaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

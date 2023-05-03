@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Documents\Shipment\PackingList;
+namespace App\Http\Requests\Documents\InvoicesForPayment;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class UpdatePackingListRequest extends FormRequest
+class StoreInvoiceForPaymentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdatePackingListRequest extends FormRequest
     public function rules()
     {
         return [
-            'packing_list_id' => [
+            'organization_id' => [
                 'required',
                 'numeric',
             ],
@@ -34,6 +34,10 @@ class UpdatePackingListRequest extends FormRequest
                 'numeric',
             ],
             'organization_bank_id' => [
+                'required',
+                'numeric',
+            ],
+            'contractor_id' => [
                 'required',
                 'numeric',
             ],
@@ -64,17 +68,6 @@ class UpdatePackingListRequest extends FormRequest
                 'string',
                 'max:60',
             ],
-            'storekeeper' => [
-                'nullable',
-                'string',
-                'max:60',
-            ],
-            'filename' => [
-                'nullable',
-                'file',
-                'mimes:pdf',
-                'max:15000',
-            ],
         ];
     }
 
@@ -89,7 +82,7 @@ class UpdatePackingListRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',
-                    __('documents.shipment.packing_lists.actions.update.fail')
+                    __('documents.invoices_for_payment.actions.create.fail', ['name' => $this->name])
                 );
             }
         });
