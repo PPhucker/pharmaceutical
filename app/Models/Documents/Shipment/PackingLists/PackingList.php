@@ -2,84 +2,46 @@
 
 namespace App\Models\Documents\Shipment\PackingLists;
 
-use App\Traits\Documents\Shipment\HasUser;
+use App\Models\Documents\Shipment\Shipment;
 use App\Traits\Documents\Shipment\PackingLists\HasContractor;
 use App\Traits\Documents\Shipment\PackingLists\HasOrganization;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\Documents\Shipment\PackingLists\HasShipmentDocuments;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 
-class PackingList extends Model
+class PackingList extends Shipment
 {
-    use HasFactory, SoftDeletes, HasOrganization, HasContractor, HasUser;
+    use HasOrganization;
+    use HasContractor;
+    use HasShipmentDocuments;
 
-    public const STORAGE = 'public/documents/shipment/packing_lists';
+    public const STORAGE = self::SHIPMENT_STORAGE . '/packing_lists/';
 
     protected $table = 'documents_shipment_packing_lists';
 
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-        'approved_at',
-    ];
-
-    protected $fillable = [
-        'created_by_id',
-        'updated_by_id',
-        'approved_by_id',
-        'organization_id',
-        'organization_place_id',
-        'organization_bank_id',
-        'contractor_id',
-        'contractor_place_id',
-        'contractor_bank_id',
-        'number',
-        'date',
-        'director',
-        'bookkeeper',
-        'storekeeper',
-        'approved',
-        'comment',
-        'filename',
-    ];
-
     /**
-     * @param $date
+     * @param array $fillable
      *
-     * @return string
+     * @return $this|PackingList
      */
-    public function getUpdatedAtAttribute($date)
+    public function fillable(array $fillable)
     {
-        return Carbon::parse($date)
-            ->format('d.m.Y H:i');
-    }
+        $this->fillable = array_merge(
+            $this->fillable,
+            [
+                'organization_id',
+                'organization_place_id',
+                'organization_bank_id',
+                'contractor_id',
+                'contractor_place_id',
+                'contractor_bank_id',
+                'director',
+                'bookkeeper',
+                'storekeeper',
+            ]
+        );
 
-    /**
-     * @param $date
-     *
-     * @return string
-     */
-    public function getDateAttribute($date)
-    {
-        return Carbon::parse($date)
-            ->format('d.m.Y');
+        return $this;
     }
-
-    /**
-     * @param $date
-     *
-     * @return string
-     */
-    public function getApprovedAtAttribute($date)
-    {
-        return Carbon::parse($date)
-            ->format('d.m.Y H:i:s');
-    }
-
 
     /**
      * @return HasMany
