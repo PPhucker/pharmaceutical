@@ -76,7 +76,7 @@ abstract class ShipmentRepository
         }
 
         $model->whereBetween(
-            'date',
+            $table . '.date',
             [$filters['from_date'], $filters['to_date']]
         );
 
@@ -104,7 +104,7 @@ abstract class ShipmentRepository
                 }
             ]
         )
-            ->orderBy('date', 'desc')
+            ->orderBy($table . '.date', 'desc')
             ->get();
     }
 
