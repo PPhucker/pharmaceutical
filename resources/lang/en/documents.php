@@ -2,6 +2,7 @@
 
 return [
     'header' => 'Document header',
+    'print' => 'Printing Form',
     'invoices_for_payment' => [
         'invoices_for_payment' => 'Invoices For Payment',
         'invoice_for_payment' => 'Invoice For Payment',
@@ -160,6 +161,35 @@ return [
                 ],
                 'restore' => [
                     'success' => 'Bill №:number restored successfully'
+                ],
+            ],
+        ],
+        'appendixes' => [
+            'appendixes' => 'Appendixes',
+            'appendix' => 'Appendix',
+            'errors' => [
+                'packing_list_id' => [
+                    'required' => 'You need to select a packing list',
+                    'unique' => 'Only one appendix can be created based on the packing list',
+                ],
+            ],
+            'titles' => [
+                'create' => 'Creating Appendix',
+            ],
+            'actions' => [
+                'create' => [
+                    'success' => 'Appendix №:number created successfully',
+                    'fail' => 'Не удалось создать приложение',
+                ],
+                'update' => [
+                    'success' => 'Appendix №:number updated successfully',
+                    'fail' => 'Не удалось обновить приложение',
+                ],
+                'delete' => [
+                    'success' => 'Appendix №:number deleted successfully'
+                ],
+                'restore' => [
+                    'success' => 'Appendix №:number restored successfully'
                 ],
             ],
         ],
