@@ -24,6 +24,7 @@ trait HasPackingList
      */
     public function packingList()
     {
-        return $this->belongsTo(PackingList::class, 'packing_list_id');
+        return $this->belongsTo(PackingList::class, 'packing_list_id')
+            ->withTrashed();
     }
 }
