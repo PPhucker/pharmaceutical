@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="d-flex justify-content-center m-3">
+    <div class="{{--d-flex--}} justify-content-center m-3 print">
         <div class="card shadow w-100">
             <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
                 <li class="list-inline-item ms-2">
@@ -43,8 +43,32 @@
                     </a>
                 </li>
             </ul>
-            <div class="card-body p-0">
-                {{$slot}}
+            <div class="card-body print">
+                <div class="card">
+                    <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
+                        <li class="list-inline-item">
+                            <a class="btn-light btn-link"
+                               data-bs-toggle="collapse"
+                               href="#printing-document"
+                               role="button"
+                               aria-expanded="false"
+                               aria-controls="card_main_info"
+                               title="{{__('form.collapse')}}">
+                                <i class="bi bi-card-text text-primary fs-5 align-middle"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <span class="align-middle fw-bold text-primary">
+                                {{__('documents.print')}}
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="show" id="printing-document">
+                        <div class="card-body p-0">
+                            {{$slot}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -58,7 +82,7 @@
         let initialZoom = template.style.zoom;
 
         zoom.oninput = function() {
-            currIEZoom = zoom.value
+            currIEZoom = zoom.value;
             template.style.zoom = ' ' + currIEZoom + '%';
             result.innerHTML = zoom.value + '%';
         };
