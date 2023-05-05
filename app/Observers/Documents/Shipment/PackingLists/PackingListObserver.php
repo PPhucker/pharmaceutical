@@ -13,6 +13,7 @@ class PackingListObserver
 
     private const SHIPMENT_DOCUMENTS = [
         'bill',
+        'appendix',
     ];
 
     /**
