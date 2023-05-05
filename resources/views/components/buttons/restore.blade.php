@@ -1,6 +1,6 @@
 @restoring
 <div>
-    <a class="btn btn-hover"
+    <a class="btn btn-hover @if($disabled) disabled @endif"
        href="{{$route}}"
        onclick="event.preventDefault();document.getElementById('restore-form-{{$itemId}}').submit();"
        title="{{__('datatable.buttons.restore')}}">

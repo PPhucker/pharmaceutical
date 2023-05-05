@@ -15,6 +15,9 @@
                     <option value="bills">
                         {{__('documents.shipment.bills.bill')}}
                     </option>
+                    <option value="appendixes">
+                        {{__('documents.shipment.appendixes.appendix')}}
+                    </option>
                 </select>
                 <button type="submit"
                         class="btn btn-sm btn-primary">

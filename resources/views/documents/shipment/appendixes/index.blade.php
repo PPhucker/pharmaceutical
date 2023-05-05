@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('documents.shipment.bills.bills')}}">
-        <x-tables.main id="table_bills"
+    <x-forms.main title="{{__('documents.shipment.appendixes.appendixes')}}">
+        <x-tables.main id="table_appendixes"
                        targets="0,-1,-2,-3">
             <x-slot name="filter">
                 <div class="list-inline-item">
                     <form></form>
-                    <form action="{{route('bills.index')}}"
+                    <form action="{{route('appendixes.index')}}"
                           method="GET">
                         <x-tables.filters.date-filter fromDate="{{$filters['from_date']}}"
                                                       toDate="{{$filters['to_date']}}"/>
@@ -26,7 +26,7 @@
                         </button>
                     </form>
                 </div>
-                <x-tables.filters.trashed-filter tableId="table_bills"/>
+                <x-tables.filters.trashed-filter tableId="table_appendixes"/>
             </x-slot>
             <thead class="bg-secondary">
             <tr class="text-primary">
@@ -65,48 +65,48 @@
             </tr>
             </thead>
             <tbody class="text-primary">
-            @foreach($bills as $key => $bill)
-                <tr @if($bill->trashed()) class="d-none trashed" @endif>
+            @foreach($appendixes as $key => $appendix)
+                <tr @if($appendix->trashed()) class="d-none trashed" @endif>
                     <td class="align-middle text-center">
-                        {{$bill->packingList->number}}
+                        {{$appendix->packingList->number}}
                     </td>
                     <td class="align-middle text-center">
-                        {{$bill->number}}
+                        {{$appendix->number}}
                     </td>
                     <td class="align-middle text-center">
-                        {{$bill->date}}
+                        {{$appendix->date}}
                     </td>
                     <td class="align-middle">
-                        {{$bill->packingList->organization->legalForm->abbreviation}} {{$bill->packingList->organization->name}}
+                        {{$appendix->packingList->organization->legalForm->abbreviation}} {{$appendix->packingList->organization->name}}
                     </td>
                     <td class="align-middle text-wrap">
-                        {{$bill->packingList->contractor->legalForm->abbreviation}} {{$bill->packingList->contractor->name}}
+                        {{$appendix->packingList->contractor->legalForm->abbreviation}} {{$appendix->packingList->contractor->name}}
                     </td>
                     <td class="align-middle text-wrap">
-                        {{$bill->packingList->contractorPlaceOfBusiness->address}}
+                        {{$appendix->packingList->contractorPlaceOfBusiness->address}}
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.href
-                            route="{{route('bills.show', ['bill' => $bill->id])}}"
+                            route="{{route('appendixes.show', ['appendix' => $appendix->id])}}"
                             title="{{__('form.button.show')}}"
                             icon="bi bi-zoom-in"
-                            disabled="{{$bill->trashed()}}"/>
+                            disabled="{{$appendix->trashed()}}"/>
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.edit
-                            route="{{route('bills.edit', ['bill' => $bill->id])}}"
-                            disabled="{{$bill->trashed()}}"/>
+                            route="{{route('appendixes.edit', ['appendix' => $appendix->id])}}"
+                            disabled="{{$appendix->trashed()}}"/>
                     </td>
                     <x-tables.columns.tbody.delete>
-                        @if($bill->trashed())
+                        @if($appendix->trashed())
                             <x-buttons.restore
-                                route="{{route('bills.restore', ['bill' => $bill->id])}}"
-                                itemId="{{$bill->id}}"
-                                disabled="{{$bill->packingList->trashed()}}"/>
+                                route="{{route('appendixes.restore', ['appendix' => $appendix->id])}}"
+                                itemId="{{$appendix->id}}"
+                                disabled="{{$appendix->packingList->trashed()}}"/>
                         @else
                             <x-buttons.delete
-                                route="{{route('bills.destroy', ['bill' => $bill->id])}}"
-                                itemId="{{$bill->id}}"/>
+                                route="{{route('appendixes.destroy', ['appendix' => $appendix->id])}}"
+                                itemId="{{$appendix->id}}"/>
                         @endif
                     </x-tables.columns.tbody.delete>
                 </tr>

@@ -26,6 +26,12 @@
         visibility: hidden;
     }
 
+    .print {
+        all: initial;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+    }
+
     #document-template {
         visibility: visible;
         margin-top: -20px;

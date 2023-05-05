@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDocumentsShipmentBillsTable extends Migration
+class CreateDocumentsShipmentAppendixesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDocumentsShipmentBillsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents_shipment_bills', static function (Blueprint $table) {
+        Schema::create('documents_shipment_appendixes', static function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('created_by_id')
@@ -78,7 +78,7 @@ class CreateDocumentsShipmentBillsTable extends Migration
         });
 
         DB::statement(
-            "ALTER TABLE `documents_shipment_bills` COMMENT 'Счет-фактуры'"
+            "ALTER TABLE `documents_shipment_appendixes` COMMENT 'Приложения'"
         );
     }
 
@@ -89,6 +89,6 @@ class CreateDocumentsShipmentBillsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents_shipment_bills');
+        Schema::dropIfExists('documents_shipment_appendixes');
     }
 }

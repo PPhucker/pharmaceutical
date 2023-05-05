@@ -91,6 +91,7 @@ abstract class ShipmentRepository
                             'organization_place_id',
                             'contractor_id',
                             'contractor_place_id',
+                            'deleted_at',
                         ]
                     )
                         ->with(

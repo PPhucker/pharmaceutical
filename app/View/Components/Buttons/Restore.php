@@ -10,16 +10,21 @@ class Restore extends Component
 {
     public $route;
     public $itemId;
+    /**
+     * @var false|mixed
+     */
+    public $disabled;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($route, $itemId)
+    public function __construct($route, $itemId, $disabled = false)
     {
         $this->route = $route;
         $this->itemId = $itemId;
+        $this->disabled = $disabled;
     }
 
     /**
