@@ -1,6 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    @if($errors->any()){{dd($errors)}}@endif
     <x-forms.main title="{{__('documents.shipment.bills.bills')}}">
         <x-tables.main id="table_bills"
                        targets="0,-1,-2,-3">
@@ -102,7 +101,8 @@
                         @if($bill->trashed())
                             <x-buttons.restore
                                 route="{{route('bills.restore', ['bill' => $bill->id])}}"
-                                itemId="{{$bill->id}}"/>
+                                itemId="{{$bill->id}}"
+                                disabled="{{$bill->packingList->trashed()}}"/>
                         @else
                             <x-buttons.delete
                                 route="{{route('bills.destroy', ['bill' => $bill->id])}}"
