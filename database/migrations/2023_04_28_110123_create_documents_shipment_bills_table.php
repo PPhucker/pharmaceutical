@@ -76,6 +76,10 @@ class CreateDocumentsShipmentBillsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
+
+        DB::statement(
+            "ALTER TABLE `documents_shipment_bills` COMMENT 'Счет-фактуры'"
+        );
     }
 
     /**
