@@ -15,37 +15,12 @@ use JsonException;
 
 class Logger
 {
+    public const ACTION_CREATE = 'create';
+    public const ACTION_UPDATE = 'update';
+    public const ACTION_DESTROY = 'destroy';
+    public const ACTION_RESTORE = 'restore';
+
     private const USER_ACTION_NOTICE_MESSAGE = 'USER_ACTION';
-
-    /**
-     * Returns user information.
-     *
-     * @return Collection
-     */
-    protected static function user()
-    {
-        $user = Auth::user();
-
-        $clientIp = Request::getClientIp();
-
-        if (auth()->check()) {
-            return collect(
-                [
-                    'ip' => $clientIp,
-                    'id' => $user->id,
-                    'name' => $user->name
-                ]
-            );
-        }
-
-        return collect(
-            [
-                'ip' => $clientIp,
-                'id' => null,
-                'name' => 'unauthorized user'
-            ]
-        );
-    }
 
     /**
      * Parse logs.
@@ -146,7 +121,7 @@ class Logger
     /**
      * Create user action notice.
      *
-     * @param string     $action
+     * @param string $action
      * @param            $model
      * @param array|null $relations
      *
@@ -204,6 +179,36 @@ class Logger
         logger()->notice(
             self::USER_ACTION_NOTICE_MESSAGE,
             $info->toArray()
+        );
+    }
+
+    /**
+     * Returns user information.
+     *
+     * @return Collection
+     */
+    protected static function user()
+    {
+        $user = Auth::user();
+
+        $clientIp = Request::getClientIp();
+
+        if (auth()->check()) {
+            return collect(
+                [
+                    'ip' => $clientIp,
+                    'id' => $user->id,
+                    'name' => $user->name
+                ]
+            );
+        }
+
+        return collect(
+            [
+                'ip' => $clientIp,
+                'id' => null,
+                'name' => 'unauthorized user'
+            ]
         );
     }
 }

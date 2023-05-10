@@ -381,10 +381,8 @@ class Creator
 
         $countPlaces = $product->quantity / $countInPlace;
 
-        $percent = 100 + $product->nds * 100;
-
         $priceWithoutNds = round(
-            $product->price * 100 / $percent,
+            $product->price - $product->price * $product->nds,
             2
         );
 
@@ -427,7 +425,7 @@ class Creator
      *
      * @return string
      */
-    private function getBestBeforeDate(string $series, int $bestBeforeDateProduct)
+    protected function getBestBeforeDate(string $series, int $bestBeforeDateProduct)
     {
         $seriesMonth = mb_substr($series, -4, 2);
         $seriesYear = mb_substr($series, -2, 2);

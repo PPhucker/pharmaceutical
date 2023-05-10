@@ -271,7 +271,7 @@ export class DataTable {
      * @private
      */
     get __pageLength() {
-        return 10;
+        return 50;
     }
 
     /**

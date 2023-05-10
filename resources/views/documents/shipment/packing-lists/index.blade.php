@@ -18,6 +18,9 @@
                     <option value="appendixes">
                         {{__('documents.shipment.appendixes.appendix')}}
                     </option>
+                    <option value="protocols">
+                        {{__('documents.shipment.protocols.protocol')}}
+                    </option>
                 </select>
                 <button type="submit"
                         class="btn btn-sm btn-primary">

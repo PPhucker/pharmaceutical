@@ -48,7 +48,8 @@ class PackingListProductRepository extends CoreRepository
                         [
                             'id',
                             'product_id',
-                            'GTIN'
+                            'GTIN',
+                            'organization_id',
                         ]
                     )
                         ->with(

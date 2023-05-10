@@ -48,6 +48,11 @@
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                   route="{{route('appendixes.index')}}"/>
                 </x-sidebar.menu.dropdown.item>
+                <x-sidebar.menu.dropdown.item icon="bi bi-file-earmark-text"
+                                              title="{{__('documents.shipment.protocols.protocols')}}">
+                    <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
+                                                  route="{{route('protocols.index')}}"/>
+                </x-sidebar.menu.dropdown.item>
             </div>
 
         </div>
