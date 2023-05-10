@@ -18,30 +18,27 @@ class PackingList extends Shipment
 
     protected $table = 'documents_shipment_packing_lists';
 
-    /**
-     * @param array $fillable
-     *
-     * @return $this|PackingList
-     */
-    public function fillable(array $fillable)
-    {
-        $this->fillable = array_merge(
-            $this->fillable,
-            [
-                'organization_id',
-                'organization_place_id',
-                'organization_bank_id',
-                'contractor_id',
-                'contractor_place_id',
-                'contractor_bank_id',
-                'director',
-                'bookkeeper',
-                'storekeeper',
-            ]
-        );
-
-        return $this;
-    }
+    protected $fillable = [
+        'created_by_id',
+        'updated_by_id',
+        'approved_by_id',
+        'packing_list_id',
+        'number',
+        'date',
+        'approved',
+        'comment',
+        'filename',
+        'approved_at',
+        'organization_id',
+        'organization_place_id',
+        'organization_bank_id',
+        'contractor_id',
+        'contractor_place_id',
+        'contractor_bank_id',
+        'director',
+        'bookkeeper',
+        'storekeeper',
+    ];
 
     /**
      * @return HasMany
