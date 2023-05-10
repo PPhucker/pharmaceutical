@@ -193,6 +193,35 @@ return [
                 ],
             ],
         ],
+        'protocols' => [
+            'protocols' => 'Protocols',
+            'protocol' => 'Protocol',
+            'errors' => [
+                'packing_list_id' => [
+                    'required' => 'You need to select a packing list',
+                    'unique' => 'Only one protocol can be created on the basis of a packing list',
+                ],
+            ],
+            'titles' => [
+                'create' => 'Creating protocol',
+            ],
+            'actions' => [
+                'create' => [
+                    'success' => 'Protocol №:number created successfully',
+                    'fail' => 'Failed to create protocol',
+                ],
+                'update' => [
+                    'success' => 'Protocol №:number updated successfully',
+                    'fail' => 'Failed to update protocol',
+                ],
+                'delete' => [
+                    'success' => 'Protocol №:number deleted successfully'
+                ],
+                'restore' => [
+                    'success' => 'Protocol №:number restored successfully'
+                ],
+            ],
+        ],
         'data' => [
             'production' => 'Production',
             'product_catalog_id' => 'Fullname',
