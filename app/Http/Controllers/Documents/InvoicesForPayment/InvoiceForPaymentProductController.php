@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Documents\InvoicesForPayment;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\StoreInvoiceForPaymentProductRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\UpdateInvoiceForPaymentProductRequest;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
@@ -26,7 +27,10 @@ class InvoiceForPaymentProductController extends CoreController
 
         $productCatalogRepository = new ProductCatalogRepository();
 
+        $organization = InvoiceForPayment::find((int)$validated['invoice_for_payment_id']);
+
         $priceList = $productCatalogRepository->getPriceList(
+            $organization->id,
             (int)$validated['product_catalog_id'],
             (int)$validated['quantity']
         );
