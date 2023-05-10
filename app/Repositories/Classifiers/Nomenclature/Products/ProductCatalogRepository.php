@@ -152,17 +152,19 @@ class ProductCatalogRepository extends CoreRepository
     }
 
     /**
+     * @param int $organizationId
      * @param int $id
+     * @param int $quantity
      *
      * @return Collection
      */
-    public function getPriceList(int $id, int $quantity)
+    public function getPriceList(int $organizationId, int $id, int $quantity)
     {
         $productCatalog = $this->clone()->find($id);
 
         $priceList = $productCatalog->prices->where(
             'organization_id',
-            $productCatalog->organization_id
+            $organizationId
         )
             ->first();
 
