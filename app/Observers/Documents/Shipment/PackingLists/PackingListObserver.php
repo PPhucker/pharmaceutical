@@ -14,6 +14,7 @@ class PackingListObserver
     private const SHIPMENT_DOCUMENTS = [
         'bill',
         'appendix',
+        'protocol',
     ];
 
     /**
@@ -56,7 +57,10 @@ class PackingListObserver
         }
 
         foreach (self::SHIPMENT_DOCUMENTS as $document) {
-            $packingList->$document()->first()->delete();
+            $shipmentDocument =  $packingList->$document()->first();
+            if ($shipmentDocument) {
+                $shipmentDocument->delete();
+            }
         }
 
         Logger::userActionNotice('destroy', $packingList);
@@ -78,7 +82,10 @@ class PackingListObserver
         }
 
         foreach (self::SHIPMENT_DOCUMENTS as $document) {
-            $packingList->$document()->first()->restore();
+            $shipmentDocument =  $packingList->$document()->first();
+            if ($shipmentDocument) {
+                $shipmentDocument->restore();
+            }
         }
 
         Logger::userActionNotice('restore', $packingList);
