@@ -13,6 +13,7 @@ class OrganizationObserver
         'staff',
         'catalogProducts',
         'productPrices',
+        'drivers',
     ];
 
     /**

@@ -77,6 +77,9 @@ class OrganizationRepository extends CoreRepository
                 $query->orderBy('name')
                     ->with('placeOfBusiness');
             },
+            'drivers' => static function ($query) {
+                $query->orderBy('name');
+            },
         ]);
 
         return $organization;
