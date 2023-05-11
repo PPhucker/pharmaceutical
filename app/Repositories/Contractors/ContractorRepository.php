@@ -10,14 +10,6 @@ class ContractorRepository extends CoreRepository
 {
 
     /**
-     * @return string
-     */
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
-    /**
      * @return Collection
      */
     public function getAll()
@@ -66,6 +58,9 @@ class ContractorRepository extends CoreRepository
                 'contactPersons' => static function ($query) {
                     $query->orderByDesc('contractors_contact_persons.name');
                 },
+                'drivers' => static function ($query) {
+                    $query->orderBy('name');
+                },
             ]
         );
 
@@ -92,5 +87,13 @@ class ContractorRepository extends CoreRepository
                 'address' => $registered->address,
             ]
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }

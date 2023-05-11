@@ -13,4 +13,5 @@ Route::prefix('contractors')
         require_once __DIR__ . '/places_of_business.php';
         require_once __DIR__ . '/bank_account_details.php';
         require_once __DIR__ . '/contact_persons.php';
+        require_once __DIR__ . '/drivers.php';
     });
