@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * App\Models\Admin\Organizations\Organization
@@ -41,7 +42,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null                           $productPricesCount
  * @property-read Collection<int, Staff>             $staff
  * @property-read int|null                           $staffCount
- * @property-read User|null                                                          $user
+ * @property-read User|null                          $user
  * @method static Builder|Organization newModelQuery()
  * @method static Builder|Organization newQuery()
  * @method static Builder|Organization onlyTrashed()
@@ -138,6 +139,15 @@ class Organization extends Model
     public function drivers()
     {
         return $this->hasMany(Driver::class, 'organization_id')
+            ->withTrashed();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function cars()
+    {
+        return $this->hasMany(Car::class, 'organization_id')
             ->withTrashed();
     }
 }

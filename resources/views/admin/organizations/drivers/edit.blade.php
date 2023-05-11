@@ -35,8 +35,8 @@
                                name="drivers[{{$key}}][name]"
                                value="{{$driver->name}}"
                                class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('driver.' . $key . '.name') is-invalid @enderror">
-                        <x-forms.span-error name="driver.{{$key}}.name"/>
+                               @error('drivers.' . $key . '.name') is-invalid @enderror">
+                        <x-forms.span-error name="drivers.{{$key}}.name"/>
                     </td>
                     <x-tables.columns.tbody.delete>
                         @if($driver->trashed())

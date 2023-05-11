@@ -14,6 +14,7 @@ class OrganizationObserver
         'catalogProducts',
         'productPrices',
         'drivers',
+        'cars',
     ];
 
     /**
