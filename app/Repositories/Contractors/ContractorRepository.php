@@ -61,6 +61,9 @@ class ContractorRepository extends CoreRepository
                 'drivers' => static function ($query) {
                     $query->orderBy('name');
                 },
+                'cars' => static function ($query) {
+                    $query->orderBy('car_model');
+                },
             ]
         );
 

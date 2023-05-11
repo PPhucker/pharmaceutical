@@ -6,8 +6,8 @@
               action="{{route('cars.store')}}">
             @csrf
             <input type="hidden"
-                   name="car[organization_id]"
-                   value="{{$organization->id}}">
+                   name="car[contractor_id]"
+                   value="{{$contractor->id}}">
             <x-forms.row id="car_model"
                          label="{{__('contractors.cars.car_model')}}">
                 <input type="text"

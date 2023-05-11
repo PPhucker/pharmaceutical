@@ -1,5 +1,5 @@
 <x-forms.collapse.creation cardId="div_add_driver"
-                           errorName="drivers.*">
+                           errorName="driver.*">
     <x-slot name="cardBody">
         <form id="form_add_driver"
               method="POST"
@@ -13,7 +13,7 @@
                 <input type="text"
                        name="driver[name]"
                        id="driver-name"
-                       value="{{old('driver[name]')}}"
+                       value="{{old('driver.name')}}"
                        class="form-control form-control-sm text-primary
                        @error('driver.name') is-invalid @enderror"
                        required>

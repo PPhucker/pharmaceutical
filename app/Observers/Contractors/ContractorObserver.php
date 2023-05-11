@@ -11,6 +11,9 @@ class ContractorObserver
         'placesOfBusiness',
         'bankAccountDetails',
         'contactPersons',
+        'drivers',
+        'cars',
+        'trailers',
     ];
 
     /**
