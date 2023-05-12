@@ -6,6 +6,8 @@ use App\Repositories\CoreRepository;
 use App\Models\Contractors\Contractor as Model;
 use Illuminate\Support\Collection;
 
+use function Symfony\Component\String\s;
+
 class ContractorRepository extends CoreRepository
 {
 
@@ -63,6 +65,9 @@ class ContractorRepository extends CoreRepository
                 },
                 'cars' => static function ($query) {
                     $query->orderBy('car_model');
+                },
+                'trailers' => static function ($query) {
+                    $query->orderBy('type');
                 },
             ]
         );

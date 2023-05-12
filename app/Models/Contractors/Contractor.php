@@ -129,4 +129,13 @@ class Contractor extends Model
         return $this->hasMany(Car::class, 'contractor_id')
             ->withTrashed();
     }
+
+    /**
+     * @return HasMany
+     */
+    public function trailers()
+    {
+        return $this->hasMany(Trailer::class, 'contractor_id')
+            ->withTrashed();
+    }
 }
