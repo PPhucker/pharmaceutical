@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * App\Models\Admin\Organizations\Organization
@@ -148,6 +147,15 @@ class Organization extends Model
     public function cars()
     {
         return $this->hasMany(Car::class, 'organization_id')
+            ->withTrashed();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function trailers()
+    {
+        return $this->hasMany(Trailer::class, 'organization_id')
             ->withTrashed();
     }
 }

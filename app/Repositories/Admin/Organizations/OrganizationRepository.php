@@ -83,6 +83,9 @@ class OrganizationRepository extends CoreRepository
             'cars' => static function ($query) {
                 $query->orderBy('car_model');
             },
+            'trailers' => static function ($query) {
+                $query->orderBy('type');
+            },
         ]);
 
         return $organization;

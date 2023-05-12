@@ -129,6 +129,8 @@
         @include('admin.organizations.drivers.edit')
         @include('admin.organizations.cars.create')
         @include('admin.organizations.cars.edit')
+        @include('admin.organizations.trailers.create')
+        @include('admin.organizations.trailers.edit')
 
     </x-forms.main>
     <script>
