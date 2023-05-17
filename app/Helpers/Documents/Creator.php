@@ -313,6 +313,18 @@ class Creator
     }
 
     /**
+     * @return string
+     */
+    protected function getShippingAddress()
+    {
+        $shippingAddress = $this->document->organizationPlaceOfBusiness;
+
+        return $shippingAddress->index
+            . ', '
+            . $shippingAddress->address;
+    }
+
+    /**
      * Разбиение полной информации о продукции по страницам документа.
      *
      * @return object
