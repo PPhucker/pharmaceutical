@@ -42,4 +42,34 @@ class PackingListCreator extends Creator
             'director' => $this->document->director,
         ];
     }
+
+    /**
+     * @return string
+     */
+    protected function getBuyerField()
+    {
+        $contractor = $this->document->contractor;
+
+        $registered = $this->getContractorRegisteredAddress($contractor);
+
+        $bank = $this->getContractorAccountDetails($this->document->contractorBankAccountDetail);
+
+        return $this->getContractorFullName($contractor)
+            . ', ИНН '
+            . $contractor->INN
+            . ', '
+            . $registered->get('index')
+            . ', '
+            . $registered->get('address')
+            . ', тел.: '
+            . $contractor->contacts
+            . ', р/с '
+            . $bank->payment_account
+            . ', в банке '
+            . $bank->name
+            . ', БИК '
+            . $bank->BIC
+            . ', к/с '
+            . $bank->correspondent_account;
+    }
 }
