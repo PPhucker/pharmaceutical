@@ -125,6 +125,12 @@
         @include('admin.organizations.bank-account-details.edit')
         @include('admin.organizations.staff.create')
         @include('admin.organizations.staff.edit')
+        @include('admin.organizations.drivers.create')
+        @include('admin.organizations.drivers.edit')
+        @include('admin.organizations.cars.create')
+        @include('admin.organizations.cars.edit')
+        @include('admin.organizations.trailers.create')
+        @include('admin.organizations.trailers.edit')
 
     </x-forms.main>
     <script>

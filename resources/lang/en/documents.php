@@ -179,11 +179,11 @@ return [
             'actions' => [
                 'create' => [
                     'success' => 'Appendix №:number created successfully',
-                    'fail' => 'Не удалось создать приложение',
+                    'fail' => 'Failed to create appendix',
                 ],
                 'update' => [
                     'success' => 'Appendix №:number updated successfully',
-                    'fail' => 'Не удалось обновить приложение',
+                    'fail' => 'Failed to update appendix',
                 ],
                 'delete' => [
                     'success' => 'Appendix №:number deleted successfully'
@@ -219,6 +219,51 @@ return [
                 ],
                 'restore' => [
                     'success' => 'Protocol №:number restored successfully'
+                ],
+            ],
+        ],
+        'waybills' => [
+            'waybills' => 'Waybills',
+            'waybill' => 'Waybill',
+            'car_model' => 'Car Model',
+            'state_car_number' => 'State Car Number',
+            'driver' => 'Driver',
+            'licence_card' => [
+                'licence_card' => 'Licence Card',
+                'standard' => 'Standard',
+                'limited' => 'Limited',
+            ],
+            'type_of_transportation' => [
+                'type_of_transportation' => 'Type of Transportation',
+                'automotive' => 'Automotive',
+                'manual_movement' => 'Manual Movement',
+            ],
+            'trailer' => 'Trailer',
+            'state_trailer_number' => 'State Trailer Number',
+
+            'errors' => [
+                'packing_list_id' => [
+                    'required' => 'You need to select a packing list',
+                    'unique' => 'Only one waybill can be created on the basis of a packing list',
+                ],
+            ],
+            'titles' => [
+                'create' => 'Creating Waybill',
+            ],
+            'actions' => [
+                'create' => [
+                    'success' => 'Waybill №:number created successfully',
+                    'fail' => 'Failed to create waybill',
+                ],
+                'update' => [
+                    'success' => 'Waybill №:number updated successfully',
+                    'fail' => 'Failed to update waybill',
+                ],
+                'delete' => [
+                    'success' => 'Waybill №:number deleted successfully'
+                ],
+                'restore' => [
+                    'success' => 'Waybill №:number restored successfully'
                 ],
             ],
         ],

@@ -51,7 +51,7 @@ abstract class ShipmentRepository
          * Фильтр по поставщику товарной накладной.
          */
         if ($organizationId = $filters['organization_id']) {
-            $join = $model->join(
+            $join = $model->clone()->join(
                 'documents_shipment_packing_lists',
                 function (JoinClause $join) use (
                     $table,

@@ -6,16 +6,10 @@ use App\Repositories\CoreRepository;
 use App\Models\Contractors\Contractor as Model;
 use Illuminate\Support\Collection;
 
+use function Symfony\Component\String\s;
+
 class ContractorRepository extends CoreRepository
 {
-
-    /**
-     * @return string
-     */
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
 
     /**
      * @return Collection
@@ -66,6 +60,15 @@ class ContractorRepository extends CoreRepository
                 'contactPersons' => static function ($query) {
                     $query->orderByDesc('contractors_contact_persons.name');
                 },
+                'drivers' => static function ($query) {
+                    $query->orderBy('name');
+                },
+                'cars' => static function ($query) {
+                    $query->orderBy('car_model');
+                },
+                'trailers' => static function ($query) {
+                    $query->orderBy('type');
+                },
             ]
         );
 
@@ -92,5 +95,13 @@ class ContractorRepository extends CoreRepository
                 'address' => $registered->address,
             ]
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }

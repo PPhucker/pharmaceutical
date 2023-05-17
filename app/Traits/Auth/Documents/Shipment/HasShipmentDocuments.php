@@ -6,6 +6,7 @@ use App\Models\Documents\Shipment\Appendixes\Appendix;
 use App\Models\Documents\Shipment\Bills\Bill;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\Protocols\Protocol;
+use App\Models\Documents\Shipment\Waybills\Waybill;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasShipmentDocuments
@@ -104,5 +105,29 @@ trait HasShipmentDocuments
     public function approvedProtocols()
     {
         return $this->hasMany(Protocol::class, 'approved_by_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function createdWaybills()
+    {
+        return $this->hasMany(Waybill::class, 'created_by_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function updatedWaybills()
+    {
+        return $this->hasMany(Waybill::class, 'updated_by_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function approvedWaybills()
+    {
+        return $this->hasMany(Waybill::class, 'approved_by_id');
     }
 }

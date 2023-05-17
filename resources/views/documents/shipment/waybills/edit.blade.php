@@ -1,0 +1,266 @@
+@php use Illuminate\Support\Carbon; @endphp
+@extends('layouts.app')
+@section('content')
+    <x-forms.main back="{{route('waybills.index')}}"
+                  title="
+                  {{__('documents.shipment.waybills.waybill')
+                    . ' №'
+                    . $waybill->number
+                    . ' '
+                    . $waybill->date}}
+                  ">
+        <x-forms.collapse.card
+            route="{{route('waybills.update', ['waybill' => $waybill->id])}}"
+            cardId="card_main_info"
+            formId="form_main_info"
+            title="{{__('documents.header')}}">
+            <x-slot name="cardBody">
+                <div class="row mb-2">
+                    <label for="number"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.number')}}
+                    </label>
+                    <div class="col-md-6">
+                        <input id="number"
+                               type="text"
+                               name="number"
+                               class="form-control form-control-sm text-primary
+                           @error('number') is-invalid @enderror"
+                               value="{{$waybill->number}}"
+                               required>
+                        <x-forms.span-error name="number"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="date"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.date')}}
+                    </label>
+                    <div class="col-md-6">
+                        <input id="date"
+                               type="date"
+                               name="date"
+                               class="form-control form-control-sm text-primary
+                           @error('date') is-invalid @enderror"
+                               value="{{Carbon::create($waybill->date)->format('Y-m-d')}}"
+                               required>
+                        <x-forms.span-error name="date"/>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for="licence_card"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.waybills.licence_card.licence_card')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select id="licence_card"
+                                name="licence_card"
+                                class="form-control form-control-sm text-primary
+                            @error('licence_card') is-invalid @enderror"
+                                required>
+                            <option value="standard"
+                                    @if($waybill->licence_card === 'standard') selected @endif>
+                                {{__('documents.shipment.waybills.licence_card.standard')}}
+                            </option>
+                            <option value="limited"
+                                    @if($waybill->licence_card === 'limited') selected @endif>
+                                {{__('documents.shipment.waybills.licence_card.limited')}}
+                            </option>
+                        </select>
+                        <x-forms.span-error name="licence_card"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="licence_card"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.waybills.type_of_transportation.type_of_transportation')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select id="type_of_transportation"
+                                name="type_of_transportation"
+                                class="form-control form-control-sm text-primary
+                            @error('type_of_transportation') is-invalid @enderror"
+                                required>
+                            <option value="automotive"
+                                    @if($waybill->type_of_transportation === 'automotive') selected @endif>
+                                {{__('documents.shipment.waybills.type_of_transportation.automotive')}}
+                            </option>
+                            <option value="manual_movement"
+                                    @if($waybill->type_of_transportation === 'manual_movement') selected @endif>
+                                {{__('documents.shipment.waybills.type_of_transportation.manual_movement')}}
+                            </option>
+                        </select>
+                        <x-forms.span-error name="type_of_transportation"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="card"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.waybills.car_model')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select id="car"
+                                name="car"
+                                class="form-control form-control-sm text-primary
+                            @error('car') is-invalid @enderror"
+                                required>
+                            <option value="{{null}}">
+
+                            </option>
+                            @foreach($waybill->packingList->organization->cars as $car)
+                                <option value="{{$car->car_model}} - {{$car->state_number}}"
+                                        @if($waybill->car_model === $car->car_model) selected @endif>
+                                    {{$car->car_model}} - {{$car->state_number}}
+                                </option>
+                            @endforeach
+                            @foreach($waybill->packingList->contractor->cars as $car)
+                                <option value="{{$car->car_model}} - {{$car->state_number}}"
+                                        @if($waybill->car_model === $car->car_model) selected @endif>
+                                    {{$car->car_model}} - {{$car->state_number}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-forms.span-error name="car"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="card"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.waybills.driver')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select id="driver"
+                                name="driver"
+                                class="form-control form-control-sm text-primary
+                            @error('driver') is-invalid @enderror"
+                                required>
+                            <option value="{{null}}">
+
+                            </option>
+                            @foreach($waybill->packingList->organization->drivers as $driver)
+                                <option value="{{$driver->name}}"
+                                        @if($waybill->driver === $driver->name) selected @endif>
+                                    {{$driver->name}}
+                                </option>
+                            @endforeach
+                            @foreach($waybill->packingList->contractor->drivers as $driver)
+                                <option value="{{$driver->name}}"
+                                        @if($waybill->driver === $driver->name) selected @endif>
+                                    {{$driver->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-forms.span-error name="driver"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="card"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.waybills.trailer')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select id="first_trailer"
+                                name="first_trailer"
+                                class="form-control form-control-sm text-primary
+                            @error('first_trailer') is-invalid @enderror"
+                                required>
+                            <option value="{{null}}"></option>
+                            @foreach($waybill->packingList->organization->trailers as $trailer)
+                                <option value="{{$trailer->type - $trailer->state_number}}"
+                                        @if($waybill->trailer_1 === $trailer->type && $waybill->state_trailer_1_number === $trailer->state_number) selected @endif>
+                                    {{$trailer->type - $trailer->state_number}}
+                                </option>
+                            @endforeach
+                            @foreach($waybill->packingList->contractor->trailers as $trailer)
+                                <option value="{{$trailer->type - $trailer->state_number}}"
+                                        @if($waybill->trailer_1 === $trailer->type && $waybill->state_trailer_1_number === $trailer->state_number) selected @endif>
+                                    {{$trailer->type - $trailer->state_number}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-forms.span-error name="first_trailer"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="card"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.waybills.trailer')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select id="second_trailer"
+                                name="second_trailer"
+                                class="form-control form-control-sm text-primary
+                            @error('second_trailer') is-invalid @enderror"
+                                required>
+                            <option value="{{null}}"></option>
+                            @foreach($waybill->packingList->organization->trailers as $trailer)
+                                <option value="{{$trailer->type - $trailer->state_number}}"
+                                        @if($waybill->trailer_2 === $trailer->type && $waybill->state_trailer_2_number === $trailer->state_number) selected @endif>
+                                    {{$trailer->type - $trailer->state_number}}
+                                </option>
+                            @endforeach
+                            @foreach($waybill->packingList->contractor->trailers as $trailer)
+                                <option value="{{$trailer->type - $trailer->state_number}}"
+                                        @if($waybill->trailer_2 === $trailer->type && $waybill->state_trailer_2_number === $trailer->state_number) selected @endif>
+                                    {{$trailer->type - $trailer->state_number}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-forms.span-error name="second_trailer"/>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for=""
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.shipment.filename')}}
+                    </label>
+                    <div class="col-md-6">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item">
+                                <input id="filename"
+                                       type="file"
+                                       name="filename"
+                                       class="form-control form-control-sm text-primary
+                                       @error('filename') is-invalid @enderror"
+                                       value="{{old('filename')}}">
+                                <x-forms.span-error name="filename"/>
+                            </li>
+                            @if($waybill->filename)
+                                <li class="list-inline-item">
+                                    <a href="{{Storage::url($waybill->filename)}}"
+                                       target="_blank">
+                                        {{__('form.button.show')}}
+                                    </a>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+            </x-slot>
+            <x-slot name="footer">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item text-md-end">
+                        <x-buttons.save formId="form_main_info"/>
+                    </li>
+                    <li class="list-inline-item text-primary">
+                        <small>
+                            {{__('form.last_updated')}}:
+                        </small>
+                    </li>
+                    <li class="list-inline-item text-primary">
+                        <small>
+                            {{$waybill->updated_at}}
+                        </small>
+                    </li>
+                    <li class="list-inline-item text-primary">
+                        <small>
+                            {{$waybill->updatedBy->name}}
+                        </small>
+                    </li>
+                </ul>
+            </x-slot>
+        </x-forms.collapse.card>
+    </x-forms.main>
+@endsection

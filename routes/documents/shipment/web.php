@@ -6,4 +6,5 @@ Route::prefix('shipment')->group(static function () {
     require_once __DIR__ . '/bills.php';
     require_once __DIR__ . '/appendixes.php';
     require_once __DIR__ . '/protocols.php';
+    require_once __DIR__ . '/waybills.php';
 });

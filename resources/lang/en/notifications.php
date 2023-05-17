@@ -14,4 +14,16 @@ return [
             'action' => 'Check',
         ],
     ],
+    'shipment' => [
+        'created' => [
+            'subject' => 'Creation of shipping documents',
+            'body' => 'You have received this email because a shipment package has been created',
+            'organization' => 'Supplier: :orgnanization',
+            'contractor' => 'Consignee: :contractor',
+            'contractor_inn' => 'TIN: :INN',
+            'created_at' => 'Date: :created_at',
+            'user' => 'User: :user',
+            'action' => 'Check',
+        ],
+    ],
 ];

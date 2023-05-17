@@ -125,6 +125,12 @@
         @include('contractors.bank-account-details.edit')
         @include('contractors.contact-persons.create')
         @include('contractors.contact-persons.edit')
+        @include('contractors.drivers.create')
+        @include('contractors.drivers.edit')
+        @include('contractors.cars.create')
+        @include('contractors.cars.edit')
+        @include('contractors.trailers.create')
+        @include('contractors.trailers.edit')
 
     </x-forms.main>
     <script>

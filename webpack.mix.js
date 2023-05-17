@@ -19,4 +19,5 @@ mix.js('resources/js/app.js', 'public/js').
     postCss('resources/css/templates/documents/shipment/bill.css', 'public/css/templates/documents/shipment').
     postCss('resources/css/templates/documents/shipment/appendix.css', 'public/css/templates/documents/shipment').
     postCss('resources/css/templates/documents/shipment/protocol.css', 'public/css/templates/documents/shipment').
+    postCss('resources/css/templates/documents/shipment/waybill.css', 'public/css/templates/documents/shipment').
     minify(['public/js/app.js', 'public/css/app.css']);
