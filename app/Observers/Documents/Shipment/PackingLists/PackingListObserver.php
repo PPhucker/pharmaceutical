@@ -15,6 +15,7 @@ class PackingListObserver
         'bill',
         'appendix',
         'protocol',
+        'waybill',
     ];
 
     /**
