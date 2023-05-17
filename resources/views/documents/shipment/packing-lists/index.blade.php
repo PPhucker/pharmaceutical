@@ -21,6 +21,9 @@
                     <option value="protocols">
                         {{__('documents.shipment.protocols.protocol')}}
                     </option>
+                    <option value="waybills">
+                        {{__('documents.shipment.waybills.waybill')}}
+                    </option>
                 </select>
                 <button type="submit"
                         class="btn btn-sm btn-primary">
