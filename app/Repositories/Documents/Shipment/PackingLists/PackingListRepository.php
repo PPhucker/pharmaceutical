@@ -99,15 +99,39 @@ class PackingListRepository extends CoreRepository
                         ]
                     );
                 },
+                'organization' => static function ($query) {
+                    $query->select(
+                        [
+                            'id',
+                            'name',
+                            'legal_form_type',
+                        ]
+                    )
+                        ->with(
+                            [
+                                'cars:id,organization_id,car_model,state_number',
+                                'drivers:id,organization_id,name',
+                                'trailers:id,organization_id,type,state_number',
+                                'legalForm:abbreviation',
+                            ]
+                        );
+                },
                 'contractor' => static function ($query) {
                     $query->select(
                         [
                             'id',
                             'name',
-                            'legal_form_type'
+                            'legal_form_type',
                         ]
                     )
-                        ->with('legalForm:abbreviation');
+                        ->with(
+                            [
+                                'cars:id,contractor_id,car_model,state_number',
+                                'drivers:id,contractor_id,name',
+                                'trailers:id,contractor_id,type,state_number',
+                                'legalForm:abbreviation',
+                            ]
+                        );
                 },
                 'contractorPlaceOfBusiness' => static function ($query) {
                     $query->select(
@@ -124,20 +148,6 @@ class PackingListRepository extends CoreRepository
                         'payment_account',
                     )
                         ->with('bankClassifier:BIC,name');
-                },
-                'organization' => static function ($query) {
-                    $query->select(
-                        [
-                            'id',
-                            'name',
-                            'legal_form_type'
-                        ]
-                    )
-                        ->with(
-                            [
-                                'legalForm:abbreviation',
-                            ]
-                        );
                 },
                 'organizationPlaceOfBusiness' => static function ($query) {
                     $query->select(
