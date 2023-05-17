@@ -146,6 +146,74 @@ return [
         ],
     ],
 
+    'drivers' => [
+        'drivers' => 'Drivers',
+        'driver' => 'Driver',
+        'name' => 'Name',
+        'actions' => [
+            'create' => [
+                'success' => 'Driver :name added successfully',
+                'fail' => 'Failed to add driver'
+            ],
+            'update' => [
+                'success' => 'Drivers updated successfully',
+                'fail' => 'Failed to update drivers',
+            ],
+            'delete' => [
+                'success' => 'Driver :name deleted successfully'
+            ],
+            'restore' => [
+                'success' => 'Driver :name restored successfully'
+            ],
+        ],
+    ],
+
+    'cars' => [
+        'cars' => 'Cars',
+        'car' => 'Car',
+        'car_model' => 'Car Model',
+        'state_number' => 'State Number',
+        'actions' => [
+            'create' => [
+                'success' => 'Car :number added successfully',
+                'fail' => 'Failed to add car'
+            ],
+            'update' => [
+                'success' => 'Cars updated successfully',
+                'fail' => 'Failed to update cars',
+            ],
+            'delete' => [
+                'success' => 'Car :number deleted successfully'
+            ],
+            'restore' => [
+                'success' => 'Car :number restored successfully'
+            ],
+        ],
+    ],
+
+    'trailers' => [
+        'trailers' => 'Trailers',
+        'trailer' => 'Trailer',
+        'type' => 'Type',
+        'state_number' => 'state_number',
+        'actions' => [
+            'create' => [
+                'success' => 'Trailer :number added successfully',
+                'fail' => 'Failed to add trailer'
+            ],
+            'update' => [
+                'success' => 'Trailers updated successfully',
+                'fail' => 'Failed to update trailers',
+            ],
+            'delete' => [
+                'success' => 'Trailer :number deleted successfully'
+            ],
+            'restore' => [
+                'success' => 'Trailer :number restored successfully'
+            ],
+        ],
+    ],
+
     'name' => 'Name',
     'inn' => 'NIP Number',
     'okpo' => ' OKPO code',
