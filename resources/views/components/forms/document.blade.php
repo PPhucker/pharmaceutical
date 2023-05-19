@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="{{--d-flex--}} justify-content-center m-3 print">
+    <div class="justify-content-center m-3 print">
         <div class="card shadow w-100">
             <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
                 <li class="list-inline-item ms-2">
@@ -44,7 +44,7 @@
                 </li>
             </ul>
             <div class="card-body print">
-                <div class="card">
+                <div class="card mb-2">
                     <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
                         <li class="list-inline-item">
                             <a class="btn-light btn-link"
@@ -69,6 +69,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="approval">
+                @if(isset($approval))
+                    {{$approval}}
+                @endif
             </div>
         </div>
     </div>
