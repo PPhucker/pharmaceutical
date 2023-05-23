@@ -31,13 +31,15 @@ class ShipmentPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
+     * @param User     $user
+     * @param Shipment $shipment
      *
      * @return bool
      */
-    public function view(User $user)
+    public function view(User $user, Shipment $shipment)
     {
-        return $user->hasRole(self::ROLES);
+        return ($user->hasRole(['marketing', 'bookkeeping']) && $shipment->approved)
+            || ($user->hasPermission(['appove_shipment_documents']));
     }
 
     /**
