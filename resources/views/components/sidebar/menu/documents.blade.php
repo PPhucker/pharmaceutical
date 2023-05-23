@@ -33,6 +33,11 @@
                 </button>
             </div>
             <div class="card-body pt-1 pb-1 collapse" id="shipment">
+                <x-sidebar.menu.dropdown.item icon="bi bi-bag-check"
+                                              title="{{__('documents.shipment.approval.approval')}}">
+                    <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
+                                                  route="{{route('shipment.approval')}}"/>
+                </x-sidebar.menu.dropdown.item>
                 <x-sidebar.menu.dropdown.item icon="bi bi-file-earmark-text"
                                               title="{{__('documents.shipment.packing_lists.packing_lists')}}">
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"

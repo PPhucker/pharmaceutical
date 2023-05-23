@@ -11,7 +11,7 @@
         margin-right: 0.5cm;
     }
 
-    nav, .card-header {
+    nav, .card-header, #approval {
         display: none;
         content-visibility: hidden;
         visibility: hidden;

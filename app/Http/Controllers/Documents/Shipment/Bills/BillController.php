@@ -6,11 +6,13 @@ use App\Helpers\Date;
 use App\Helpers\Documents\Shipment\BillCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\Shipment\Bills\ApproveBillRequest;
 use App\Http\Requests\Documents\Shipment\Bills\CreateBillRequest;
 use App\Http\Requests\Documents\Shipment\Bills\IndexBillRequest;
 use App\Http\Requests\Documents\Shipment\Bills\StoreBillRequest;
 use App\Http\Requests\Documents\Shipment\Bills\UpdateBillRequest;
 use App\Models\Documents\Shipment\Bills\Bill;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Bills\BillRepository;
 use Auth;
@@ -92,11 +94,11 @@ class BillController extends CoreController
     {
         $validated = $request->validated();
 
-        $packingListId = $validated['packing_list_id'];
+        $packingList = PackingList::find((int)$validated['packing_list_id']);
 
         return view(
             'documents.shipment.bills.create',
-            compact('packingListId')
+            compact('packingList')
         );
     }
 
@@ -124,6 +126,7 @@ class BillController extends CoreController
         return view(
             'documents.shipment.bills.show',
             compact(
+                'bill',
                 'date',
                 'number',
                 'data'
@@ -227,6 +230,60 @@ class BillController extends CoreController
                 'success',
                 __(
                     'documents.shipment.bills.actions.restore.success',
+                    ['number' => $bill->number]
+                )
+            );
+    }
+
+    /**
+     * @param ApproveBillRequest $request
+     * @param Bill               $bill
+     *
+     * @return RedirectResponse
+     */
+    public function approve(ApproveBillRequest $request, Bill $bill)
+    {
+        $validated = $request->validated();
+
+        $file = $validated['filename'] ?? null;
+
+        $bill->timestamps = false;
+
+        $bill->fill(
+            [
+                'approved_by_id' => Auth::user()->id,
+                'approved' => (int)$validated['approved'],
+                'comment' => $validated['comment'],
+                'approved_at' => null,
+            ]
+        );
+
+        if ((int)$validated['approved'] === 1) {
+            $bill->fill(
+                [
+                    'approved_at' => \Illuminate\Support\Carbon::now(),
+                    'approved' => 1,
+                    'comment' => null,
+                ]
+            );
+        }
+
+        $bill->save();
+
+        if ($file) {
+            $fileStorage = $this->repository->getStorage($bill->id);
+            $directory = $fileStorage->get('directory');
+            $filename = $fileStorage->get('filename');
+            File::attach($directory, $file, $filename);
+            $bill->filename = $directory . $filename;
+            $bill->save();
+        }
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.bills.actions.update.success',
                     ['number' => $bill->number]
                 )
             );

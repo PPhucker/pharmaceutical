@@ -118,7 +118,13 @@ class Creator
 
         $bank = $this->getOrganizationAccountDetails($this->document->organizationBankAccountDetail);
 
-        return $this->getOrganizationFullName($organization)
+        $fullname = $this->getOrganizationFullName($organization);
+
+        if ($placeOfBusiness->id === 3) {
+            $fullname = 'Территориальное обособленное подразделение ' . $fullname;
+        }
+
+        return $fullname
             . ', ИНН '
             . $organization->INN
             . ', '

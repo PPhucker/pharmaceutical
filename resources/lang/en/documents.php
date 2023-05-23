@@ -84,6 +84,24 @@ return [
         'filename' => 'File',
         'approved' => 'Appoved',
         'comment' => 'Comment',
+        'approval' => [
+            'approval' => 'Approval',
+            'approved_by' => 'Approved by',
+            'approved' => 'Approved',
+            'not_viewed' => 'Not approved',
+            'document' => 'Document',
+            'updated' => 'Updated',
+            'e-mail' => [
+                'send' => [
+                    'send' => 'send',
+                    'to' => [
+                        'markeing' => 'E-mail to the marketing about the approval / non-approval of the shipment',
+                        'digital_comunication' => 'E-mail to the digital communications department about the changes made',
+                    ],
+                    'success' => 'Email sent successfully',
+                ]
+            ],
+        ],
         'packing_lists' => [
             'packing_lists' => 'Packing lists',
             'packing_list' => 'Packing list',

@@ -15,15 +15,23 @@ return [
         ],
     ],
     'shipment' => [
+        'organization' => 'Organization: :organization',
+        'contractor' => 'Contractor: :contractor',
+        'contractor_inn' => 'TIN: :INN',
+        'number' => 'Number: №:number',
+        'date' => 'Date: :date',
+        'subject' => 'Shipment №:number :date',
         'created' => [
-            'subject' => 'Creation of shipping documents',
-            'body' => 'You have received this email because a shipment package has been created',
-            'organization' => 'Supplier: :orgnanization',
-            'contractor' => 'Consignee: :contractor',
-            'contractor_inn' => 'TIN: :INN',
+            'body' => 'You have received this email because a shipment package has been created.',
             'created_at' => 'Date: :created_at',
             'user' => 'User: :user',
             'action' => 'Check',
+        ],
+        'approval' => [
+            'success' => 'Documents approved',
+            'fail' => 'Documents not approved',
+            'show' => 'Show',
+            'correct' => 'Documents corrected',
         ],
     ],
 ];

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div id="div_add_material"
-         class="@if ($errors->has('material.*')) collapsed @else collapse @endif mb-2">
+         class="@if ($errors->has('material.*')) collapsed @else collapse @endif mb-2 sticky-top position-sticky">
         <x-forms.main title="{{__('form.titles.add')}}"
                       withAlert="{{false}}">
             <form id="form_add_material"

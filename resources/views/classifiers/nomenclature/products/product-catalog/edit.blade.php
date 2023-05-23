@@ -73,7 +73,11 @@
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
                             <small class="text-primary align-items-center">
-                                {{$product->endProduct->registrationNumber->number}}
+                                @if(!$product->endProduct->registrationNumber)
+                                    Без номера
+                                @else
+                                    {{$product->endProduct->registrationNumber->number}}
+                                @endif
                             </small>
                     </div>
                 </div>

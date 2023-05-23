@@ -6,10 +6,12 @@ use App\Helpers\Date;
 use App\Helpers\Documents\Shipment\WaybillCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\Shipment\Waybills\ApproveWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\CreateWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\IndexWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\StoreWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\UpdateWaybillRequest;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\Waybills\Waybill;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
@@ -259,6 +261,60 @@ class WaybillController extends CoreController
                 'success',
                 __(
                     'documents.shipment.waybills.actions.restore.success',
+                    ['number' => $waybill->number]
+                )
+            );
+    }
+
+    /**
+     * @param ApproveWaybillRequest $request
+     * @param Waybill               $waybill
+     *
+     * @return RedirectResponse
+     */
+    public function approve(ApproveWaybillRequest $request, Waybill $waybill)
+    {
+        $validated = $request->validated();
+
+        $file = $validated['filename'] ?? null;
+
+        $waybill->timestamps = false;
+
+        $waybill->fill(
+            [
+                'approved_by_id' => Auth::user()->id,
+                'approved' => (int)$validated['approved'],
+                'comment' => $validated['comment'],
+                'approved_at' => null,
+            ]
+        );
+
+        if ((int)$validated['approved'] === 1) {
+            $waybill->fill(
+                [
+                    'approved_at' => Carbon::now(),
+                    'approved' => 1,
+                    'comment' => null,
+                ]
+            );
+        }
+
+        $waybill->save();
+
+        if ($file) {
+            $fileStorage = $this->repository->getStorage($waybill->id);
+            $directory = $fileStorage->get('directory');
+            $filename = $fileStorage->get('filename');
+            File::attach($directory, $file, $filename);
+            $waybill->filename = $directory . $filename;
+            $waybill->save();
+        }
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.waybills.actions.update.success',
                     ['number' => $waybill->number]
                 )
             );

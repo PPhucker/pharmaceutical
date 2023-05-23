@@ -6,7 +6,7 @@ return [
         'add' => 'Add',
         'hide' => 'Hide',
         'show' => 'Show',
-        'open'=> 'Open',
+        'open' => 'Open',
         'print' => 'Print',
         'back' => 'Back',
         'create' => 'Create',
@@ -18,4 +18,6 @@ return [
     'collapse' => 'Expand/Collapse',
     'last_updated' => 'Last Updated',
     'zoom' => 'Zoom',
+    'yes' => 'Yes',
+    'no' => 'No',
 ];

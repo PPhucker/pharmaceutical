@@ -6,10 +6,12 @@ use App\Helpers\Date;
 use App\Helpers\Documents\Shipment\ProtocolCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\Shipment\Protocols\ApproveProtocolRequest;
 use App\Http\Requests\Documents\Shipment\Protocols\CreateProtocolRequest;
 use App\Http\Requests\Documents\Shipment\Protocols\IndexProtocolRequest;
 use App\Http\Requests\Documents\Shipment\Protocols\StoreProtocolRequest;
 use App\Http\Requests\Documents\Shipment\Protocols\UpdateProtocolRequest;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\Protocols\Protocol;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Protocols\ProtocolRepository;
@@ -92,11 +94,11 @@ class ProtocolController extends CoreController
     {
         $validated = $request->validated();
 
-        $packingListId = $validated['packing_list_id'];
+        $packingList = PackingList::find((int)$validated['packing_list_id']);
 
         return view(
             'documents.shipment.protocols.create',
-            compact('packingListId')
+            compact('packingList')
         );
     }
 
@@ -228,6 +230,60 @@ class ProtocolController extends CoreController
                 'success',
                 __(
                     'documents.shipment.protocols.actions.delete.success',
+                    ['number' => $protocol->number]
+                )
+            );
+    }
+
+    /**
+     * @param ApproveProtocolRequest $request
+     * @param Protocol               $protocol
+     *
+     * @return RedirectResponse
+     */
+    public function approve(ApproveProtocolRequest $request, Protocol $protocol)
+    {
+        $validated = $request->validated();
+
+        $file = $validated['filename'] ?? null;
+
+        $protocol->timestamps = false;
+
+        $protocol->fill(
+            [
+                'approved_by_id' => Auth::user()->id,
+                'approved' => (int)$validated['approved'],
+                'comment' => $validated['comment'],
+                'approved_at' => null,
+            ]
+        );
+
+        if ((int)$validated['approved'] === 1) {
+            $protocol->fill(
+                [
+                    'approved_at' => \Illuminate\Support\Carbon::now(),
+                    'approved' => 1,
+                    'comment' => null,
+                ]
+            );
+        }
+
+        $protocol->save();
+
+        if ($file) {
+            $fileStorage = $this->repository->getStorage($protocol->id);
+            $directory = $fileStorage->get('directory');
+            $filename = $fileStorage->get('filename');
+            File::attach($directory, $file, $filename);
+            $protocol->filename = $directory . $filename;
+            $protocol->save();
+        }
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.protocols.actions.update.success',
                     ['number' => $protocol->number]
                 )
             );
