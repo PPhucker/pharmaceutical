@@ -3,20 +3,13 @@
 namespace App\Repositories\Admin;
 
 use App\Models\Auth\Permission;
+use App\Models\Auth\Role;
 use App\Repositories\CoreRepository;
 use App\Models\Auth\User as Model;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserRepository extends CoreRepository
 {
-
-    /**
-     * @inheritDoc
-     */
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
 
     /**
      * @return Collection
@@ -53,6 +46,8 @@ class UserRepository extends CoreRepository
     }
 
     /**
+     * Пользователи для e-mail рассылки после заведения нового контрагента.
+     *
      * @return Collection
      */
     public function getForEmailCreatedContractorNotification()
@@ -62,6 +57,39 @@ class UserRepository extends CoreRepository
 
         return $permissions->usersForEmailNotification()
             ->get();
+    }
 
+    /**
+     * @return Collection
+     */
+    public function getMarketingUsers()
+    {
+        $role = Role::whereIn('slug', ['admin', 'marketing'])
+            ->first();
+
+        return $role->usersForEmailNotification()
+            ->get();
+    }
+
+    /**
+     * Пользователи для e-mail рассылки после создания комплекта документов на отгрузку.
+     *
+     * @return Collection
+     */
+    public function getForCreatedShipmentNotification()
+    {
+        $permissions = Permission::whereIn('slug', ['all', 'approve_shipment_documents'])
+            ->first();
+
+        return $permissions->usersForEmailNotification()
+            ->get();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }
