@@ -2,10 +2,12 @@
 
 namespace App\Models\Auth;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -35,7 +37,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Role withTrashed()
  * @method static Builder|Role withoutTrashed()
  * @mixin Builder
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Role extends Model
 {
@@ -49,5 +51,15 @@ class Role extends Model
     final public function users()
     {
         return $this->belongsToMany(User::class, 'users_roles')->withTrashed();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function usersForEmailNotification()
+    {
+        return $this->belongsToMany(User::class, 'users_roles')
+            ->withTimestamps()
+            ->withoutTrashed();
     }
 }
