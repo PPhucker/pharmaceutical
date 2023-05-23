@@ -52,7 +52,12 @@ class LogController extends Controller
             'detach',
         ];
 
-        $models = Model::all();
+        $models = [];
+
+        foreach (Model::all() as $key => $model) {
+            $models[$key]['class'] = $model;
+            $models[$key]['comment'] = __('models.' . str_replace('\\', '.', $model));
+        }
 
         $users = User::all();
 

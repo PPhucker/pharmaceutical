@@ -31,8 +31,8 @@
                         <x-tables.filters.select-filter title="{{__('logs.model')}}"
                                                         name="model">
                             @foreach($models as $model)
-                                <option value="{{$model}}" @if(request('model') === $model) selected @endif>
-                                    {{$model}}
+                                <option value="{{$model['class']}}" @if(request('model') === $model['class']) selected @endif>
+                                    {{$model['comment']}}
                                 </option>
                             @endforeach
                         </x-tables.filters.select-filter>
@@ -88,7 +88,7 @@
                         {{__('logs.actions.' . $log->get('context')->action)}}
                     </td>
                     <td class="align-middle text-left">
-                        {{mb_substr($log->get('context')->model, 11)}}
+                        {{__('models.' . str_replace('\\', '.', $log->get('context')->model))}}
                     </td>
                     <td class="align-middle text-center">
                         {{$log->get('context')->primary_key}}
