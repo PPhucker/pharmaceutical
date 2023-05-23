@@ -5,45 +5,23 @@
             <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
                 <li class="list-inline-item ms-2">
                     <a class="btn btn-sm btn-primary text-white"
-                       href="{{$back}}"
+                       href="{{ URL::previous() }}"
                        title="">
                         <i class="bi bi-arrow-90deg-left align-middle fs-6"></i>
                     </a>
                 </li>
-                <li class="list-inline-item col-md-5">
-                    <input type="text"
-                           class="form-control form-control-sm text-primary"
-                           id="title"
-                           value="{{trim($title)}}"
-                           disabled>
-                </li>
-                <li class="list-inline-item col-md-3 align-middle">
-                    <div class="input-group input-group-sm mb-0">
-                        <span class="input-group-text text-primary">
-                            {{__('form.zoom')}}
-                        </span>
-                        <input type="range"
-                               id="zoom"
-                               class="form-range form-control form-control-sm bg-secondary"
-                               min="100"
-                               max="300"
-                               step="10"
-                               value="100">
-                        <span class="input-group-text text-primary"
-                              id="result">
-                            100%
-                        </span>
-                    </div>
-                </li>
-                <li class="list-inline-item">
-                    <a class="btn btn-sm btn-primary"
-                       onclick="printDoc()"
-                       title="{{__('form.button.print')}}">
-                        <i class="bi bi-printer align-middle text-white fs-5"></i>
-                    </a>
-                </li>
+                <span class="align-middle fs-6 text-white">
+                    {{$title}}
+                </span>
             </ul>
             <div class="card-body print">
+                <x-forms.alert/>
+                <div id="approval"
+                     class="sticky-top">
+                    @if(isset($approval))
+                        {{$approval}}
+                    @endif
+                </div>
                 <div class="card mb-2">
                     <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
                         <li class="list-inline-item">
@@ -62,6 +40,43 @@
                                 {{__('documents.print')}}
                             </span>
                         </li>
+                        <li class="list-inline-item col-md-5">
+                            <div class="input-group input-group-sm mb-0">
+                                <input type="text"
+                                       class="form-control form-control-sm text-primary"
+                                       id="title"
+                                       value="{{trim($title)}}"
+                                       disabled>
+                                <span class="input-group-text text-primary p-0">
+                                <a class="btn btn-sm btn-primary"
+                                   role="button"
+                                   onclick="printDoc()"
+                                   title="{{__('form.button.print')}}">
+                                    <i class="bi bi-printer align-middle">
+                                        {{__('form.button.print')}}
+                                    </i>
+                                </a>
+                            </span>
+                            </div>
+                        </li>
+                        <li class="list-inline-item col-md-3 align-middle">
+                            <div class="input-group input-group-sm mb-0">
+                            <span class="input-group-text text-primary">
+                            {{__('form.zoom')}}
+                            </span>
+                                <input type="range"
+                                       id="zoom"
+                                       class="form-range form-control form-control-sm bg-secondary"
+                                       min="100"
+                                       max="300"
+                                       step="10"
+                                       value="100">
+                                <span class="input-group-text text-primary"
+                                      id="result">
+                                    100%
+                                </span>
+                            </div>
+                        </li>
                     </ul>
                     <div class="show" id="printing-document">
                         <div class="card-body p-0">
@@ -69,11 +84,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="approval">
-                @if(isset($approval))
-                    {{$approval}}
-                @endif
             </div>
         </div>
     </div>
