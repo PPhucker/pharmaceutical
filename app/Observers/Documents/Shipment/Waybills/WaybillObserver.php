@@ -16,6 +16,10 @@ class WaybillObserver
      */
     public function created(Waybill $waybill)
     {
+        $packingList = $waybill->packingList;
+
+        $packingList->sendEmailCreatedShipment();
+
         Logger::userActionNotice(Logger::ACTION_CREATE, $waybill);
     }
 
