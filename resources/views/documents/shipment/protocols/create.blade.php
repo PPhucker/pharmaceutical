@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Carbon; @endphp
 @extends('layouts.app')
 @section('content')
     <x-forms.main title="{{__('documents.shipment.protocols.titles.create')}}"
@@ -8,7 +9,7 @@
             @csrf
             <input type="hidden"
                    name="packing_list_id"
-                   value="{{$packingListId}}">
+                   value="{{$packingList->id}}">
             <div class="row mb-2">
                 <label for="number"
                        class="col-md-4 col-form-label text-md-end">
@@ -20,7 +21,7 @@
                            name="number"
                            class="form-control form-control-sm text-primary
                            @error('number') is-invalid @enderror"
-                           value="{{old('number')}}"
+                           value="{{$packingList->number}}"
                            required>
                     <x-forms.span-error name="number"/>
                 </div>
@@ -36,7 +37,7 @@
                            name="date"
                            class="form-control form-control-sm text-primary
                            @error('date') is-invalid @enderror"
-                           value="{{old('date')}}"
+                           value="{{Carbon::create($packingList->date)->format('Y-m-d')}}"
                            required>
                     <x-forms.span-error name="date"/>
                 </div>

@@ -278,7 +278,7 @@
                                                 <li>
                                                     <a class="dropdown-item"
                                                        href="#">
-                                                        {{$seriesNumber}}
+                                                        {{$seriesNumber->series}}
                                                     </a>
                                                 </li>
                                             @endforeach
@@ -364,7 +364,7 @@
                             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
                         });
                     });
-                    for (let a of document.getElementsByTagName('a')) {
+                    for (let a of dropdown.getElementsByTagName('a')) {
                         a.onclick = function() {
                             input.value = this.innerText;
                         };
