@@ -47,7 +47,6 @@
                         <x-forms.span-error name="date"/>
                     </div>
                 </div>
-
                 <div class="row mb-2">
                     <label for="licence_card"
                            class="col-md-4 col-form-label text-md-end">
@@ -210,6 +209,45 @@
                         <x-forms.span-error name="second_trailer"/>
                     </div>
                 </div>
+                @if ($waybill->approved !== null)
+                    <div class="row mb-2">
+                        <label for=""
+                               class="col-md-4 col-form-label text-md-end">
+                            {{__('documents.shipment.approved')}}
+                        </label>
+                        <div class="col-md-6">
+                            <div class="input-group input-group-sm">
+                                <span
+                                    class="input-group-text text-center align-middle bg-transparent fw-bold border-0">
+                                @if($waybill->approved)
+                                        <i class="bi bi-shield-check text-success" style="font-size: 1.5em"></i>
+                                    @else
+                                        <i class="bi bi-shield-exclamation text-danger" style="font-size: 1.5em"></i>
+                                    @endif
+                                </span>
+                                <span class="input-group-text text-primary text-center align-middle bg-transparent border-0">
+                                    {{$waybill->approvedBy->name}}
+                                </span>
+                                <span class="input-group-text text-primary text-center align-middle bg-transparent border-0">
+                                    {{$waybill->approved_at}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @if (!$waybill->approved && $waybill->approved !== null)
+                    <div class="row mb-2">
+                        <label for=""
+                               class="col-md-4 col-form-label text-md-end">
+                            {{__('documents.shipment.comment')}}
+                        </label>
+                        <div class="col-md-6">
+                            <textarea class="form-control form-control-sm fw-bolder text-danger bg-transparent"
+                                      placeholder="{{__('documents.shipment.comment')}}" rows="1"
+                                      disabled>{{trim($waybill->comment)}}</textarea>
+                        </div>
+                    </div>
+                @endif
             </x-slot>
             <x-slot name="footer">
                 <ul class="list-inline mb-0">

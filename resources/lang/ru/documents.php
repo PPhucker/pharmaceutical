@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'header' => 'Шапка документа',
+    'header' => 'Основная информация',
     'print' => 'Печатная форма',
     'invoices_for_payment' => [
         'invoices_for_payment' => 'Счета на оплату',
