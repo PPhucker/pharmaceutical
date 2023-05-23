@@ -245,33 +245,6 @@
 
                     </div>
                 @endif
-                <div class="row mb-2">
-                    <label for=""
-                           class="col-md-4 col-form-label text-md-end">
-                        {{__('documents.shipment.filename')}}
-                    </label>
-                    <div class="col-md-6">
-                        <ul class="list-inline mb-0">
-                            <li class="list-inline-item">
-                                <input id="filename"
-                                       type="file"
-                                       name="filename"
-                                       class="form-control form-control-sm text-primary
-                                       @error('filename') is-invalid @enderror"
-                                       value="{{old('filename')}}">
-                                <x-forms.span-error name="filename"/>
-                            </li>
-                            @if($packingList->filename)
-                                <li class="list-inline-item">
-                                    <a href="{{Storage::url($packingList->filename)}}"
-                                       target="_blank">
-                                        {{__('form.button.show')}}
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </div>
-                </div>
             </x-slot>
             <x-slot name="footer">
                 <ul class="list-inline mb-0">
