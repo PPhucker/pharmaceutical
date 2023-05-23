@@ -12,15 +12,20 @@ class Edit extends Component
      * @var false
      */
     public $disabled;
+    /**
+     * @var mixed|string
+     */
+    public $target;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($route, $disabled = false)
+    public function __construct($route, $target = '', $disabled = false)
     {
         $this->route = $route;
+        $this->target = $target;
         $this->disabled = (bool)$disabled;
     }
 
