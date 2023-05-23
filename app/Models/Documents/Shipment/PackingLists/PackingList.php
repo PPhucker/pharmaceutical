@@ -3,6 +3,7 @@
 namespace App\Models\Documents\Shipment\PackingLists;
 
 use App\Models\Documents\Shipment\Shipment;
+use App\Traits\Documents\Shipment\Notifications;
 use App\Traits\Documents\Shipment\PackingLists\HasContractor;
 use App\Traits\Documents\Shipment\PackingLists\HasOrganization;
 use App\Traits\Documents\Shipment\PackingLists\HasShipmentDocuments;
@@ -13,6 +14,7 @@ class PackingList extends Shipment
     use HasOrganization;
     use HasContractor;
     use HasShipmentDocuments;
+    use Notifications;
 
     public const STORAGE = self::SHIPMENT_STORAGE . '/packing_lists/';
 
