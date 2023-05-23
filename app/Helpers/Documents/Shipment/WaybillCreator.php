@@ -84,9 +84,9 @@ class WaybillCreator extends Creator
     protected function getProductFullName(EndProduct $endProduct, PackingListProduct $packingListProduct)
     {
         return $endProduct->full_name
-            . ' код ОКПД2 '
-            . $endProduct->registrationNumber->number
             . ' '
+            . $endProduct->registrationNumber->number
+            . ' код ОКПД2 '
             . $endProduct->okpd2->code;
     }
 }
