@@ -7,8 +7,8 @@ $secondary: #e9ecef;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
-$line-height-base: 1.6;
+$font-size-base: 0.85rem;
+$line-height-base: 1.5;
 
 //Tables
 $table-cell-padding-y-sm: .05rem;
@@ -16,3 +16,12 @@ $table-cell-padding-y-sm: .05rem;
 //Buttons
 $btn-close-width: 0.75em;
 $btn-close-height: $btn-close-width;
+
+//Borders
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
+
+//Offcanvas
+$offcanvas-horizontal-width: 600px;
+

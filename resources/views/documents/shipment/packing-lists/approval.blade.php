@@ -29,6 +29,7 @@
                 formId="form_approval_{{$packingList->id}}"
                 title="{{$packingList->organization->legalForm->abbreviation}}
                 {!!$packingList->organization->name !!}
+                {{ '-' }}
                 №{{$packingList->number}}">
                 <x-slot name="cardBody">
                     <div class="table-responsive">

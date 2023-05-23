@@ -1,6 +1,6 @@
 <div class="list-inline-item pb-2">
     <div class="input-group input-group-sm">
-        <span class="input-group-text rounded-start">
+        <span class="input-group-text">
             {{$title}}
         </span>
         <select name="{{$name}}"

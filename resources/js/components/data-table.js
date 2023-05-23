@@ -193,7 +193,7 @@ export class DataTable {
             },
             {
                 text: this.__createButton('bi-eye-slash'),
-                className: 'btn-colvis rounded-start',
+                className: 'btn-colvis',
 
                 split: [
                     {
