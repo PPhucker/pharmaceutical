@@ -6,11 +6,13 @@ use App\Helpers\Date;
 use App\Helpers\Documents\Shipment\AppendixCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\Shipment\Appendixes\ApproveAppendixRequest;
 use App\Http\Requests\Documents\Shipment\Appendixes\CreateAppendixRequest;
 use App\Http\Requests\Documents\Shipment\Appendixes\IndexAppendixRequest;
 use App\Http\Requests\Documents\Shipment\Appendixes\StoreAppendixRequest;
 use App\Http\Requests\Documents\Shipment\Appendixes\UpdateAppendixRequest;
 use App\Models\Documents\Shipment\Appendixes\Appendix;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Appendixes\AppendixRepository;
 use Auth;
@@ -92,11 +94,11 @@ class AppendixController extends CoreController
     {
         $validated = $request->validated();
 
-        $packingListId = $validated['packing_list_id'];
+        $packingList = PackingList::find((int)$validated['packing_list_id']);
 
         return view(
             'documents.shipment.appendixes.create',
-            compact('packingListId')
+            compact('packingList')
         );
     }
 
@@ -124,6 +126,7 @@ class AppendixController extends CoreController
         return view(
             'documents.shipment.appendixes.show',
             compact(
+                'appendix',
                 'date',
                 'number',
                 'data'
@@ -227,6 +230,60 @@ class AppendixController extends CoreController
                 'success',
                 __(
                     'documents.shipment.appendixes.actions.delete.success',
+                    ['number' => $appendix->number]
+                )
+            );
+    }
+
+    /**
+     * @param ApproveAppendixRequest $request
+     * @param Appendix               $appendix
+     *
+     * @return RedirectResponse
+     */
+    public function approve(ApproveAppendixRequest $request, Appendix $appendix)
+    {
+        $validated = $request->validated();
+
+        $file = $validated['filename'] ?? null;
+
+        $appendix->timestamps = false;
+
+        $appendix->fill(
+            [
+                'approved_by_id' => Auth::user()->id,
+                'approved' => (int)$validated['approved'],
+                'comment' => $validated['comment'],
+                'approved_at' => null,
+            ]
+        );
+
+        if ((int)$validated['approved'] === 1) {
+            $appendix->fill(
+                [
+                    'approved_at' => Carbon::now(),
+                    'approved' => 1,
+                    'comment' => null,
+                ]
+            );
+        }
+
+        $appendix->save();
+
+        if ($file) {
+            $fileStorage = $this->repository->getStorage($appendix->id);
+            $directory = $fileStorage->get('directory');
+            $filename = $fileStorage->get('filename');
+            File::attach($directory, $file, $filename);
+            $appendix->filename = $directory . $filename;
+            $appendix->save();
+        }
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.appendixes.actions.update.success',
                     ['number' => $appendix->number]
                 )
             );

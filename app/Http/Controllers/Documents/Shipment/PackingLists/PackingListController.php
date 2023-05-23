@@ -6,6 +6,8 @@ use App\Helpers\Date;
 use App\Helpers\Documents\Shipment\PackingListCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\Shipment\PackingLists\ApprovalPackingListRequest;
+use App\Http\Requests\Documents\Shipment\PackingLists\ApprovePackingListRequest;
 use App\Http\Requests\Documents\Shipment\PackingLists\CreatePackingListRequest;
 use App\Http\Requests\Documents\Shipment\PackingLists\IndexPackingListRequest;
 use App\Http\Requests\Documents\Shipment\PackingLists\RedirectPackingListRequest;
@@ -14,7 +16,11 @@ use App\Http\Requests\Documents\Shipment\PackingLists\UpdatePackingListRequest;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
+use App\Notifications\Shipment\ToDigitalCommunication;
+use App\Notifications\Shipment\ToDigitalComunication;
+use App\Notifications\Shipment\ToMarketing;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\UserRepository;
 use App\Repositories\Contractors\ContractorRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
@@ -22,7 +28,9 @@ use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepositor
 use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -318,6 +326,137 @@ class PackingListController extends CoreController
             ->route($document . '.create', [
                 'packing_list_id' => $validated['packing_list_id']
             ]);
+    }
+
+
+    /**
+     * @param ApprovalPackingListRequest $request
+     *
+     * @return View
+     */
+    public function approval(ApprovalPackingListRequest $request)
+    {
+        $validated = $request->validated();
+
+        $date = Date::filter($request);
+
+        $fromDate = $date->get('fromDate');
+        $toDate = $date->get('toDate');
+
+        $filters = [
+            'organization_id' => $validated['organization_id'] ?? null,
+            'from_date' => $fromDate,
+            'to_date' => $toDate,
+        ];
+
+        $organizations = (new OrganizationRepository())->getAll();
+        $packingLists = $this->repository->getApproval($filters);
+
+        return view(
+            'documents.shipment.packing-lists.approval',
+            compact(
+                'packingLists',
+                'organizations',
+                'fromDate',
+                'toDate',
+            )
+        );
+    }
+
+    /**
+     * @param ApprovePackingListRequest $request
+     * @param PackingList               $packingList
+     *
+     * @return RedirectResponse
+     */
+    public function approve(ApprovePackingListRequest $request, PackingList $packingList)
+    {
+        $validated = $request->validated();
+
+        $file = $validated['filename'] ?? null;
+
+        $packingList->timestamps = false;
+
+        $packingList->fill(
+            [
+                'approved_by_id' => Auth::user()->id,
+                'approved' => (int)$validated['approved'],
+                'comment' => $validated['comment'],
+                'approved_at' => null,
+            ]
+        );
+
+        if ((int)$validated['approved'] === 1) {
+            $packingList->fill(
+                [
+                    'approved_at' => Carbon::now(),
+                    'approved' => 1,
+                    'comment' => null,
+                ]
+            );
+        }
+
+        $packingList->save();
+
+        if ($file) {
+            $fileStorage = $this->repository->getStorage($packingList->id);
+            $directory = $fileStorage->get('directory');
+            $filename = $fileStorage->get('filename');
+            File::attach($directory, $file, $filename);
+            $packingList->filename = $directory . $filename;
+            $packingList->save();
+        }
+
+        return back()
+            ->with(
+                'success',
+                __(
+                    'documents.shipment.packing_lists.actions.update.success',
+                    ['number' => $packingList->number]
+                )
+            );
+    }
+
+    /**
+     * @param PackingList $packingList
+     *
+     * @return RedirectResponse
+     */
+    public function sendEmailApprovalToMarketing(PackingList $packingList)
+    {
+        $to = (new UserRepository())->getMarketingUsers();
+
+        Notification::route('mail', $to)
+            ->notify(
+                (new ToMarketing($packingList))
+            );
+
+        return back()
+            ->with(
+                'success',
+                __('documents.shipment.approval.e-mail.send.success')
+            );
+    }
+
+    /**
+     * @param PackingList $packingList
+     *
+     * @return RedirectResponse
+     */
+    public function sendEmailApprovalToDigitalCommunication(PackingList $packingList)
+    {
+        $to = (new UserRepository())->getForCreatedShipmentNotification();
+
+        Notification::route('mail', $to)
+            ->notify(
+                (new ToDigitalCommunication($packingList))
+            );
+
+        return back()
+            ->with(
+                'success',
+                __('documents.shipment.approval.e-mail.send.success')
+            );
     }
 
     /**
