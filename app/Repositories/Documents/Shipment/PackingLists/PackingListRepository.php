@@ -4,6 +4,7 @@ namespace App\Repositories\Documents\Shipment\PackingLists;
 
 use App\Models\Documents\Shipment\PackingLists\PackingList as Model;
 use App\Repositories\CoreRepository;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
@@ -60,6 +61,58 @@ class PackingListRepository extends CoreRepository
                 ]
             )
             ->orderBy('documents_shipment_packing_lists.date', 'desc')
+            ->get();
+    }
+
+    /**
+     * @param array $filters
+     *
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getApproval(array $filters = [])
+    {
+        $packingLists = $this->clone()
+            ->select(
+                [
+                    'documents_shipment_packing_lists.id',
+                    'documents_shipment_packing_lists.organization_id',
+                    'documents_shipment_packing_lists.contractor_id',
+                    'documents_shipment_packing_lists.number',
+                    'documents_shipment_packing_lists.date',
+                    'documents_shipment_packing_lists.approved',
+                    'documents_shipment_packing_lists.approved_at',
+                    'documents_shipment_packing_lists.approved_by_id',
+                    'documents_shipment_packing_lists.updated_at',
+                    'documents_shipment_packing_lists.updated_by_id',
+                ]
+            );
+
+        if (isset($filters['organization_id'])) {
+            $packingLists->where(
+                'documents_shipment_packing_lists.organization_id',
+                (int)$filters['organization_id']
+            );
+        }
+
+        return $packingLists->whereBetween(
+            'documents_shipment_packing_lists.date',
+            [$filters['from_date'], $filters['to_date']]
+        )
+            ->with(
+                [
+                    'organization:id,name,legal_form_type',
+                    'contractor:id,name,legal_form_type',
+                    'bill:id,packing_list_id,number,date,updated_at,updated_by_id,approved,approved_at,approved_by_id,comment',
+                    'appendix:id,packing_list_id,number,date,updated_at,updated_by_id,approved,approved_at,approved_by_id,comment',
+                    'protocol:id,packing_list_id,number,date,updated_at,updated_by_id,approved,approved_at,approved_by_id,comment',
+                    'waybill:id,packing_list_id,number,date,updated_at,updated_by_id,approved,approved_at,approved_by_id,comment',
+                    'approvedBy:id,name',
+                    'updatedBy:id,name',
+                ]
+            )
+            ->orderBy('documents_shipment_packing_lists.date', 'desc')
+            ->whereRelation('bill', 'deleted_at', null)
+            ->whereRelation('waybill', 'deleted_at', null)
             ->get();
     }
 
