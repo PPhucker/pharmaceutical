@@ -1,5 +1,6 @@
 <a class="btn btn-hover @if($disabled) disabled @endif"
    href="{{$route}}"
-   title="{{$title}}">
+   title="{{$title}}"
+   target="{{$target}}">
     <i class="{{$icon}}"></i>
 </a>

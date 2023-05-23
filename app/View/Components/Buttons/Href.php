@@ -20,18 +20,23 @@ class Href extends Component
      * @var null
      */
     public $title;
+    /**
+     * @var mixed|string
+     */
+    public $target;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($route, $icon = null, $title = null, $disabled = null)
+    public function __construct($route, $icon = null, $title = null, $target = '', $disabled = null)
     {
         $this->route = $route;
         $this->icon = $icon;
         $this->title = $title;
         $this->disabled = $disabled;
+        $this->target = $target;
     }
 
     /**
