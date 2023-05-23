@@ -69,12 +69,6 @@ class UpdatePackingListRequest extends FormRequest
                 'string',
                 'max:60',
             ],
-            'filename' => [
-                'nullable',
-                'file',
-                'mimes:pdf',
-                'max:15000',
-            ],
         ];
     }
 
