@@ -36,6 +36,7 @@ abstract class Shipment extends Model
         'filename',
         'approved_at',
     ];
+
     /**
      * @param $date
      *
@@ -65,7 +66,19 @@ abstract class Shipment extends Model
      */
     public function getApprovedAtAttribute($date)
     {
+        if ($date === null) {
+            return '';
+        }
         return Carbon::parse($date)
             ->format('d.m.Y H:i:s');
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function isApproved()
+    {
+        return (int)$this->approved !== 0;
     }
 }
