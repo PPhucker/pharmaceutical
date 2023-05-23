@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'header' => 'Document header',
+    'header' => 'Main Info',
     'print' => 'Printing Form',
     'invoices_for_payment' => [
         'invoices_for_payment' => 'Invoices For Payment',

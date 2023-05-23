@@ -23,7 +23,6 @@ class ApproveShipmentRequest extends CoreFormRequest
         'comment' => [
             'nullable',
             'string',
-            'max:255',
         ],
     ];
 }
