@@ -9,11 +9,13 @@ use Illuminate\Support\Collection;
 class OrganizationRepository extends CoreRepository
 {
     /**
+     * @param bool $withTrashed
+     *
      * @return Collection
      */
-    public function getAll()
+    public function getAll(bool $withTrashed = true)
     {
-        return $this->clone()
+        $organizations = $this->clone()
             ->select(
                 [
                     'organizations.id',
@@ -21,15 +23,20 @@ class OrganizationRepository extends CoreRepository
                     'organizations.name',
                     'organizations.INN',
                     'organizations.OKPO',
-                    'organizations.kpp',
-                    'organizations.contacts',
                     'organizations.deleted_at'
                 ]
             )
-            ->orderBy('organizations.name')
-            ->withTrashed()
-            ->with('legalForm:abbreviation')
-            ->get();
+            ->orderBy('organizations.name');
+
+        if ($withTrashed) {
+            $organizations->withTrashed();
+        } else {
+            $organizations->withoutTrashed();
+        }
+
+        return $organizations->with('legalForm:abbreviation')
+            ->get()
+            ->sortBy('legalForm.abbreviation');
     }
 
     /**

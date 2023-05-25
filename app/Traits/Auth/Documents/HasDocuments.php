@@ -2,6 +2,7 @@
 
 namespace App\Traits\Auth\Documents;
 
+use App\Models\Documents\Acts\Act;
 use App\Models\Documents\InvoicesForPayment\DataInvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Traits\Auth\Documents\Shipment\HasShipmentDocuments;
@@ -26,6 +27,15 @@ trait HasDocuments
     public function invoiceForPaymentProducts()
     {
         return $this->hasMany(DataInvoiceForPayment::class, 'user_id')
+            ->withTrashed();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function acts()
+    {
+        return $this->hasMany(Act::class, 'user_id')
             ->withTrashed();
     }
 }
