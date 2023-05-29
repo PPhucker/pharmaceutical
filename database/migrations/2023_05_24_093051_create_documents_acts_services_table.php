@@ -23,6 +23,13 @@ class CreateDocumentsActsServicesTable extends Migration
                 ->on('users')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
+            $table->unsignedBigInteger('act_id')
+                ->comment('Акт');
+            $table->foreign('act_id')
+                ->references('id')
+                ->on('documents_acts')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
             $table->unsignedBigInteger('service_id')
                 ->comment('Работа, услуга');
             $table->foreign('service_id')
@@ -30,7 +37,7 @@ class CreateDocumentsActsServicesTable extends Migration
                 ->on('classifier_services')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->unsignedBigInteger('qauntity')
+            $table->unsignedBigInteger('quantity')
                 ->comment('Кол-во');
             $table->float('price')
                 ->comment('Цена');
