@@ -120,6 +120,6 @@
                 </ul>
             </x-slot>
         </x-forms.collapse.card>
-       {{-- @include('documents.invoices-for-payment.data.products.edit')--}}
+        @include('documents.acts.data.services.edit')
     </x-forms.main>
 @endsection
