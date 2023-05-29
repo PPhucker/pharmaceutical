@@ -4,11 +4,11 @@ namespace App\Repositories\Documents\Acts;
 
 use App\Repositories\CoreRepository;
 use App\Models\Documents\Acts\Act as Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ActRepository extends CoreRepository
 {
-
     /**
      * @param array $filters
      * @param bool  $withTrashed
@@ -101,26 +101,55 @@ class ActRepository extends CoreRepository
                             ]
                         );
                 },
-                /*'services' => static function ($query) {
+                'production' => static function ($query) {
                     $query->select(
                         [
                             'id',
+                            'act_id',
                             'service_id',
                             'quantity',
                             'price',
-                            'nds'
+                            'nds',
+                            'deleted_at',
                         ]
                     )
                         ->with(
                             [
-                                'okei:code,unit,symbol',
+                                'service:id,name',
                             ]
                         );
-                },*/
+                },
             ]
         );
 
         return $act;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Collection
+     */
+    public function getStorage(int $id)
+    {
+        $shipmentDocument = $this->model::find($id);
+
+        $documentDate = Carbon::create($shipmentDocument->date);
+
+        return collect(
+            [
+                'directory' => $this->model::STORAGE
+                    . $documentDate->format('Y')
+                    . '/'
+                    . $documentDate->format('m')
+                    . '/',
+                'filename' => '№'
+                    . $shipmentDocument->number
+                    . '_'
+                    . Carbon::now()->format('d_m_Y_H_i_s')
+                    . '.pdf',
+            ]
+        );
     }
 
     /**

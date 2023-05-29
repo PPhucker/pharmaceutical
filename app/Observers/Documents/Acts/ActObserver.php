@@ -34,24 +34,31 @@ class ActObserver
     /**
      * Handle the Act "deleted" event.
      *
-     * @param  Act  $act
+     * @param Act $act
      *
      * @return void
      */
     public function deleted(Act $act)
     {
+        foreach ($act->services()->get() as $actService) {
+            $actService->delete();
+        }
+
         Logger::userActionNotice(Logger::ACTION_DESTROY, $act);
     }
 
     /**
      * Handle the Act "restored" event.
      *
-     * @param  Act  $act
+     * @param Act $act
      *
      * @return void
      */
     public function restored(Act $act)
     {
+        foreach ($act->services()->get() as $actService) {
+            $actService->restore();
+        }
         Logger::userActionNotice(Logger::ACTION_RESTORE, $act);
     }
 }

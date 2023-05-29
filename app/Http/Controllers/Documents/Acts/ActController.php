@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Documents\Acts;
 
 use App\Helpers\Date;
+use App\Helpers\Documents\Acts\ActCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\Acts\IndexActRequest;
@@ -10,11 +11,15 @@ use App\Http\Requests\Documents\Acts\StoreActRequest;
 use App\Http\Requests\Documents\Acts\UpdateActRequest;
 use App\Models\Documents\Acts\Act;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Classifiers\Nomenclature\Services\ServiceRepository;
 use App\Repositories\Contractors\ContractorRepository;
 use App\Repositories\Documents\Acts\ActRepository;
 use Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ActController extends CoreController
 {
@@ -111,7 +116,17 @@ class ActController extends CoreController
      */
     public function show(Act $act)
     {
-        //
+        $creator = new ActCreator($act);
+
+        $data = $creator->getData();
+
+        return view(
+            'documents.acts.show',
+            compact(
+                'act',
+                'data'
+            )
+        );
     }
 
     /**
@@ -120,14 +135,21 @@ class ActController extends CoreController
      * @param Act $act
      *
      * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function edit(Act $act)
     {
         $act = $this->repository->getById($act->id);
 
+        $services = (new ServiceRepository())->getAll(false);
+
         return view(
             'documents.acts.edit',
-            compact('act')
+            compact(
+                'act',
+                'services',
+            )
         );
     }
 

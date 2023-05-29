@@ -7,6 +7,7 @@ use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -14,6 +15,8 @@ class Act extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    public const STORAGE = 'public/documents/acts/';
 
     protected $table = 'documents_acts';
 
@@ -79,4 +82,12 @@ class Act extends Model
         return $this->belongsTo(Organization::class, 'contractor_id');
     }
 
+    /**
+     * @return HasMany
+     */
+    public function production()
+    {
+        return $this->hasMany(ActService::class, 'act_id')
+            ->withTrashed();
+    }
 }
