@@ -19,6 +19,13 @@
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
                                           route="{{route('contractors.index')}}"/>
         </x-sidebar.menu.dropdown.item>
+        <x-sidebar.menu.dropdown.item icon="bi bi-file-earmark-text"
+                                      title="{{__('documents.acts.acts')}}">
+            <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
+                                          route="{{route('acts.index')}}"/>
+            <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
+                                          route="{{route('acts.create')}}"/>
+        </x-sidebar.menu.dropdown.item>
         {{-- Документы на отгрузку --}}
         <div class="card border-0">
             <div class="card-header d-grid gap-2 bg-white p-1 border-0">

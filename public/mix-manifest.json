@@ -4,6 +4,7 @@
     "/css/templates/documents/shipment/bill.css": "/css/templates/documents/shipment/bill.css",
     "/css/templates/documents/shipment/packing_list.css": "/css/templates/documents/shipment/packing_list.css",
     "/css/templates/documents/invoice_for_payment.css": "/css/templates/documents/invoice_for_payment.css",
+    "/css/templates/documents/act.css": "/css/templates/documents/act.css",
     "/css/templates/documents/shipment/waybill.css": "/css/templates/documents/shipment/waybill.css",
     "/css/templates/documents/shipment/protocol.css": "/css/templates/documents/shipment/protocol.css",
     "/css/templates/documents/shipment/appendix.css": "/css/templates/documents/shipment/appendix.css",

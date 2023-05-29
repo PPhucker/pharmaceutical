@@ -44,6 +44,11 @@
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                   route="{{route('okei.index')}}"/>
                 </x-sidebar.menu.dropdown.item>
+                <x-sidebar.menu.dropdown.item icon="bi bi-archive"
+                                              title="{{__('classifiers.nomenclature.services.services')}}">
+                    <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
+                                                  route="{{route('services.index')}}"/>
+                </x-sidebar.menu.dropdown.item>
                 @end_roles
                 {{--Готовая продукция--}}
                 <div class="card border-0">

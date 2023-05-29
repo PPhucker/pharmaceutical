@@ -52,6 +52,38 @@ class StrMixin
         2 => ['тысяча', 'тысячи', 'тысяч'],
     ];
 
+    private const MONTHS_WITH_DECLINATION = [
+        '',
+        'января',
+        'февраля',
+        'марта',
+        'апреля',
+        'мая',
+        'июня',
+        'июля',
+        'августа',
+        'сентября',
+        'октября',
+        'ноября',
+        'декабря',
+    ];
+
+    private const MONTHS_WITHOUT_DECLINATION = [
+        '',
+        'январь',
+        'февраль',
+        'март',
+        'апрель',
+        'май',
+        'июнь',
+        'июль',
+        'август',
+        'сентябрь',
+        'октябрь',
+        'ноябрь',
+        'декабрь',
+    ];
+
     /**
      * Возвращает дату прописью.
      *
@@ -59,32 +91,42 @@ class StrMixin
      */
     public function dateInWords()
     {
-        return static function (string $date, string $dateDelimiter, string $newDelimiter) {
+        return static function (
+            string $date,
+            string $dateDelimiter,
+            string $newDelimiter,
+            bool $declination = true,
+            bool $withDay = true,
+            bool $withMonth = true,
+            bool $withYear = true
+        ) {
             $dateArray = explode($dateDelimiter, $date);
-            $mothsArray = [
-                '',
-                'января',
-                'февраля',
-                'марта',
-                'апреля',
-                'мая',
-                'июня',
-                'июля',
-                'августа',
-                'сентября',
-                'октября',
-                'ноября',
-                'декабря'
-            ];
 
-            $day = str_pad(
-                $dateArray[2],
-                2,
-                '0',
-                STR_PAD_LEFT
-            );
+            if ($declination) {
+                $monthsArray = StrMixin::MONTHS_WITH_DECLINATION;
+            } else {
+                $monthsArray = StrMixin::MONTHS_WITHOUT_DECLINATION;
+            }
 
-            return $day . $newDelimiter . $mothsArray[(int)$dateArray[1]] . $newDelimiter . $dateArray[0] . ' г.';
+            $day = $withDay
+                ? str_pad(
+                    $dateArray[2],
+                    2,
+                    '0',
+                    STR_PAD_LEFT
+                ) . $newDelimiter
+                : '';
+
+            $month = $withMonth
+                ? $monthsArray[(int)$dateArray[1]] . $newDelimiter
+                : '';
+
+            $year = $withYear
+                ? $dateArray[0] . ' г.'
+                : '';
+
+
+            return $day . $month . $year;
         };
     }
 
@@ -132,9 +174,9 @@ class StrMixin
             }
 
             return mb_strtoupper(
-                mb_substr($str, 0, 1, 'UTF-8'),
-                'UTF-8'
-            )
+                    mb_substr($str, 0, 1, 'UTF-8'),
+                    'UTF-8'
+                )
                 . mb_substr(
                     $str,
                     1,
@@ -155,7 +197,7 @@ class StrMixin
     {
         return static function (int $num, array $words) {
             return (
-                $words[($num = ($num %= 100) > 19 ? ($num % 10) : $num) === 1 ? 0 : ((in_array($num, [2, 3, 4])) ? 1 : 2)]
+            $words[($num = ($num %= 100) > 19 ? ($num % 10) : $num) === 1 ? 0 : ((in_array($num, [2, 3, 4])) ? 1 : 2)]
             );
         };
     }

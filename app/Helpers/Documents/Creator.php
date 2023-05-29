@@ -473,7 +473,7 @@ class Creator
      *
      * @return void
      */
-    private function calculateTotalsForPages()
+    protected function calculateTotalsForPages()
     {
         $this->total_on_pages = self::TOTAL_FIELDS_ON_PAGE;
 
@@ -493,7 +493,7 @@ class Creator
      *
      * @return void
      */
-    private function formatFields()
+    protected function formatFields()
     {
         foreach ($this->pages as $pageKey => $page) {
             foreach ($page['production'] as $product) {

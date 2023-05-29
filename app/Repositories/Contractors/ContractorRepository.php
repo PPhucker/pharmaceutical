@@ -12,11 +12,13 @@ class ContractorRepository extends CoreRepository
 {
 
     /**
+     * @param bool $withTrashed
+     *
      * @return Collection
      */
-    public function getAll()
+    public function getAll(bool $withTrashed = true)
     {
-        return $this->clone()
+        $contractors = $this->clone()
             ->select(
                 [
                     'contractors.id',
@@ -28,11 +30,16 @@ class ContractorRepository extends CoreRepository
                     'contractors.deleted_at'
                 ]
             )
-            ->orderBy('contractors.name')
-            ->withTrashed()
-            ->with('legalForm:abbreviation')
-            ->get()
-            ->sortBy('legalForm.abbreviation');
+            ->orderBy('contractors.id');
+
+        if ($withTrashed) {
+            $contractors->withTrashed();
+        } else {
+            $contractors->withoutTrashed();
+        }
+
+        return $contractors->with('legalForm:abbreviation')
+            ->get();
     }
 
     /**

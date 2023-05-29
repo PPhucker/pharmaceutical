@@ -219,6 +219,28 @@ return [
                 ],
             ],
         ],
+        'services' => [
+            'services' => 'Services',
+            'service' => 'Service',
+            'name' => 'Name',
+            'okei' => 'OKEI Symbol',
+            'actions' => [
+                'update' => [
+                    'success' => 'Services updated successfully',
+                    'fail' => 'Failed to update service',
+                ],
+                'create' => [
+                    'success' => 'Service :name added successfully',
+                    'fail' => 'Failed to create service',
+                ],
+                'delete' => [
+                    'success' => 'Service :name deleted successfully',
+                ],
+                'restore' => [
+                    'success' => 'Service :name restored successfully',
+                ]
+            ],
+        ],
         'okei' => [
             'okei' => 'OKEI Classifier',
             'code' => 'Code',

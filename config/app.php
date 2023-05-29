@@ -188,10 +188,12 @@ return [
         App\Providers\Nomenclature\ProductProvider::class,
         App\Providers\Nomenclature\OKEIProvider::class,
         App\Providers\Nomenclature\MaterialProvider::class,
+        App\Providers\Nomenclature\ServiceProvider::class,
 
         //Documents
         App\Providers\Documents\InvoiceForPaymentProvider::class,
         App\Providers\Documents\ShipmentProvider::class,
+        App\Providers\Documents\ActProvider::class,
     ],
 
     /*

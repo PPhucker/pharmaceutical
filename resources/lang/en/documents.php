@@ -297,4 +297,55 @@ return [
             ],
         ],
     ],
+    'acts' => [
+        'acts' => 'Acts',
+        'act' => 'Acts',
+        'number' => 'Number',
+        'date' => 'Date',
+        'organization_id' => 'Performer',
+        'contractor_id' => 'Customer',
+        'filename' => 'Filet',
+        'titles' => [
+            'create' => 'Creating Act',
+        ],
+        'actions' => [
+            'create' => [
+                'success' => 'Act №:number created successfully',
+                'fail' => 'Failed to create act',
+            ],
+            'update' => [
+                'success' => 'Act №:number updated successfully',
+                'fail' => 'Failed to update act',
+            ],
+            'delete' => [
+                'success' => 'Act №:number deleted successfully'
+            ],
+            'restore' => [
+                'success' => 'Act №:number restored successfully'
+            ],
+        ],
+        'data' => [
+            'data' => 'Services, works',
+            'service_id' => 'Service',
+            'quantity' => 'Quantity',
+            'price' => 'Price with VAT',
+            'nds' => 'VAT',
+            'actions' => [
+                'create' => [
+                    'success' => 'The service has been successfully added to the act',
+                    'fail' => 'Failed to add service to act',
+                ],
+                'update' => [
+                    'success' => 'Act services updated successfully',
+                    'fail' => 'Failed to update services',
+                ],
+                'delete' => [
+                    'success' => 'The service was successfully removed from the act',
+                ],
+                'restore' => [
+                    'success' => 'Service successfully restored',
+                ],
+            ],
+        ],
+    ],
 ];
