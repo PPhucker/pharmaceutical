@@ -1,0 +1,246 @@
+#document-template {
+    font-family: Arial, serif;
+    font-size: 8pt;
+    width: 100%;
+}
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        padding: 0;
+        margin-top: -5mm;
+    }
+
+    nav, .card-header {
+        display: none;
+        content-visibility: hidden;
+        visibility: hidden;
+    }
+
+    main, .card, .card-body {
+        visibility: hidden;
+    }
+
+    .print {
+        all: initial;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+    }
+
+    #document-template {
+        visibility: visible;
+        margin-top: -20px;
+    }
+}
+
+tr.R0 {
+    height: 15px;
+}
+
+tr.R0 td.R15C1 {
+    font-family: Arial;
+    font-size: 8pt;
+    font-style: normal;
+    text-align: left;
+}
+
+tr.R0 td.R18C1 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+}
+
+tr.R0 td.R18C2 {
+    text-align: left;
+}
+
+tr.R0 td.R8C1 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border-left: #000000 2px solid;
+    border-top: #000000 2px solid;
+}
+
+tr.R0 td.R8C29 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 2px solid;
+    border-right: #000000 2px solid;
+}
+
+tr.R0 td.R8C3 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 2px solid;
+}
+
+tr.R1 {
+    height: 1px;
+}
+
+tr.R10 {
+    height: 29px;
+}
+
+tr.R10 td.R10C1 {
+    text-align: center;
+    vertical-align: top;
+    border-left: #000000 2px solid;
+    border-top: #000000 1px solid;
+}
+
+tr.R10 td.R10C20 {
+    text-align: right;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+}
+
+tr.R10 td.R10C23 {
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+}
+
+tr.R10 td.R10C29 {
+    text-align: right;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-right: #000000 2px solid;
+}
+
+tr.R10 td.R10C3 {
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+}
+
+tr.R19 {
+    height: 19px;
+}
+
+tr.R19 td.R19C1 {
+    text-align: left;
+}
+
+tr.R2 {
+    height: 28px;
+}
+
+tr.R2 td.R2C1 {
+    font-family: Arial;
+    font-size: 14pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: #000000 2px solid;
+}
+
+tr.R4 {
+    height: 17px;
+}
+
+tr.R4 td.R12C28 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+}
+
+tr.R4 td.R22C17 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+}
+
+tr.R4 td.R22C32 {
+    text-align: left;
+    border-bottom: #ffffff 1px none;
+}
+
+tr.R4 td.R22C4 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: right;
+}
+
+tr.R4 td.R22C5 {
+    text-align: left;
+    border-bottom: #000000 1px solid;
+}
+
+tr.R4 td.R4C1 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+}
+
+tr.R4 td.R4C5 {
+    font-family: Arial;
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+}
+
+tr.R5 {
+    height: 9px;
+}
+
+tr.R5 td.R11C1 {
+    text-align: left;
+    border-top: #000000 2px solid;
+}
+
+tr.R5 td.R20C1 {
+    text-align: left;
+    border-bottom: #000000 2px solid;
+}
+
+table {
+    table-layout: fixed;
+    padding: 0;
+    padding-left: 2px;
+    vertical-align: bottom;
+    border-collapse: collapse;
+    width: 100%;
+    font-family: Arial;
+    font-size: 8pt;
+    font-style: normal;
+}
+
+td {
+    padding: 0;
+    padding-left: 2px;
+    overflow: hidden;
+    vertical-align: bottom;
+}
