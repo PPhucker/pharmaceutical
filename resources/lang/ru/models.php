@@ -23,6 +23,9 @@ return [
                         'ProductPrice' => 'Прайс продукта',
                     ],
                     'OKEI' => 'Классификатор ОКЕИ',
+                    'Services' => [
+                        'Service' => 'Услуги',
+                    ],
                     'Materials' => [
                         'TypeOfMaterial' => 'Тип комплектующего',
                         'Material' => 'Комплектующее',
@@ -45,13 +48,17 @@ return [
                 'PlaceOfBusiness' => 'Место осуществления контрагента',
                 'BankAccountDetail' => 'Банковские реквизиты контрагента',
                 'ContactPerson' => 'Контактное лицо контрагента',
-                'Car' => 'Автомобиль оргпнизации',
+                'Car' => 'Автомобиль организации',
                 'Driver' => 'Водитель контрагента',
                 'Trailer' => 'Прицеп контрагента',
             ],
             'Documents' => [
                 'InvoicesForPayment' => [
                     'InvoiceForPayment' => 'Счет на оплату',
+                ],
+                'Acts' => [
+                    'Act' => 'Акт',
+                    'ActService' => 'Устуга акта'
                 ],
                 'Shipment' => [
                     'PackingLists' => [
