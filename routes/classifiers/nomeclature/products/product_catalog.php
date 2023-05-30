@@ -20,4 +20,6 @@ Route::controller(Controller::class)
             ->name('product_catalog.detach_aggregation_type');
         Route::patch('/product_catalog/{product_catalog}/update_product_quantity', 'updateProductQuantity')
             ->name('product_catalog.update_product_quantity');
+        Route::get('/product_catalog/{product_catalog}/statistic', 'statistic')
+            ->name('product_catalog.statistic');
     });
