@@ -295,6 +295,9 @@ return [
             'quantity' => 'Кол-во',
             'price' => 'Цена с НДС',
             'nds' => 'НДС',
+            'sum' => 'Сумма',
+            'total_by_packing_list' => 'Всего по накладной',
+            'total' => 'Итого',
             'titles' => [
                 'choose_products' => 'Выберите продукцию из счетов на оплату',
             ],
