@@ -22,6 +22,9 @@ class Logger
 
     private const USER_ACTION_NOTICE_MESSAGE = 'USER_ACTION';
 
+    private const DISK_NAME = 'logs';
+    private const COUNT_DAYS_FOR_DELETING = 95;
+
     /**
      * Parse logs.
      *
@@ -44,7 +47,7 @@ class Logger
             Carbon::create($toDate)->addDay()
         );
 
-        $logsStorage = Storage::disk('logs');
+        $logsStorage = Storage::disk(self::DISK_NAME);
 
         $parsed = collect();
 
@@ -210,5 +213,22 @@ class Logger
                 'name' => 'unauthorized user'
             ]
         );
+    }
+
+    /**
+     * @return void
+     */
+    public static function delete()
+    {
+        collect(Storage::disk(self::DISK_NAME)->listContents())
+            ->each(static function ($file) {
+                if (
+                    $file['type'] === 'file'
+                    && $file['extension'] === 'log'
+                    && $file['timestamp'] < now()->subDays(self::COUNT_DAYS_FOR_DELETING)->getTimestamp()
+                ) {
+                    Storage::disk(self::DISK_NAME)->delete($file['path']);
+                }
+            });
     }
 }
