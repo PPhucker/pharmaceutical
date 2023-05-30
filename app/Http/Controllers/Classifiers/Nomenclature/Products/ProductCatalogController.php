@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers\Classifiers\Nomenclature\Products;
 
+use App\Helpers\Date;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\StatisticProductCatalogRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\StoreProductCatalogRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\UpdateProductCatalogRequest;
 use App\Models\Admin\Organizations\PlaceOfBusiness;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\EndProductRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
+use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
+use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
 use App\Traits\Classifiers\Nomenclature\Products\AggregationTypes;
 use App\Traits\Classifiers\Nomenclature\Products\Materials;
 use Auth;
@@ -23,22 +29,6 @@ class ProductCatalogController extends CoreController
     use Materials, AggregationTypes;
 
     /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(ProductCatalog::class, 'product_catalog');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return ProductCatalogRepository::class;
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return View
@@ -50,24 +40,6 @@ class ProductCatalogController extends CoreController
         return view(
             'classifiers.nomenclature.products.product-catalog.index',
             compact('catalog')
-        );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function create()
-    {
-        $endProducts = (new EndProductRepository())->getAll();
-        $placesOfBusiness = (new PlaceOfBusinessRepository())->getAll();
-
-        return view(
-            'classifiers.nomenclature.products.product-catalog.create',
-            compact('endProducts', 'placesOfBusiness')
         );
     }
 
@@ -107,6 +79,23 @@ class ProductCatalogController extends CoreController
             );
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function create()
+    {
+        $endProducts = (new EndProductRepository())->getAll();
+        $placesOfBusiness = (new PlaceOfBusinessRepository())->getAll();
+
+        return view(
+            'classifiers.nomenclature.products.product-catalog.create',
+            compact('endProducts', 'placesOfBusiness')
+        );
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -206,5 +195,56 @@ class ProductCatalogController extends CoreController
                     ['name' => $productCatalog->endProduct->full_name]
                 ),
             );
+    }
+
+    /**
+     * @param StatisticProductCatalogRequest $request
+     * @param ProductCatalog                 $productCatalog
+     *
+     * @return view
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function statistic(StatisticProductCatalogRequest $request, ProductCatalog $productCatalog)
+    {
+        $request->validated();
+
+        $date = Date::filter($request);
+
+        $fromDate = $date->get('fromDate');
+        $toDate = $date->get('toDate');
+
+        $filters = [
+            'from_date' => $fromDate,
+            'to_date' => $toDate,
+        ];
+
+        $contractors = (new ContractorRepository())->productCatalogSaleStatistic($productCatalog->id, $filters);
+
+        return view(
+            'classifiers.nomenclature.products.product-catalog.statistic',
+            compact(
+                'fromDate',
+                'toDate',
+                'productCatalog',
+                'contractors'
+            )
+        );
+    }
+
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(ProductCatalog::class, 'product_catalog');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepository()
+    {
+        return ProductCatalogRepository::class;
     }
 }

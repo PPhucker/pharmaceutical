@@ -146,6 +146,7 @@ return [
                 'product_id' => 'End Product',
                 'place_of_business_id' => 'Production',
                 'GTIN' => 'GTIN',
+                'statistic' => 'Statistic',
                 'actions' => [
                     'create' => [
                         'success' => 'Product :name has been successfully added to the product catalog',

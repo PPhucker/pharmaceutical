@@ -24,6 +24,12 @@
                     class="text-center">
                     {{__('classifiers.nomenclature.products.product_catalog.GTIN')}}
                 </th>
+                <th scope="col"
+                    class="text-center">
+                    <span class="d-none">
+                        {{__('form.button.statistic')}}
+                    </span>
+                </th>
                 <x-tables.columns.thead.edit/>
                 <x-tables.columns.thead.delete/>
             </tr>
@@ -42,6 +48,11 @@
                     </td>
                     <td class="align-middle text-center">
                         {{$product->GTIN}}
+                    </td>
+                    <td class="align-middle text-center">
+                        <x-buttons.href route="{{route('product_catalog.statistic', ['product_catalog' => $product->id])}}"
+                                        title=" {{__('classifiers.nomenclature.products.product_catalog.statistic')}}"
+                                        icon="bi bi-bar-chart-fill"/>
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.edit route="{{route('product_catalog.edit', ['product_catalog' => $product->id])}}"

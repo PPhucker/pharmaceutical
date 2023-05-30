@@ -292,6 +292,9 @@ return [
             'quantity' => 'Quantity',
             'price' => 'Price with VAT',
             'nds' => 'VAT',
+            'sum' => 'Sum',
+            'total_by_packing_list' => 'Packing List Total',
+            'total' => 'Total',
             'titles' => [
                 'choose_products' => '`Select products from invoices for payment`',
             ],

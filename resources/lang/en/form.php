@@ -10,6 +10,7 @@ return [
         'print' => 'Print',
         'back' => 'Back',
         'create' => 'Create',
+        'statistic' => 'Statistic',
     ],
     'titles' => [
         'add' => 'Add',
