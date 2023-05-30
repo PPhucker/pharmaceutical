@@ -4,13 +4,12 @@ namespace App\Repositories\Contractors;
 
 use App\Repositories\CoreRepository;
 use App\Models\Contractors\Contractor as Model;
-use Illuminate\Support\Collection;
-
-use function Symfony\Component\String\s;
+use Illuminate\Database\Eloquent\Collection;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class ContractorRepository extends CoreRepository
 {
-
     /**
      * @param bool $withTrashed
      *
@@ -83,7 +82,7 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
-     * @return Collection|null
+     * @return \Illuminate\Support\Collection|null
      */
     public function getRegisteredAddress(int $id)
     {
@@ -102,6 +101,40 @@ class ContractorRepository extends CoreRepository
                 'address' => $registered->address,
             ]
         );
+    }
+
+    /**
+     * @param int   $productCatalogId
+     * @param array $filters
+     *
+     * @return Collection
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function productCatalogSaleStatistic(int $productCatalogId, array $filters)
+    {
+        return $this->clone()
+            ->whereHas('packingLists', function ($query) use ($productCatalogId, $filters) {
+                $query->whereBetween('date', [$filters['from_date'], $filters['to_date']])
+                    ->where('approved', '=', 1)
+                    ->whereHas('production', function ($query) use ($productCatalogId) {
+                        $query->where('product_id', '=', $productCatalogId);
+                    });
+            })
+            ->with(
+                [
+                    'packingLists' => function ($query) use ($productCatalogId) {
+                        $query->with(
+                            [
+                                'production' => function ($query) use ($productCatalogId) {
+                                    $query->where('product_id', '=', $productCatalogId);
+                                },
+                            ]
+                        );
+                    }
+                ]
+            )
+            ->get();
     }
 
     /**
