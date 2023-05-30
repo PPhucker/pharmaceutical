@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Logging\Logger;
 use App\Synchronization\Contractor;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -23,6 +24,11 @@ class Kernel extends ConsoleKernel
 
         $schedule->call(static function () {
             (new Contractor())->sync();
+        })
+            ->daily();
+
+        $schedule->call(function () {
+            Logger::delete();
         })
             ->daily();
     }
