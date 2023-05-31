@@ -16187,6 +16187,59 @@
      *
      */ 
         class Str {
+                    /**
+         * 
+         *
+         * @see \App\Mixins\StrMixin::dateInWords()
+         * @param string $date
+         * @param string $dateDelimiter
+         * @param string $newDelimiter
+         * @param bool $declination
+         * @param bool $withDay
+         * @param bool $withMonth
+         * @param bool $withYear
+         * @static 
+         */ 
+        public static function dateInWords($date, $dateDelimiter, $newDelimiter, $declination = true, $withDay = true, $withMonth = true, $withYear = true)
+        {
+                        return \Illuminate\Support\Str::dateInWords($date, $dateDelimiter, $newDelimiter, $declination, $withDay, $withMonth, $withYear);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Mixins\StrMixin::sumInWords()
+         * @param mixed $number
+         * @param array $firstCurrency
+         * @param array $secondCurrency
+         * @static 
+         */ 
+        public static function sumInWords($number, $firstCurrency = [], $secondCurrency = [])
+        {
+                        return \Illuminate\Support\Str::sumInWords($number, $firstCurrency, $secondCurrency);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Mixins\StrMixin::numToWord()
+         * @param int $num
+         * @param array $words
+         * @static 
+         */ 
+        public static function numToWord($num, $words)
+        {
+                        return \Illuminate\Support\Str::numToWord($num, $words);
+        }
+                    /**
+         * 
+         *
+         * @see \App\Mixins\StrMixin::priceFormat()
+         * @param mixed $price
+         * @static 
+         */ 
+        public static function priceFormat($price)
+        {
+                        return \Illuminate\Support\Str::priceFormat($price);
+        }
          
     }
             /**
