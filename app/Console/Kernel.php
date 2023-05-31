@@ -31,6 +31,13 @@ class Kernel extends ConsoleKernel
             Logger::delete();
         })
             ->daily();
+
+        $schedule->command('backup:clean')
+            ->daily()
+            ->at('00:00');
+        $schedule->command('backup:run')
+            ->daily()
+            ->at('00:00');
     }
 
     /**
