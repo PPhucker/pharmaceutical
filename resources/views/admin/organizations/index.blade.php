@@ -29,7 +29,7 @@
                     {{__('contractors.contacts')}}
                 </th>
                 <x-tables.columns.thead.edit/>
-                <x-tables.columns.thead.delete/>
+                {{--<x-tables.columns.thead.delete/>--}}
             </tr>
             </thead>
             <tbody class="text-primary">
@@ -54,7 +54,7 @@
                         <x-buttons.edit route="{{route('organizations.edit', ['organization' => $organization->id])}}"
                                         disabled="{{$organization->trashed()}}"/>
                     </td>
-                    <x-tables.columns.tbody.delete>
+                    {{--<x-tables.columns.tbody.delete>
                         @if ($organization->trashed())
                             <x-buttons.restore
                                 route="{{route('organizations.restore', ['organization' => $organization->id])}}"
@@ -65,7 +65,7 @@
                                 formId="destroy"
                                 itemId="{{$organization->id}}"/>
                         @endif
-                    </x-tables.columns.tbody.delete>
+                    </x-tables.columns.tbody.delete>--}}
                 </tr>
             @endforeach
             </tbody>

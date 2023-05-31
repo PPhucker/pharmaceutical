@@ -18,7 +18,7 @@
                 </th>
                 @end_digital_communication
                 <th scope="col"
-                    class="text-center">
+                    class="text-center border-start">
                     {{__('contractors.places_of_business.index')}}
                 </th>
                 <th scope="col"

@@ -12,37 +12,6 @@ use Psr\Container\NotFoundExceptionInterface;
 class EndProductRepository extends CoreRepository
 {
     /**
-     * @return string
-     */
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getAll()
-    {
-        return $this->clone()
-            ->select(
-                [
-                    'classifier_end_products.id',
-                    'classifier_end_products.type_id',
-                    'classifier_end_products.full_name',
-                    'classifier_end_products.created_at',
-                    'classifier_end_products.updated_at',
-                    'classifier_end_products.deleted_at'
-                ]
-            )
-            ->with('type:id,color')
-            ->withTrashed()
-            ->orderBy('classifier_end_products.type_id')
-            ->orderBy('classifier_end_products.full_name')
-            ->get();
-    }
-
-    /**
      * @param int $id
      *
      * @return Collection
@@ -129,5 +98,43 @@ class EndProductRepository extends CoreRepository
                 'okpd2' => $okpd2,
             ]
         );
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getAll(bool $withTrashed = true)
+    {
+        $endProducts = $this->clone()
+            ->select(
+                [
+                    'classifier_end_products.id',
+                    'classifier_end_products.type_id',
+                    'classifier_end_products.full_name',
+                    'classifier_end_products.created_at',
+                    'classifier_end_products.updated_at',
+                    'classifier_end_products.deleted_at'
+                ]
+            );
+
+        if ($withTrashed) {
+            $endProducts->withTrashed();
+        } else {
+            $endProducts->withoutTrashed();
+        }
+
+        return $endProducts->with('type:id,color')
+            ->withTrashed()
+            ->orderBy('classifier_end_products.type_id')
+            ->orderBy('classifier_end_products.full_name')
+            ->get();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }

@@ -34,7 +34,7 @@ class LogController extends Controller
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request);
+        $date = Date::filter($request, 'day');
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

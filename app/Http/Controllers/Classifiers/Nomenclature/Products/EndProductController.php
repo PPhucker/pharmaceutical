@@ -92,7 +92,7 @@ class EndProductController extends CoreController
         return redirect()
             ->route(
                 'end_products.edit',
-                ['name' => $endProduct->id]
+                ['end_product' => $endProduct->id]
             )
             ->with(
                 'success',
