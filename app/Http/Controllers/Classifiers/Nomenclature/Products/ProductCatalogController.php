@@ -88,7 +88,7 @@ class ProductCatalogController extends CoreController
      */
     public function create()
     {
-        $endProducts = (new EndProductRepository())->getAll();
+        $endProducts = (new EndProductRepository())->getAll(false);
         $placesOfBusiness = (new PlaceOfBusinessRepository())->getAll();
 
         return view(

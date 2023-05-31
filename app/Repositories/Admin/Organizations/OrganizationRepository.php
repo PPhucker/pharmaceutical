@@ -23,6 +23,7 @@ class OrganizationRepository extends CoreRepository
                     'organizations.name',
                     'organizations.INN',
                     'organizations.OKPO',
+                    'organizations.contacts',
                     'organizations.deleted_at'
                 ]
             )
