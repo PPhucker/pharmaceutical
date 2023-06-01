@@ -24,26 +24,29 @@ class UpdateMaterialRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = 'materials.*.';
-
         return [
-            $prefix . 'id' => [
+            'type_id' => [
                 'required',
-                'numeric',
+                'numeric'
             ],
-            $prefix . 'type_id' => [
-                'required',
-                'numeric',
-            ],
-            $prefix . 'okei_code' => [
+            'okei_code' => [
                 'required',
                 'string',
                 'max:10'
             ],
-            $prefix . 'name' => [
+            'name' => [
                 'required',
                 'string',
                 'max:150'
+            ],
+            'price' => [
+                'numeric',
+                'nullable',
+            ],
+            'nds' => [
+                'numeric',
+                'nullable',
+                'max:100'
             ],
         ];
     }

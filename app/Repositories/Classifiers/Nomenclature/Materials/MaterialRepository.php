@@ -4,9 +4,11 @@ namespace App\Repositories\Classifiers\Nomenclature\Materials;
 
 use App\Repositories\CoreRepository;
 use App\Models\Classifiers\Nomenclature\Materials\Material as Model;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+
+use function Symfony\Component\String\s;
 
 class MaterialRepository extends CoreRepository
 {
@@ -45,6 +47,28 @@ class MaterialRepository extends CoreRepository
             ->get();
     }
 
+    /**
+     * @param int $id
+     *
+     * @return Collection
+     */
+    public function getById(int $id)
+    {
+        $material = $this->clone()->find($id);
+
+        $material->load(
+            [
+                'type',
+                'okei',
+            ]
+        );
+
+        return $material;
+    }
+
+    /**
+     * @return string
+     */
     protected function getModelClass()
     {
         return Model::class;

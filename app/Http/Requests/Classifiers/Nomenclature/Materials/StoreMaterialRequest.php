@@ -24,22 +24,29 @@ class StoreMaterialRequest extends FormRequest
      */
     public function rules()
     {
-        $prefix = 'material.';
-
         return [
-            $prefix . 'type_id' => [
+            'type_id' => [
                 'required',
                 'numeric'
             ],
-            $prefix . 'okei_code' => [
+            'okei_code' => [
                 'required',
                 'string',
                 'max:10'
             ],
-            $prefix . 'name' => [
+            'name' => [
                 'required',
                 'string',
                 'max:150'
+            ],
+            'price' => [
+                'numeric',
+                'nullable',
+            ],
+            'nds' => [
+                'numeric',
+                'nullable',
+                'max:100'
             ],
         ];
     }
