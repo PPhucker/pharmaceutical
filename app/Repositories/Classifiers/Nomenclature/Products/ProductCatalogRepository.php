@@ -35,6 +35,7 @@ class ProductCatalogRepository extends CoreRepository
                             'name'
                         ]
                     )
+                        ->withoutTrashed()
                         ->orderBy('type_id')
                         ->orderBy('name')
                         ->with('okei:code,symbol')
@@ -61,11 +62,11 @@ class ProductCatalogRepository extends CoreRepository
         return collect(
             [
                 'product' => $product,
-                'end_products' => (new EndProductRepository())->getAll(),
-                'materials' => (new MaterialRepository())->getAll(),
-                'aggregation_types' => (new TypeOfAggregationRepository())->getAll(),
-                'places_of_business' => (new PlaceOfBusinessRepository())->getAll(),
-                'organizations' => (new OrganizationRepository())->getAll(),
+                'end_products' => (new EndProductRepository())->getAll(false),
+                'materials' => (new MaterialRepository())->getAll(false),
+                'aggregation_types' => (new TypeOfAggregationRepository())->getAll(false),
+                'places_of_business' => (new PlaceOfBusinessRepository())->getAll(false),
+                'organizations' => (new OrganizationRepository())->getAll(false),
             ]
         );
     }

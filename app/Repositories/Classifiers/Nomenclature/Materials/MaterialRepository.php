@@ -11,23 +11,23 @@ use Psr\Container\NotFoundExceptionInterface;
 class MaterialRepository extends CoreRepository
 {
 
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
     /**
      * @return Collection
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAll()
+    public function getAll(bool $withTrashed = true)
     {
-        return $this->clone()
+        $materials = $this->clone()
             ->orderBy('type_id')
-            ->orderBy('name')
-            ->withTrashed()
-            ->with('type:id,name')
+            ->orderBy('name');
+
+        if ($withTrashed) {
+            $materials->withTrashed();
+        } else {
+            $materials->withoutTrashed();
+        }
+        return $materials->with('type:id,name')
             ->with('okei:code,symbol')
             ->get();
     }
@@ -43,5 +43,10 @@ class MaterialRepository extends CoreRepository
             ->with('type:id,name')
             ->with('okei:code,symbol')
             ->get();
+    }
+
+    protected function getModelClass()
+    {
+        return Model::class;
     }
 }
