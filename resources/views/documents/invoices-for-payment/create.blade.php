@@ -7,6 +7,25 @@
               action="{{route('invoices_for_payment.store')}}">
             @csrf
             <div class="row mb-2">
+                <label for="filling_type"
+                       class="col-md-4 col-form-label text-md-end">
+                    {{__('documents.invoices_for_payment.filling_type')}}
+                </label>
+                <div class="col-md-6">
+                    <select class="form-control form-control-sm text-primary
+                            @error('filling_type') is-invalid @enderror"
+                            id="filling_type"
+                            name="filling_type">
+                        @foreach($fillingTypes as $key => $type)
+                            <option value="{{$key}}">
+                                {{$type}}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-forms.span-error name="organization_id"/>
+                </div>
+            </div>
+            <div class="row mb-2">
                 <label for="number"
                        class="col-md-4 col-form-label text-md-end">
                     {{__('documents.invoices_for_payment.number')}}

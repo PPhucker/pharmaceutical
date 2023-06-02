@@ -40,10 +40,10 @@
                     <td class="align-middle text-center">
                         {{$product->id}}
                     </td>
-                    <td>
+                    <td class="text-wrap">
                         {{$product->endProduct->full_name}}
                     </td>
-                    <td class="align-middle">
+                    <td class="align-middle text-wrap">
                         {{$product->organization->name}} - {{$product->placeOfBusiness->address}}
                     </td>
                     <td class="align-middle text-center">
