@@ -13,13 +13,22 @@ use App\Models\Contractors\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class InvoiceForPaymentController extends CoreController
 {
+    private const FILLING_TYPES = [
+        'production' => 'Готовая продукция',
+        'materials' => 'Комплектующие',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -37,17 +46,21 @@ class InvoiceForPaymentController extends CoreController
         $filters = [
             'organization_id' => $validated['organization_id'] ?? null,
             'fromDate' => $fromDate,
-            'toDate' => $toDate
+            'toDate' => $toDate,
+            'filling_type' => $validated['filling_type'] ?? null,
         ];
 
         $organizations = (new OrganizationRepository())->getAll();
         $invoicesForPayment = $this->repository->getAll($filters);
+
+        $fillingTypes = self::FILLING_TYPES;
 
         return view(
             'documents.invoices-for-payment.index',
             compact(
                 'invoicesForPayment',
                 'organizations',
+                'fillingTypes',
                 'fromDate',
                 'toDate'
             )
@@ -78,6 +91,7 @@ class InvoiceForPaymentController extends CoreController
                 'date' => $validated['date'],
                 'director' => $validated['director'],
                 'bookkeeper' => $validated['bookkeeper'],
+                'filling_type' => $validated['filling_type'],
             ]
         );
 
@@ -104,9 +118,15 @@ class InvoiceForPaymentController extends CoreController
     {
         $organizations = (new OrganizationRepository())->getForDocument();
 
+        $fillingTypes = self::FILLING_TYPES;
+
         return view(
             'documents.invoices-for-payment.create',
-            compact('contractor', 'organizations')
+            compact(
+                'contractor',
+                'organizations',
+                'fillingTypes',
+            )
         );
     }
 
@@ -135,26 +155,33 @@ class InvoiceForPaymentController extends CoreController
      * @param InvoiceForPayment $invoiceForPayment
      *
      * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function edit(InvoiceForPayment $invoiceForPayment)
     {
+        $fillingTypes = self::FILLING_TYPES;
+
         $invoiceForPayment = $this->repository->getById($invoiceForPayment->id);
 
-        $invoiceProducts = $invoiceForPayment->production;
-
-        if (count($invoiceProducts) > 0) {
-            $production = (new ProductCatalogRepository())
-                ->getForInvoiceForPayment(
-                    (float)$invoiceProducts->first()->nds,
-                    $invoiceProducts->pluck('product_catalog_id')->toArray()
-                );
-        } else {
-            $production = (new ProductCatalogRepository())->getForInvoiceForPayment();
+        switch ($invoiceForPayment->filling_type) {
+            case 'materials':
+                $production = (new InvoiceForPaymentMaterialRepository())
+                    ->getMaterials($invoiceForPayment->id);
+                break;
+            default:
+                $production = (new InvoiceForPaymentProductRepository())
+                    ->getProduction($invoiceForPayment->id);
+                break;
         }
 
         return view(
             'documents.invoices-for-payment.edit',
-            compact('invoiceForPayment', 'production')
+            compact(
+                'invoiceForPayment',
+                'production',
+                'fillingTypes'
+            )
         );
     }
 
@@ -183,6 +210,7 @@ class InvoiceForPaymentController extends CoreController
                 'date' => $validated['date'],
                 'director' => $validated['director'],
                 'bookkeeper' => $validated['bookkeeper'],
+                'filling_type' => $validated['filling_type'],
             ]
         );
 

@@ -37,6 +37,13 @@ class InvoiceForPaymentRepository extends CoreRepository
             );
         }
 
+        if (isset($filters['filling_type'])) {
+            $invoices->where(
+                'documents_invoices_for_payment.filling_type',
+                $filters['filling_type']
+            );
+        }
+
         return $invoices
             ->whereBetween(
                 'documents_invoices_for_payment.date',
@@ -62,7 +69,7 @@ class InvoiceForPaymentRepository extends CoreRepository
      */
     public function getById(int $id)
     {
-        $invoice = $this->model::find($id);
+        $invoice = $this->clone()->find($id);
 
         $invoice->load(
             [
@@ -130,56 +137,6 @@ class InvoiceForPaymentRepository extends CoreRepository
                     )
                         ->with('bankClassifier:BIC,name');
                 },
-                'production' => static function ($query) {
-                    $query->select(
-                        [
-                            'id',
-                            'product_catalog_id',
-                            'invoice_for_payment_id',
-                            'quantity',
-                            'price',
-                            'nds',
-                            'deleted_at',
-                        ]
-                    )
-                        ->with(
-                            [
-                                'productCatalog' => static function ($query) {
-                                    $query->select(
-                                        [
-                                            'id',
-                                            'product_id',
-                                            'organization_id',
-                                            'place_of_business_id'
-                                        ]
-                                    )
-                                        ->with(
-                                            [
-                                                'endProduct' => static function ($query) {
-                                                    $query->select(
-                                                        [
-                                                            'id',
-                                                            'short_name',
-                                                            'okei_code',
-                                                            'type_id',
-                                                        ]
-                                                    )
-                                                        ->with(
-                                                            [
-                                                                'okei:code,symbol',
-                                                                'type:id,color',
-                                                            ]
-                                                        );
-                                                },
-                                                'organization:id,name',
-                                                'placeOfBusiness:id,address'
-                                            ]
-                                        );
-                                }
-                            ]
-                        )
-                        ->orderBy('product_catalog_id');
-                }
             ]
         );
 
