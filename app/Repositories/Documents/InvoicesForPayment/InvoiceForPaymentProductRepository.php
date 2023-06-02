@@ -2,8 +2,11 @@
 
 namespace App\Repositories\Documents\InvoicesForPayment;
 
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct as Model;
 use App\Repositories\CoreRepository;
+use Illuminate\Database\Eloquent\Collection;
+use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 
 class InvoiceForPaymentProductRepository extends CoreRepository
 {
@@ -55,6 +58,29 @@ class InvoiceForPaymentProductRepository extends CoreRepository
             )
             ->orderBy('documents_invoices_for_payment_production.id')
             ->get();
+    }
+
+
+    /**
+     * @return Collection
+     */
+    public function getProduction(int $invoiceForPaymentId)
+    {
+        $invoiceForPayment = InvoiceForPayment::find($invoiceForPaymentId);
+
+        $invoiceProducts = $invoiceForPayment->production;
+
+        $productCatalogRepository = new ProductCatalogRepository();
+
+        if ($invoiceProducts->count()) {
+            return $productCatalogRepository
+                ->getProductCatalog(
+                    (float)$invoiceProducts->first()->nds,
+                    $invoiceProducts->pluck('product_catalog_id')->toArray()
+                );
+        }
+
+        return $productCatalogRepository->getProductCatalog();
     }
 
     /**
