@@ -68,6 +68,11 @@ class StoreInvoiceForPaymentRequest extends FormRequest
                 'string',
                 'max:60',
             ],
+            'filling_type' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
         ];
     }
 
