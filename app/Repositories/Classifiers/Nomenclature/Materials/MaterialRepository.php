@@ -67,6 +67,40 @@ class MaterialRepository extends CoreRepository
     }
 
     /**
+     * @param float $nds
+     * @param array $invoiceProducts
+     *
+     * @return Collection
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMaterialCatalog(float $nds = 0, array $invoiceProducts = [])
+    {
+        $catalog = $this->clone()
+            ->select(
+                [
+                    'classifier_materials.id',
+                    'classifier_materials.name',
+                    'classifier_materials.price',
+                    'classifier_materials.nds',
+                ]
+            );
+
+        if ($nds) {
+            $catalog->where('classifier_materials.nds', '=', $nds);
+        }
+
+        if ($invoiceProducts) {
+            $catalog->whereNotIn('classifier_materials.id', $invoiceProducts);
+        }
+
+        return $catalog
+            ->orderBy('type_id')
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
      * @return string
      */
     protected function getModelClass()
