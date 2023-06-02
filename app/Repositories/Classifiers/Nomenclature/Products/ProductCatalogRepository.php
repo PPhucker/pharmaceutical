@@ -7,7 +7,7 @@ use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\CoreRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductCatalogRepository extends CoreRepository
 {
@@ -102,7 +102,7 @@ class ProductCatalogRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForInvoiceForPayment(float $nds = 0, array $invoiceProducts = [])
+    public function getProductCatalog(float $nds = 0, array $invoiceProducts = [])
     {
         $catalog = $this->clone()
             ->select(
