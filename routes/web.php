@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\HomeController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,9 +17,8 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', static function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])
+    ->middleware(['auth', 'verified']);
 
 Auth::routes();
 
