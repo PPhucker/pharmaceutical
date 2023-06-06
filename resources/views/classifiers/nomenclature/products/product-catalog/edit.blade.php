@@ -51,7 +51,7 @@
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
                             <small class="text-primary align-items-center">
-                                {{$product->endProduct->okpd2->name}}
+                                {{$product->endProduct->okpd2->name}} - {{$product->endProduct->okpd2->code}}
                             </small>
                     </div>
                 </div>

@@ -157,7 +157,7 @@ class ProductCatalogRepository extends CoreRepository
      * @param int $id
      * @param int $quantity
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getPriceList(int $organizationId, int $id, int $quantity)
     {
@@ -180,10 +180,13 @@ class ProductCatalogRepository extends CoreRepository
             );
         }
 
-        if ($quantity < $priceList->trade_quantity) {
+        /**
+         * Если кол-во в документе больше или равно оптовому кол-ву в прайсе и существует оптовая цена
+         */
+        if ($quantity >= $priceList->trade_quantity && $priceList->trade_price) {
             return collect(
                 [
-                    'price' => $priceList->retail_price,
+                    'price' => $priceList->traide_price,
                     'nds' => $nds,
                 ]
             );
@@ -191,7 +194,7 @@ class ProductCatalogRepository extends CoreRepository
 
         return collect(
             [
-                'price' => $priceList->trade_price,
+                'price' => $priceList->retail_price,
                 'nds' => $nds,
             ]
         );

@@ -43,7 +43,7 @@
                     <td class="text-wrap">
                         {{$product->endProduct->full_name}}
                     </td>
-                    <td class="align-middle text-wrap">
+                    <td class="align-middle">
                         {{$product->organization->name}} - {{$product->placeOfBusiness->address}}
                     </td>
                     <td class="align-middle text-center">

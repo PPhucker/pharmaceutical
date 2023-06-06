@@ -111,7 +111,7 @@ return [
             ],
             'registration_numbers' => [
                 'registration_numbers' => 'Регистрационные номера',
-                'resgistration_number' => 'Регистрационный номер',
+                'registration_number' => 'Регистрационный номер',
                 'without_registration_number' => 'Нет номера',
                 'number' => 'Номер',
                 'actions' => [

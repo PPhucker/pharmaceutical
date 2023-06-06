@@ -44,24 +44,24 @@ class UpdateProductPriceRequest extends FormRequest
                     ->whereNotIn('organization_id', $this->input($prefix . 'organization_id')),
             ],
             $prefix . 'retail_price' => [
-                'required',
+                'nullable',
                 'numeric',
-                'min:1',
+                'min:0',
             ],
             $prefix . 'trade_price' => [
-                'required',
+                'nullable',
                 'numeric',
-                'min:1',
+                'min:0',
             ],
             $prefix . 'nds' => [
-                'required',
+                'nullable',
                 'numeric',
                 'min:10',
             ],
             $prefix . 'trade_quantity' => [
-                'required',
+                'nullable',
                 'numeric',
-                'min:1',
+                'min:0',
             ],
         ];
     }
