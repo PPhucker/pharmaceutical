@@ -7,7 +7,7 @@ use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\CoreRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductCatalogRepository extends CoreRepository
 {
@@ -35,6 +35,7 @@ class ProductCatalogRepository extends CoreRepository
                             'name'
                         ]
                     )
+                        ->withoutTrashed()
                         ->orderBy('type_id')
                         ->orderBy('name')
                         ->with('okei:code,symbol')
@@ -61,11 +62,11 @@ class ProductCatalogRepository extends CoreRepository
         return collect(
             [
                 'product' => $product,
-                'end_products' => (new EndProductRepository())->getAll(),
-                'materials' => (new MaterialRepository())->getAll(),
-                'aggregation_types' => (new TypeOfAggregationRepository())->getAll(),
-                'places_of_business' => (new PlaceOfBusinessRepository())->getAll(),
-                'organizations' => (new OrganizationRepository())->getAll(),
+                'end_products' => (new EndProductRepository())->getAll(false),
+                'materials' => (new MaterialRepository())->getAll(false),
+                'aggregation_types' => (new TypeOfAggregationRepository())->getAll(false),
+                'places_of_business' => (new PlaceOfBusinessRepository())->getAll(false),
+                'organizations' => (new OrganizationRepository())->getAll(false),
             ]
         );
     }
@@ -101,7 +102,7 @@ class ProductCatalogRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForInvoiceForPayment(float $nds = 0, array $invoiceProducts = [])
+    public function getProductCatalog(float $nds = 0, array $invoiceProducts = [])
     {
         $catalog = $this->clone()
             ->select(
@@ -156,7 +157,7 @@ class ProductCatalogRepository extends CoreRepository
      * @param int $id
      * @param int $quantity
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getPriceList(int $organizationId, int $id, int $quantity)
     {
@@ -179,10 +180,13 @@ class ProductCatalogRepository extends CoreRepository
             );
         }
 
-        if ($quantity < $priceList->trade_quantity) {
+        /**
+         * Если кол-во в документе больше или равно оптовому кол-ву в прайсе и существует оптовая цена
+         */
+        if ($quantity >= $priceList->trade_quantity && $priceList->trade_price) {
             return collect(
                 [
-                    'price' => $priceList->retail_price,
+                    'price' => $priceList->traide_price,
                     'nds' => $nds,
                 ]
             );
@@ -190,7 +194,7 @@ class ProductCatalogRepository extends CoreRepository
 
         return collect(
             [
-                'price' => $priceList->trade_price,
+                'price' => $priceList->retail_price,
                 'nds' => $nds,
             ]
         );

@@ -4,7 +4,7 @@ return [
     'header' => 'Основная информация',
     'print' => 'Печатная форма',
     'invoices_for_payment' => [
-        'invoices_for_payment' => 'Счета на оплату (Готовая продукуция)',
+        'invoices_for_payment' => 'Счета на оплату',
         'invoice_for_payment' => 'Счет на оплату',
         'organization_id' => 'Поставщик',
         'organization_place_id' => 'Адрес грузоотправителя',
@@ -17,6 +17,7 @@ return [
         'director' => 'Руководитель',
         'bookkeeper' => 'Главный бухгалтер',
         'filename' => 'Прикрепленный файл',
+        'filling_type' => 'Наполнение счета',
         'warning' => 'Внимание! При удалении счета на оплату автоматически удаляется весь пакет документов, созданный на его основании!',
         'actions' => [
             'create' => [

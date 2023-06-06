@@ -40,7 +40,7 @@
                     <td class="align-middle text-center">
                         {{$product->id}}
                     </td>
-                    <td>
+                    <td class="text-wrap">
                         {{$product->endProduct->full_name}}
                     </td>
                     <td class="align-middle">

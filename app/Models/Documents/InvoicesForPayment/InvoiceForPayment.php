@@ -15,7 +15,10 @@ use Illuminate\Support\Carbon;
 
 class InvoiceForPayment extends Model
 {
-    use HasFactory, HasOrganization, HasContractor, SoftDeletes;
+    use HasFactory;
+    use HasOrganization;
+    use HasContractor;
+    use SoftDeletes;
 
     public const FILES_DIRECTORY = 'public/documents/invoices_for_payment/';
 
@@ -30,6 +33,7 @@ class InvoiceForPayment extends Model
 
     protected $fillable = [
         'user_id',
+        'filling_type',
         'organization_id',
         'organization_place_id',
         'organization_bank_id',
@@ -79,7 +83,15 @@ class InvoiceForPayment extends Model
      */
     public function production()
     {
-        return $this->hasMany(InvoiceForPaymentProduct::class, 'invoice_for_payment_id')
+        switch ($this->filling_type) {
+            case 'materials':
+                $related = InvoiceForPaymentMaterial::class;
+                break;
+            default:
+                $related = InvoiceForPaymentProduct::class;
+                break;
+        }
+        return $this->hasMany($related, 'invoice_for_payment_id')
             ->withTrashed();
     }
 

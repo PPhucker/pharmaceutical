@@ -4,14 +4,19 @@ namespace App\Helpers\Documents;
 
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class InvoiceForPaymentCreator extends Creator
 {
 
     /**
      * @return object
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function getData()
     {
@@ -23,14 +28,20 @@ class InvoiceForPaymentCreator extends Creator
         );
 
         $organization = $this->document->organization;
-        $contractor = $this->document->contractor;
 
-        $production = $this->getProduction();
+        switch ($this->document->filling_type) {
+            case 'materials':
+                $filling = $this->getMaterials();
+                break;
+            default:
+                $filling = $this->getProduction();
+                break;
+        }
 
         return (object)
         [
             'invoice' => $this->getInvoiceForPayment($this->document),
-            'production' => $production,
+            'production' => $filling,
             'total' => $this->getTotal(),
             'contractor' =>
                 (object)[
@@ -209,5 +220,34 @@ class InvoiceForPaymentCreator extends Creator
             . $placeOfBusiness->address
             . ', тел.: '
             . $organization->contacts;
+    }
+
+    /**
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMaterials()
+    {
+        $materials = [];
+
+        foreach (
+            (new InvoiceForPaymentMaterialRepository())->getInvoiceForPaymentMaterials(
+                $this->document->id
+            ) as $key => $invoiceMaterial
+        ) {
+            $material = $invoiceMaterial->material;
+            $materials[] = (object)[
+                'key' => $key + 1,
+                'full_name' => $material->name,
+                'quantity' => $invoiceMaterial->quantity,
+                'price' => $this->numberFormat($invoiceMaterial->price),
+                'okei' => $material->okei->symbol,
+                'sum' => $this->numberFormat(
+                    round($invoiceMaterial->price * $invoiceMaterial->quantity, 2)
+                )
+            ];
+        }
+        return $materials;
     }
 }

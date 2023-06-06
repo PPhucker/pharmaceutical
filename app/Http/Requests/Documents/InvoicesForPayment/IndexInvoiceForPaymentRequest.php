@@ -36,6 +36,11 @@ class IndexInvoiceForPaymentRequest extends FormRequest
                 'nullable',
                 'date',
             ],
+            'filling_type' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
         ];
     }
 }

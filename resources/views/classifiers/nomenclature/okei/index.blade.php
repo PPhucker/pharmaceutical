@@ -113,7 +113,7 @@
                         <input type="hidden"
                                name="okei[{{$key}}][original_code]"
                                value="{{$item->code}}">
-                        <td class="align-middle text-center col-md-2">
+                        <td class="align-middle text-center border-start col-md-2">
                         <span class="d-none">
                             {{$item->code}}
                         </span>

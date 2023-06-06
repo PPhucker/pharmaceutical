@@ -9,6 +9,8 @@ use App\Models\Classifiers\Nomenclature\Materials\Material;
 use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\Classifiers\Nomenclature\Materials\TypeOfMaterialRepository;
 use App\Repositories\Classifiers\Nomenclature\OKEIRepository;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Psr\Container\ContainerExceptionInterface;
@@ -16,22 +18,6 @@ use Psr\Container\NotFoundExceptionInterface;
 
 class MaterialController extends CoreController
 {
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Material::class, 'material');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return MaterialRepository::class;
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -42,12 +28,10 @@ class MaterialController extends CoreController
     public function index()
     {
         $materials = $this->repository->getAll();
-        $typesOfMaterials = (new TypeOfMaterialRepository())->getAll();
-        $okei = (new OKEIRepository())->getAll();
 
         return view(
             'classifiers.nomenclature.materials.index',
-            compact('materials', 'typesOfMaterials', 'okei')
+            compact('materials')
         );
     }
 
@@ -60,17 +44,20 @@ class MaterialController extends CoreController
      */
     public function store(StoreMaterialRequest $request)
     {
-        $validated = $request->validated()['material'];
+        $validated = $request->validated();
 
         $material = Material::create(
             [
                 'type_id' => $validated['type_id'],
                 'okei_code' => $validated['okei_code'],
                 'name' => $validated['name'],
+                'price' => (float)$validated['price'],
+                'nds' => (float)((int)$validated['nds'] / 100),
             ]
         );
 
-        return back()
+        return redirect()
+            ->route('materials.index')
             ->with(
                 'success',
                 __(
@@ -80,34 +67,71 @@ class MaterialController extends CoreController
             );
     }
 
+    /**
+     * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function create()
+    {
+        $okeiClassifier = (new OKEIRepository())->getAll();
+        $typesOfMaterials = (new TypeOfMaterialRepository())->getAll();
+
+        return view(
+            'classifiers.nomenclature.materials.create',
+            compact('okeiClassifier', 'typesOfMaterials')
+        );
+    }
+
+    /**
+     * @param Material $material
+     *
+     * @return Application|Factory|View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function edit(Material $material)
+    {
+        $material = $this->repository->getById($material->id);
+        $okeiClassifier = (new OKEIRepository())->getAll();
+        $typesOfMaterials = (new TypeOfMaterialRepository())->getAll();
+
+        return view(
+            'classifiers.nomenclature.materials.edit',
+            compact('material', 'okeiClassifier', 'typesOfMaterials')
+        );
+    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param UpdateMaterialRequest $request
-     * @param Material|null         $material
+     * @param Material              $material
      *
      * @return RedirectResponse
      */
-    public function update(UpdateMaterialRequest $request, Material $material = null)
+    public function update(UpdateMaterialRequest $request, Material $material)
     {
         $validated = $request->validated();
 
-        foreach ($validated['materials'] as $item) {
-            Material::find((int)$item['id'])
-                ->fill(
-                    [
-                        'type_id' => $item['type_id'],
-                        'okei_code' => $item['okei_code'],
-                        'name' => $item['name'],
-                    ]
-                )
-                ->save();
-        }
+        $material->fill(
+            [
+                'type_id' => $validated['type_id'],
+                'okei_code' => $validated['okei_code'],
+                'name' => $validated['name'],
+                'price' => (float)$validated['price'],
+                'nds' => (float)((int)$validated['nds'] / 100),
+            ]
+        )
+            ->save();
+
         return back()
             ->with(
                 'success',
-                __('classifiers.nomenclature.materials.actions.update.success')
+                __(
+                    'classifiers.nomenclature.materials.actions.update.success',
+                    ['name' => $material->name]
+                )
             );
     }
 
@@ -151,5 +175,21 @@ class MaterialController extends CoreController
                     ['name' => $material->name]
                 )
             );
+    }
+
+    /**
+     * @return void
+     */
+    protected function authorizeActions()
+    {
+        $this->authorizeResource(Material::class, 'material');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepository()
+    {
+        return MaterialRepository::class;
     }
 }

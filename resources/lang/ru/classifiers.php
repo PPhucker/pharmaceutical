@@ -111,7 +111,7 @@ return [
             ],
             'registration_numbers' => [
                 'registration_numbers' => 'Регистрационные номера',
-                'resgistration_number' => 'Регистрационный номер',
+                'registration_number' => 'Регистрационный номер',
                 'without_registration_number' => 'Нет номера',
                 'number' => 'Номер',
                 'actions' => [
@@ -196,9 +196,11 @@ return [
             'type_id' => 'Тип комплектующего',
             'okei_code' => 'Единица измерения',
             'name' => 'Наименование',
+            'price' => 'Цена с НДС',
+            'nds' => 'НДС',
             'actions' => [
                 'update' => [
-                    'success' => 'Комплектующие успешно обновлены',
+                    'success' => 'Комплектующее :name успешно обновлено',
                 ],
                 'create' => [
                     'success' => 'Комплектующее :name успешно добавлено',

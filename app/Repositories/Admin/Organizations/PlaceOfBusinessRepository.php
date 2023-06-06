@@ -15,9 +15,17 @@ class PlaceOfBusinessRepository extends CoreRepository
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAll()
+    public function getAll(bool $withTrashed = true)
     {
-        return $this->clone()
+        $places = $this->clone();
+
+        if ($withTrashed) {
+            $places->withTrashed();
+        } else {
+            $places->withoutTrashed();
+        }
+
+        return $places
             ->orderBy('organizations_places_of_business.organization_id')
             ->orderBy('organizations_places_of_business.registered', 'desc')
             ->get();

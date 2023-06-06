@@ -19,6 +19,29 @@
                        name="id"
                        value="{{$invoiceForPayment->id}}">
                 <div class="row mb-2">
+                    <label for="filling_type"
+                           class="col-md-4 col-form-label text-md-end">
+                        {{__('documents.invoices_for_payment.filling_type')}}
+                    </label>
+                    <div class="col-md-6">
+                        <select class="form-control form-control-sm text-primary
+                            @error('filling_type') is-invalid @enderror"
+                                id="filling_type"
+                                name="filling_type"
+                                disabled>
+                            @foreach($fillingTypes as $key => $type)
+                                <option value="{{$key}}"
+                                        @if($invoiceForPayment->filling_type === $key)
+                                            selected
+                                    @endif>
+                                    {{$type}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-forms.span-error name="filling_type"/>
+                    </div>
+                </div>
+                <div class="row mb-2">
                     <label for="number"
                            class="col-md-4 col-form-label text-md-end">
                         {{__('documents.invoices_for_payment.number')}}
@@ -243,6 +266,12 @@
                 </ul>
             </x-slot>
         </x-forms.collapse.card>
-        @include('documents.invoices-for-payment.data.products.edit')
+        @switch($invoiceForPayment->filling_type)
+            @case('materials')
+                @include('documents.invoices-for-payment.data.materials.edit')
+                @break
+            @default
+                @include('documents.invoices-for-payment.data.products.edit')
+        @endswitch
     </x-forms.main>
 @endsection

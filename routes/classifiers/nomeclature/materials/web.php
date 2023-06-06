@@ -8,7 +8,7 @@ Route::prefix('materials')->group(static function () {
 });
 
 Route::resource('materials', Controller::class)
-    ->except(['show', 'edit', 'create']);
+    ->except(['show']);
 Route::controller(Controller::class)->group(static function () {
     Route::post('/materials/{material}/restore', 'restore')
         ->name('materials.restore')
