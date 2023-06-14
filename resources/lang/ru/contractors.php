@@ -3,6 +3,7 @@
 return [
     'contractors' => 'Контрагенты',
     'contractor' => 'Контрагент',
+    'quantity' => 'Количество',
 
     'actions' => [
         'create' => [

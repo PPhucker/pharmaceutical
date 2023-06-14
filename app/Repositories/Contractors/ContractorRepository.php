@@ -4,6 +4,7 @@ namespace App\Repositories\Contractors;
 
 use App\Repositories\CoreRepository;
 use App\Models\Contractors\Contractor as Model;
+use DB;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -134,6 +135,51 @@ class ContractorRepository extends CoreRepository
                     }
                 ]
             )
+            ->get();
+    }
+
+    /**
+     * @param array $between
+     * @param int   $take
+     *
+     * @return mixed
+     */
+    public function getCustomersForPeriodBySales(array $between, int $take = 10)
+    {
+        return $this->model::select([
+            'contractors.id',
+            'contractors.name',
+            'contractors.legal_form_type',
+            DB::raw(
+                'SUM(
+                documents_shipment_packing_lists_production.price
+                    * documents_shipment_packing_lists_production.quantity
+                )
+                as sum'
+            )
+        ])
+            ->withoutTrashed()
+            ->join('documents_shipment_packing_lists', function ($join) use ($between) {
+                $join->on(
+                    'documents_shipment_packing_lists.contractor_id',
+                    '=',
+                    'contractors.id'
+                )
+                    ->whereBetween(
+                        'documents_shipment_packing_lists.date',
+                        $between
+                    );
+            })
+            ->join('documents_shipment_packing_lists_production', function ($join) {
+                $join->on(
+                    'documents_shipment_packing_lists_production.packing_list_id',
+                    '=',
+                    'documents_shipment_packing_lists.id'
+                );
+            })
+            ->groupBy('contractors.id')
+            ->orderBy('sum', 'desc')
+            ->take($take)
             ->get();
     }
 

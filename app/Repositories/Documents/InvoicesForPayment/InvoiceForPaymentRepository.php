@@ -59,6 +59,7 @@ class InvoiceForPaymentRepository extends CoreRepository
                 ]
             )
             ->orderBy('date', 'desc')
+            ->orderBy('number', 'desc')
             ->get();
     }
 

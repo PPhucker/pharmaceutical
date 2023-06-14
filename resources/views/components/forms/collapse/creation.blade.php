@@ -2,7 +2,7 @@
 @if($errors->has($errorName)) collapsed @else collapse @endif mb-2"
      id="{{$cardId}}">
     <div class="card-header bg-secondary form-control form-control-sm fw-bold border-0 text-primary">
-        {{__('form.titles.add')}}
+        {{mb_strtoupper(__('form.titles.add'))}}
     </div>
     <div class="card-body">
         @if(isset($cardBody))

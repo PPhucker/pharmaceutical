@@ -2,6 +2,6 @@
 
 return [
     'date' => [
-        'default' => 'By default, entries for the current interval are displayed.',
+        'default' => 'By default, the records for the selected interval are displayed',
     ],
 ];

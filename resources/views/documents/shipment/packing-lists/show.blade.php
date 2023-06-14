@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.document back="history"
+    <x-forms.document back="{{route('shipment.approval')}}"
                       title="
                   {{__('documents.shipment.packing_lists.packing_list')
                     . ' №'

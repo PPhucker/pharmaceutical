@@ -12,7 +12,7 @@
         @endauth
         <a class="navbar-brand text-primary"
                href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
+                {{ config('app.name', 'Laravel') }} {{config('app.version')}}
             </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->

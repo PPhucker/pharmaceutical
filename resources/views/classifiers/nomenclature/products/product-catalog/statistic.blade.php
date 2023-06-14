@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main
+    <x-forms.main back="{{route('product_catalog.index')}}"
         title="{{__('classifiers.nomenclature.products.product_catalog.statistic')}} :
         {{$productCatalog->endProduct->short_name}} -
         {{$productCatalog->placeOfBusiness->address}}">

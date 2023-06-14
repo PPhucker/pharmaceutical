@@ -3,6 +3,7 @@
 return [
     'contractors' => 'Contractors',
     'contractor' => 'Contractor',
+    'quantity' => 'Quantity',
 
     'actions' => [
         'create' => [
