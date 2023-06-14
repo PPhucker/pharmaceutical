@@ -106,6 +106,7 @@ abstract class ShipmentRepository
             ]
         )
             ->orderBy($table . '.date', 'desc')
+            ->orderBy($table . '.number', 'desc')
             ->get();
     }
 

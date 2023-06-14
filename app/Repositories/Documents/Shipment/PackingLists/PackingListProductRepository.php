@@ -2,10 +2,12 @@
 
 namespace App\Repositories\Documents\Shipment\PackingLists;
 
+use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct as Model;
 use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -84,6 +86,72 @@ class PackingListProductRepository extends CoreRepository
             ->first();
 
         return $packingListProduct;
+    }
+
+    /**
+     * @param int   $organizationId
+     * @param array $between
+     *
+     * @return float
+     */
+    public function getSumByPeriod(int $organizationId, array $between)
+    {
+        return (float)$this->model::select(
+            DB::raw('SUM(price * quantity) as sum')
+        )
+            ->withoutTrashed()
+            ->join('documents_shipment_packing_lists', function ($join) {
+                $join->on(
+                    'documents_shipment_packing_lists_production.packing_list_id',
+                    '=',
+                    'documents_shipment_packing_lists.id'
+                );
+            })
+            ->where(
+                'documents_shipment_packing_lists.organization_id',
+                '=',
+                $organizationId
+            )
+            ->whereBetween(
+                'documents_shipment_packing_lists.date',
+                $between
+            )
+            ->first()
+            ->sum;
+    }
+
+    /**
+     * @param int   $contractorId
+     * @param array $between
+     *
+     * @return float
+     */
+    public function getSaleSumToContractorByPeriod(int $contractorId, array $between)
+    {
+        return (float)$this->model::select(
+            DB::raw('SUM(price * quantity) as sum')
+        )
+            ->withoutTrashed()
+            ->join('documents_shipment_packing_lists', function ($join) {
+                $join->on(
+                    'documents_shipment_packing_lists_production.packing_list_id',
+                    '=',
+                    'documents_shipment_packing_lists.id'
+                );
+            })
+            ->where(
+                'documents_shipment_packing_lists.contractor_id',
+                '=',
+                $contractorId
+            )
+            ->whereBetween(
+                'documents_shipment_packing_lists.date',
+                $between
+            )
+            ->first()
+            ->sum;
+
+
     }
 
     /**

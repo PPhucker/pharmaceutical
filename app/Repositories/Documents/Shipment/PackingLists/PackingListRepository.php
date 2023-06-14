@@ -2,8 +2,10 @@
 
 namespace App\Repositories\Documents\Shipment\PackingLists;
 
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingList as Model;
 use App\Repositories\CoreRepository;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -61,6 +63,7 @@ class PackingListRepository extends CoreRepository
                 ]
             )
             ->orderBy('documents_shipment_packing_lists.date', 'desc')
+            ->orderBy('documents_shipment_packing_lists.number', 'desc')
             ->get();
     }
 
@@ -299,6 +302,26 @@ class PackingListRepository extends CoreRepository
                     . '.pdf',
             ]
         );
+    }
+
+    /**
+     * @param int   $organizationId
+     * @param array $between
+     *
+     * @return int
+     */
+    public function getCountByPeriod(int $organizationId, array $between)
+    {
+        return PackingList::select(
+            DB::raw('COUNT(id)')
+        )
+            ->withoutTrashed()
+            ->where('organization_id', '=', $organizationId)
+            ->whereBetween(
+                'date',
+                $between
+            )
+            ->count();
     }
 
     /**
