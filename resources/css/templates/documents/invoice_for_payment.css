@@ -1,0 +1,445 @@
+#document-template {
+    font-family: Arial, serif;
+    font-size: 8pt;
+    width: 100%;
+}
+
+@media print {
+
+    @page {
+        size: A4 portrait;
+        padding: 0;
+        margin: 0;
+    }
+
+    nav, .card-header {
+        display: none;
+        content-visibility: hidden;
+        visibility: hidden;
+    }
+
+    main, .card, .card-body {
+        visibility: hidden;
+    }
+
+    .print {
+        all: initial;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+    }
+
+    #document-template {
+        visibility: visible;
+        margin-top: -20px;
+    }
+}
+
+tr.R0 {
+    height: 46px;
+}
+
+tr.R0 td.R0C1 {
+    text-align: center;
+    vertical-align: middle;
+}
+
+tr.R0 td.R10C1 {
+    font-size: 14pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: #000000 2px solid;
+}
+
+tr.R1 {
+    height: 17px;
+}
+
+tr.R1 td.R13C1 {
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+}
+
+tr.R1 td.R13C5 {
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+}
+
+tr.R1 td.R1C1 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+}
+
+tr.R1 td.R1C2 {
+    text-align: left;
+}
+
+tr.R1 td.R20C1 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border-left: #000000 2px solid;
+    border-top: #000000 2px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R1 td.R20C3 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 2px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R1 td.R20C33 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 2px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 2px solid;
+}
+
+tr.R1 td.R23C1 {
+    text-align: left;
+    vertical-align: top;
+}
+
+tr.R1 td.R23C29 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+}
+
+tr.R1 td.R24C1 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+}
+
+tr.R1 td.R2C1 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R1 td.R2C19 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R1 td.R2C22 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R1 td.R31C1 {
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: middle;
+}
+
+tr.R1 td.R31C17 {
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+    border-bottom: #000000 1px solid;
+}
+
+tr.R1 td.R31C26 {
+    text-align: left;
+    border-bottom: #000000 1px solid;
+}
+
+tr.R1 td.R31C27 {
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+}
+
+tr.R1 td.R31C7 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: #000000 1px solid;
+}
+
+tr.R1 td.R33C16 {
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+    border-bottom: #ffffff 1px none;
+}
+
+tr.R1 td.R33C28 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: #ffffff 1px none;
+}
+
+tr.R1 td.R33C8 {
+    text-align: left;
+    border-bottom: #ffffff 1px none;
+}
+
+tr.R1 td.R5C1 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+}
+
+tr.R1 td.R5C19 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R1 td.R5C3 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R12 {
+    height: 33px;
+}
+
+tr.R12 td.R12C1 {
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: middle;
+}
+
+tr.R12 td.R12C38 {
+    text-align: left;
+}
+
+tr.R12 td.R12C7 {
+    font-size: 9pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: left;
+    vertical-align: top;
+}
+
+tr.R22 {
+    height: 9px;
+}
+
+tr.R22 td.R22C0 {
+    text-align: left;
+}
+
+tr.R22 td.R22C1 {
+    text-align: left;
+    vertical-align: top;
+    border-top: #000000 2px solid;
+}
+
+tr.R22 td.R22C29 {
+    font-size: 10pt;
+    font-style: normal;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+    border-top: #000000 2px solid;
+}
+
+tr.R22 td.R22C30 {
+    text-align: left;
+    border-top: #000000 2px solid;
+}
+
+tr.R3 {
+    height: 16px;
+}
+
+tr.R3 td.R36C10 {
+    text-align: right;
+    vertical-align: middle;
+    border-bottom: #ffffff 1px none;
+}
+
+tr.R3 td.R36C15 {
+    font-size: 9pt;
+    font-style: normal;
+    text-align: left;
+}
+
+tr.R3 td.R36C6 {
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: #ffffff 1px none;
+}
+
+tr.R3 td.R3C1 {
+    text-align: left;
+}
+
+tr.R3 td.R3C19 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R3 td.R3C22 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R4 {
+    height: 15px;
+}
+
+tr.R4 td.R21C1 {
+    text-align: center;
+    vertical-align: top;
+    border-left: #000000 2px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R4 td.R21C24 {
+    text-align: right;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R4 td.R21C27 {
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R4 td.R21C3 {
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R4 td.R21C33 {
+    text-align: right;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 2px solid;
+}
+
+tr.R4 td.R32C7 {
+    text-align: center;
+    vertical-align: top;
+}
+
+tr.R4 td.R4C1 {
+    font-size: 8pt;
+    font-style: normal;
+    text-align: left;
+    border-left: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+tr.R4 td.R4C2 {
+    text-align: left;
+}
+
+tr.R4 td.R6C1 {
+    font-size: 10pt;
+    font-style: normal;
+    text-align: left;
+    vertical-align: top;
+    border-left: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-right: #000000 1px solid;
+}
+
+#document-template table {
+    table-layout: fixed;
+    padding: 0 0 0 2px;
+    vertical-align: bottom;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 8pt;
+    font-style: normal;
+}
+
+#document-template td {
+    padding: 0 0 0 2px;
+    overflow: hidden;
+}

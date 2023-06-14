@@ -10,68 +10,39 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
+    <script src="{{ asset('js/app.min.js')}}" defer></script>
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/app.min.css') }}" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="{{asset('images/favicon.png')}}">
 </head>
-<body>
+<body class="bg-transparent">
 <div id="app">
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-        <div class="container-fluid align-middle">
-            @auth
-                <button class="me-3 navbar-toggler"
-                        data-bs-toggle="offcanvas"
-                        href="#offcanvasExample"
-                        type="button"
-                        aria-controls="offcanvasExample"
-                        style="display: block">
-                    <span class="navbar-toggler-icon text-primary"></span>
-                </button>
-            @endauth
-            <a class="navbar-brand text-primary"
-               href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
-            </a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false">
-                <span class="navbar-toggler-icon text-primary"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <!-- Left Side Of Navbar -->
-                <ul class="navbar-nav me-auto"></ul>
-                <!-- Right Side Of Navbar -->
-                <ul class="navbar-nav ms-auto">
-                    @auth
-                        <!-- Authentication Links -->
-                        <li class="nav-item dropdown">
-                            <button class="btn border-0 text-primary"
-                                    type="button"
-                                    data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight"
-                                    aria-controls="offcanvasRight">
-                                {{ Auth::user()->name }}
-                            </button>
-                        </li>
-                    @endauth
-                </ul>
-            </div>
-        </div>
-    </nav>
-    @include('layouts.icons.symbols')
-    @auth
-        @include('layouts.sidebar.menu')
-        @include('layouts.account.menu')
-    @endauth
-    <main class="py-4">
+    @verified()
+    <x-navbar/>
+    @include('layouts.symbols')
+
+        <x-sidebar.menu position="start"
+                        id="Sidebar"
+                        label="MenuLabel"
+                        title="{{__('sidebar.main_menu')}}">
+            <x-sidebar.menu.admin/>
+            <x-sidebar.menu.contractors/>
+            <x-sidebar.menu.documents/>
+            <x-sidebar.menu.classifiers/>
+        </x-sidebar.menu>
+        <x-sidebar.menu position="end"
+                        id="Account"
+                        label="AccountLabel"
+                        title="{{__('sidebar.account.account')}}">
+            <x-sidebar.menu.submit-button route="{{route('logout')}}"
+                                          formId="logoutForm"
+                                          icon="bi bi-door-open-fill"
+                                          title="{{__('sidebar.account.logout')}}"/>
+        </x-sidebar.menu>
+    @endverified
+    <main role="main"
+          style="max-height: 100vh; max-width: 100vw">
         @yield('content')
     </main>
 </div>

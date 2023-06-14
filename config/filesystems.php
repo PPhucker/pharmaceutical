@@ -58,6 +58,29 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
         ],
 
+        'ftp@WD' => [
+            'driver' => 'ftp',
+            'host' => env('WD_MY_CLOUD_FTP_HOST'),
+            'username' => env('WD_MY_CLOUD_FTP_USERNAME'),
+            'password' => env('WD_MY_CLOUD_FTP_PASSWORD'),
+            'root' => env('WD_MY_CLOUD_FTP_ROOT'),
+        ],
+
+        'ftp@SYNOLOGY' => [
+            'driver' => 'ftp',
+            'host' => env('SYNOLOGY_FTP_HOST'),
+            'username' => env('SYNOLOGY_FTP_USERNAME'),
+            'password' => env('SYNOLOGY_FTP_PASSWORD'),
+            'root' => env('SYNOLOGY_FTP_ROOT'),
+        ],
+
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => env('SFTP_HOST', '192.168.4.185'),
+            'username' => env('SFTP_USERNAME', 'sshd'),
+            'password' => env('SFTP_PASSWORD')
+        ],
+
     ],
 
     /*

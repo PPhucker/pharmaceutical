@@ -4,20 +4,33 @@ namespace App\Traits\Auth;
 
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
+use App\Models\Auth\User;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 
 trait HasRolesAndPermissions
 {
     /**
-     * User has a role.
-     *
-     * @param array $roles
+     * User is Administrator.
      *
      * @return bool
      */
-    final public function hasRole(array $roles): bool
+    final public function isAdmin()
+    {
+        return $this->roles->contains('slug', 'admin');
+    }
+
+    /**
+     * User has a role.
+     *
+     * @param $roles
+     *
+     * @return bool
+     */
+    final public function hasRole($roles): bool
     {
         foreach ($roles as $role) {
-            if ($this->roles->contains('slug', $role)) {
+            if ($this->isAdmin() || $this->roles->contains('slug', $role)) {
                 return true;
             }
         }
@@ -27,11 +40,11 @@ trait HasRolesAndPermissions
     /**
      * User has the permission, directly or through a role.
      *
-     * @param array $permissions
+     * @param $permissions
      *
      * @return bool
      */
-    final public function hasPermissionTo(array $permissions): bool
+    final public function hasPermissionTo($permissions): bool
     {
         return $this->hasPermissionThroughRole($permissions) || $this->hasPermission($permissions);
     }
@@ -39,11 +52,11 @@ trait HasRolesAndPermissions
     /**
      * The user has the permission through the role.
      *
-     * @param array $permissions
+     * @param $permissions
      *
      * @return bool
      */
-    final public function hasPermissionThroughRole(array $permissions): bool
+    final public function hasPermissionThroughRole($permissions): bool
     {
         foreach ($permissions as $permission) {
             foreach (Permission::where('slug', $permission)->roles as $role) {
@@ -58,14 +71,14 @@ trait HasRolesAndPermissions
     /**
      * User has a permission.
      *
-     * @param array $permissions
+     * @param $permissions
      *
      * @return bool
      */
-    final public function hasPermission(array $permissions): bool
+    final public function hasPermission($permissions): bool
     {
         foreach ($permissions as $permission) {
-            if ($this->permissions->contains('slug', $permission)) {
+            if ($this->isAdmin() || $this->permissions->contains('slug', $permission)) {
                 return true;
             }
         }
@@ -74,29 +87,21 @@ trait HasRolesAndPermissions
     }
 
     /**
-     * Remove user permissions.
-     *
-     * @param ...$permissions mixed Список прав.
-     *
-     * @return $this
-     */
-    final public function deletePermissions(...$permissions): self
-    {
-        $permissions = $this->getAllPermissions($permissions);
-        $this->permissions()->detach($permissions);
-        return $this;
-    }
-
-    /**
      * Get all permissions.
      *
-     * @param array $permissions
+     * @param $permissions
      *
-     * @return mixed
+     * @return Builder[]|Collection|HasRolesAndPermissions|\Illuminate\Database\Eloquent\Collection|Permission[]
      */
-    final public function getAllPermissions(array $permissions)
+    final public function getAllPermissions($permissions)
     {
-        return Permission::whereIn('slug', $permissions)->get();
+        $permissions = Permission::whereIn('slug', $permissions)->get();
+
+        if (!$permissions) {
+            return $this;
+        }
+
+        return $permissions;
     }
 
     final public function permissions()
@@ -107,11 +112,11 @@ trait HasRolesAndPermissions
     /**
      * Refresh user permissions.
      *
-     * @param array $permissions
+     * @param $permissions
      *
      * @return HasRolesAndPermissions
      */
-    final public function refreshPermissions(array $permissions)
+    final public function refreshPermissions($permissions)
     {
         $this->permissions()->detach();
         return $this->givePermissionsTo($permissions);
@@ -120,17 +125,18 @@ trait HasRolesAndPermissions
     /**
      * Сохранение прав для текущего пользователя.
      *
-     * @param $permissions array Список прав.
+     * @param $permissions
      *
      * @return $this
      */
-    final public function givePermissionsTo(array $permissions)
+    final public function givePermissionsTo($permissions)
     {
-        $permissions = $this->getAllPermissions($permissions);
-
         if ($permissions === null) {
             return $this;
         }
+
+        $permissions = $this->getAllPermissions($permissions);
+
         $this->permissions()->saveMany($permissions);
         return $this;
     }
@@ -138,11 +144,11 @@ trait HasRolesAndPermissions
     /**
      * Refresh user roles.
      *
-     * @param array $roles
+     * @param $roles
      *
      * @return HasRolesAndPermissions
      */
-    final public function refreshRoles(array $roles)
+    final public function refreshRoles($roles)
     {
         $this->roles()->detach();
         return $this->giveRolesTo($roles);
@@ -153,12 +159,13 @@ trait HasRolesAndPermissions
         return $this->belongsToMany(Role::class, 'users_roles');
     }
 
-    final public function giveRolesTo(array $roles)
+    final public function giveRolesTo($roles)
     {
-        $roles = $this->getAllRoles($roles);
         if ($roles === null) {
             return $this;
         }
+
+        $roles = $this->getAllRoles($roles);
         $this->roles()->saveMany($roles);
         return $this;
     }
@@ -166,12 +173,34 @@ trait HasRolesAndPermissions
     /**
      * Get all roles.
      *
-     * @param array $roles
+     * @param $roles
      *
-     * @return mixed
+     * @return Builder[]|Collection|HasRolesAndPermissions|\Illuminate\Database\Eloquent\Collection|Role[]
      */
-    final public function getAllRoles(array $roles)
+    final public function getAllRoles($roles)
     {
-        return Role::whereIn('slug', $roles)->get();
+        $roles = Role::whereIn('slug', $roles)->get();
+
+        if (!$roles) {
+            return $this;
+        }
+
+        return $roles;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canDelete()
+    {
+        return $this->hasPermission(['deleting']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function canRestore()
+    {
+        return $this->hasPermission(['restoring']);
     }
 }

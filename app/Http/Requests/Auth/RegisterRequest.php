@@ -34,7 +34,7 @@ class RegisterRequest extends FormRequest
                 'required',
                 'string',
                 'email',
-                'ends_with:' . env('CORPORATE_MAIL_DOMAIN'),
+                'ends_with:' . config('mail.domain'),
                 'max:60',
                 Rule::unique('users', 'email')->whereNull('deleted_at'),
             ],
@@ -46,10 +46,10 @@ class RegisterRequest extends FormRequest
             ],
 
             'roles' => [
-                'required'
+                'nullable'
             ],
             'permissions' => [
-                'required'
+                'nullable'
             ],
         ];
     }

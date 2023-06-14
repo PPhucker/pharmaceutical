@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
         $admin = User::create(
             [
                 'name' => 'Administrator',
-                'email' => env('SEEDER_ADMIN_MAIL'),
-                'password' => Hash::make(env('SEEDER_ADMIN_PASSWORD')),
+                'email' => config('seeder.email', 'user@pharmaceutical.com'),
+                'password' => Hash::make(config('seeder.password', 'password')),
                 'email_verified_at' => Carbon::now()
             ]
         );

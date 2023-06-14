@@ -14,6 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'version' => env('APP_VERSION', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -67,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Europe/Moscow',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +81,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'ru',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +177,24 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\RoleServiceProvider::class,
+        App\Providers\PermissionServiceProvider::class,
+
+        App\Providers\ClassifierServiceProvider::class,
+
+        App\Providers\Contractors\OrganizationServiceProvider::class,
+        App\Providers\Contractors\ContractorServiceProvider::class,
+
+        //Nomenclature
+        App\Providers\Nomenclature\ProductProvider::class,
+        App\Providers\Nomenclature\OKEIProvider::class,
+        App\Providers\Nomenclature\MaterialProvider::class,
+        App\Providers\Nomenclature\ServiceProvider::class,
+
+        //Documents
+        App\Providers\Documents\InvoiceForPaymentProvider::class,
+        App\Providers\Documents\ShipmentProvider::class,
+        App\Providers\Documents\ActProvider::class,
     ],
 
     /*
