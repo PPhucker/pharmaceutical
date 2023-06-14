@@ -1,13 +1,13 @@
 <div class="card border-0">
     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
-        <button class="btn text-primary dropdown-toggle text-start fw-bold fs-5"
+        <button class="btn text-primary dropdown-toggle text-start fs-5"
                 type="button"
                 data-bs-toggle="collapse"
                 href="#classifiers"
                 role="button"
                 aria-expanded="false"
                 aria-controls="classifiers">
-            {{__('classifiers.classifiers')}}
+            {{mb_strtoupper(__('classifiers.classifiers'))}}
         </button>
     </div>
     {{--Классификаторы--}}
@@ -27,14 +27,14 @@
         {{--Номенклатура--}}
         <div class="card border-0">
             <div class="card-header d-grid gap-2 bg-white p-1 border-0">
-                <button class="btn text-primary dropdown-toggle text-start fw-bold fs-6"
+                <button class="btn text-primary dropdown-toggle text-start fs-6"
                         type="button"
                         data-bs-toggle="collapse"
                         href="#nomenclature"
                         role="button"
                         aria-expanded="false"
                         aria-controls="nomenclature">
-                    {{__('classifiers.nomenclature.nomenclature')}}
+                    {{mb_strtoupper(__('classifiers.nomenclature.nomenclature'))}}
                 </button>
             </div>
             <div class="card-body pt-1 pb-1 show" id="nomenclature">
@@ -53,14 +53,14 @@
                 {{--Готовая продукция--}}
                 <div class="card border-0">
                     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
-                        <button class="btn text-primary dropdown-toggle text-start fw-bold fs-6"
+                        <button class="btn text-primary dropdown-toggle text-start fs-6"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 href="#products"
                                 role="button"
                                 aria-expanded="false"
                                 aria-controls="products">
-                            {{__('classifiers.nomenclature.products.products')}}
+                            {{mb_strtoupper(__('classifiers.nomenclature.products.products'))}}
                         </button>
                     </div>
                     <div class="card-body pt-1 pb-1 collapse" id="products">
@@ -112,14 +112,14 @@
                 {{--Комплектующие--}}
                 <div class="card border-0">
                     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
-                        <button class="btn text-primary dropdown-toggle text-start fw-bold fs-6"
+                        <button class="btn text-primary dropdown-toggle text-start fs-6"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 href="#materials"
                                 role="button"
                                 aria-expanded="false"
                                 aria-controls="materials">
-                            {{__('classifiers.nomenclature.materials.materials')}}
+                            {{mb_strtoupper(__('classifiers.nomenclature.materials.materials'))}}
                         </button>
                     </div>
                     <div class="card-body pt-1 pb-1 collapse" id="materials">

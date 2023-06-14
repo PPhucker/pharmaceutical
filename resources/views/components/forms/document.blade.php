@@ -5,13 +5,13 @@
             <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
                 <li class="list-inline-item ms-2">
                     <a class="btn btn-sm btn-primary text-white"
-                       href="{{ URL::previous() }}"
+                       href="{{--{{ URL::previous() }}--}} {{$back}}"
                        title="">
                         <i class="bi bi-arrow-90deg-left align-middle fs-6"></i>
                     </a>
                 </li>
                 <span class="align-middle fs-6 text-white">
-                    {{$title}}
+                    {{mb_strtoupper($title)}}
                 </span>
             </ul>
             <div class="card-body print">
@@ -37,7 +37,7 @@
                         </li>
                         <li class="list-inline-item">
                             <span class="align-middle fw-bold text-primary">
-                                {{__('documents.print')}}
+                                {{mb_strtoupper(__('documents.print'))}}
                             </span>
                         </li>
                         <li class="list-inline-item col-md-5">
@@ -52,9 +52,7 @@
                                    role="button"
                                    onclick="printDoc()"
                                    title="{{__('form.button.print')}}">
-                                    <i class="bi bi-printer align-middle">
-                                        {{__('form.button.print')}}
-                                    </i>
+                                    <i class="bi bi-printer align-middle fs-6"></i>
                                 </a>
                             </span>
                             </div>

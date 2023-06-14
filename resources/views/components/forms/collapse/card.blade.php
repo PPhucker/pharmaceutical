@@ -14,7 +14,7 @@
             </li>
             <li class="list-inline-item">
                 <span class="align-middle fw-bold text-primary">
-                    {{$title}}
+                    {{mb_strtoupper($title)}}
                 </span>
             </li>
         </ul>

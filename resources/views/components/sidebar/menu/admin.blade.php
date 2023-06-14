@@ -1,14 +1,14 @@
 @admin
 <div class="card border-0">
     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
-        <button class="btn text-primary dropdown-toggle text-start fw-bold fs-5"
+        <button class="btn text-primary dropdown-toggle text-start fs-5"
                 type="button"
                 data-bs-toggle="collapse"
                 href="#admin"
                 role="button"
                 aria-expanded="false"
                 aria-controls="admin">
-            {{__('sidebar.administrator')}}
+            {{mb_strtoupper(__('sidebar.administrator'))}}
         </button>
     </div>
     <div class="card-body pt-1 pb-1 show" id="admin">
