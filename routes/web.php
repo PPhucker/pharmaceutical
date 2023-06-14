@@ -18,7 +18,8 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'index'])
-    ->middleware(['auth', 'verified']);
+    ->middleware(['auth', 'verified'])
+    ->name('/');
 
 Auth::routes();
 
