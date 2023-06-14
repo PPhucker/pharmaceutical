@@ -48,13 +48,15 @@ return [
                 'PlaceOfBusiness' => 'Место осуществления контрагента',
                 'BankAccountDetail' => 'Банковские реквизиты контрагента',
                 'ContactPerson' => 'Контактное лицо контрагента',
-                'Car' => 'Автомобиль организации',
+                'Car' => 'Автомобиль контрагента',
                 'Driver' => 'Водитель контрагента',
                 'Trailer' => 'Прицеп контрагента',
             ],
             'Documents' => [
                 'InvoicesForPayment' => [
                     'InvoiceForPayment' => 'Счет на оплату',
+                    'InvoiceForPaymentProduct' => 'Готовый продукт счета на оплату',
+                    'InvoiceForPaymentMaterial' => 'Комлектующее счета на оплату',
                 ],
                 'Acts' => [
                     'Act' => 'Акт',
