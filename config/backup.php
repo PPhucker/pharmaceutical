@@ -81,6 +81,9 @@ return [
              */
             'databases' => [
                 'mysql',
+                'mysql@mdpl01',
+                'mysql@mdpl01_a',
+                'mysql@rb',
             ],
         ],
 
