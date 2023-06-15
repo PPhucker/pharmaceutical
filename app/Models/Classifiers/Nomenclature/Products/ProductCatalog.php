@@ -54,6 +54,13 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ProductCatalog whereUserId($value)
  * @method static Builder|ProductCatalog withTrashed()
  * @method static Builder|ProductCatalog withoutTrashed()
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\TypeOfAggregation> $aggregationTypes
+ * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct> $invoiceForPaymentProduction
+ * @property-read int|null $invoiceForPaymentProductionCount
+ * @property-read Collection<int, Material> $materials
+ * @property-read Collection<int, \App\Models\Documents\Shipment\PackingLists\PackingListProduct> $packingListProduction
+ * @property-read int|null $packingListProductionCount
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\ProductPrice> $prices
  * @mixin Eloquent
  */
 class ProductCatalog extends Model

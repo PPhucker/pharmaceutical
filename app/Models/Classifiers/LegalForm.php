@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|LegalForm query()
  * @method static Builder|LegalForm whereAbbreviation($value)
  * @method static Builder|LegalForm whereDecoding($value)
+ * @property-read Collection<int, Contractor> $contractors
+ * @property-read Collection<int, Organization> $organizations
  * @mixin Eloquent
  */
 class LegalForm extends Model

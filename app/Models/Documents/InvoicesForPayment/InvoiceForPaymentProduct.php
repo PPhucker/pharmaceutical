@@ -9,6 +9,40 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct
+ *
+ * @property int $id
+ * @property int|null $userId Пользователь
+ * @property int $invoiceForPaymentId ID счета на оплату
+ * @property int|null $productCatalogId ID продукта из каталога
+ * @property int $quantity Количество
+ * @property float|null $price Цена с НДС
+ * @property float|null $nds НДС
+ * @property \Illuminate\Support\Carbon|null $createdAt
+ * @property \Illuminate\Support\Carbon|null $updatedAt
+ * @property \Illuminate\Support\Carbon|null $deletedAt
+ * @property-read \App\Models\Documents\InvoicesForPayment\InvoiceForPayment $invoiceForPayment
+ * @property-read ProductCatalog|null $productCatalog
+ * @property-read User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct query()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereInvoiceForPaymentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereNds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct wherePrice($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereProductCatalogId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPaymentProduct withoutTrashed()
+ * @mixin \Eloquent
+ */
 class InvoiceForPaymentProduct extends Model
 {
     use HasFactory, SoftDeletes;

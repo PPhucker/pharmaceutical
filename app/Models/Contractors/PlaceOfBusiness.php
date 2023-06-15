@@ -42,6 +42,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PlaceOfBusiness whereUserId($value)
  * @method static Builder|PlaceOfBusiness withTrashed()
  * @method static Builder|PlaceOfBusiness withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
+ * @property-read int|null $invoicesForPaymentCount
  * @mixin Eloquent
  */
 class PlaceOfBusiness extends Model

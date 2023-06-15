@@ -40,6 +40,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|BankAccountDetail whereUserId($value)
  * @method static Builder|BankAccountDetail withTrashed()
  * @method static Builder|BankAccountDetail withoutTrashed()
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
+ * @property-read int|null $invoicesForPaymentCount
  * @mixin Eloquent
  */
 class BankAccountDetail extends Model

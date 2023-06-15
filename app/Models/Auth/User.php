@@ -80,6 +80,56 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property-read int|null                                                   $organizationsPlacesOfBusinessCount
  * @property-read Collection<int, ProductPrice>                              $productPrices
  * @property-read int|null                                                   $productPricesCount
+ * @property-read Collection<int, \App\Models\Documents\Acts\ActService> $actServices
+ * @property-read int|null $actServicesCount
+ * @property-read Collection<int, \App\Models\Documents\Acts\Act> $acts
+ * @property-read int|null $actsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Appendixes\Appendix> $approvedAppendixes
+ * @property-read int|null $approvedAppendixesCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Bills\Bill> $approvedBills
+ * @property-read int|null $approvedBillsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\PackingLists\PackingList> $approvedPackingLists
+ * @property-read int|null $approvedPackingListsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Protocols\Protocol> $approvedProtocols
+ * @property-read int|null $approvedProtocolsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Waybills\Waybill> $approvedWaybills
+ * @property-read int|null $approvedWaybillsCount
+ * @property-read Collection<int, \App\Models\Admin\Organizations\BankAccountDetail> $bankAccountDetails
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\ProductCatalog> $catalogProducts
+ * @property-read Collection<int, \App\Models\Contractors\ContactPerson> $contactPersons
+ * @property-read Collection<int, \App\Models\Contractors\Contractor> $contractors
+ * @property-read Collection<int, BankAccountDetail> $contractorsBankAccountDetails
+ * @property-read Collection<int, \App\Models\Contractors\PlaceOfBusiness> $contractorsPlacesOfBusiness
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Appendixes\Appendix> $createdAppendixes
+ * @property-read int|null $createdAppendixesCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Bills\Bill> $createdBills
+ * @property-read int|null $createdBillsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\PackingLists\PackingList> $createdPackingLists
+ * @property-read int|null $createdPackingListsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Protocols\Protocol> $createdProtocols
+ * @property-read int|null $createdProtocolsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Waybills\Waybill> $createdWaybills
+ * @property-read int|null $createdWaybillsCount
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\EndProduct> $endProducts
+ * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial> $invoiceForPaymentMaterials
+ * @property-read int|null $invoiceForPaymentMaterialsCount
+ * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
+ * @property-read int|null $invoicesForPaymentCount
+ * @property-read Collection<int, \App\Models\Admin\Organizations\Organization> $organizations
+ * @property-read Collection<int, \App\Models\Admin\Organizations\PlaceOfBusiness> $organizationsPlacesOfBusiness
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\ProductPrice> $productPrices
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Services\Service> $services
+ * @property-read int|null $servicesCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Appendixes\Appendix> $updatedAppendixes
+ * @property-read int|null $updatedAppendixesCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Bills\Bill> $updatedBills
+ * @property-read int|null $updatedBillsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\PackingLists\PackingList> $updatedPackingLists
+ * @property-read int|null $updatedPackingListsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Protocols\Protocol> $updatedProtocols
+ * @property-read int|null $updatedProtocolsCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\Waybills\Waybill> $updatedWaybills
+ * @property-read int|null $updatedWaybillsCount
  * @mixin Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail

@@ -13,6 +13,62 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\Documents\InvoicesForPayment\InvoiceForPayment
+ *
+ * @property int $id
+ * @property int|null $userId ID Пользователя
+ * @property int $organizationId ID Организации
+ * @property int $organizationPlaceId ID Адреса Отгрузки
+ * @property int|null $organizationBankId ID Банковских реквизитов организации
+ * @property int $contractorId ID Контрагента
+ * @property int $contractorPlaceId ID Адреса Доставки
+ * @property int|null $contractorBankId ID Банковских Реквизитов Контрагента
+ * @property string $number Номер
+ * @property string $date Дата выставления
+ * @property string|null $director Руководитель
+ * @property string|null $bookkeeper Главный бухгалтер
+ * @property string|null $filename Прикрепленный файл
+ * @property Carbon|null $createdAt
+ * @property string $updatedAt
+ * @property Carbon|null $deletedAt
+ * @property string|null $fillingType Наполнение счета (Продукция, комплектующие и тд.)
+ * @property-read \App\Models\Contractors\Contractor $contractor
+ * @property-read \App\Models\Contractors\BankAccountDetail|null $contractorBankAccountDetail
+ * @property-read \App\Models\Contractors\PlaceOfBusiness $contractorPlaceOfBusiness
+ * @property-read \App\Models\Admin\Organizations\Organization $organization
+ * @property-read \App\Models\Admin\Organizations\BankAccountDetail|null $organizationBankAccountDetail
+ * @property-read \App\Models\Admin\Organizations\PlaceOfBusiness $organizationPlaceOfBusiness
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PackingListProduct> $packingListProdiction
+ * @property-read int|null $packingListProdictionCount
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct> $production
+ * @property-read int|null $productionCount
+ * @property-read User|null $user
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment query()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereBookkeeper($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereContractorBankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereContractorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereContractorPlaceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereDirector($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereFillingType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereOrganizationBankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereOrganizationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereOrganizationPlaceId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment withoutTrashed()
+ * @mixin \Eloquent
+ */
 class InvoiceForPayment extends Model
 {
     use HasFactory;

@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|TypeOfEndProduct whereColor($value)
  * @method static Builder|TypeOfEndProduct whereId($value)
  * @method static Builder|TypeOfEndProduct whereName($value)
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\EndProduct> $endProducts
  * @mixin Eloquent
  */
 class TypeOfEndProduct extends Model

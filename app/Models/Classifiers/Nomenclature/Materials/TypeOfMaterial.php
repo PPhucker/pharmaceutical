@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|TypeOfMaterial query()
  * @method static Builder|TypeOfMaterial whereId($value)
  * @method static Builder|TypeOfMaterial whereName($value)
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Materials\Material> $materials
  * @mixin Eloquent
  */
 class TypeOfMaterial extends Model

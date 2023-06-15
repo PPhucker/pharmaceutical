@@ -52,6 +52,21 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Contractor whereUserId($value)
  * @method static Builder|Contractor withTrashed()
  * @method static Builder|Contractor withoutTrashed()
+ * @property string|null $kpp КПП
+ * @property-read Collection<int, \App\Models\Contractors\BankAccountDetail> $bankAccountDetails
+ * @property-read Collection<int, \App\Models\Contractors\Car> $cars
+ * @property-read int|null $carsCount
+ * @property-read Collection<int, \App\Models\Contractors\ContactPerson> $contactPersons
+ * @property-read Collection<int, \App\Models\Contractors\Driver> $drivers
+ * @property-read int|null $driversCount
+ * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
+ * @property-read int|null $invoicesForPaymentCount
+ * @property-read Collection<int, \App\Models\Documents\Shipment\PackingLists\PackingList> $packingLists
+ * @property-read int|null $packingListsCount
+ * @property-read Collection<int, \App\Models\Contractors\PlaceOfBusiness> $placesOfBusiness
+ * @property-read Collection<int, \App\Models\Contractors\Trailer> $trailers
+ * @property-read int|null $trailersCount
+ * @method static Builder|Contractor whereKpp($value)
  * @mixin Eloquent
  */
 class Contractor extends Model

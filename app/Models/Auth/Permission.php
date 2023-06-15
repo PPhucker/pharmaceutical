@@ -37,6 +37,7 @@ use Illuminate\Support\Carbon;
  * @mixin Builder
  * @property-read Collection<int, User> $usersForEmailNotification
  * @property-read int|null                                            $usersForEmailNotificationCount
+ * @property-read Collection<int, \App\Models\Auth\User> $usersForEmailNotification
  * @mixin Eloquent
  */
 class Permission extends Model

@@ -42,6 +42,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Material whereUpdatedAt($value)
  * @method static Builder|Material withTrashed()
  * @method static Builder|Material withoutTrashed()
+ * @property float|null $price Цена с НДС
+ * @property float|null $nds НДС
+ * @property-read Collection<int, ProductCatalog> $endProducts
+ * @method static Builder|Material whereNds($value)
+ * @method static Builder|Material wherePrice($value)
  * @mixin Eloquent
  */
 class Material extends Model

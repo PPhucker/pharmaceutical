@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Bank whereBIC($value)
  * @method static Builder|Bank whereCorrespondentAccount($value)
  * @method static Builder|Bank whereName($value)
+ * @property-read Collection<int, BankAccountDetail> $bankAccountDetails
+ * @property-read Collection<int, ContractorBankAccountDetail> $contractorsBankAccountDetails
  * @mixin Eloquent
  */
 class Bank extends Model

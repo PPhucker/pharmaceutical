@@ -37,6 +37,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Role withTrashed()
  * @method static Builder|Role withoutTrashed()
  * @mixin Builder
+ * @property-read Collection<int, \App\Models\Auth\User> $usersForEmailNotification
+ * @property-read int|null $usersForEmailNotificationCount
  * @mixin Eloquent
  */
 class Role extends Model

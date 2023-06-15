@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|OKPD2 query()
  * @method static Builder|OKPD2 whereCode($value)
  * @method static Builder|OKPD2 whereName($value)
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\EndProduct> $endProducts
  * @mixin Eloquent
  */
 class OKPD2 extends Model

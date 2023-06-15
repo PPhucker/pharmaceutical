@@ -58,6 +58,23 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Organization whereUserId($value)
  * @method static Builder|Organization withTrashed()
  * @method static Builder|Organization withoutTrashed()
+ * @property string|null $kpp КПП
+ * @property-read Collection<int, \App\Models\Documents\Acts\Act> $acts
+ * @property-read int|null $actsCount
+ * @property-read Collection<int, \App\Models\Admin\Organizations\BankAccountDetail> $bankAccountDetails
+ * @property-read Collection<int, \App\Models\Admin\Organizations\Car> $cars
+ * @property-read int|null $carsCount
+ * @property-read Collection<int, ProductCatalog> $catalogProducts
+ * @property-read Collection<int, \App\Models\Admin\Organizations\Driver> $drivers
+ * @property-read int|null $driversCount
+ * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
+ * @property-read int|null $invoicesForPaymentCount
+ * @property-read Collection<int, \App\Models\Admin\Organizations\PlaceOfBusiness> $placesOfBusiness
+ * @property-read Collection<int, ProductPrice> $productPrices
+ * @property-read Collection<int, \App\Models\Admin\Organizations\Staff> $staff
+ * @property-read Collection<int, \App\Models\Admin\Organizations\Trailer> $trailers
+ * @property-read int|null $trailersCount
+ * @method static Builder|Organization whereKpp($value)
  * @mixin Eloquent
  */
 class Organization extends Model

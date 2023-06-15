@@ -57,6 +57,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|EndProduct whereUserId($value)
  * @method static Builder|EndProduct withTrashed()
  * @method static Builder|EndProduct withoutTrashed()
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\ProductCatalog> $catalogProducts
  * @mixin Eloquent
  */
 class EndProduct extends Model

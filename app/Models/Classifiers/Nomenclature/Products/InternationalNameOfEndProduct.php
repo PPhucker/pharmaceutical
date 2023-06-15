@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|InternationalNameOfEndProduct query()
  * @method static Builder|InternationalNameOfEndProduct whereId($value)
  * @method static Builder|InternationalNameOfEndProduct whereName($value)
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\EndProduct> $endProducts
  * @mixin Eloquent
  */
 class InternationalNameOfEndProduct extends Model

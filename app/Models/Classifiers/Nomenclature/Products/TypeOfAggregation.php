@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|TypeOfAggregation query()
  * @method static Builder|TypeOfAggregation whereCode($value)
  * @method static Builder|TypeOfAggregation whereName($value)
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\ProductCatalog> $endProducts
  * @mixin Eloquent
  */
 class TypeOfAggregation extends Model

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|RegistrationNumberOfEndProduct query()
  * @method static Builder|RegistrationNumberOfEndProduct whereId($value)
  * @method static Builder|RegistrationNumberOfEndProduct whereNumber($value)
+ * @property-read Collection<int, \App\Models\Classifiers\Nomenclature\Products\EndProduct> $endProducts
  * @mixin Eloquent
  */
 class RegistrationNumberOfEndProduct extends Model

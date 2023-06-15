@@ -28,6 +28,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static Builder|OKEI whereCode($value)
  * @method static Builder|OKEI whereSymbol($value)
  * @method static Builder|OKEI whereUnit($value)
+ * @property-read Collection<int, EndProduct> $endProducts
+ * @property-read Collection<int, Material> $materials
+ * @property-read Collection<int, Service> $services
+ * @property-read int|null $servicesCount
  * @mixin Eloquent
  */
 class OKEI extends Model
