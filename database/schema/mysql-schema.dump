@@ -1,0 +1,1069 @@
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `classifier_banks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_banks` (
+  `BIC` char(9) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `correspondent_account` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`BIC`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_end_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_end_products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1',
+  `type_id` bigint unsigned DEFAULT NULL COMMENT 'Тип готовой продукции',
+  `international_name_id` bigint unsigned DEFAULT NULL COMMENT 'Межд. непатент. название',
+  `registration_number_id` bigint unsigned DEFAULT NULL COMMENT 'Регистрационный номер',
+  `okei_code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Код ОКЕИ',
+  `okpd2_code` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Код ОКПД2',
+  `short_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Краткое название',
+  `full_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Полное наименование',
+  `marking` tinyint(1) NOT NULL COMMENT 'Маркировка (1-да/0-нет)',
+  `best_before_date` int NOT NULL COMMENT 'Срок годности (в месяцах)',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classifier_end_products_user_id_foreign` (`user_id`),
+  KEY `classifier_end_products_type_id_foreign` (`type_id`),
+  KEY `classifier_end_products_international_name_id_foreign` (`international_name_id`),
+  KEY `classifier_end_products_registration_number_id_foreign` (`registration_number_id`),
+  KEY `classifier_end_products_okei_code_foreign` (`okei_code`),
+  KEY `classifier_end_products_okpd2_code_foreign` (`okpd2_code`),
+  CONSTRAINT `classifier_end_products_international_name_id_foreign` FOREIGN KEY (`international_name_id`) REFERENCES `classifier_international_names_of_end_products` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `classifier_end_products_okei_code_foreign` FOREIGN KEY (`okei_code`) REFERENCES `classifier_okei` (`code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `classifier_end_products_okpd2_code_foreign` FOREIGN KEY (`okpd2_code`) REFERENCES `classifier_okpd2` (`code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `classifier_end_products_registration_number_id_foreign` FOREIGN KEY (`registration_number_id`) REFERENCES `classifier_registration_numbers_of_end_products` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `classifier_end_products_type_id_foreign` FOREIGN KEY (`type_id`) REFERENCES `classifier_types_of_end_products` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `classifier_end_products_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор готовой продукции';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_international_names_of_end_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_international_names_of_end_products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Международное непатентованное название',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор международных непатентованных названий готовой продукции';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_legal_forms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_legal_forms` (
+  `abbreviation` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `decoding` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`abbreviation`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_materials` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `type_id` bigint unsigned DEFAULT NULL COMMENT 'Тип комплектующего',
+  `okei_code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Код ОКЕИ',
+  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название комплектующего',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `price` double(8,2) DEFAULT NULL COMMENT 'Цена с НДС',
+  `nds` double(8,2) DEFAULT NULL COMMENT 'НДС',
+  PRIMARY KEY (`id`),
+  KEY `classifier_materials_type_id_foreign` (`type_id`),
+  KEY `classifier_materials_okei_code_foreign` (`okei_code`),
+  CONSTRAINT `classifier_materials_okei_code_foreign` FOREIGN KEY (`okei_code`) REFERENCES `classifier_okei` (`code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `classifier_materials_type_id_foreign` FOREIGN KEY (`type_id`) REFERENCES `classifier_types_of_materials` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор комплектующих';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_okei`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_okei` (
+  `code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Код',
+  `unit` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Единица измерения',
+  `symbol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Сокращение единицы измерения',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Общероссийский классификатор единиц измерения';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_okpd2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_okpd2` (
+  `code` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Код',
+  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Общероссийский классификатор продукции по видам экономической деятельности';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_registration_numbers_of_end_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_registration_numbers_of_end_products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `number` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Регистрационный номер',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор регистрационных номеров готовой продукции';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_services` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь',
+  `name` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название',
+  `okei_code` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Код ОКЕИ',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `classifier_services_user_id_foreign` (`user_id`),
+  KEY `classifier_services_okei_code_foreign` (`okei_code`),
+  CONSTRAINT `classifier_services_okei_code_foreign` FOREIGN KEY (`okei_code`) REFERENCES `classifier_okei` (`code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `classifier_services_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_types_of_aggregation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_types_of_aggregation` (
+  `code` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Код типа',
+  `name` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Название типа',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор типов агрегации';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_types_of_end_products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_types_of_end_products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `color` char(7) COLLATE utf8mb4_unicode_ci DEFAULT '#ffffff' COMMENT 'Цвет типа',
+  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тип готовой продукции',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор типов готовой продукции';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `classifier_types_of_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classifier_types_of_materials` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тип материалов',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Классификатор типов комплектующих';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1',
+  `legal_form_type` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `INN` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `OKPO` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contacts` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `kpp` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'КПП',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `contractors_inn_unique` (`INN`),
+  KEY `contractors_user_id_foreign` (`user_id`),
+  KEY `contractors_legal_form_type_foreign` (`legal_form_type`),
+  CONSTRAINT `contractors_legal_form_type_foreign` FOREIGN KEY (`legal_form_type`) REFERENCES `classifier_legal_forms` (`abbreviation`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `contractors_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors_bank_account_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors_bank_account_details` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `contractor_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned DEFAULT '1',
+  `bank` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_account` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contractors_bank_account_details_user_id_foreign` (`user_id`),
+  KEY `contractors_bank_account_details_contractor_id_foreign` (`contractor_id`),
+  KEY `contractors_bank_account_details_bank_foreign` (`bank`),
+  CONSTRAINT `contractors_bank_account_details_bank_foreign` FOREIGN KEY (`bank`) REFERENCES `classifier_banks` (`BIC`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `contractors_bank_account_details_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `contractors_bank_account_details_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors_cars`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors_cars` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `contractor_id` bigint unsigned NOT NULL COMMENT 'ID Контрагента',
+  `car_model` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Марка',
+  `state_number` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Гос. номер',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contractors_cars_user_id_foreign` (`user_id`),
+  KEY `contractors_cars_contractor_id_foreign` (`contractor_id`),
+  CONSTRAINT `contractors_cars_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `contractors_cars_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Автомобили';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors_contact_persons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors_contact_persons` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `contractor_id` bigint unsigned NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `post` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contractors_contact_persons_contractor_id_foreign` (`contractor_id`),
+  CONSTRAINT `contractors_contact_persons_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors_drivers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors_drivers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `contractor_id` bigint unsigned NOT NULL COMMENT 'ID Контрагента',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ФИО Водителя',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contractors_drivers_user_id_foreign` (`user_id`),
+  KEY `contractors_drivers_contractor_id_foreign` (`contractor_id`),
+  CONSTRAINT `contractors_drivers_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `contractors_drivers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Водители';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors_places_of_business`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors_places_of_business` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1',
+  `contractor_id` bigint unsigned NOT NULL,
+  `identifier` char(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `registered` tinyint(1) NOT NULL DEFAULT '0',
+  `index` char(6) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `contractors_places_of_business_identifier_unique` (`identifier`),
+  KEY `contractors_places_of_business_user_id_foreign` (`user_id`),
+  KEY `contractors_places_of_business_contractor_id_foreign` (`contractor_id`),
+  CONSTRAINT `contractors_places_of_business_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `contractors_places_of_business_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `contractors_trailers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contractors_trailers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `contractor_id` bigint unsigned NOT NULL COMMENT 'ID Контрактор',
+  `type` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тип прицепа',
+  `state_number` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Гос. номер',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contractors_trailers_user_id_foreign` (`user_id`),
+  KEY `contractors_trailers_contractor_id_foreign` (`contractor_id`),
+  CONSTRAINT `contractors_trailers_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `contractors_trailers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Прицепы';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_acts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_acts` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'Исполнитель',
+  `contractor_id` bigint unsigned NOT NULL COMMENT 'Заказчик',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_acts_user_id_foreign` (`user_id`),
+  KEY `documents_acts_organization_id_foreign` (`organization_id`),
+  KEY `documents_acts_contractor_id_foreign` (`contractor_id`),
+  CONSTRAINT `documents_acts_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_acts_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_acts_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Акты';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_acts_services`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_acts_services` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь',
+  `act_id` bigint unsigned NOT NULL COMMENT 'Акт',
+  `service_id` bigint unsigned NOT NULL COMMENT 'Работа, услуга',
+  `quantity` bigint unsigned NOT NULL COMMENT 'Кол-во',
+  `price` double(8,2) NOT NULL COMMENT 'Цена',
+  `nds` double(8,2) NOT NULL COMMENT 'НДС',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_acts_services_user_id_foreign` (`user_id`),
+  KEY `documents_acts_services_act_id_foreign` (`act_id`),
+  KEY `documents_acts_services_service_id_foreign` (`service_id`),
+  CONSTRAINT `documents_acts_services_act_id_foreign` FOREIGN KEY (`act_id`) REFERENCES `documents_acts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_acts_services_service_id_foreign` FOREIGN KEY (`service_id`) REFERENCES `classifier_services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_acts_services_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Услуги актов';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_invoices_for_payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_invoices_for_payment` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'ID Пользователя',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'ID Организации',
+  `organization_place_id` bigint unsigned NOT NULL COMMENT 'ID Адреса Отгрузки',
+  `organization_bank_id` bigint unsigned DEFAULT NULL COMMENT 'ID Банковских реквизитов организации',
+  `contractor_id` bigint unsigned NOT NULL COMMENT 'ID Контрагента',
+  `contractor_place_id` bigint unsigned NOT NULL COMMENT 'ID Адреса Доставки',
+  `contractor_bank_id` bigint unsigned DEFAULT NULL COMMENT 'ID Банковских Реквизитов Контрагента',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата выставления',
+  `director` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Руководитель',
+  `bookkeeper` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Главный бухгалтер',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `filling_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT 'production' COMMENT 'Наполнение счета (Продукция, комплектующие и тд.)',
+  PRIMARY KEY (`id`),
+  KEY `documents_invoices_for_payment_user_id_foreign` (`user_id`),
+  KEY `documents_invoices_for_payment_organization_id_foreign` (`organization_id`),
+  KEY `documents_invoices_for_payment_organization_place_id_foreign` (`organization_place_id`),
+  KEY `documents_invoices_for_payment_organization_bank_id_foreign` (`organization_bank_id`),
+  KEY `documents_invoices_for_payment_contractor_id_foreign` (`contractor_id`),
+  KEY `documents_invoices_for_payment_contractor_place_id_foreign` (`contractor_place_id`),
+  KEY `documents_invoices_for_payment_contractor_bank_id_foreign` (`contractor_bank_id`),
+  CONSTRAINT `documents_invoices_for_payment_contractor_bank_id_foreign` FOREIGN KEY (`contractor_bank_id`) REFERENCES `contractors_bank_account_details` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_invoices_for_payment_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_invoices_for_payment_contractor_place_id_foreign` FOREIGN KEY (`contractor_place_id`) REFERENCES `contractors_places_of_business` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `documents_invoices_for_payment_organization_bank_id_foreign` FOREIGN KEY (`organization_bank_id`) REFERENCES `organizations_bank_account_details` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_invoices_for_payment_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_invoices_for_payment_organization_place_id_foreign` FOREIGN KEY (`organization_place_id`) REFERENCES `organizations_places_of_business` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `documents_invoices_for_payment_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Счета на оплату';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_invoices_for_payment_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_invoices_for_payment_materials` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь',
+  `invoice_for_payment_id` bigint unsigned NOT NULL COMMENT 'ID счета на оплату',
+  `material_id` bigint unsigned DEFAULT NULL COMMENT 'ID комплектующего',
+  `quantity` int NOT NULL COMMENT 'Количество',
+  `price` double(8,2) DEFAULT NULL COMMENT 'Цена с НДС',
+  `nds` double(8,2) DEFAULT NULL COMMENT 'НДС',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_invoices_for_payment_materials_user_id_foreign` (`user_id`),
+  KEY `invoices_for_payment_materials_invoice_for_payment_id_foreign` (`invoice_for_payment_id`),
+  KEY `invoices_for_payment_materials_classifier_materials_id_foreign` (`material_id`),
+  CONSTRAINT `documents_invoices_for_payment_materials_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `invoices_for_payment_materials_classifier_materials_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `classifier_materials` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `invoices_for_payment_materials_invoice_for_payment_id_foreign` FOREIGN KEY (`invoice_for_payment_id`) REFERENCES `documents_invoices_for_payment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Комплектующие счетов на оплату';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_invoices_for_payment_production`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_invoices_for_payment_production` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь',
+  `invoice_for_payment_id` bigint unsigned NOT NULL COMMENT 'ID счета на оплату',
+  `product_catalog_id` bigint unsigned DEFAULT NULL COMMENT 'ID продукта из каталога',
+  `quantity` int NOT NULL COMMENT 'Количество',
+  `price` double(8,2) DEFAULT NULL COMMENT 'Цена с НДС',
+  `nds` double(8,2) DEFAULT NULL COMMENT 'НДС',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_invoices_for_payment_production_user_id_foreign` (`user_id`),
+  KEY `invoices_for_payment_production_invoice_for_payment_id_foreign` (`invoice_for_payment_id`),
+  KEY `invoices_for_payment_production_product_catalog_id_foreign` (`product_catalog_id`),
+  CONSTRAINT `documents_invoices_for_payment_production_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `invoices_for_payment_production_invoice_for_payment_id_foreign` FOREIGN KEY (`invoice_for_payment_id`) REFERENCES `documents_invoices_for_payment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `invoices_for_payment_production_product_catalog_id_foreign` FOREIGN KEY (`product_catalog_id`) REFERENCES `product_catalog` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Продукция счетов на оплату';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_shipment_appendixes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_shipment_appendixes` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, создавший документ',
+  `updated_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, изменивший документ',
+  `approved_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, согласовавший документ',
+  `packing_list_id` bigint unsigned NOT NULL COMMENT 'ID Товарной накладной',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата выставления',
+  `approved` tinyint(1) DEFAULT NULL COMMENT 'Согласовано',
+  `comment` text COLLATE utf8mb4_unicode_ci COMMENT 'Комментарий',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `approved_at` datetime DEFAULT NULL COMMENT 'Дата и время согласования',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_shipment_appendixes_created_by_id_foreign` (`created_by_id`),
+  KEY `documents_shipment_appendixes_updated_by_id_foreign` (`updated_by_id`),
+  KEY `documents_shipment_appendixes_approved_by_id_foreign` (`approved_by_id`),
+  KEY `documents_shipment_appendixes_packing_list_id_foreign` (`packing_list_id`),
+  CONSTRAINT `documents_shipment_appendixes_approved_by_id_foreign` FOREIGN KEY (`approved_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_appendixes_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_appendixes_packing_list_id_foreign` FOREIGN KEY (`packing_list_id`) REFERENCES `documents_shipment_packing_lists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_appendixes_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Приложения';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_shipment_bills`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_shipment_bills` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, создавший документ',
+  `updated_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, изменивший документ',
+  `approved_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, согласовавший документ',
+  `packing_list_id` bigint unsigned NOT NULL COMMENT 'ID Товарной накладной',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата выставления',
+  `approved` tinyint(1) DEFAULT NULL COMMENT 'Согласовано',
+  `comment` text COLLATE utf8mb4_unicode_ci COMMENT 'Комментарий',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `approved_at` datetime DEFAULT NULL COMMENT 'Дата и время согласования',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_shipment_bills_created_by_id_foreign` (`created_by_id`),
+  KEY `documents_shipment_bills_updated_by_id_foreign` (`updated_by_id`),
+  KEY `documents_shipment_bills_approved_by_id_foreign` (`approved_by_id`),
+  KEY `documents_shipment_bills_packing_list_id_foreign` (`packing_list_id`),
+  CONSTRAINT `documents_shipment_bills_approved_by_id_foreign` FOREIGN KEY (`approved_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_bills_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_bills_packing_list_id_foreign` FOREIGN KEY (`packing_list_id`) REFERENCES `documents_shipment_packing_lists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_bills_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_shipment_packing_lists`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_shipment_packing_lists` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, создавший документ',
+  `updated_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, изменивший документ',
+  `approved_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, согласовавший документ',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'ID Организации',
+  `organization_place_id` bigint unsigned NOT NULL COMMENT 'ID Адреса Отгрузки',
+  `organization_bank_id` bigint unsigned DEFAULT NULL COMMENT 'ID Банковских реквизитов организации',
+  `contractor_id` bigint unsigned NOT NULL COMMENT 'ID Контрагента',
+  `contractor_place_id` bigint unsigned NOT NULL COMMENT 'ID Адреса Доставки',
+  `contractor_bank_id` bigint unsigned DEFAULT NULL COMMENT 'ID Банковских Реквизитов Контрагента',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата выставления',
+  `director` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Руководитель',
+  `bookkeeper` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Главный бухгалтер',
+  `storekeeper` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Главный бухгалтер',
+  `approved` tinyint(1) DEFAULT NULL COMMENT 'Согласовано',
+  `comment` text COLLATE utf8mb4_unicode_ci COMMENT 'Комментарий',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `approved_at` datetime DEFAULT NULL COMMENT 'Дата и время согласования',
+  PRIMARY KEY (`id`),
+  KEY `documents_shipment_packing_lists_created_by_id_foreign` (`created_by_id`),
+  KEY `documents_shipment_packing_lists_updated_by_id_foreign` (`updated_by_id`),
+  KEY `documents_shipment_packing_lists_approved_by_id_foreign` (`approved_by_id`),
+  KEY `documents_shipment_packing_lists_organization_id_foreign` (`organization_id`),
+  KEY `documents_shipment_packing_lists_organization_place_id_foreign` (`organization_place_id`),
+  KEY `documents_shipment_packing_lists_organization_bank_id_foreign` (`organization_bank_id`),
+  KEY `documents_shipment_packing_lists_contractor_id_foreign` (`contractor_id`),
+  KEY `documents_shipment_packing_lists_contractor_place_id_foreign` (`contractor_place_id`),
+  KEY `documents_shipment_packing_lists_contractor_bank_id_foreign` (`contractor_bank_id`),
+  CONSTRAINT `documents_shipment_packing_lists_approved_by_id_foreign` FOREIGN KEY (`approved_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_contractor_bank_id_foreign` FOREIGN KEY (`contractor_bank_id`) REFERENCES `contractors_bank_account_details` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_contractor_id_foreign` FOREIGN KEY (`contractor_id`) REFERENCES `contractors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_contractor_place_id_foreign` FOREIGN KEY (`contractor_place_id`) REFERENCES `contractors_places_of_business` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_organization_bank_id_foreign` FOREIGN KEY (`organization_bank_id`) REFERENCES `organizations_bank_account_details` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_organization_place_id_foreign` FOREIGN KEY (`organization_place_id`) REFERENCES `organizations_places_of_business` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_packing_lists_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Счета на оплату';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_shipment_packing_lists_production`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_shipment_packing_lists_production` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, создавший документ',
+  `invoice_for_payment_id` bigint unsigned NOT NULL COMMENT 'ID Счета на оплату',
+  `packing_list_id` bigint unsigned NOT NULL COMMENT 'ID Товарной накладной',
+  `product_id` bigint unsigned DEFAULT NULL COMMENT 'ID Продукта из каталога',
+  `series` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Серия',
+  `quantity` int NOT NULL COMMENT 'Количество',
+  `price` double(8,2) NOT NULL COMMENT 'Цена с НДС',
+  `nds` double(8,2) NOT NULL COMMENT 'НДС',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_shipment_packing_lists_production_user_id_foreign` (`user_id`),
+  KEY `shipment_packing_lists_production_invoice_for_payment_id_foreign` (`invoice_for_payment_id`),
+  KEY `packing_lists_production_packing_list_id_foreign` (`packing_list_id`),
+  KEY `packing_lists_production_product_id_foreign` (`product_id`),
+  CONSTRAINT `documents_shipment_packing_lists_production_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `packing_lists_production_packing_list_id_foreign` FOREIGN KEY (`packing_list_id`) REFERENCES `documents_shipment_packing_lists` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `packing_lists_production_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `product_catalog` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `shipment_packing_lists_production_invoice_for_payment_id_foreign` FOREIGN KEY (`invoice_for_payment_id`) REFERENCES `documents_invoices_for_payment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Продукция товарных накладных';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_shipment_protocols`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_shipment_protocols` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, создавший документ',
+  `updated_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, изменивший документ',
+  `approved_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, согласовавший документ',
+  `packing_list_id` bigint unsigned NOT NULL COMMENT 'ID Товарной накладной',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата выставления',
+  `approved` tinyint(1) DEFAULT NULL COMMENT 'Согласовано',
+  `comment` text COLLATE utf8mb4_unicode_ci COMMENT 'Комментарий',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `approved_at` datetime DEFAULT NULL COMMENT 'Дата и время согласования',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_shipment_protocols_created_by_id_foreign` (`created_by_id`),
+  KEY `documents_shipment_protocols_updated_by_id_foreign` (`updated_by_id`),
+  KEY `documents_shipment_protocols_approved_by_id_foreign` (`approved_by_id`),
+  KEY `documents_shipment_protocols_packing_list_id_foreign` (`packing_list_id`),
+  CONSTRAINT `documents_shipment_protocols_approved_by_id_foreign` FOREIGN KEY (`approved_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_protocols_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_protocols_packing_list_id_foreign` FOREIGN KEY (`packing_list_id`) REFERENCES `documents_shipment_packing_lists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_protocols_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Протоколы';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `documents_shipment_waybills`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `documents_shipment_waybills` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, создавший документ',
+  `updated_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, изменивший документ',
+  `approved_by_id` bigint unsigned DEFAULT NULL COMMENT 'Пользователь, согласовавший документ',
+  `packing_list_id` bigint unsigned NOT NULL COMMENT 'ID Товарной накладной',
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Номер',
+  `date` date NOT NULL COMMENT 'Дата выставления',
+  `car_model` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Марка автомобиля',
+  `state_car_number` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Гос. № автомобиля',
+  `driver` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Водитель',
+  `licence_card` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Лицензионная карточка',
+  `type_of_transportation` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Вид перевозки',
+  `trailer_1` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прицеп 1',
+  `trailer_2` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прицеп 2',
+  `state_trailer_1_number` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Гос. № Прицеп 1',
+  `state_trailer_2_number` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Гос. № Прицеп 1',
+  `approved` tinyint(1) DEFAULT NULL COMMENT 'Согласовано',
+  `comment` text COLLATE utf8mb4_unicode_ci COMMENT 'Комментарий',
+  `filename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Прикрепленный файл',
+  `approved_at` datetime DEFAULT NULL COMMENT 'Дата и время согласования',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `documents_shipment_waybills_created_by_id_foreign` (`created_by_id`),
+  KEY `documents_shipment_waybills_updated_by_id_foreign` (`updated_by_id`),
+  KEY `documents_shipment_waybills_approved_by_id_foreign` (`approved_by_id`),
+  KEY `documents_shipment_waybills_packing_list_id_foreign` (`packing_list_id`),
+  CONSTRAINT `documents_shipment_waybills_approved_by_id_foreign` FOREIGN KEY (`approved_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_waybills_created_by_id_foreign` FOREIGN KEY (`created_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_waybills_packing_list_id_foreign` FOREIGN KEY (`packing_list_id`) REFERENCES `documents_shipment_packing_lists` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `documents_shipment_waybills_updated_by_id_foreign` FOREIGN KEY (`updated_by_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Товарно-транспортные накладные';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `failed_jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `failed_jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `jobs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `jobs` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint unsigned NOT NULL,
+  `reserved_at` int unsigned DEFAULT NULL,
+  `available_at` int unsigned NOT NULL,
+  `created_at` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `jobs_queue_index` (`queue`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `migrations` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1',
+  `legal_form_type` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(120) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `INN` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `OKPO` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contacts` varchar(120) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `kpp` varchar(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'КПП',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `organizations_inn_unique` (`INN`),
+  KEY `organizations_user_id_foreign` (`user_id`),
+  KEY `organizations_legal_form_type_foreign` (`legal_form_type`),
+  CONSTRAINT `organizations_legal_form_type_foreign` FOREIGN KEY (`legal_form_type`) REFERENCES `classifier_legal_forms` (`abbreviation`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `organizations_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations_bank_account_details`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations_bank_account_details` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `organization_id` bigint unsigned NOT NULL,
+  `user_id` bigint unsigned DEFAULT '1',
+  `bank` char(9) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_account` char(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `organizations_bank_account_details_user_id_foreign` (`user_id`),
+  KEY `organizations_bank_account_details_organization_id_foreign` (`organization_id`),
+  KEY `organizations_bank_account_details_bank_foreign` (`bank`),
+  CONSTRAINT `organizations_bank_account_details_bank_foreign` FOREIGN KEY (`bank`) REFERENCES `classifier_banks` (`BIC`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `organizations_bank_account_details_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `organizations_bank_account_details_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations_cars`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations_cars` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'ID Организации',
+  `car_model` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Марка',
+  `state_number` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Гос. номер',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `organizations_cars_user_id_foreign` (`user_id`),
+  KEY `organizations_cars_organization_id_foreign` (`organization_id`),
+  CONSTRAINT `organizations_cars_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `organizations_cars_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Автомобили';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations_drivers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations_drivers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'ID Организации',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ФИО Водителя',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `organizations_drivers_user_id_foreign` (`user_id`),
+  KEY `organizations_drivers_organization_id_foreign` (`organization_id`),
+  CONSTRAINT `organizations_drivers_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `organizations_drivers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Водители';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations_places_of_business`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations_places_of_business` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1',
+  `organization_id` bigint unsigned NOT NULL,
+  `identifier` char(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `registered` tinyint(1) NOT NULL,
+  `index` char(6) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `organizations_places_of_business_identifier_unique` (`identifier`),
+  KEY `organizations_places_of_business_user_id_foreign` (`user_id`),
+  KEY `organizations_places_of_business_organization_id_foreign` (`organization_id`),
+  CONSTRAINT `organizations_places_of_business_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `organizations_places_of_business_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations_staff`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations_staff` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `organization_id` bigint unsigned NOT NULL,
+  `organization_place_of_business_id` bigint unsigned NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `post` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `organizations_staff_organization_id_foreign` (`organization_id`),
+  KEY `organizations_staff_organization_place_of_business_id_foreign` (`organization_place_of_business_id`),
+  CONSTRAINT `organizations_staff_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `organizations_staff_organization_place_of_business_id_foreign` FOREIGN KEY (`organization_place_of_business_id`) REFERENCES `organizations_places_of_business` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `organizations_trailers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `organizations_trailers` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'ID Организации',
+  `type` varchar(5) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тип прицепа',
+  `state_number` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Гос. номер',
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `organizations_trailers_user_id_foreign` (`user_id`),
+  KEY `organizations_trailers_organization_id_foreign` (`organization_id`),
+  CONSTRAINT `organizations_trailers_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `organizations_trailers_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Прицепы';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `password_resets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `password_resets` (
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `permissions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название',
+  `slug` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Токен',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Права пользователей';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `personal_access_tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_id` bigint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `product_catalog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_catalog` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `product_id` bigint unsigned NOT NULL COMMENT 'Продукт',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'Организация',
+  `place_of_business_id` bigint unsigned NOT NULL COMMENT 'Место деятельности',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  `GTIN` char(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Global Trade Item Number',
+  PRIMARY KEY (`id`),
+  KEY `product_catalog_user_id_foreign` (`user_id`),
+  KEY `product_catalog_product_id_foreign` (`product_id`),
+  KEY `product_catalog_organization_id_foreign` (`organization_id`),
+  KEY `product_catalog_place_of_business_id_foreign` (`place_of_business_id`),
+  CONSTRAINT `product_catalog_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_catalog_place_of_business_id_foreign` FOREIGN KEY (`place_of_business_id`) REFERENCES `organizations_places_of_business` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_catalog_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `classifier_end_products` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_catalog_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Каталог готовой продукции для продажи';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `product_catalog_materials`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_catalog_materials` (
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `product_catalog_id` bigint unsigned NOT NULL COMMENT 'Продукт',
+  `material_id` bigint unsigned NOT NULL COMMENT 'Комплектующее',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  KEY `product_catalog_materials_user_id_foreign` (`user_id`),
+  KEY `product_catalog_materials_product_catalog_id_foreign` (`product_catalog_id`),
+  KEY `product_catalog_materials_material_id_foreign` (`material_id`),
+  CONSTRAINT `product_catalog_materials_material_id_foreign` FOREIGN KEY (`material_id`) REFERENCES `classifier_materials` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_catalog_materials_product_catalog_id_foreign` FOREIGN KEY (`product_catalog_id`) REFERENCES `product_catalog` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_catalog_materials_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Комплектующие продукции из каталога';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `product_catalog_types_of_aggregation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_catalog_types_of_aggregation` (
+  `aggregation_type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Тип агрегации',
+  `product_catalog_id` bigint unsigned NOT NULL COMMENT 'Продукт',
+  `product_quantity` int NOT NULL COMMENT 'Кол-во продукции в типе агрегации',
+  KEY `product_catalog_types_of_aggregation_aggregation_type_foreign` (`aggregation_type`),
+  KEY `product_catalog_types_of_aggregation_product_catalog_id_foreign` (`product_catalog_id`),
+  CONSTRAINT `product_catalog_types_of_aggregation_aggregation_type_foreign` FOREIGN KEY (`aggregation_type`) REFERENCES `classifier_types_of_aggregation` (`code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `product_catalog_types_of_aggregation_product_catalog_id_foreign` FOREIGN KEY (`product_catalog_id`) REFERENCES `product_catalog` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Агрегация продукции из каталога';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `product_prices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `product_prices` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` bigint unsigned DEFAULT '1' COMMENT 'Пользователь',
+  `product_catalog_id` bigint unsigned NOT NULL COMMENT 'Продукт из каталога',
+  `organization_id` bigint unsigned NOT NULL COMMENT 'Организация',
+  `retail_price` double(8,2) NOT NULL COMMENT 'Розничная цена',
+  `trade_price` double(8,2) DEFAULT NULL COMMENT 'Оптовая цена',
+  `nds` double(8,2) NOT NULL DEFAULT '0.10' COMMENT 'НДС',
+  `trade_quantity` int DEFAULT NULL COMMENT 'Кол-во продукции для оптовой цены',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `product_prices_user_id_foreign` (`user_id`),
+  KEY `product_prices_product_catalog_id_foreign` (`product_catalog_id`),
+  KEY `product_prices_organization_id_foreign` (`organization_id`),
+  CONSTRAINT `product_prices_organization_id_foreign` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_prices_product_catalog_id_foreign` FOREIGN KEY (`product_catalog_id`) REFERENCES `product_catalog` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `product_prices_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Название',
+  `slug` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Токен',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Роли пользователей';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `roles_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles_permissions` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ФИО',
+  `email` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'E-mail',
+  `email_verified_at` timestamp NULL DEFAULT NULL COMMENT 'Время подтверждения e-mail',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Пароль',
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Токен запомненного пользователя',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Пользователи';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users_permissions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users_permissions` (
+  `user_id` bigint unsigned NOT NULL COMMENT 'ID пользователя',
+  `permission_id` bigint unsigned NOT NULL COMMENT 'ID права',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`permission_id`),
+  KEY `users_permissions_permission_id_foreign` (`permission_id`),
+  CONSTRAINT `users_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `users_permissions_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Права пользователей';
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `users_roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users_roles` (
+  `user_id` bigint unsigned NOT NULL COMMENT 'ID пользователя',
+  `role_id` bigint unsigned NOT NULL COMMENT 'ID роли',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `users_roles_role_id_foreign` (`role_id`),
+  CONSTRAINT `users_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `users_roles_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Права пользователей';
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+INSERT INTO `migrations` VALUES (1,'2014_10_12_000000_create_users_table',1);
+INSERT INTO `migrations` VALUES (2,'2014_10_12_100000_create_password_resets_table',1);
+INSERT INTO `migrations` VALUES (3,'2019_08_19_000000_create_failed_jobs_table',1);
+INSERT INTO `migrations` VALUES (4,'2019_12_14_000001_create_personal_access_tokens_table',1);
+INSERT INTO `migrations` VALUES (5,'2022_12_20_101206_create_roles_table',1);
+INSERT INTO `migrations` VALUES (6,'2022_12_20_102816_create_permissions_table',1);
+INSERT INTO `migrations` VALUES (7,'2022_12_20_103024_create_users_permissions_table',1);
+INSERT INTO `migrations` VALUES (8,'2022_12_20_103105_create_users_roles_table',1);
+INSERT INTO `migrations` VALUES (11,'2022_12_20_103131_create_roles_permissions_table',2);
+INSERT INTO `migrations` VALUES (28,'2023_02_01_080255_create_classifier_legal_forms_table',3);
+INSERT INTO `migrations` VALUES (29,'2023_02_01_083801_create_organizations_table',3);
+INSERT INTO `migrations` VALUES (30,'2023_02_01_093020_create_organizations_places_of_business_table',3);
+INSERT INTO `migrations` VALUES (31,'2023_02_02_072633_create_classifier_banks_table',3);
+INSERT INTO `migrations` VALUES (34,'2023_02_02_073406_create_organizations_bank_account_details_table',4);
+INSERT INTO `migrations` VALUES (35,'2023_02_02_081513_create_organizations_staff_table',4);
+INSERT INTO `migrations` VALUES (128,'2023_02_17_105914_create_contractors_table',5);
+INSERT INTO `migrations` VALUES (129,'2023_02_17_105944_create_contractors_places_of_business_table',5);
+INSERT INTO `migrations` VALUES (130,'2023_02_17_110043_create_contractors_bank_account_details_table',5);
+INSERT INTO `migrations` VALUES (131,'2023_02_17_110243_create_contractors_contact_persons_table',5);
+INSERT INTO `migrations` VALUES (184,'2023_03_07_092252_create_classifier_types_of_end_products_table',6);
+INSERT INTO `migrations` VALUES (185,'2023_03_07_092954_create_classifier_international_names_of_end_products_table',6);
+INSERT INTO `migrations` VALUES (186,'2023_03_07_093516_create_classifier_registration_numbers_of_end_products_table',6);
+INSERT INTO `migrations` VALUES (187,'2023_03_07_094208_create_classifier_okpd2_table',6);
+INSERT INTO `migrations` VALUES (188,'2023_03_07_094904_create_classifier_okei_table',6);
+INSERT INTO `migrations` VALUES (189,'2023_03_07_101920_create_classifier_types_of_materials_table',6);
+INSERT INTO `migrations` VALUES (190,'2023_03_07_102358_create_classifier_materials_table',6);
+INSERT INTO `migrations` VALUES (191,'2023_03_07_105421_create_classifier_end_products_table',6);
+INSERT INTO `migrations` VALUES (196,'2023_03_14_103550_add_timestamps_to_classifier_materials_table',7);
+INSERT INTO `migrations` VALUES (197,'2023_03_16_103603_delete__g_t_i_n_column_from_classifier_end_products_table',8);
+INSERT INTO `migrations` VALUES (198,'2023_03_16_111537_change_full_name_column_classifier_end_products_table',9);
+INSERT INTO `migrations` VALUES (205,'2023_03_20_143341_create_classifier_types_of_aggregation_table',10);
+INSERT INTO `migrations` VALUES (209,'2023_03_07_115803_create_product_catalog_table',11);
+INSERT INTO `migrations` VALUES (210,'2023_03_20_143530_create_product_catalog_materials_table',11);
+INSERT INTO `migrations` VALUES (211,'2023_03_20_143628_create_product_catalog_types_of_aggregation_table',11);
+INSERT INTO `migrations` VALUES (212,'2023_03_21_101550_add_gtin_column_to_product_catalog_table',11);
+INSERT INTO `migrations` VALUES (215,'2023_03_21_132250_create_product_prices_table',12);
+INSERT INTO `migrations` VALUES (216,'2023_03_23_131425_create_jobs_table',13);
+INSERT INTO `migrations` VALUES (217,'2023_04_07_105424_create_documents_invoices_for_payment_table',14);
+INSERT INTO `migrations` VALUES (221,'2023_04_13_093434_create_documents_invoices_for_payment_production_table',15);
+INSERT INTO `migrations` VALUES (222,'2023_04_17_134527_add_kpp_organizations_table',16);
+INSERT INTO `migrations` VALUES (223,'2023_04_17_140319_add_kpp_contractors_table',16);
+INSERT INTO `migrations` VALUES (226,'2023_04_20_092941_create_documents_shipment_packing_lists_table',17);
+INSERT INTO `migrations` VALUES (227,'2023_04_21_122251_create_documents_shipment_packing_lists_production_table',18);
+INSERT INTO `migrations` VALUES (228,'2023_04_25_120053_add_approved_at_documents_shipment_packing_lists',19);
+INSERT INTO `migrations` VALUES (229,'2023_04_28_110123_create_documents_shipment_bills_table',20);
+INSERT INTO `migrations` VALUES (230,'2023_05_04_092930_create_documents_shipment_appendixes_table',21);
+INSERT INTO `migrations` VALUES (231,'2023_05_05_102813_create_documents_shipment_protocols_table',22);
+INSERT INTO `migrations` VALUES (238,'2023_05_10_125036_create_organizations_drivers_table',23);
+INSERT INTO `migrations` VALUES (239,'2023_05_10_125115_create_contractors_drivers_table',23);
+INSERT INTO `migrations` VALUES (240,'2023_05_10_125141_create_organizations_cars_table',23);
+INSERT INTO `migrations` VALUES (241,'2023_05_10_125201_create_contractors_cars_table',23);
+INSERT INTO `migrations` VALUES (242,'2023_05_10_125223_create_organizations_trailers_table',23);
+INSERT INTO `migrations` VALUES (243,'2023_05_10_125243_create_contractors_trailers_table',23);
+INSERT INTO `migrations` VALUES (244,'2023_05_12_125901_create_documents_shipment_waybills_table',24);
+INSERT INTO `migrations` VALUES (246,'2023_05_16_091321_create_documents_shipment_table',25);
+INSERT INTO `migrations` VALUES (258,'2023_05_24_092836_create_documents_acts_table',26);
+INSERT INTO `migrations` VALUES (259,'2023_05_24_092957_create_classifier_services_table',26);
+INSERT INTO `migrations` VALUES (262,'2023_05_24_093051_create_documents_acts_services_table',27);
+INSERT INTO `migrations` VALUES (263,'2023_06_01_112256_add_price_to_classifier_materials',28);
+INSERT INTO `migrations` VALUES (264,'2023_06_01_120026_add_type_to_documents_invoices_for_payment',29);
+INSERT INTO `migrations` VALUES (265,'2023_06_01_135043_create_documents_invoices_for_payment_materials_table',30);
