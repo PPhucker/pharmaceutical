@@ -42,6 +42,8 @@ use Illuminate\Support\Carbon;
  */
 class Permission extends Model
 {
+    protected $table = 'permissions';
+
     use HasFactory, SoftDeletes;
 
     /**
