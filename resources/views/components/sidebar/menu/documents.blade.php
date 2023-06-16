@@ -1,4 +1,4 @@
-@roles(['marketing', 'bookkeeping'])
+@roles(['marketing', 'bookkeeping', 'digital_communication'])
 <div class="card border-0">
     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
         <button class="btn text-primary dropdown-toggle text-start fs-5"
@@ -12,6 +12,7 @@
         </button>
     </div>
     <div class="card-body pt-1 pb-1 show" id="documents">
+        @roles(['marketing', 'bookkeeping'])
         <x-sidebar.menu.dropdown.item icon="bi bi-file-earmark-text"
                                       title="{{__('documents.invoices_for_payment.invoices_for_payment')}}">
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
@@ -26,6 +27,7 @@
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
                                           route="{{route('acts.create')}}"/>
         </x-sidebar.menu.dropdown.item>
+        @end_roles
         {{-- Документы на отгрузку --}}
         <div class="card border-0">
             <div class="card-header d-grid gap-2 bg-white p-1 border-0">
@@ -45,6 +47,7 @@
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                   route="{{route('shipment.approval')}}"/>
                 </x-sidebar.menu.dropdown.item>
+                @roles(['marketing', 'bookkeeping'])
                 <x-sidebar.menu.dropdown.item icon="bi bi-file-earmark-text"
                                               title="{{__('documents.shipment.packing_lists.packing_lists')}}">
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
@@ -70,8 +73,8 @@
                     <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                   route="{{route('waybills.index')}}"/>
                 </x-sidebar.menu.dropdown.item>
+                @end_roles
             </div>
-
         </div>
     </div>
 </div>
