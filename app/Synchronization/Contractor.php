@@ -39,7 +39,7 @@ class Contractor
     private function getSyncInnList()
     {
         return array_unique(
-            DB::connection('mysql@dev')
+            DB::connection('mysql@mdpl01')
                 ->table('clients')
                 ->select(
                     'inn'
