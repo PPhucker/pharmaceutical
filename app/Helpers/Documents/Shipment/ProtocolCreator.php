@@ -143,7 +143,7 @@ class ProtocolCreator extends Creator
                 ->where('organization_id', '=', $productCatalog->organization_id)
                 ->first();
 
-            if ($product->quantity >= $registerPriceList->trade_quantity) {
+            if ((int)$product->quantity >= (int)$registerPriceList->trade_quantity) {
                 $protocolPrices->register_price = round(
                     $registerPriceList->trade_price
                     - $registerPriceList->trade_price * $registerPriceList->nds,
