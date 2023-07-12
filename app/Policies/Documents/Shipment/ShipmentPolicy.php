@@ -39,7 +39,7 @@ class ShipmentPolicy
     public function view(User $user, Shipment $shipment)
     {
         return ($user->hasRole(['marketing', 'bookkeeping']) && $shipment->approved)
-            || ($user->hasPermission(['appove_shipment_documents']));
+            || ($user->hasPermission(['approve_shipment_documents']));
     }
 
     /**
@@ -70,7 +70,7 @@ class ShipmentPolicy
     public function update(User $user, Shipment $shipment)
     {
         return ($user->hasRole(['marketing', 'bookkeeping']) && !$shipment->approved)
-            || ($user->hasPermission(['appove_shipment_documents']));
+            || ($user->hasPermission(['approve_shipment_documents']));
     }
 
     /**
