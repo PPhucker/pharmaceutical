@@ -210,7 +210,6 @@ class InvoiceForPaymentController extends CoreController
                 'date' => $validated['date'],
                 'director' => $validated['director'],
                 'bookkeeper' => $validated['bookkeeper'],
-                'filling_type' => $validated['filling_type'],
             ]
         );
 

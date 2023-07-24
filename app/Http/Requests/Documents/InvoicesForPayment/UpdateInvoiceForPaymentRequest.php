@@ -70,11 +70,6 @@ class UpdateInvoiceForPaymentRequest extends FormRequest
                 'mimes:pdf',
                 'max:15000',
             ],
-            'filling_type' => [
-                'nullable',
-                'string',
-                'max:20',
-            ],
         ];
     }
 
