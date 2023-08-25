@@ -10,15 +10,15 @@ use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Класс для создания печатной формы счета на оплату.
+ */
 class InvoiceForPaymentCreator extends Creator
 {
-
     /**
-     * @return object
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @inheritDoc
      */
-    public function getData()
+    public function getData(): object
     {
         $organizationAccountDetails = $this->getOrganizationAccountDetails(
             $this->document->organizationBankAccountDetail
@@ -29,13 +29,10 @@ class InvoiceForPaymentCreator extends Creator
 
         $organization = $this->document->organization;
 
-        switch ($this->document->filling_type) {
-            case 'materials':
-                $filling = $this->getMaterials();
-                break;
-            default:
-                $filling = $this->getProduction();
-                break;
+        if ($this->document->fillinf_type === 'materials') {
+            $filling = $this->getMaterials();
+        } else {
+            $filling = $this->getProduction();
         }
 
         return (object)
@@ -68,22 +65,56 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
+     * Получить комплектующие счета на оплату.
+     *
+     * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getMaterials(): array
+    {
+        $materials = [];
+
+        $invoiceForPaymentMaterials = (new InvoiceForPaymentMaterialRepository())
+            ->getInvoiceForPaymentMaterials($this->document->id);
+
+        foreach ($invoiceForPaymentMaterials as $key => $invoiceMaterial) {
+            $material = $invoiceMaterial->material;
+            $materials[] = (object)[
+                'key' => $key + 1,
+                'full_name' => $material->name,
+                'quantity' => $invoiceMaterial->quantity,
+                'price' => $this->numberFormat($invoiceMaterial->price),
+                'okei' => $material->okei->symbol,
+                'sum' => $this->numberFormat(
+                    round($invoiceMaterial->price * $invoiceMaterial->quantity, 2)
+                )
+            ];
+        }
+        return $materials;
+    }
+
+    /**
+     * Получить продукцию счета на оплату.
+     *
      * @return array
      */
-    public function getProduction()
+    public function getProduction(): array
     {
         $production = [];
 
-        foreach (
-            (new InvoiceForPaymentProductRepository())
-                ->getInvoiceForPaymentProduction($this->document->id) as $key => $invoiceProduct
-        ) {
+        $invoiceForPaymentProduction = (new InvoiceForPaymentProductRepository())
+            ->getInvoiceForPaymentProduction($this->document->id);
+
+        foreach ($invoiceForPaymentProduction as $key => $invoiceProduct) {
             $endProduct = $invoiceProduct->productCatalog->endProduct;
+            $registrationNumber = $endProduct->registrationNumber->number ?? '';
+
             $production[] = (object)[
                 'key' => $key + 1,
                 'full_name' => $endProduct->full_name
                     . ' '
-                    . $endProduct->registrationNumber->number
+                    . $registrationNumber
                     . ' ОКПД2 '
                     . $endProduct->okpd2->code,
                 'quantity' => $invoiceProduct->quantity,
@@ -99,16 +130,18 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
+     * Получить итоговую сумму.
+     *
      * @return object
      */
-    public function getTotal()
+    public function getTotal(): object
     {
         $total = 0;
         $nds = 0;
 
-        foreach (
-            $invoiceProduction = $this->document->production()->withoutTrashed()->get() as $invoiceProduct
-        ) {
+        $invoiceProduction = $this->document->production()->withoutTrashed()->get();
+
+        foreach ($invoiceProduction as $invoiceProduct) {
             $sum = $invoiceProduct->price * $invoiceProduct->quantity;
             $total += $sum;
             $nds += round($sum * $invoiceProduct->nds, 2);
@@ -116,7 +149,11 @@ class InvoiceForPaymentCreator extends Creator
 
         return (object)[
             'numeric' => $this->numberFormat($total),
-            'word' => Str::sumInWords($total, self::RUBLES, self::COPECKS),
+            'word' => Str::sumInWords(
+                $total,
+                self::RUBLES,
+                self::COPECKS
+            ),
             'nds' => (object)[
                 'sum' => $this->numberFormat($nds),
                 'persent' => $invoiceProduction->first()->nds * 100,
@@ -125,9 +162,11 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
+     * Получить поле "Плательщик"
+     *
      * @return string
      */
-    protected function getBuyerField()
+    protected function getBuyerField(): string
     {
         $contractor = $this->document->contractor;
 
@@ -152,9 +191,11 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
+     * Получить поле "Грузополучатель".
+     *
      * @return string
      */
-    protected function getConsigneeField()
+    protected function getConsigneeField(): string
     {
         $contractor = $this->document->contractor;
         $placeOfBusiness = $this->document->contractorPlaceOfBusiness;
@@ -175,9 +216,11 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
+     * Получить поле "Поставщик".
+     *
      * @return string
      */
-    protected function getSupplierField()
+    protected function getSupplierField(): string
     {
         $organization = $this->document->organization;
 
@@ -200,9 +243,11 @@ class InvoiceForPaymentCreator extends Creator
     }
 
     /**
+     * Получить поле "Грузооправитель".
+     *
      * @return string
      */
-    protected function getShipperField()
+    protected function getShipperField(): string
     {
         $organization = $this->document->organization;
         $placeOfBusiness = $this->document->organizationPlaceOfBusiness;
@@ -220,34 +265,5 @@ class InvoiceForPaymentCreator extends Creator
             . $placeOfBusiness->address
             . ', тел.: '
             . $organization->contacts;
-    }
-
-    /**
-     * @return array
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function getMaterials()
-    {
-        $materials = [];
-
-        foreach (
-            (new InvoiceForPaymentMaterialRepository())->getInvoiceForPaymentMaterials(
-                $this->document->id
-            ) as $key => $invoiceMaterial
-        ) {
-            $material = $invoiceMaterial->material;
-            $materials[] = (object)[
-                'key' => $key + 1,
-                'full_name' => $material->name,
-                'quantity' => $invoiceMaterial->quantity,
-                'price' => $this->numberFormat($invoiceMaterial->price),
-                'okei' => $material->okei->symbol,
-                'sum' => $this->numberFormat(
-                    round($invoiceMaterial->price * $invoiceMaterial->quantity, 2)
-                )
-            ];
-        }
-        return $materials;
     }
 }
