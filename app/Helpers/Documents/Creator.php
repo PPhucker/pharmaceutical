@@ -15,8 +15,10 @@ use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepositor
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
-class Creator
+abstract class Creator
 {
     protected const RUBLES = ['рубль', 'рубля', 'рублей'];
 
@@ -73,6 +75,15 @@ class Creator
         $this->pages = [];
         $this->total_on_pages = [];
     }
+
+    /**
+     *  Получить все данные для заполнения печатной формы.
+     *
+     * @return object
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    abstract public function getData(): object;
 
     /**
      * @return string
