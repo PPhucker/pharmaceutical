@@ -5,6 +5,9 @@ namespace App\Policies\Admin\Organizations;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Политики для организации.
+ */
 class OrganizationPolicy
 {
     use HandlesAuthorization;
@@ -16,7 +19,7 @@ class OrganizationPolicy
      *
      * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->isAdmin();
     }
@@ -24,13 +27,12 @@ class OrganizationPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
      *
      * @return bool
      */
-    public function view(User $user)
+    public function view(): bool
     {
-        return $user->isAdmin();
+        return true;
     }
 
     /**
@@ -40,7 +42,7 @@ class OrganizationPolicy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->isAdmin();
     }
@@ -52,7 +54,7 @@ class OrganizationPolicy
      *
      * @return bool
      */
-    public function update(User $user)
+    public function update(User $user): bool
     {
         return $user->isAdmin();
     }
@@ -64,7 +66,7 @@ class OrganizationPolicy
      *
      * @return bool
      */
-    public function delete(User $user)
+    public function delete(User $user): bool
     {
         return $user->isAdmin();
     }
@@ -76,7 +78,7 @@ class OrganizationPolicy
      *
      * @return bool
      */
-    public function restore(User $user)
+    public function restore(User $user): bool
     {
         return $user->isAdmin();
     }
