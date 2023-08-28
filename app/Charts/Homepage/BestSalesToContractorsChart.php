@@ -1,66 +1,59 @@
 <?php
 
-namespace App\Charts;
+namespace App\Charts\Homepage;
 
+use App\Charts\Chart;
 use App\Helpers\Date;
 use App\Repositories\Contractors\ContractorRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use ArielMejiaDev\LarapexCharts\BarChart;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
 
-class BestSalesToContractorsChart
+/**
+ * График суммы продаж по контрагентам.
+ */
+class BestSalesToContractorsChart extends Chart
 {
     private const CONTRACTORS_QUANTITY = 5;
-    private $chart;
-    /**
-     * @var string
-     */
-    private $fromDate;
-    /**
-     * @var string
-     */
-    private $toDate;
 
     /**
-     * @param LarapexChart $chart
-     * @param string       $fromDate
-     * @param string       $toDate
+     * @inheritDoc
      */
-    public function __construct(LarapexChart $chart, string $fromDate, string $toDate)
+    public function build(): BarChart
     {
-        $this->chart = $chart;
-        $this->fromDate = $fromDate;
-        $this->toDate = $toDate;
-    }
-
-    /**
-     * @return BarChart
-     */
-    public function build()
-    {
-        $data = $this->getData();
-
         $chart = $this->chart->barChart()
-            ->setTitle(__('charts.contractors.sum', ['count' => self::CONTRACTORS_QUANTITY]))
+            ->setTitle(
+                __(
+                    'charts.contractors.sum',
+                    ['count' => self::CONTRACTORS_QUANTITY]
+                )
+            )
             ->setToolbar(true)
             ->setGrid()
             ->setStroke(1)
             ->setHeight(350)
             ->setMarkers([], 3, 5);
 
-        foreach ($data['values'] as $contractor) {
+        foreach ($this->data['values'] as $contractor) {
             $chart->addData($contractor['name'], $contractor['sum']);
         }
 
-        $chart->setXAxis($data['labels']);
+        $chart->setXAxis($this->data['labels']);
 
         return $chart;
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    private function getData()
+    public function isEmpty(): bool
+    {
+        return !$this->data['labels'] || !$this->data['values'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getData(): array
     {
         $labels = [];
         $values = [];
@@ -74,17 +67,21 @@ class BestSalesToContractorsChart
             );
 
         foreach ($contractors as $key => $contractor) {
-            $values[$key]['name'] = $contractor->legal_form_type
-                . ' '
-                . $contractor->name;
+            $values[$key]['name'] = $contractor->legal_form_type . ' ' . $contractor->name;
 
             foreach ($periods as $period) {
                 if ($period['start'] === $period['end']) {
-                    $label = $period['start']->copy()->format('d.m.y');
+                    $label = $period['start']
+                        ->copy()
+                        ->format('d.m.y');
                 } else {
-                    $label = $period['start']->copy()->format('d.m.y')
+                    $label = $period['start']
+                            ->copy()
+                            ->format('d.m.y')
                         . ' - '
-                        . $period['end']->copy()->format('d.m.y');
+                        . $period['end']
+                            ->copy()
+                            ->format('d.m.y');
                 }
 
                 $sum = (new PackingListProductRepository())

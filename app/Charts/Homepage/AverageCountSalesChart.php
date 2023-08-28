@@ -1,29 +1,23 @@
 <?php
 
-namespace App\Charts;
+namespace App\Charts\Homepage;
 
+use App\Charts\Chart;
 use App\Helpers\Date;
 use App\Models\Admin\Organizations\Organization;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
 use ArielMejiaDev\LarapexCharts\BarChart;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
 
-class AverageCountSalesChart
+/**
+ * График среднего кол-ва продаж.
+ */
+class AverageCountSalesChart extends Chart
 {
-    protected $chart;
-    private $toDate;
-    private $fromDate;
-
-    public function __construct(LarapexChart $chart, string $fromDate, string $toDate)
-    {
-        $this->chart = $chart;
-        $this->fromDate = $fromDate;
-        $this->toDate = $toDate;
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function build(): BarChart
     {
-        $data = $this->getData();
         $chart = $this->chart->barChart()
             ->setTitle(__('charts.sales.average_count'))
             ->setToolbar(true)
@@ -32,19 +26,27 @@ class AverageCountSalesChart
             ->setHeight(350)
             ->setMarkers([], 3, 5);
 
-        foreach ($data['values'] as $organization) {
+        foreach ($this->data['values'] as $organization) {
             $chart->addData($organization['name'], $organization['quantity']);
         }
 
-        $chart->setXAxis($data['labels']);
+        $chart->setXAxis($this->data['labels']);
 
         return $chart;
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    private function getData()
+    public function isEmpty(): bool
+    {
+        return !$this->data['labels'] || !$this->data['values'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getData(): array
     {
         $labels = [];
         $values = [];
@@ -82,7 +84,6 @@ class AverageCountSalesChart
                 $values[$key]['quantity'][] = $quantity;
             }
         }
-
 
         return compact('labels', 'values');
     }
