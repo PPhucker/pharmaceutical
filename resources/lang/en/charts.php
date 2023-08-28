@@ -3,15 +3,15 @@
 return [
     'contractors' => [
         'number' => 'CONTRACTORS',
-        'sum' => 'CONTRACTORS - TOP :count IN TERMS OF SALES' . ' (' . __('currency.rub') . ')',
+        'sum' => 'CONTRACTORS - TOP :count IN TERMS OF SALES' . ' (' . mb_strtoupper(__('currency.rub'))  . ')',
     ],
     'products' => [
-        'best_selling' => 'PRODUCTS - TOP :count by SALE AMOUNT' . ' (' . __('currency.rub') . ')',
+        'best_selling' => 'PRODUCTS - TOP :count by SALE AMOUNT' . ' (' . mb_strtoupper(__('currency.rub'))  . ')',
         'number' => 'PRODUCTS',
     ],
     'sales' => [
         'average_count' => 'NUMBER OF SHIPMENTS',
-        'average_sales' => 'AVERAGE SALES AMOUNT' . ' (' . __('currency.rub') . ')',
+        'average_sales' => 'AVERAGE SALES AMOUNT' . ' (' . mb_strtoupper(__('currency.rub'))  . ')',
         'sum' => 'SALE AMOUNT'
     ],
     'organizations' => [

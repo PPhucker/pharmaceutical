@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Charts\AverageCountSalesChart;
-use App\Charts\AverageSalesChart;
-use App\Charts\BestSalesToContractorsChart;
-use App\Charts\BestSellingProductsChart;
-use App\Charts\ContractorsChart;
-use App\Charts\NumberOfContractorsChart;
+use App\Charts\Homepage\AverageCountSalesChart;
+use App\Charts\Homepage\AverageSalesChart;
+use App\Charts\Homepage\BestSalesToContractorsChart;
+use App\Charts\Homepage\BestSellingProductsChart;
 use App\Helpers\Date;
 use App\Models\Admin\Organizations\Organization;
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
-use App\Synchronization\Contractor;
+use App\Models\Contractors\Contractor;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
+/**
+ * Контроллер домашней страницы.
+ */
 class HomeController extends Controller
 {
     /**
@@ -32,9 +33,11 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
+     * @param Request $request
+     *
      * @return View
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $request->validate([
             'fromDate' => [
@@ -63,12 +66,16 @@ class HomeController extends Controller
 
         $charts = [];
 
-
         foreach ($chartTypes as $type) {
-            $charts[] = (new $type($larapexChart, $fromDate, $toDate))->build();
+            $chart = new $type($larapexChart, $fromDate, $toDate);
+            if ($chart->isEmpty()) {
+                continue;
+            }
+
+            $charts[] = $chart->build();
         }
 
-        $countContractors = \App\Models\Contractors\Contractor::withoutTrashed()->count();
+        $countContractors = Contractor::withoutTrashed()->count();
         $countOrganizations = Organization::withoutTrashed()->count();
         $countUsers = User::withoutTrashed()->count();
         $countProducts = EndProduct::withoutTrashed()->count();

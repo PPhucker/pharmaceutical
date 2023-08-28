@@ -1,54 +1,49 @@
 <?php
 
-namespace App\Charts;
+namespace App\Charts\Homepage;
 
+use App\Charts\Chart;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
-use ArielMejiaDev\LarapexCharts\DonutChart;
-use ArielMejiaDev\LarapexCharts\LarapexChart;
 use ArielMejiaDev\LarapexCharts\PieChart;
 use DB;
 
-class BestSellingProductsChart
+/**
+ * График наиболее продаваемой продукции.
+ */
+class BestSellingProductsChart extends Chart
 {
     private const PRODUCTION_QUANTITY = 10;
 
-    protected $chart;
-
-    private $fromDate;
-
-    private $toDate;
-
-    public function __construct(LarapexChart $chart, string $fromDate, string $toDate)
-    {
-        $this->chart = $chart;
-        $this->fromDate = $fromDate;
-        $this->toDate = $toDate;
-    }
-
     /**
-     * @return DonutChart
+     * @inheritDoc
      */
-    public function build(): DonutChart
+    public function build(): PieChart
     {
-        $data = $this->getData();
-
-        return $this->chart->donutChart()
+        return $this->chart->pieChart()
             ->setTitle(
                 __(
                     'charts.products.best_selling',
                     ['count' => self::PRODUCTION_QUANTITY]
                 )
             )
-            ->addData($data['values'] ?? [])
+            ->addData($this->data['values'])
             ->setToolbar(true)
             ->setHeight(350)
-            ->setLabels($data['labels'] ?? []);
+            ->setLabels($this->data['labels']);
     }
 
     /**
-     * @return array
+     * @inheritDoc
      */
-    private function getData()
+    public function isEmpty(): bool
+    {
+        return !$this->data;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getData(): array
     {
         $data = [];
 
@@ -58,7 +53,10 @@ class BestSellingProductsChart
                 DB::raw('SUM(price * quantity) as sum')
             ]
         )
-            ->whereBetween('created_at', [$this->fromDate, $this->toDate])
+            ->whereBetween(
+                'created_at',
+                [$this->fromDate, $this->toDate]
+            )
             ->withoutTrashed()
             ->with(
                 [
@@ -76,7 +74,11 @@ class BestSellingProductsChart
             ->groupBy('product_id')
             ->get()
             ->map(function ($product) {
-                $productName = $product->productCatalog->endProduct->short_name;
+                $productName = $product
+                    ->productCatalog
+                    ->endProduct
+                    ->short_name;
+
                 return [
                     'value' => $product->sum,
                     'label' => $productName,
