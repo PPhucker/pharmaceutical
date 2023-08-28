@@ -36,7 +36,7 @@
                            name="number"
                            class="form-control form-control-sm text-primary
                            @error('number') is-invalid @enderror"
-                           value="{{old('number')}}"
+                           value="{{$number}}"
                            required>
                     <x-forms.span-error name="number"/>
                 </div>

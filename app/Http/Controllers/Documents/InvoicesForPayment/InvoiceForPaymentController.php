@@ -12,7 +12,6 @@ use App\Http\Requests\Documents\InvoicesForPayment\UpdateInvoiceForPaymentReques
 use App\Models\Contractors\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
@@ -22,6 +21,9 @@ use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер счета на оплату.
+ */
 class InvoiceForPaymentController extends CoreController
 {
     private const FILLING_TYPES = [
@@ -31,6 +33,8 @@ class InvoiceForPaymentController extends CoreController
 
     /**
      * Display a listing of the resource.
+     *
+     * @param IndexInvoiceForPaymentRequest $request
      *
      * @return View
      */
@@ -112,6 +116,8 @@ class InvoiceForPaymentController extends CoreController
     /**
      * Show the form for creating a new resource.
      *
+     * @param Contractor $contractor
+     *
      * @return View
      */
     public function create(Contractor $contractor)
@@ -120,12 +126,15 @@ class InvoiceForPaymentController extends CoreController
 
         $fillingTypes = self::FILLING_TYPES;
 
+        $number = $this->repository->getLastNumber() + 1;
+
         return view(
             'documents.invoices-for-payment.create',
             compact(
                 'contractor',
                 'organizations',
                 'fillingTypes',
+                'number',
             )
         );
     }
@@ -136,6 +145,8 @@ class InvoiceForPaymentController extends CoreController
      * @param InvoiceForPayment $invoiceForPayment
      *
      * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function show(InvoiceForPayment $invoiceForPayment)
     {
