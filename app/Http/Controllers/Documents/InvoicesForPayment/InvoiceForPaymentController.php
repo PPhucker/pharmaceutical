@@ -15,6 +15,7 @@ use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -128,6 +129,8 @@ class InvoiceForPaymentController extends CoreController
 
         $number = $this->repository->getLastNumber() + 1;
 
+        $currentDate = Carbon::now()->format('Y-m-d');
+
         return view(
             'documents.invoices-for-payment.create',
             compact(
@@ -135,6 +138,7 @@ class InvoiceForPaymentController extends CoreController
                 'organizations',
                 'fillingTypes',
                 'number',
+                'currentDate',
             )
         );
     }
