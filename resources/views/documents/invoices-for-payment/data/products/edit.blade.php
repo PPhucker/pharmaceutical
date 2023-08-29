@@ -9,6 +9,9 @@
             <input type="hidden"
                    name="invoice_for_payment_product[invoice_for_payment_id]"
                    value="{{$invoiceForPayment->id}}">
+            <input type="hidden"
+                   name="organization_id"
+                   value="{{$invoiceForPayment->organization->id}}">
             <x-forms.row id="product_catalog_id"
                          label="{{__('documents.invoices_for_payment.data.product_catalog_id')}}">
                 <select id="product_catalog_id"
