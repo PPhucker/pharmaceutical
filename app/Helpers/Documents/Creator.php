@@ -83,7 +83,7 @@ abstract class Creator
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    abstract public function getData(): object;
+    abstract public function getData();
 
     /**
      * @return string

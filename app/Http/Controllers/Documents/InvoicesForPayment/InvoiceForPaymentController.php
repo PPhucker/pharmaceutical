@@ -144,27 +144,6 @@ class InvoiceForPaymentController extends CoreController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param InvoiceForPayment $invoiceForPayment
-     *
-     * @return View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function show(InvoiceForPayment $invoiceForPayment)
-    {
-        $creator = new InvoiceForPaymentCreator($invoiceForPayment);
-
-        $data = $creator->getData();
-
-        return view(
-            'documents.invoices-for-payment.show',
-            compact('invoiceForPayment', 'data')
-        );
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param InvoiceForPayment $invoiceForPayment
@@ -173,9 +152,13 @@ class InvoiceForPaymentController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function edit(InvoiceForPayment $invoiceForPayment)
+    public function edit(InvoiceForPayment $invoiceForPayment): View
     {
         $fillingTypes = self::FILLING_TYPES;
+
+        $creator = new InvoiceForPaymentCreator($invoiceForPayment);
+
+        $data = $creator->getData();
 
         $invoiceForPayment = $this->repository->getById($invoiceForPayment->id);
 
@@ -190,12 +173,20 @@ class InvoiceForPaymentController extends CoreController
                 break;
         }
 
+        $title = __('documents.invoices_for_payment.invoice_for_payment')
+            . ' №'
+            . $invoiceForPayment->number
+            . ' '
+            . $invoiceForPayment->date;
+
         return view(
             'documents.invoices-for-payment.edit',
             compact(
                 'invoiceForPayment',
                 'production',
-                'fillingTypes'
+                'fillingTypes',
+                'data',
+                'title',
             )
         );
     }

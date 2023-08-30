@@ -2,13 +2,7 @@
 @extends('layouts.app')
 @section('content')
     <x-forms.main back="{{route('invoices_for_payment.index')}}"
-                  title="
-                  {{__('documents.invoices_for_payment.invoice_for_payment')
-                    . ' №'
-                    . $invoiceForPayment->number
-                    . ' '
-                    . $invoiceForPayment->date}}
-                  ">
+                  title="{{$title}}">
         <x-forms.collapse.card
             route="{{route('invoices_for_payment.update', ['invoice_for_payment' => $invoiceForPayment->id])}}"
             cardId="card_main_info"
@@ -273,5 +267,8 @@
             @default
                 @include('documents.invoices-for-payment.data.products.edit')
         @endswitch
+        <x-forms.document title="{{$title}}">
+            @include('templates.documents.invoice_for_payment')
+        </x-forms.document>
     </x-forms.main>
 @endsection

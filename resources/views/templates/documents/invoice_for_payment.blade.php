@@ -1,5 +1,5 @@
-<div id="document-template" class="print table-responsive" style="zoom: 100%">
-    <link href="{{ asset('css/templates/documents/invoice_for_payment.css') }}" rel="stylesheet">
+<link href="{{ asset('css/templates/documents/invoice_for_payment.css') }}" rel="stylesheet">
+<div id="document-template" class="table-responsive" style="zoom: 100%">
     <TABLE style="width:100%; height:0; " CELLSPACING=0>
         <colgroup>
             <COL WIDTH=7>
