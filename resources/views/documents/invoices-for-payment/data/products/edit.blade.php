@@ -9,6 +9,9 @@
             <input type="hidden"
                    name="invoice_for_payment_product[invoice_for_payment_id]"
                    value="{{$invoiceForPayment->id}}">
+            <input type="hidden"
+                   name="organization_id"
+                   value="{{$invoiceForPayment->organization->id}}">
             <x-forms.row id="product_catalog_id"
                          label="{{__('documents.invoices_for_payment.data.product_catalog_id')}}">
                 <select id="product_catalog_id"
@@ -19,10 +22,12 @@
                     @foreach($production as $product)
                         <option value="{{$product->id}}"
                                 style="background-color: {{$product->endProduct->type->color}}"
+                                class="fs-6"
                                 @if($product->id === (int)(old('invoice_for_payment_product.product_catalog_id')))
                                     selected
                             @endif>
-                            {{$product->endProduct->short_name}} - {{$product->organization->name}} - {{$product->placeOfBusiness->address}}
+                            {{$product->endProduct->full_name}} - {{$product->organization->name}}
+                            - {{$product->placeOfBusiness->address}}
                         </option>
                     @endforeach
                 </select>
@@ -77,84 +82,84 @@
             </tr>
             </thead>
             <tbody class="text-primary">
-                @foreach($invoiceForPayment->production as $key => $invoiceProduct)
-                    <tr @if($invoiceProduct->trashed()) class="d-none trashed" @endif>
-                        <input type="hidden"
-                               name="invoice_for_payment_products[{{$key}}][id]"
-                               value="{{$invoiceProduct->id}}">
-                        <input type="hidden"
-                               name="invoice_for_payment_products[{{$key}}][product_catalog_id]"
-                               value="{{$invoiceProduct->productCatalog->id}}">
-                        <td class="align-middle border-start">
-                            {{$invoiceProduct->productCatalog->endProduct->short_name}} -
-                            <small>
-                                {{$invoiceProduct->productCatalog->organization->name}},
-                                {{$invoiceProduct->productCatalog->placeOfBusiness->address}}
-                            </small>
-                        </td>
-                        <td class="align-middle">
+            @foreach($invoiceForPayment->production as $key => $invoiceProduct)
+                <tr @if($invoiceProduct->trashed()) class="d-none trashed" @endif>
+                    <input type="hidden"
+                           name="invoice_for_payment_products[{{$key}}][id]"
+                           value="{{$invoiceProduct->id}}">
+                    <input type="hidden"
+                           name="invoice_for_payment_products[{{$key}}][product_catalog_id]"
+                           value="{{$invoiceProduct->productCatalog->id}}">
+                    <td class="align-middle border-start">
+                        {{$invoiceProduct->productCatalog->endProduct->full_name}} -
+                        <small>
+                            {{$invoiceProduct->productCatalog->organization->name}},
+                            {{$invoiceProduct->productCatalog->placeOfBusiness->address}}
+                        </small>
+                    </td>
+                    <td class="align-middle">
                             <span class="d-none">
                                 {{$invoiceProduct->quantity}}
                             </span>
-                            <div class="input-group input-group-sm mb-0 pt-1 pb-1">
-                                <input type="text"
-                                       name="invoice_for_payment_products[{{$key}}][quantity]"
-                                       class="form-control form-control-sm text-primary
+                        <div class="input-group input-group-sm mb-0 pt-1 pb-1">
+                            <input type="text"
+                                   name="invoice_for_payment_products[{{$key}}][quantity]"
+                                   class="form-control form-control-sm text-primary
                                    @error('invoice_for_payment_products.' . $key. '.quantity') is-invalid @enderror"
-                                       value="{{$invoiceProduct->quantity}}"
-                                       required>
-                                <span class="input-group-text col-2">
+                                   value="{{$invoiceProduct->quantity}}"
+                                   required>
+                            <span class="input-group-text col-2">
                                     {{$invoiceProduct->productCatalog->endProduct->okei->symbol}}
                                 </span>
-                                <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.quantity'}}"/>
-                            </div>
-                        </td>
-                        <td class="align-middle">
+                            <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.quantity'}}"/>
+                        </div>
+                    </td>
+                    <td class="align-middle">
                             <span class="d-none">
                                 {{$invoiceProduct->price}}
                             </span>
-                            <div class="input-group input-group-sm mb-0 pt-1 pb-1">
-                                <input type="text"
-                                       name="invoice_for_payment_products[{{$key}}][price]"
-                                       class="form-control form-control-sm text-primary
+                        <div class="input-group input-group-sm mb-0 pt-1 pb-1">
+                            <input type="text"
+                                   name="invoice_for_payment_products[{{$key}}][price]"
+                                   class="form-control form-control-sm text-primary
                                    @error('invoice_for_payment_products.' . $key. '.price') is-invalid @enderror"
-                                       value="{{$invoiceProduct->price}}"
-                                       required>
-                                <span class="input-group-text">
+                                   value="{{$invoiceProduct->price}}"
+                                   required>
+                            <span class="input-group-text">
                                     {{__('currency.rub')}}
                                 </span>
-                                <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.price'}}"/>
-                            </div>
-                        </td>
-                        <td class="align-middle">
+                            <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.price'}}"/>
+                        </div>
+                    </td>
+                    <td class="align-middle">
                             <span class="d-none">
                                 {{$invoiceProduct->nds * 100}}
                             </span>
-                            <div class="input-group input-group-sm mb-0 pt-1 pb-1">
-                                <input type="text"
-                                       name="invoice_for_payment_products[{{$key}}][nds]"
-                                       class="form-control form-control-sm text-primary
+                        <div class="input-group input-group-sm mb-0 pt-1 pb-1">
+                            <input type="text"
+                                   name="invoice_for_payment_products[{{$key}}][nds]"
+                                   class="form-control form-control-sm text-primary
                                    @error('invoice_for_payment_products.' . $key. '.nds') is-invalid @enderror"
-                                       value="{{$invoiceProduct->nds * 100}}"
-                                       required>
-                                <span class="input-group-text">%</span>
-                                <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.nds'}}"/>
-                            </div>
-                        </td>
-                        <x-tables.columns.tbody.delete>
-                            @if ($invoiceProduct->trashed())
-                                <x-buttons.restore
-                                    route="{{route('invoices_for_payment_products.restore', ['invoices_for_payment_product' => $invoiceProduct->id])}}"
-                                    itemId="{{$invoiceProduct->id}}"/>
-                            @else
-                                <x-buttons.delete
-                                    route="{{route('invoices_for_payment_products.destroy', ['invoices_for_payment_product' => $invoiceProduct->id])}}"
-                                    formId="destroy"
-                                    itemId="{{$invoiceProduct->id}}"/>
-                            @endif
-                        </x-tables.columns.tbody.delete>
-                    </tr>
-                @endforeach
+                                   value="{{$invoiceProduct->nds * 100}}"
+                                   required>
+                            <span class="input-group-text">%</span>
+                            <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.nds'}}"/>
+                        </div>
+                    </td>
+                    <x-tables.columns.tbody.delete>
+                        @if ($invoiceProduct->trashed())
+                            <x-buttons.restore
+                                route="{{route('invoices_for_payment_products.restore', ['invoices_for_payment_product' => $invoiceProduct->id])}}"
+                                itemId="{{$invoiceProduct->id}}"/>
+                        @else
+                            <x-buttons.delete
+                                route="{{route('invoices_for_payment_products.destroy', ['invoices_for_payment_product' => $invoiceProduct->id])}}"
+                                formId="destroy"
+                                itemId="{{$invoiceProduct->id}}"/>
+                        @endif
+                    </x-tables.columns.tbody.delete>
+                </tr>
+            @endforeach
             </tbody>
         </x-tables.main>
     </x-slot>

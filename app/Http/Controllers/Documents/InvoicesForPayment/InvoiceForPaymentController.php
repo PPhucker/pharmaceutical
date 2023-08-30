@@ -12,16 +12,19 @@ use App\Http\Requests\Documents\InvoicesForPayment\UpdateInvoiceForPaymentReques
 use App\Models\Contractors\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер счета на оплату.
+ */
 class InvoiceForPaymentController extends CoreController
 {
     private const FILLING_TYPES = [
@@ -31,6 +34,8 @@ class InvoiceForPaymentController extends CoreController
 
     /**
      * Display a listing of the resource.
+     *
+     * @param IndexInvoiceForPaymentRequest $request
      *
      * @return View
      */
@@ -112,6 +117,8 @@ class InvoiceForPaymentController extends CoreController
     /**
      * Show the form for creating a new resource.
      *
+     * @param Contractor $contractor
+     *
      * @return View
      */
     public function create(Contractor $contractor)
@@ -120,32 +127,19 @@ class InvoiceForPaymentController extends CoreController
 
         $fillingTypes = self::FILLING_TYPES;
 
+        $number = $this->repository->getLastNumber() + 1;
+
+        $currentDate = Carbon::now()->format('Y-m-d');
+
         return view(
             'documents.invoices-for-payment.create',
             compact(
                 'contractor',
                 'organizations',
                 'fillingTypes',
+                'number',
+                'currentDate',
             )
-        );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param InvoiceForPayment $invoiceForPayment
-     *
-     * @return View
-     */
-    public function show(InvoiceForPayment $invoiceForPayment)
-    {
-        $creator = new InvoiceForPaymentCreator($invoiceForPayment);
-
-        $data = $creator->getData();
-
-        return view(
-            'documents.invoices-for-payment.show',
-            compact('invoiceForPayment', 'data')
         );
     }
 
@@ -158,9 +152,13 @@ class InvoiceForPaymentController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function edit(InvoiceForPayment $invoiceForPayment)
+    public function edit(InvoiceForPayment $invoiceForPayment): View
     {
         $fillingTypes = self::FILLING_TYPES;
+
+        $creator = new InvoiceForPaymentCreator($invoiceForPayment);
+
+        $data = $creator->getData();
 
         $invoiceForPayment = $this->repository->getById($invoiceForPayment->id);
 
@@ -175,12 +173,20 @@ class InvoiceForPaymentController extends CoreController
                 break;
         }
 
+        $title = __('documents.invoices_for_payment.invoice_for_payment')
+            . ' №'
+            . $invoiceForPayment->number
+            . ' '
+            . $invoiceForPayment->date;
+
         return view(
             'documents.invoices-for-payment.edit',
             compact(
                 'invoiceForPayment',
                 'production',
-                'fillingTypes'
+                'fillingTypes',
+                'data',
+                'title',
             )
         );
     }

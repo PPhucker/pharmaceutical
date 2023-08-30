@@ -5,13 +5,14 @@ namespace App\Http\Controllers\Documents\InvoicesForPayment;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\StoreInvoiceForPaymentProductRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\UpdateInvoiceForPaymentProductRequest;
-use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Контроллер продукта в счете на оплату.
+ */
 class InvoiceForPaymentProductController extends CoreController
 {
     /**
@@ -21,19 +22,9 @@ class InvoiceForPaymentProductController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreInvoiceForPaymentProductRequest $request)
+    public function store(StoreInvoiceForPaymentProductRequest $request): RedirectResponse
     {
         $validated = $request->validated()['invoice_for_payment_product'];
-
-        $productCatalogRepository = new ProductCatalogRepository();
-
-        $organization = InvoiceForPayment::find((int)$validated['invoice_for_payment_id']);
-
-        $priceList = $productCatalogRepository->getPriceList(
-            $organization->id,
-            (int)$validated['product_catalog_id'],
-            (int)$validated['quantity']
-        );
 
         $invoiceForPaymentProduct = InvoiceForPaymentProduct::create(
             [
@@ -41,8 +32,8 @@ class InvoiceForPaymentProductController extends CoreController
                 'invoice_for_payment_id' => (int)$validated['invoice_for_payment_id'],
                 'product_catalog_id' => (int)$validated['product_catalog_id'],
                 'quantity' => (int)$validated['quantity'],
-                'price' => $priceList->get('price'),
-                'nds' => $priceList->get('nds'),
+                'price' => (float)$validated['price'],
+                'nds' => (float)$validated['nds'],
             ]
         );
 

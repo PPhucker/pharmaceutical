@@ -36,7 +36,7 @@
                            name="number"
                            class="form-control form-control-sm text-primary
                            @error('number') is-invalid @enderror"
-                           value="{{old('number')}}"
+                           value="{{$number}}"
                            required>
                     <x-forms.span-error name="number"/>
                 </div>
@@ -52,7 +52,7 @@
                            name="date"
                            class="form-control form-control-sm text-primary
                            @error('date') is-invalid @enderror"
-                           value="{{old('date')}}"
+                           value="{{$currentDate}}"
                            required>
                     <x-forms.span-error name="date"/>
                 </div>
