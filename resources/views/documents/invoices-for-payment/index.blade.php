@@ -5,7 +5,7 @@
               method="GET"
               action="{{route('packing_lists.create')}}">
             @csrf
-            @if(request('filling_type') === 'production')
+            @if(request('filling_type') === 'production' || !request('filling_type'))
                 <x-forms.warning message="{{__('documents.invoices_for_payment.warning')}}"/>
                 <div class="input-group input-group-sm mb-1">
                 <span class="input-group-text">
@@ -47,7 +47,8 @@
                                 name="filling_type">
                                 @foreach($fillingTypes as $key => $type)
                                     <option value="{{$key}}"
-                                            @if(request('filling_type') === $key) selected @endif>
+                                            @if(request('filling_type') === $key) selected
+                                            @elseif($key === 'production') selected @endif>
                                         {{$type}}
                                     </option>
                                 @endforeach
@@ -63,11 +64,9 @@
                 </x-slot>
                 <thead class="bg-secondary">
                 <tr class="text-primary">
-                    @if(request('filling_type') === 'production')
-                        <th scope="col"
-                            class="text-center">
-                        </th>
-                    @endif
+                    <th scope="col"
+                        class="text-center">
+                    </th>
                     <th scope="col"
                         class="text-center">
                         {{__('documents.invoices_for_payment.number')}}
@@ -95,9 +94,8 @@
                 <tbody class="text-primary">
                 @foreach($invoicesForPayment as $key => $invoice)
                     <tr @if($invoice->trashed()) class="d-none trashed" @endif>
-                        @if(request('filling_type') === 'production')
+                        @if(request('filling_type') === 'production' || !request('filling_type'))
                             <td class="text-center align-middle">
-
                                 <input type="checkbox"
                                        name="invoice_for_payment_id[]"
                                        class="form-check-input"
