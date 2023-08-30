@@ -3,7 +3,7 @@
 use App\Http\Controllers\Documents\InvoicesForPayment\InvoiceForPaymentController as Controller;
 
 Route::resource('invoices_for_payment', Controller::class)
-    ->except(['create'])
+    ->except(['create', 'show'])
     ->parameter('invoices_for_payment', 'invoice_for_payment');
 
 Route::controller(Controller::class)->group(static function () {

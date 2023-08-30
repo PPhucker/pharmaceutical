@@ -47,7 +47,8 @@ return [
             'price' => 'Price with VAT',
             'nds' => 'VAT',
             'fails' => [
-                'quantity' => 'Quantity must be a multiple of :quantity'
+                'quantity' => 'Quantity must be a multiple of :quantity',
+                'price_list' => 'No product price in the catalogue of finished products',
             ],
             'actions' => [
                 'create' => [

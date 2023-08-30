@@ -170,6 +170,22 @@ class InvoiceForPaymentRepository extends CoreRepository
     }
 
     /**
+     * Получить последний номер счета за текущий год.
+     *
+     * @return int
+     */
+    public function getLastNumber(): int
+    {
+        return (int)$this->model::whereYear(
+            'created_at',
+            date('Y')
+        )
+            ->latest()
+            ->first()
+            ->number;
+    }
+
+    /**
      * @return string
      */
     protected function getModelClass()

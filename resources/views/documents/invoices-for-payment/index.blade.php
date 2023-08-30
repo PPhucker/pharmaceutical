@@ -88,12 +88,6 @@
                         class="text-center">
                         {{__('documents.invoices_for_payment.contractor_place_id')}}
                     </th>
-                    <th scope="col"
-                        class="text-center">
-                    <span class="d-none">
-                        {{__('form.button.show')}}
-                    </span>
-                    </th>
                     <x-tables.columns.thead.edit/>
                     <x-tables.columns.thead.delete/>
                 </tr>
@@ -128,13 +122,6 @@
                         </td>
                         <td class="align-middle text-wrap">
                             {{$invoice->contractorPlaceOfBusiness->address}}
-                        </td>
-                        <td class="text-center align-middle">
-                            <x-buttons.href
-                                route="{{route('invoices_for_payment.show', ['invoice_for_payment' => $invoice->id])}}"
-                                title="{{__('form.button.show')}}"
-                                icon="bi bi-zoom-in"
-                                disabled="{{$invoice->trashed()}}"/>
                         </td>
                         <td class="text-center align-middle">
                             <x-buttons.edit

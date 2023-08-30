@@ -134,6 +134,7 @@ class ProductCatalogRepository extends CoreRepository
                     $query->select(
                         'id',
                         'short_name',
+                        'full_name',
                         'type_id',
                     )
                         ->with('type:id,color');
@@ -148,7 +149,7 @@ class ProductCatalogRepository extends CoreRepository
             ]
         )
             ->get()
-            ->sortBy('endProduct.short_name')
+            ->sortBy('endProduct.full_name')
             ->sortBy('organization.name');
     }
 
