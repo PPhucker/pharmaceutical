@@ -17,7 +17,6 @@ use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Notifications\Shipment\ToDigitalCommunication;
-use App\Notifications\Shipment\ToDigitalComunication;
 use App\Notifications\Shipment\ToMarketing;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\UserRepository;
@@ -34,14 +33,19 @@ use Illuminate\Support\Facades\Notification;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер товарной накладной
+ */
 class PackingListController extends CoreController
 {
     /**
      * Display a listing of the resource.
      *
+     * @param IndexPackingListRequest $request
+     *
      * @return View
      */
-    public function index(IndexPackingListRequest $request)
+    public function index(IndexPackingListRequest $request): View
     {
         $validated = $request->validated();
 
@@ -77,7 +81,7 @@ class PackingListController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StorePackingListRequest $request)
+    public function store(StorePackingListRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -137,7 +141,7 @@ class PackingListController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function create(CreatePackingListRequest $request)
+    public function create(CreatePackingListRequest $request): View
     {
         $validated = $request->validated()['invoice_for_payment_id'];
 
@@ -159,13 +163,16 @@ class PackingListController extends CoreController
 
         $series = (new PackingListProductRepository())->getSeriesNumbers();
 
+        $currentDate = Carbon::now()->format('Y-m-d');
+
         return view(
             'documents.shipment.packing-lists.create',
             compact(
                 'organization',
                 'contractor',
                 'production',
-                'series'
+                'series',
+                'currentDate',
             )
         );
     }
