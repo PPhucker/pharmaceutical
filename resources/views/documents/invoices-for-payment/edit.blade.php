@@ -267,8 +267,10 @@
             @default
                 @include('documents.invoices-for-payment.data.products.edit')
         @endswitch
-        <x-forms.document title="{{$title}}">
-            @include('templates.documents.invoice_for_payment')
-        </x-forms.document>
+        @if($data)
+            <x-forms.document title="{{$title}}">
+                @include('templates.documents.invoice_for_payment')
+            </x-forms.document>
+        @endif
     </x-forms.main>
 @endsection

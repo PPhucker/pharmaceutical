@@ -156,21 +156,26 @@ class InvoiceForPaymentController extends CoreController
     {
         $fillingTypes = self::FILLING_TYPES;
 
-        $creator = new InvoiceForPaymentCreator($invoiceForPayment);
+        $invoiceForPaymentRepository = $this->repository->getById($invoiceForPayment->id);
 
-        $data = $creator->getData();
-
-        $invoiceForPayment = $this->repository->getById($invoiceForPayment->id);
-
-        switch ($invoiceForPayment->filling_type) {
+        switch ($invoiceForPaymentRepository->filling_type) {
             case 'materials':
                 $production = (new InvoiceForPaymentMaterialRepository())
-                    ->getMaterials($invoiceForPayment->id);
+                    ->getMaterials($invoiceForPaymentRepository->id);
                 break;
             default:
                 $production = (new InvoiceForPaymentProductRepository())
-                    ->getProduction($invoiceForPayment->id);
+                    ->getProduction($invoiceForPaymentRepository->id);
                 break;
+        }
+
+        if (count($invoiceForPayment->production)) {
+            /**
+             * Данные для печати счета на оплату.
+             */
+            $data = (new InvoiceForPaymentCreator($invoiceForPayment))->getData();
+        } else {
+            $data = null;
         }
 
         $title = __('documents.invoices_for_payment.invoice_for_payment')
