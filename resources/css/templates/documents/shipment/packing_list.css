@@ -13,32 +13,16 @@
     @page {
         size: A4 landscape;
         padding: 0;
-        margin: 0;
+        margin-left: -5mm;
+        margin-right: -5mm;
     }
 
     @page :first {
-        margin-top: -10mm;
-    }
-
-    nav, .card-header, #approval {
-        display: none;
-        content-visibility: hidden;
-        visibility: hidden;
-    }
-
-    main, .card, .card-body {
-        visibility: hidden;
-    }
-
-    .print {
-        all: initial;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
+        margin-top: -20mm;
     }
 
     #document-template {
         visibility: visible;
-        margin-top: -20px;
     }
 }
 

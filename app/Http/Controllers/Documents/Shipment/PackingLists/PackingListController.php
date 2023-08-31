@@ -203,8 +203,13 @@ class PackingListController extends CoreController
      *
      * @return View
      */
-    public function edit(PackingList $packingList)
+    public function edit(PackingList $packingList): View
     {
+        /**
+         * Данные для формирования печати.
+         */
+        $data = (new PackingListCreator($packingList))->getData();
+
         $packingList = $this->repository->getById($packingList->id);
 
         $invoicesForPaymentProduction = [];
@@ -219,9 +224,20 @@ class PackingListController extends CoreController
             $invoicesForPaymentProduction[] = $invoiceForPayment->production;
         }
 
+        $title = __('documents.shipment.packing_lists.packing_list')
+            . ' №'
+            . $packingList->number
+            . ' '
+            . $packingList->date;
+
         return view(
             'documents.shipment.packing-lists.edit',
-            compact('packingList', 'invoicesForPaymentProduction')
+            compact(
+                'packingList',
+                'invoicesForPaymentProduction',
+                'title',
+                'data',
+            )
         );
     }
 

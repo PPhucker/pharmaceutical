@@ -2,13 +2,7 @@
 @extends('layouts.app')
 @section('content')
     <x-forms.main back="{{route('packing_lists.index')}}"
-                  title="
-                  {{__('documents.shipment.packing_lists.packing_list')
-                    . ' №'
-                    . $packingList->number
-                    . ' '
-                    . $packingList->date}}
-                  ">
+                  title="{{$title}}">
         <x-forms.collapse.card
             route="{{route('packing_lists.update', ['packing_list' => $packingList->id])}}"
             cardId="card_main_info"
@@ -270,5 +264,8 @@
             </x-slot>
         </x-forms.collapse.card>
         @include('documents.shipment.packing-lists.data.products.edit')
+        <x-forms.document title="{{$title}}">
+            @include('templates.documents.shipment.packing-list.main')
+        </x-forms.document>
     </x-forms.main>
 @endsection
