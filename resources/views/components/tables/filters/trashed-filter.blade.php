@@ -1,4 +1,4 @@
-@admin
+@permissions(['restoring'])
 <div class="form-check form-switch form-check-inline me-2">
     <input class="form-check-input"
            type="radio"
@@ -24,4 +24,4 @@
         {{__('datatable.entries.trashed')}}
     </label>
 </div>
-@end_admin
+@end_permissions
