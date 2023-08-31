@@ -178,25 +178,6 @@ class PackingListController extends CoreController
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param PackingList $packingList
-     *
-     * @return View
-     */
-    public function show(PackingList $packingList)
-    {
-        $creator = new PackingListCreator($packingList);
-
-        $data = $creator->getData();
-
-        return view(
-            'documents.shipment.packing-lists.show',
-            compact('packingList', 'data')
-        );
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param PackingList $packingList

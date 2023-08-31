@@ -82,12 +82,6 @@
                         class="text-center">
                         {{__('documents.shipment.contractor_place_id')}}
                     </th>
-                    <th scope="col"
-                        class="text-center">
-                    <span class="d-none">
-                        {{__('form.button.show')}}
-                    </span>
-                    </th>
                     <x-tables.columns.thead.edit/>
                     <x-tables.columns.thead.delete/>
                 </tr>
@@ -119,13 +113,6 @@
                         </td>
                         <td class="align-middle text-wrap">
                             {{$packingList->contractorPlaceOfBusiness->address}}
-                        </td>
-                        <td class="text-center align-middle">
-                            <x-buttons.href
-                                route="{{route('packing_lists.show', ['packing_list' => $packingList->id])}}"
-                                title="{{__('form.button.show')}}"
-                                icon="bi bi-zoom-in"
-                                disabled="{{$packingList->trashed() || !$packingList->production}}"/>
                         </td>
                         <td class="text-center align-middle">
                             <x-buttons.edit
