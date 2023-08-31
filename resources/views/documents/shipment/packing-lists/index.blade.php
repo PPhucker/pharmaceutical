@@ -94,7 +94,8 @@
                                    name="packing_list_id"
                                    class="form-check-input"
                                    value="{{$packingList->id}}"
-                                   @if($packingList->trashed()) disabled @endif>
+                                   @if($packingList->trashed()) disabled @endif
+                                   @if((int)$choice === $packingList->id) checked @endif>
                             <span class="d-none">
                             {{$packingList->id}}
                         </span>

@@ -61,7 +61,10 @@ class PackingListController extends CoreController
         ];
 
         $organizations = (new OrganizationRepository())->getAll();
+
         $packingLists = $this->repository->getAll($filters);
+
+        $choice = $validated['choice'] ?? null;
 
         return view(
             'documents.shipment.packing-lists.index',
@@ -70,6 +73,7 @@ class PackingListController extends CoreController
                 'organizations',
                 'fromDate',
                 'toDate',
+                'choice',
             )
         );
     }
