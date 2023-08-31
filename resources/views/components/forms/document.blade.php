@@ -1,13 +1,6 @@
-{{--<div class="card mb-2">
-    <x-forms.alert/>
-    <div id="approval"
-         class="sticky-top">
-        @if(isset($approval))
-            {{$approval}}
-        @endif
-    </div>
-
-</div>--}}
+@if(isset($approval))
+    {{$approval}}
+@endif
 <div class="card mb-2">
     <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
         <li class="list-inline-item">

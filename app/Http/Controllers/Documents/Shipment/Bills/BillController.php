@@ -75,7 +75,7 @@ class BillController extends CoreController
         );
 
         return redirect()
-            ->route('packing_lists.index')
+            ->route('packing_lists.index', ['choice' => (int)$validated['packing_list_id']])
             ->with(
                 'success',
                 __(

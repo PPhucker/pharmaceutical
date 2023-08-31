@@ -36,6 +36,10 @@ class IndexPackingListRequest extends FormRequest
                 'nullable',
                 'date',
             ],
+            'choice' => [
+                'nullable',
+                'numeric',
+            ],
         ];
     }
 }

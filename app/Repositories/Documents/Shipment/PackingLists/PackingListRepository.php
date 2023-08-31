@@ -253,6 +253,7 @@ class PackingListRepository extends CoreRepository
                                                         [
                                                             'id',
                                                             'short_name',
+                                                            'full_name',
                                                             'okei_code',
                                                             'type_id',
                                                         ]

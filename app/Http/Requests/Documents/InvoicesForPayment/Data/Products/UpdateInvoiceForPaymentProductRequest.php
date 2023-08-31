@@ -6,6 +6,9 @@ use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+/**
+ * Валидация обновления продукта в счете на оплату.
+ */
 class UpdateInvoiceForPaymentProductRequest extends FormRequest
 {
     /**
@@ -13,7 +16,7 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +26,7 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'invoice_for_payment_products.*.';
 
@@ -44,11 +47,8 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
 
                     $productCatalogId = (int)$this->input($prefix . 'product_catalog_id')[$key];
 
-                    $productCatalog = ProductCatalog::find(
-                        $productCatalogId
-                    );
-
-                    $quantity = $productCatalog->getQuantityInAggregationType('sscc01');
+                    $quantity = ProductCatalog::find($productCatalogId)
+                        ->getQuantityInAggregationType('sscc01');
 
                     if ($value % $quantity !== 0) {
                         $fail(
@@ -62,10 +62,12 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
             ],
             $prefix . 'nds' => [
                 'required',
+                'min: 1',
                 'numeric',
             ],
             $prefix . 'price' => [
                 'required',
+                'min: 1',
                 'numeric',
             ],
         ];
@@ -76,7 +78,7 @@ class UpdateInvoiceForPaymentProductRequest extends FormRequest
      *
      * @return void
      */
-    public function withValidator(Validator $validator)
+    protected function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
