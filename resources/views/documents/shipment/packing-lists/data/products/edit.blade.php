@@ -23,7 +23,9 @@
                                     @if($product->id === (int)(old('packing_list_product.invoice_for_payment_product_id')))
                                         selected
                                 @endif>
-                                {{$product->productCatalog->endProduct->short_name}} - {{$product->productCatalog->organization->name}} - {{$product->productCatalog->placeOfBusiness->address}}
+                                {{$product->productCatalog->endProduct->short_name}}
+                                - {{$product->productCatalog->organization->name}}
+                                - {{$product->productCatalog->placeOfBusiness->address}}
                             </option>
                         @endforeach
                     @endforeach
@@ -70,7 +72,7 @@
             <thead class="bg-secondary">
             <tr class="text-primary">
                 <th scope="col"
-                    class="text-center align-middle">
+                    class="text-center align-middle col-6">
                     {{__('documents.shipment.data.product_catalog_id')}}
                 </th>
                 <th scope="col"
@@ -101,12 +103,10 @@
                     <input type="hidden"
                            name="packing_list_products[{{$key}}][product_id]"
                            value="{{$packingListProduct->productCatalog->id}}">
-                    <td class="align-middle border-start">
-                        {{$packingListProduct->productCatalog->endProduct->short_name}} -
-                        <small>
-                            {{$packingListProduct->productCatalog->organization->name}},
-                            {{$packingListProduct->productCatalog->placeOfBusiness->address}}
-                        </small>
+                    <td class="align-middle border-start col-6">
+                        {{$packingListProduct->productCatalog->endProduct->full_name}} -
+                        {{$packingListProduct->productCatalog->organization->name}},
+                        {{$packingListProduct->productCatalog->placeOfBusiness->address}}
                     </td>
                     <td class="align-middle">
                         <span class="d-none">
