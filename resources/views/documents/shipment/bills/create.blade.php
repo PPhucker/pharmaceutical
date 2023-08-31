@@ -21,7 +21,7 @@
                            name="number"
                            class="form-control form-control-sm text-primary
                            @error('number') is-invalid @enderror"
-                           value="{{$packingList->number}}"
+                           value="{{old('number')}}"
                            required>
                     <x-forms.span-error name="number"/>
                 </div>

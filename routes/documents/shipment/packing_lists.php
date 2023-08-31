@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Documents\Shipment\PackingLists\PackingListController as Controller;
 
-Route::resource('packing_lists', Controller::class);
+Route::resource('packing_lists', Controller::class)
+    ->except(['show']);
 
 Route::controller(Controller::class)->group(static function () {
     Route::post('/packing_lists/{packing_list}/restore', 'restore')
