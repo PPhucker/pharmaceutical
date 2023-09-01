@@ -24,6 +24,9 @@ use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер товарно-транспортной накладной.
+ */
 class WaybillController extends CoreController
 {
     /**
@@ -35,7 +38,7 @@ class WaybillController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function index(IndexWaybillRequest $request)
+    public function index(IndexWaybillRequest $request): View
     {
         $validated = $request->validated();
 
@@ -67,7 +70,7 @@ class WaybillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreWaybillRequest $request)
+    public function store(StoreWaybillRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -91,7 +94,7 @@ class WaybillController extends CoreController
         );
 
         return redirect()
-            ->route('packing_lists.index')
+            ->route('packing_lists.index', ['choice' => (int)$validated['packing_list_id']])
             ->with(
                 'success',
                 __(
@@ -110,7 +113,7 @@ class WaybillController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function create(CreateWaybillRequest $request)
+    public function create(CreateWaybillRequest $request): View
     {
         $validated = $request->validated();
 
@@ -130,20 +133,8 @@ class WaybillController extends CoreController
      *
      * @return View
      */
-    public function show(Waybill $waybill)
+    public function show(Waybill $waybill): View
     {
-        $packingList = $waybill->packingList;
-
-        $creator = new WaybillCreator($packingList);
-
-        $data = $creator->getData();
-
-        $date = $waybill->date;
-
-        $billNumber = $packingList->bill->number;
-
-        $number = $waybill->number;
-
         return view(
             'documents.shipment.waybills.show',
             compact(
@@ -163,13 +154,29 @@ class WaybillController extends CoreController
      *
      * @return View
      */
-    public function edit(Waybill $waybill)
+    public function edit(Waybill $waybill): View
     {
         $waybill = $this->repository->getById($waybill->id);
 
+        $packingList = $waybill->packingList;
+
+        $data = (new WaybillCreator($packingList))->getData();
+
+        $date = $waybill->date;
+
+        $billNumber = $packingList->bill->number;
+
+        $number = $waybill->number;
+
         return view(
             'documents.shipment.waybills.edit',
-            compact('waybill')
+            compact(
+                'waybill',
+                'data',
+                'date',
+                'billNumber',
+                'number',
+            )
         );
     }
 
@@ -181,7 +188,7 @@ class WaybillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateWaybillRequest $request, Waybill $waybill)
+    public function update(UpdateWaybillRequest $request, Waybill $waybill): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -231,7 +238,7 @@ class WaybillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Waybill $waybill)
+    public function destroy(Waybill $waybill): RedirectResponse
     {
         $waybill->delete();
 
@@ -252,7 +259,7 @@ class WaybillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Waybill $waybill)
+    public function restore(Waybill $waybill): RedirectResponse
     {
         $waybill->restore();
 
@@ -272,7 +279,7 @@ class WaybillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function approve(ApproveWaybillRequest $request, Waybill $waybill)
+    public function approve(ApproveWaybillRequest $request, Waybill $waybill): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -323,7 +330,7 @@ class WaybillController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Waybill::class, 'waybill');
     }
@@ -331,7 +338,7 @@ class WaybillController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return WaybillRepository::class;
     }

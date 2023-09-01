@@ -1,4 +1,4 @@
-@restoring
+@permissions(['restoring'])
 <div>
     <a class="btn btn-hover @if($disabled) disabled @endif"
        href="{{$route}}"
@@ -14,4 +14,4 @@
         @csrf
     </form>
 </div>
-@end_restoring
+@end_permissions

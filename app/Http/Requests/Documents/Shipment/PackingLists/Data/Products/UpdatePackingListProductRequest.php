@@ -3,10 +3,14 @@
 namespace App\Http\Requests\Documents\Shipment\PackingLists\Data\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+/**
+ * Валидация обновления продукции товарной накладной.
+ */
 class UpdatePackingListProductRequest extends FormRequest
 {
     /**
@@ -14,7 +18,7 @@ class UpdatePackingListProductRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,11 +28,15 @@ class UpdatePackingListProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'packing_list_products.*.';
 
         return [
+            'document_id' => [
+                'required',
+                'numeric',
+            ],
             $prefix . 'id' => [
                 'required',
                 'numeric'
@@ -81,9 +89,17 @@ class UpdatePackingListProductRequest extends FormRequest
      *
      * @return void
      */
-    public function withValidator(Validator $validator)
+    protected function withValidator(Validator $validator): void
     {
-        $validator->after(function ($validator) {
+        $packingListId = (int)$this->input('document_id');
+
+        $validator->after(function ($validator) use ($packingListId) {
+            if (PackingList::find($packingListId)->approved) {
+                $validator->errors()->add(
+                    'fail',
+                    __('documents.shipment.errors.approve_update')
+                );
+            }
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',
