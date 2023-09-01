@@ -21,14 +21,19 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
+/**
+ * Контроллер счет-фактуры.
+ */
 class BillController extends CoreController
 {
     /**
      * Display a listing of the resource.
      *
+     * @param IndexBillRequest $request
+     *
      * @return View
      */
-    public function index(IndexBillRequest $request)
+    public function index(IndexBillRequest $request): View
     {
         $validated = $request->validated();
 
@@ -60,7 +65,7 @@ class BillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreBillRequest $request)
+    public function store(StoreBillRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -88,9 +93,11 @@ class BillController extends CoreController
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateBillRequest $request
+     *
      * @return View
      */
-    public function create(CreateBillRequest $request)
+    public function create(CreateBillRequest $request): View
     {
         $validated = $request->validated();
 
@@ -103,17 +110,17 @@ class BillController extends CoreController
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
      * @param Bill $bill
      *
      * @return View
      */
-    public function show(Bill $bill)
+    public function edit(Bill $bill): View
     {
-        $creator = new BillCreator($bill->packingList);
+        $bill = $this->repository->getById($bill->id);
 
-        $data = $creator->getData();
+        $data = (new BillCreator($bill->packingList))->getData();
 
         $date = Str::dateInWords(
             Carbon::create($bill->date)->format('Y-m-d'),
@@ -123,31 +130,21 @@ class BillController extends CoreController
 
         $number = $bill->number;
 
-        return view(
-            'documents.shipment.bills.show',
-            compact(
-                'bill',
-                'date',
-                'number',
-                'data'
-            )
-        );
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Bill $bill
-     *
-     * @return View
-     */
-    public function edit(Bill $bill)
-    {
-        $bill = $this->repository->getById($bill->id);
+        $title = __('documents.shipment.bills.bill')
+            . ' №'
+            . $bill->number
+            . ' '
+            . $bill->date;
 
         return view(
             'documents.shipment.bills.edit',
-            compact('bill')
+            compact(
+                'bill',
+                'data',
+                'date',
+                'number',
+                'title',
+            )
         );
     }
 
@@ -159,7 +156,7 @@ class BillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateBillRequest $request, Bill $bill)
+    public function update(UpdateBillRequest $request, Bill $bill): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -200,7 +197,7 @@ class BillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Bill $bill)
+    public function destroy(Bill $bill): RedirectResponse
     {
         $bill->delete();
 
@@ -221,7 +218,7 @@ class BillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Bill $bill)
+    public function restore(Bill $bill): RedirectResponse
     {
         $bill->restore();
 
@@ -241,7 +238,7 @@ class BillController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function approve(ApproveBillRequest $request, Bill $bill)
+    public function approve(ApproveBillRequest $request, Bill $bill): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -292,7 +289,7 @@ class BillController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Bill::class, 'bill');
     }
@@ -300,7 +297,7 @@ class BillController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return BillRepository::class;
     }

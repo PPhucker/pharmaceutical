@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Documents\Shipment\Appendixes\AppendixController as Controller;
 
-Route::resource('appendixes', Controller::class);
+Route::resource('appendixes', Controller::class)
+    ->except(['show']);
 
 Route::controller(Controller::class)->group(static function () {
     Route::post('/appendixes/{appendix}/restore', 'restore')

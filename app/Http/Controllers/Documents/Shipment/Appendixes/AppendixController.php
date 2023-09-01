@@ -21,14 +21,19 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
+/**
+ * Контроллер приложения.
+ */
 class AppendixController extends CoreController
 {
     /**
      * Display a listing of the resource.
      *
+     * @param IndexAppendixRequest $request
+     *
      * @return View
      */
-    public function index(IndexAppendixRequest $request)
+    public function index(IndexAppendixRequest $request): View
     {
         $validated = $request->validated();
 
@@ -60,7 +65,7 @@ class AppendixController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreAppendixRequest $request)
+    public function store(StoreAppendixRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -75,7 +80,7 @@ class AppendixController extends CoreController
         );
 
         return redirect()
-            ->route('packing_lists.index')
+            ->route('packing_lists.index', ['choice' => (int)$validated['packing_list_id']])
             ->with(
                 'success',
                 __(
@@ -88,9 +93,11 @@ class AppendixController extends CoreController
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateAppendixRequest $request
+     *
      * @return View
      */
-    public function create(CreateAppendixRequest $request)
+    public function create(CreateAppendixRequest $request): View
     {
         $validated = $request->validated();
 
@@ -103,17 +110,17 @@ class AppendixController extends CoreController
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for editing the specified resource.
      *
      * @param Appendix $appendix
      *
      * @return View
      */
-    public function show(Appendix $appendix)
+    public function edit(Appendix $appendix): View
     {
-        $creator = new AppendixCreator($appendix->packingList);
+        $appendix = $this->repository->getById($appendix->id);
 
-        $data = $creator->getData();
+        $data = (new AppendixCreator($appendix->packingList))->getData();
 
         $date = Str::dateInWords(
             Carbon::create($appendix->date)->format('Y-m-d'),
@@ -123,31 +130,21 @@ class AppendixController extends CoreController
 
         $number = $appendix->number;
 
-        return view(
-            'documents.shipment.appendixes.show',
-            compact(
-                'appendix',
-                'date',
-                'number',
-                'data'
-            )
-        );
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Appendix $appendix
-     *
-     * @return View
-     */
-    public function edit(Appendix $appendix)
-    {
-        $appendix = $this->repository->getById($appendix->id);
+        $title = __('documents.shipment.appendixes.appendix')
+            . ' №'
+            . $appendix->number
+            . ' '
+            . $appendix->date;
 
         return view(
             'documents.shipment.appendixes.edit',
-            compact('appendix')
+            compact(
+                'appendix',
+                'data',
+                'number',
+                'title',
+                'date',
+            )
         );
     }
 
@@ -159,7 +156,7 @@ class AppendixController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateAppendixRequest $request, Appendix $appendix)
+    public function update(UpdateAppendixRequest $request, Appendix $appendix): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -200,7 +197,7 @@ class AppendixController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Appendix $appendix)
+    public function destroy(Appendix $appendix): RedirectResponse
     {
         $appendix->delete();
 
@@ -221,7 +218,7 @@ class AppendixController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Appendix $appendix)
+    public function restore(Appendix $appendix): RedirectResponse
     {
         $appendix->restore();
 
@@ -241,7 +238,7 @@ class AppendixController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function approve(ApproveAppendixRequest $request, Appendix $appendix)
+    public function approve(ApproveAppendixRequest $request, Appendix $appendix): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -292,7 +289,7 @@ class AppendixController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Appendix::class, 'appendix');
     }
@@ -300,7 +297,7 @@ class AppendixController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return AppendixRepository::class;
     }

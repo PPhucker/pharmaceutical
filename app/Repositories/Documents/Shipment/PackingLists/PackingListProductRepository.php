@@ -41,7 +41,7 @@ class PackingListProductRepository extends CoreRepository
      */
     public function getFullInfo(int $id)
     {
-        $packingListProduct = $this->model::find($id);
+        $packingListProduct = $this->model::withTrashed()->find($id);
 
         $packingListProduct->load(
             [

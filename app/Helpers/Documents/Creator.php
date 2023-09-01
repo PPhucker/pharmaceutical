@@ -74,6 +74,7 @@ abstract class Creator
         $this->document = $document;
         $this->pages = [];
         $this->total_on_pages = [];
+        $this->document->production = $this->document->data;
     }
 
     /**
