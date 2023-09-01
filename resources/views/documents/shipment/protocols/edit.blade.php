@@ -112,7 +112,8 @@
         @if($data)
             <x-forms.document back="{{route('protocols.index')}}"
                               title="{{$title}}">
-                @approve_shipment_documents
+                @include('templates.documents.shipment.protocol.main')
+                @permissions(['approve_shipment_documents'])
                 <x-slot name="approval">
                     <x-forms.collapse.card
                         route="{{route('protocols.approve', ['protocol' => $protocol->id])}}"
@@ -210,8 +211,7 @@
                         </x-slot>
                     </x-forms.collapse.card>
                 </x-slot>
-                @end_approve_shipment_documents
-                @include('templates.documents.shipment.protocol.main')
+                @end_permissions
             </x-forms.document>
         @endif
     </x-forms.main>

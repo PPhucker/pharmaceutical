@@ -286,7 +286,7 @@
                     . ' '
                     . $waybill->date}}
                   ">
-                @approve_shipment_documents
+                @permissions(['approve_shipment_documents'])
                 <x-slot name="approval">
                     <x-forms.collapse.card
                         route="{{route('waybills.approve', ['waybill' => $waybill->id])}}"
@@ -384,7 +384,7 @@
                         </x-slot>
                     </x-forms.collapse.card>
                 </x-slot>
-                @end_approve_shipment_documents
+                @end_permissions
                 @include('templates.documents.shipment.waybill.main')
             </x-forms.document>
         @endif
