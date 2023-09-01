@@ -6,13 +6,16 @@ use App\Models\Documents\Shipment\Shipment;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Политики документов на отгрузку.
+ */
 class ShipmentPolicy
 {
     use HandlesAuthorization;
 
     protected const ROLES = [
         'marketing',
-        'bokkeeping',
+        'bookkeeping',
         'digital_communication',
     ];
 
@@ -23,7 +26,7 @@ class ShipmentPolicy
      *
      * @return bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->hasRole(self::ROLES);
     }
@@ -31,14 +34,13 @@ class ShipmentPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User     $user
-     * @param Shipment $shipment
+     * @param User $user
      *
      * @return bool
      */
-    public function view(User $user, Shipment $shipment)
+    public function view(User $user): bool
     {
-        return ($user->hasRole(['marketing', 'bookkeeping']) && $shipment->approved)
+        return $user->hasRole(['marketing', 'bookkeeping'])
             || ($user->hasPermission(['approve_shipment_documents']));
     }
 
@@ -49,7 +51,7 @@ class ShipmentPolicy
      *
      * @return bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->hasRole(
             [
@@ -67,9 +69,9 @@ class ShipmentPolicy
      *
      * @return bool
      */
-    public function update(User $user, Shipment $shipment)
+    public function update(User $user, Shipment $shipment): bool
     {
-        return ($user->hasRole(['marketing', 'bookkeeping']) && !$shipment->approved)
+        return $user->hasRole(['marketing', 'bookkeeping'])
             || ($user->hasPermission(['approve_shipment_documents']));
     }
 
@@ -80,7 +82,7 @@ class ShipmentPolicy
      *
      * @return bool
      */
-    public function delete(User $user)
+    public function delete(User $user): bool
     {
         return $user->hasRole(['marketing', 'bookkeeping'])
             && $user->canDelete();
@@ -93,7 +95,7 @@ class ShipmentPolicy
      *
      * @return bool
      */
-    public function restore(User $user)
+    public function restore(User $user): bool
     {
         return $user->hasRole(['marketing', 'bookkeeping'])
             && $user->canRestore();

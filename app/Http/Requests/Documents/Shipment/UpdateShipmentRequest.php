@@ -10,6 +10,10 @@ abstract class UpdateShipmentRequest extends CoreFormRequest
      * @var array[]
      */
     protected $rules = [
+        'document_id' => [
+            'required',
+            'numeric',
+        ],
         'number' => [
             'required',
             'string',

@@ -64,6 +64,9 @@
     formId="form_packing_list_production"
     title="{{__('documents.shipment.data.production')}}">
     <x-slot name="cardBody">
+        <input type="hidden"
+               name="document_id"
+               value="{{$packingList->id}}">
         <x-tables.main id="table_packing_list_production"
                        targets="-1">
             <x-slot name="filter">

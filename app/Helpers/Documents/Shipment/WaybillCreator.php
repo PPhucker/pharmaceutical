@@ -13,11 +13,15 @@ class WaybillCreator extends Creator
      */
     public function getData()
     {
+        if (!(count($this->document->data))) {
+            return null;
+        }
+
         $invoiceForPayment = $this->document->production->first()->invoiceForPayment;
 
         $productsOnPage = $this->getProductionOnPage();
 
-        return (object) [
+        return (object)[
             'organization' => (object)[
                 'supplier' => $this->getSupplierField(),
                 'shipper' => $this->getShipperField(),

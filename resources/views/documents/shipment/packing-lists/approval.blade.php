@@ -58,7 +58,6 @@
                                     {{__('documents.shipment.approval.updated')}}
                                 </th>
                                 <th></th>
-                                <th></th>
                             </tr>
                             </thead>
                             <tbody class="text-primary">
@@ -96,14 +95,6 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     {{$packingList->updated_at}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    <x-buttons.href
-                                        route="{{route('packing_lists.show', ['packing_list' => $packingList->id])}}"
-                                        title="{{__('form.button.show')}}"
-                                        icon="bi bi-zoom-in"
-                                        target="_blank"
-                                        disabled="{{$packingList->trashed() || !$packingList->production}}"/>
                                 </td>
                                 <td class="text-center align-middle">
                                     <x-buttons.edit
@@ -149,14 +140,6 @@
                                     {{$packingList->bill->updated_at}}
                                 </td>
                                 <td class="text-center align-middle">
-                                    <x-buttons.href
-                                        route="{{route('bills.show', ['bill' => $packingList->bill->id])}}"
-                                        title="{{__('form.button.show')}}"
-                                        target="_blank"
-                                        icon="bi bi-zoom-in"
-                                        disabled="{{$packingList->bill->trashed()}}"/>
-                                </td>
-                                <td class="text-center align-middle">
                                     <x-buttons.edit
                                         route="{{route('bills.edit', ['bill' => $packingList->bill->id])}}"
                                         target="_blank"
@@ -199,14 +182,6 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         {{$packingList->appendix->updated_at}}
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <x-buttons.href
-                                            route="{{route('appendixes.show', ['appendix' => $packingList->appendix->id])}}"
-                                            title="{{__('form.button.show')}}"
-                                            target="_blank"
-                                            icon="bi bi-zoom-in"
-                                            disabled="{{$packingList->appendix->trashed()}}"/>
                                     </td>
                                     <td class="text-center align-middle">
                                         <x-buttons.edit
@@ -254,14 +229,6 @@
                                         {{$packingList->protocol->updated_at}}
                                     </td>
                                     <td class="text-center align-middle">
-                                        <x-buttons.href
-                                            route="{{route('protocols.show', ['protocol' => $packingList->protocol->id])}}"
-                                            title="{{__('form.button.show')}}"
-                                            target="_blank"
-                                            icon="bi bi-zoom-in"
-                                            disabled="{{$packingList->protocol->trashed()}}"/>
-                                    </td>
-                                    <td class="text-center align-middle">
                                         <x-buttons.edit
                                             route="{{route('protocols.edit', ['protocol' => $packingList->protocol->id])}}"
                                             target="_blank"
@@ -303,14 +270,6 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     {{$packingList->waybill->updated_at}}
-                                </td>
-                                <td class="text-center align-middle">
-                                    <x-buttons.href
-                                        route="{{route('waybills.show', ['waybill' => $packingList->waybill->id])}}"
-                                        title="{{__('form.button.show')}}"
-                                        icon="bi bi-zoom-in"
-                                        target="_blank"
-                                        disabled="{{$packingList->waybill->trashed()}}"/>
                                 </td>
                                 <td class="text-center align-middle">
                                     <x-buttons.edit

@@ -1,6 +1,3 @@
-@if(isset($approval))
-    {{$approval}}
-@endif
 <div class="card mb-2">
     <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
         <li class="list-inline-item">
@@ -59,6 +56,9 @@
             {{$slot}}
     </div>
 </div>
+@if(isset($approval))
+    {{$approval}}
+@endif
 <script>
     const template = document.getElementById('document-template');
     const title = document.getElementById('title');

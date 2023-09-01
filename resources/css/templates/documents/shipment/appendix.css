@@ -7,26 +7,9 @@
     @page {
         size: A4 landscape;
         padding: 0;
-        margin-left: 0.5cm;
-        margin-right: 0;
-        margin-bottom: 0;
-        margin-top: 0;
-    }
-
-    nav, .card-header, #approval {
-        display: none;
-        content-visibility: hidden;
-        visibility: hidden;
-    }
-
-    main, .card, .card-body {
-        visibility: hidden;
-    }
-
-    .print {
-        all: initial;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
+        margin-left: 5mm;
+        margin-right: -4mm;
+        margin-top: -15mm;
     }
 
     #document-template {

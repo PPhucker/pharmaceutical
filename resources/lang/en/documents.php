@@ -85,6 +85,9 @@ return [
         'filename' => 'File',
         'approved' => 'Appoved',
         'comment' => 'Comment',
+        'errors' => [
+            'approve_update' => 'Unable to modify an agreed document',
+        ],
         'approval' => [
             'approval' => 'Approval',
             'approved_by' => 'Approved by',
