@@ -21,14 +21,19 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+/**
+ * Контроллер протокола к отгрузке.
+ */
 class ProtocolController extends CoreController
 {
     /**
      * Display a listing of the resource.
      *
+     * @param IndexProtocolRequest $request
+     *
      * @return View
      */
-    public function index(IndexProtocolRequest $request)
+    public function index(IndexProtocolRequest $request): View
     {
         $validated = $request->validated();
 
@@ -60,7 +65,7 @@ class ProtocolController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreProtocolRequest $request)
+    public function store(StoreProtocolRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -75,7 +80,7 @@ class ProtocolController extends CoreController
         );
 
         return redirect()
-            ->route('packing_lists.index')
+            ->route('packing_lists.index', ['choice' => (int)$validated['packing_list_id']])
             ->with(
                 'success',
                 __(
@@ -88,9 +93,11 @@ class ProtocolController extends CoreController
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateProtocolRequest $request
+     *
      * @return View
      */
-    public function create(CreateProtocolRequest $request)
+    public function create(CreateProtocolRequest $request): View
     {
         $validated = $request->validated();
 
@@ -109,7 +116,7 @@ class ProtocolController extends CoreController
      *
      * @return View
      */
-    public function show(Protocol $protocol)
+    public function show(Protocol $protocol): View
     {
         $creator = new ProtocolCreator($protocol->packingList);
 
@@ -141,13 +148,35 @@ class ProtocolController extends CoreController
      *
      * @return View
      */
-    public function edit(Protocol $protocol)
+    public function edit(Protocol $protocol): View
     {
         $protocol = $this->repository->getById($protocol->id);
 
+        $data = (new ProtocolCreator($protocol->packingList))->getData();
+
+        $date = Str::dateInWords(
+            Carbon::create($protocol->date)->format('Y-m-d'),
+            '-',
+            ' '
+        );
+
+        $number = $protocol->number;
+
+        $title = __('documents.shipment.protocols.protocol')
+            . ' №'
+            . $protocol->number
+            . ' '
+            . $protocol->date;
+
         return view(
             'documents.shipment.protocols.edit',
-            compact('protocol')
+            compact(
+                'protocol',
+                'data',
+                'date',
+                'number',
+                'title',
+            )
         );
     }
 
@@ -159,7 +188,7 @@ class ProtocolController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateProtocolRequest $request, Protocol $protocol)
+    public function update(UpdateProtocolRequest $request, Protocol $protocol): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -200,7 +229,7 @@ class ProtocolController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Protocol $protocol)
+    public function destroy(Protocol $protocol): RedirectResponse
     {
         $protocol->delete();
 
@@ -221,7 +250,7 @@ class ProtocolController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Protocol $protocol)
+    public function restore(Protocol $protocol): RedirectResponse
     {
         $protocol->restore();
 
@@ -241,7 +270,7 @@ class ProtocolController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function approve(ApproveProtocolRequest $request, Protocol $protocol)
+    public function approve(ApproveProtocolRequest $request, Protocol $protocol): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -292,7 +321,7 @@ class ProtocolController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Protocol::class, 'protocol');
     }
@@ -300,7 +329,7 @@ class ProtocolController extends CoreController
     /***
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return ProtocolRepository::class;
     }
