@@ -5,8 +5,8 @@
                   title="{{$title}}">
         <x-forms.collapse.card
             route="{{route('appendixes.update', ['appendix' => $appendix->id])}}"
-            cardId="card_main_info"
-            formId="form_main_info"
+            cardId="card_approval"
+            formId="form_approval"
             title="{{__('documents.header')}}">
             <x-slot name="cardBody">
                 <input name="document_id"
