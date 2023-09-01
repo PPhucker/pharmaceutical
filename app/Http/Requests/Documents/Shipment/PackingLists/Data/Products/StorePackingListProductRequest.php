@@ -4,9 +4,13 @@ namespace App\Http\Requests\Documents\Shipment\PackingLists\Data\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
+use App\Models\Documents\Shipment\PackingLists\PackingList;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+/**
+ * Валидация добавления продукта в товарную накладную.
+ */
 class StorePackingListProductRequest extends FormRequest
 {
     /**
@@ -14,7 +18,7 @@ class StorePackingListProductRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -24,7 +28,7 @@ class StorePackingListProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'packing_list_product.';
 
@@ -75,9 +79,17 @@ class StorePackingListProductRequest extends FormRequest
      *
      * @return void
      */
-    public function withValidator(Validator $validator)
+    protected function withValidator(Validator $validator): void
     {
-        $validator->after(function ($validator) {
+        $packingListId = (int)$this->input('packing_list_product.packing_list_id');
+
+        $validator->after(function ($validator) use ($packingListId) {
+            if (PackingList::find($packingListId)->approved) {
+                $validator->errors()->add(
+                    'fail',
+                    __('documents.shipment.errors.approve_update')
+                );
+            }
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     'fail',

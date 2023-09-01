@@ -32,8 +32,7 @@ class PackingListProductPolicy
      */
     public function update(User $user, PackingListProduct $packingListProduct)
     {
-        return $user->hasRole(['marketing', 'bookkeeping'])
-            && !$packingListProduct->packingList->approved;
+        return $user->hasRole(['marketing', 'bookkeeping']);
     }
 
     /**
