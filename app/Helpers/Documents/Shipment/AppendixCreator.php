@@ -15,6 +15,10 @@ class AppendixCreator extends Creator
      */
     public function getData()
     {
+        if (!(count($this->document->data))) {
+            return null;
+        }
+
         $productsOnPage = $this->getProductionOnPage();
 
         return (object)[
