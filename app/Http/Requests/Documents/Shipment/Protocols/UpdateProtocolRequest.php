@@ -20,10 +20,10 @@ class UpdateProtocolRequest extends UpdateShipmentRequest
      */
     protected function withValidator(Validator $validator): void
     {
-        $billId = (int)$this->input('document_id');
+        $protocolId = (int)$this->input('document_id');
 
-        $validator->after(function ($validator) use ($billId) {
-            if (Protocol::find($billId)->approved) {
+        $validator->after(function ($validator) use ($protocolId) {
+            if (Protocol::find($protocolId)->approved) {
                 $validator->errors()->add(
                     'fail',
                     __('documents.shipment.errors.approve_update')

@@ -9,6 +9,9 @@
             formId="form_main_info"
             title="{{__('documents.header')}}">
             <x-slot name="cardBody">
+                <input type="hidden"
+                       name="document_id"
+                       value="{{$protocol->id}}">
                 <div class="row mb-2">
                     <label for="number"
                            class="col-md-4 col-form-label text-md-end">
@@ -113,8 +116,8 @@
                 <x-slot name="approval">
                     <x-forms.collapse.card
                         route="{{route('protocols.approve', ['protocol' => $protocol->id])}}"
-                        cardId="card_main_info"
-                        formId="form_main_info"
+                        cardId="card_approval"
+                        formId="form_approval"
                         title="{{__('documents.shipment.approval.approval')}}">
                         <x-slot name="cardBody">
                             <div class="row mb-2">
@@ -184,7 +187,7 @@
                         <x-slot name="footer">
                             <ul class="list-inline mb-0">
                                 <li class="list-inline-item text-md-end">
-                                    <x-buttons.save formId="form_main_info"/>
+                                    <x-buttons.save formId="form_approval"/>
                                 </li>
                                 @if($protocol->aprroved)
                                     <li class="list-inline-item text-primary">
