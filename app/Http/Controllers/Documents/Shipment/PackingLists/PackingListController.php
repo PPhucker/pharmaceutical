@@ -190,9 +190,6 @@ class PackingListController extends CoreController
      */
     public function edit(PackingList $packingList): View
     {
-        /**
-         * Данные для формирования печати.
-         */
         $data = (new PackingListCreator($packingList))->getData();
 
         $packingList = $this->repository->getById($packingList->id);
