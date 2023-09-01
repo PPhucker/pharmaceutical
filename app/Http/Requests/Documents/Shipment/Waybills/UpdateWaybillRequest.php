@@ -3,7 +3,12 @@
 namespace App\Http\Requests\Documents\Shipment\Waybills;
 
 use App\Http\Requests\Documents\Shipment\UpdateShipmentRequest;
+use App\Models\Documents\Shipment\Waybills\Waybill;
+use Illuminate\Validation\Validator;
 
+/**
+ * Валидация обновления товарно-транспортной накладной.
+ */
 class UpdateWaybillRequest extends UpdateShipmentRequest
 {
     protected $afterValidatorFailKeyMessage = 'documents.shipment.waybills.actions.update.fail';
@@ -11,7 +16,7 @@ class UpdateWaybillRequest extends UpdateShipmentRequest
     /**
      * @return array[]
      */
-    public function rules()
+    public function rules(): array
     {
         return array_merge(
             $this->rules,
@@ -68,7 +73,7 @@ class UpdateWaybillRequest extends UpdateShipmentRequest
     /**
      * @return void
      */
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $separator = ' - ';
 
@@ -122,5 +127,26 @@ class UpdateWaybillRequest extends UpdateShipmentRequest
                 ]
             );
         }
+    }
+
+    /**
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    protected function withValidator(Validator $validator): void
+    {
+        $waybillId = (int)$this->input('document_id');
+
+        $validator->after(function ($validator) use ($waybillId) {
+            if (Waybill::find($waybillId)->approved) {
+                $validator->errors()->add(
+                    'fail',
+                    __('documents.shipment.errors.approve_update')
+                );
+            }
+        });
+
+        parent::withValidator($validator);
     }
 }
