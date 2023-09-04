@@ -104,6 +104,17 @@
                     <x-forms.span-error name="contacts"/>
                 </div>
             </div>
+            <div class="row mb-2">
+                <label for="name"
+                       class="col-md-4 col-form-label text-md-end">
+                    {{__('contractors.comment')}}
+                </label>
+                <div class="col-md-6">
+                    <textarea class="form-control form-control-sm text-primary @error('comment') is-invalid @enderror"
+                              id="comment" name="comment" rows="3">{{old('comment')}}</textarea>
+                    <x-forms.span-error name="comment"/>
+                </div>
+            </div>
         </form>
         <x-slot name="footer">
             <x-buttons.save formId="form_add_contractor"/>

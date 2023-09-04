@@ -221,5 +221,6 @@ return [
     'kpp' => 'KPP',
     'contacts' => 'Contacts',
     'card' => 'Counterparty card',
-    'main_information' => 'Main information'
+    'main_information' => 'Main information',
+    'comment' => 'Comment',
 ];

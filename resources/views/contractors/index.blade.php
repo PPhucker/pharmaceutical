@@ -18,12 +18,12 @@
                 </th>
                 <th scope="col"
                     class="text-center">
+                    {{__('contractors.comment')}}
+                </th>
+                <th scope="col"
+                    class="text-center">
                     {{__('contractors.inn')}}
                 </th>
-                {{--<th scope="col"
-                    class="text-center">
-                    {{__('contractors.okpo')}}
-                </th>--}}
                 <th>
                     <span class="d-none">
                         {{__('documents.invoices_for_payment.buttons.create')}}
@@ -46,12 +46,12 @@
                     <td class="align-middle">
                         {{$contractor->legalForm->abbreviation}} {{$contractor->name}}
                     </td>
+                    <td class="align-middle">
+                        {{$contractor->comment}}
+                    </td>
                     <td class="align-middle text-center">
                         {{$contractor->INN}}
                     </td>
-                    {{--<td class="align-middle text-center">
-                        {{$contractor->OKPO}}
-                    </td>--}}
                     <td class="text-center align-middle">
                         <x-buttons.href
                             route="{{route('invoices_for_payment.create', ['contractor' => $contractor->id])}}"

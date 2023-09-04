@@ -6,72 +6,22 @@ use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
 use App\Traits\Contractors\Documents\HasDocuments;
 use App\Traits\Contractors\Notifications;
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\Contractors\Contractor
- *
- * @property int                                     $id
- * @property int|null                                $userId
- * @property string|null                             $legalFormType
- * @property string                                  $name
- * @property string                                  $INN
- * @property string                                  $OKPO
- * @property string|null                             $contacts
- * @property Carbon|null                             $createdAt
- * @property Carbon|null                             $updatedAt
- * @property Carbon|null                             $deletedAt
- * @property-read Collection<int, BankAccountDetail> $bankAccountDetails
- * @property-read int|null                           $bankAccountDetailsCount
- * @property-read Collection<int, ContactPerson>     $contactPersons
- * @property-read int|null                           $contactPersonsCount
- * @property-read LegalForm|null                     $legalForm
- * @property-read Collection<int, PlaceOfBusiness>   $placesOfBusiness
- * @property-read int|null                           $placesOfBusinessCount
- * @property-read User|null                          $user
- * @method static Builder|Contractor newModelQuery()
- * @method static Builder|Contractor newQuery()
- * @method static Builder|Contractor onlyTrashed()
- * @method static Builder|Contractor query()
- * @method static Builder|Contractor whereContacts($value)
- * @method static Builder|Contractor whereCreatedAt($value)
- * @method static Builder|Contractor whereDeletedAt($value)
- * @method static Builder|Contractor whereINN($value)
- * @method static Builder|Contractor whereId($value)
- * @method static Builder|Contractor whereLegalFormType($value)
- * @method static Builder|Contractor whereName($value)
- * @method static Builder|Contractor whereOKPO($value)
- * @method static Builder|Contractor whereUpdatedAt($value)
- * @method static Builder|Contractor whereUserId($value)
- * @method static Builder|Contractor withTrashed()
- * @method static Builder|Contractor withoutTrashed()
- * @property string|null $kpp КПП
- * @property-read Collection<int, \App\Models\Contractors\BankAccountDetail> $bankAccountDetails
- * @property-read Collection<int, \App\Models\Contractors\Car> $cars
- * @property-read int|null $carsCount
- * @property-read Collection<int, \App\Models\Contractors\ContactPerson> $contactPersons
- * @property-read Collection<int, \App\Models\Contractors\Driver> $drivers
- * @property-read int|null $driversCount
- * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
- * @property-read int|null $invoicesForPaymentCount
- * @property-read Collection<int, \App\Models\Documents\Shipment\PackingLists\PackingList> $packingLists
- * @property-read int|null $packingListsCount
- * @property-read Collection<int, \App\Models\Contractors\PlaceOfBusiness> $placesOfBusiness
- * @property-read Collection<int, \App\Models\Contractors\Trailer> $trailers
- * @property-read int|null $trailersCount
- * @method static Builder|Contractor whereKpp($value)
- * @mixin Eloquent
+ * Контрагент
  */
 class Contractor extends Model
 {
-    use HasFactory, HasDocuments, SoftDeletes, Notifications;
+    use HasDocuments;
+    use HasFactory;
+    use Notifications;
+    use SoftDeletes;
 
     protected $table = 'contractors';
 
@@ -82,7 +32,8 @@ class Contractor extends Model
         'INN',
         'OKPO',
         'kpp',
-        'contacts'
+        'contacts',
+        'comment',
     ];
 
     protected $guarded = [
@@ -92,36 +43,58 @@ class Contractor extends Model
         'deleted_at'
     ];
 
-    public function getCreatedAtAttribute($date)
+    /**
+     * Получить дату создания в формате d.m.Y H:i:s.
+     *
+     * @param $date
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($date): string
     {
         return Carbon::create($date)
             ->format('d.m.Y H:i:s');
     }
 
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)
             ->withTrashed();
     }
 
-    public function legalForm()
+    /**
+     * @return BelongsTo
+     */
+    public function legalForm(): BelongsTo
     {
         return $this->belongsTo(LegalForm::class, 'legal_form_type');
     }
 
-    public function placesOfBusiness()
+    /**
+     * @return HasMany
+     */
+    public function placesOfBusiness(): HasMany
     {
         return $this->hasMany(PlaceOfBusiness::class)
             ->withTrashed();
     }
 
-    public function bankAccountDetails()
+    /**
+     * @return HasMany
+     */
+    public function bankAccountDetails(): HasMany
     {
         return $this->hasMany(BankAccountDetail::class)
             ->withTrashed();
     }
 
-    public function contactPersons()
+    /**
+     * @return HasMany
+     */
+    public function contactPersons(): HasMany
     {
         return $this->hasMany(ContactPerson::class)
             ->withTrashed();
@@ -130,7 +103,7 @@ class Contractor extends Model
     /**
      * @return HasMany
      */
-    public function drivers()
+    public function drivers(): HasMany
     {
         return $this->hasMany(Driver::class, 'contractor_id')
             ->withTrashed();
@@ -139,7 +112,7 @@ class Contractor extends Model
     /**
      * @return HasMany
      */
-    public function cars()
+    public function cars(): HasMany
     {
         return $this->hasMany(Car::class, 'contractor_id')
             ->withTrashed();
@@ -148,7 +121,7 @@ class Contractor extends Model
     /**
      * @return HasMany
      */
-    public function trailers()
+    public function trailers(): HasMany
     {
         return $this->hasMany(Trailer::class, 'contractor_id')
             ->withTrashed();

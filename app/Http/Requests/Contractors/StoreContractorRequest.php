@@ -6,6 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
+/**
+ * Валидация создания контрагента.
+ */
 class StoreContractorRequest extends FormRequest
 {
     /**
@@ -13,7 +16,7 @@ class StoreContractorRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +26,7 @@ class StoreContractorRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'legal_form_type' => [
@@ -57,10 +60,21 @@ class StoreContractorRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:120'
+            ],
+            'comment' => [
+                'nullable',
+                'string',
+                'max:255'
             ]
         ];
     }
-    public function withValidator(Validator $validator)
+
+    /**
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
