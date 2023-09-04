@@ -52,8 +52,13 @@
             </div>
         </li>
     </ul>
-    <div class="show card-body print p-0">
+    <div id="printing-document" class="show">
+        <div class="show card-body print p-0">
             {{$slot}}
+        </div>
+        <div class="card-footer bg-secondary border-0 sticky-top">
+
+        </div>
     </div>
 </div>
 @if(isset($approval))
