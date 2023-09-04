@@ -30,6 +30,9 @@
                 title="{{$packingList->organization->legalForm->abbreviation}}
                 {!!$packingList->organization->name !!}
                 {{ '-' }}
+                {{$packingList->contractor->legalForm->abbreviation}}
+                {!!$packingList->contractor->name !!}
+                {{ '-' }}
                 №{{$packingList->number}}">
                 <x-slot name="cardBody">
                     <div class="table-responsive">
