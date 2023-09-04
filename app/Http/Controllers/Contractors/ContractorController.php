@@ -15,12 +15,15 @@ use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер контрагента.
+ */
 class ContractorController extends CoreController
 {
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Contractor::class, 'contractor');
     }
@@ -28,7 +31,7 @@ class ContractorController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return ContractorRepository::class;
     }
@@ -38,7 +41,7 @@ class ContractorController extends CoreController
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $contractors = $this->repository->getAll();
 
@@ -55,7 +58,7 @@ class ContractorController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function create()
+    public function create(): View
     {
         $legalForms = (new LegalFormRepository())->getAll();
 
@@ -72,7 +75,7 @@ class ContractorController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreContractorRequest $request)
+    public function store(StoreContractorRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -84,7 +87,8 @@ class ContractorController extends CoreController
                 'INN' => $validated['INN'],
                 'OKPO' => $validated['OKPO'],
                 'kpp' => $validated['kpp'],
-                'contacts' => $validated['contacts']
+                'contacts' => $validated['contacts'],
+                'comment' => $validated['comment'],
             ]
         );
 
@@ -110,7 +114,7 @@ class ContractorController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function edit(Contractor $contractor)
+    public function edit(Contractor $contractor): View
     {
         $contractor = $this->repository->getById($contractor->id);
         $legalForms = (new LegalFormRepository())->getAll();
@@ -134,7 +138,7 @@ class ContractorController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateContractorRequest $request, Contractor $contractor)
+    public function update(UpdateContractorRequest $request, Contractor $contractor): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -146,7 +150,8 @@ class ContractorController extends CoreController
                 'INN' => $validated['INN'],
                 'OKPO' => $validated['OKPO'],
                 'kpp' => $validated['kpp'],
-                'contacts' => $validated['contacts']
+                'contacts' => $validated['contacts'],
+                'comment' => $validated['comment'],
             ]
         )
             ->save();
@@ -167,7 +172,7 @@ class ContractorController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Contractor $contractor)
+    public function destroy(Contractor $contractor): RedirectResponse
     {
         $contractor->delete();
 
@@ -187,7 +192,7 @@ class ContractorController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Contractor $contractor)
+    public function restore(Contractor $contractor): RedirectResponse
     {
         $contractor->restore();
 
