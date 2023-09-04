@@ -1,5 +1,5 @@
-<div id="div_add_material"
-     class="@if ($errors->has('material.*')) collapsed @else collapse @endif mb-2 sticky-top position-sticky">
+@extends('layouts.app')
+@section('content')
     <x-forms.main title="{{__('form.titles.add')}}"
                   withAlert="{{false}}">
         <form id="form_add_material"
@@ -14,7 +14,7 @@
                 <div class="col-md">
                     <select
                         name="material[type_id]"
-                        class="form-control form-control-sm
+                        class="form-control form-control-sm text-primary
                             @error('material.type_id') is-invalid @enderror">
                         @foreach($typesOfMaterials as $type)
                             <option value="{{$type->id}}">
@@ -40,9 +40,9 @@
                 <div class="col-md">
                     <select
                         name="material[okei_code]"
-                        class="form-control form-control-sm
+                        class="form-control form-control-sm text-primary
                             @error('material.okei_code') is-invalid @enderror">
-                        @foreach($okei as $item)
+                        @foreach($okeiClassifier as $item)
                             <option value="{{$item->code}}">
                                 {{$item->symbol}}
                             </option>
@@ -66,7 +66,7 @@
                 <div class="col-md">
                     <input id="name"
                            type="text"
-                           class="form-control form-control-sm
+                           class="form-control form-control-sm text-primary
                                @error('material.name') is-invalid @enderror"
                            name="material[name]"
                            value="{{ old('material[name]') }}"
@@ -86,4 +86,4 @@
             </x-slot>
         </form>
     </x-forms.main>
-</div>
+@endsection

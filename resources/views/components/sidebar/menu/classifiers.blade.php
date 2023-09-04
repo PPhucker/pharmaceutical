@@ -130,6 +130,8 @@
                         </x-sidebar.menu.dropdown.item>
                         <x-sidebar.menu.dropdown.item icon="bi bi-archive"
                                                       title="{{__('classifiers.nomenclature.materials.materials')}}">
+                            <x-sidebar.menu.dropdown.link title="{{__('form.titles.add')}}"
+                                                          route="{{route('materials.create')}}"/>
                             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                                           route="{{route('materials.index')}}"/>
                         </x-sidebar.menu.dropdown.item>
