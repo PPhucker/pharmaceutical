@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Contractors;
 
+use App\Models\Contractors\Contractor;
 use App\Repositories\CoreRepository;
 use App\Models\Contractors\Contractor as Model;
 use DB;
@@ -9,14 +10,19 @@ use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Репозиторий для контрагента.
+ */
 class ContractorRepository extends CoreRepository
 {
     /**
+     * Получить всех контрагентов.
+     *
      * @param bool $withTrashed
      *
      * @return Collection
      */
-    public function getAll(bool $withTrashed = true)
+    public function getAll(bool $withTrashed = true): Collection
     {
         $contractors = $this->clone()
             ->select(
@@ -27,6 +33,7 @@ class ContractorRepository extends CoreRepository
                     'contractors.INN',
                     'contractors.OKPO',
                     'contractors.contacts',
+                    'contractors.comment',
                     'contractors.deleted_at'
                 ]
             )
@@ -43,11 +50,13 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
+     * Получить контрагента по ID.
+     *
      * @param int $id
      *
-     * @return Collection
+     * @return Contractor
      */
-    public function getById(int $id)
+    public function getById(int $id): Contractor
     {
         $contractor = $this->model::find($id);
 
@@ -83,9 +92,13 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
+     * Получить юридический адрес контрагента.
+     *
+     * @param int $id
+     *
      * @return \Illuminate\Support\Collection|null
      */
-    public function getRegisteredAddress(int $id)
+    public function getRegisteredAddress(int $id): ?\Illuminate\Support\Collection
     {
         $registered = $this->clone()
             ->find($id)
@@ -105,6 +118,8 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
+     * Стастистика продаж продукта по контрагентам.
+     *
      * @param int   $productCatalogId
      * @param array $filters
      *
@@ -112,7 +127,7 @@ class ContractorRepository extends CoreRepository
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function productCatalogSaleStatistic(int $productCatalogId, array $filters)
+    public function productCatalogSaleStatistic(int $productCatalogId, array $filters): Collection
     {
         return $this->clone()
             ->whereHas('packingLists', function ($query) use ($productCatalogId, $filters) {
@@ -139,6 +154,8 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
+     * Получить список покупателей на период.
+     *
      * @param array $between
      * @param int   $take
      *
@@ -184,9 +201,11 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
+     * Получить название класса модели.
+     *
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return Model::class;
     }
