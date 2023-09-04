@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-forms.main back="{{route('product_catalog.index')}}"
-                  title="{{$product->endProduct->full_name . ' - ' . $product->GTIN}}">
+                  title="{!! $product->endProduct->full_name . ' - ' . $product->GTIN !!}">
         <x-forms.collapse.card route="{{route('product_catalog.update', ['product_catalog' => $product->id])}}"
                                cardId="card_main_info"
                                formId="form_main_info"
@@ -39,9 +39,9 @@
                         {{__('classifiers.nomenclature.products.international_names_of_end_products.international_name_of_end_product')}}
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
-                            <small class="text-primary align-items-center">
-                                {{$product->endProduct->internationalName->name}}
-                            </small>
+                        <small class="text-primary align-items-center">
+                            {{$product->endProduct->internationalName->name}}
+                        </small>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -50,9 +50,9 @@
                         {{__('classifiers.nomenclature.products.okpd2.okpd2')}}
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
-                            <small class="text-primary align-items-center">
-                                {{$product->endProduct->okpd2->name}} - {{$product->endProduct->okpd2->code}}
-                            </small>
+                        <small class="text-primary align-items-center">
+                            {{$product->endProduct->okpd2->name}} - {{$product->endProduct->okpd2->code}}
+                        </small>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -61,9 +61,9 @@
                         {{__('classifiers.nomenclature.products.types_of_end_products.type_of_end_product')}}
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
-                            <small class="text-primary align-items-center">
-                                {{$product->endProduct->type->name}}
-                            </small>
+                        <small class="text-primary align-items-center">
+                            {{$product->endProduct->type->name}}
+                        </small>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -72,13 +72,13 @@
                         {{__('classifiers.nomenclature.products.registration_numbers.registration_number')}}
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
-                            <small class="text-primary align-items-center">
-                                @if(!$product->endProduct->registrationNumber)
-                                    Без номера
-                                @else
-                                    {{$product->endProduct->registrationNumber->number}}
-                                @endif
-                            </small>
+                        <small class="text-primary align-items-center">
+                            @if(!$product->endProduct->registrationNumber)
+                                Без номера
+                            @else
+                                {{$product->endProduct->registrationNumber->number}}
+                            @endif
+                        </small>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -87,9 +87,9 @@
                         {{__('classifiers.nomenclature.okei.unit')}}
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
-                            <small class="text-primary align-items-center">
-                                {{$product->endProduct->okei->symbol}}
-                            </small>
+                        <small class="text-primary align-items-center">
+                            {{$product->endProduct->okei->symbol}}
+                        </small>
                     </div>
                 </div>
                 <div class="row mb-2">
@@ -98,9 +98,9 @@
                         {{__('classifiers.nomenclature.products.best_before_date')}}
                     </label>
                     <div class="col-md-6 align-items-center pt-1">
-                            <small class="text-primary align-items-center">
-                                {{$product->endProduct->best_before_date}}
-                            </small>
+                        <small class="text-primary align-items-center">
+                            {{$product->endProduct->best_before_date}}
+                        </small>
                     </div>
                 </div>
                 <div class="row mb-2">
