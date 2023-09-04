@@ -13,9 +13,12 @@
     @page {
         size: A4 landscape;
         padding: 0;
-        margin-top: -15mm;
         margin-right: -5mm;
         margin-left: -5mm;
+    }
+
+    @page :first {
+        margin-top: -10mm;
     }
 
     #document-template {
