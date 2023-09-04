@@ -184,6 +184,8 @@ class InvoiceForPaymentController extends CoreController
             . ' '
             . $invoiceForPayment->date;
 
+        $invoiceForPayment = $invoiceForPaymentRepository;
+
         return view(
             'documents.invoices-for-payment.edit',
             compact(

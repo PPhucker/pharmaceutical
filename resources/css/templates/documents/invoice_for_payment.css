@@ -12,9 +12,12 @@
         margin: 0;
     }
 
+    @page :first {
+        margin-top: -10mm;
+    }
+
     #document-template, .print {
         visibility: visible;
-        margin-top: -30px;
     }
 }
 

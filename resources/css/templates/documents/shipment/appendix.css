@@ -9,7 +9,10 @@
         padding: 0;
         margin-left: 5mm;
         margin-right: -4mm;
-        margin-top: -15mm;
+    }
+
+    @page :first {
+        margin-top: -10mm;
     }
 
     #document-template {

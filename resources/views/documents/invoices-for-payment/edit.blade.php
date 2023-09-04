@@ -3,6 +3,11 @@
 @section('content')
     <x-forms.main back="{{route('invoices_for_payment.index')}}"
                   title="{{$title}}">
+        @if($data)
+            <x-forms.document title="{{$title}}">
+                @include('templates.documents.invoice_for_payment')
+            </x-forms.document>
+        @endif
         <x-forms.collapse.card
             route="{{route('invoices_for_payment.update', ['invoice_for_payment' => $invoiceForPayment->id])}}"
             cardId="card_main_info"
@@ -267,10 +272,5 @@
             @default
                 @include('documents.invoices-for-payment.data.products.edit')
         @endswitch
-        @if($data)
-            <x-forms.document title="{{$title}}">
-                @include('templates.documents.invoice_for_payment')
-            </x-forms.document>
-        @endif
     </x-forms.main>
 @endsection

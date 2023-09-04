@@ -141,16 +141,20 @@ class ProtocolCreator extends Creator
             2
         );
 
+        $tradeQuantity = $registerPriceList->trade_quantity ?? 0;
+        $tradePrice = $registerPriceList->trade_price ?? 0;
+
         if ($product->packingList->organization_id === 1) {
             $registerPriceList = $productCatalog
                 ->prices()
                 ->where('organization_id', '=', $productCatalog->organization_id)
                 ->first();
 
-            if ((int)$product->quantity >= (int)$registerPriceList->trade_quantity) {
+            if ((int)$product->quantity >= $tradeQuantity) {
+                $nds = $registerPriceList->nds ?? 0;
                 $protocolPrices->register_price = round(
-                    $registerPriceList->trade_price
-                    - $registerPriceList->trade_price * $registerPriceList->nds,
+                    $tradePrice
+                    - $tradePrice * $nds,
                     2
                 );
             } else {
@@ -168,13 +172,13 @@ class ProtocolCreator extends Creator
                 ->where('organization_id', '=', 1)
                 ->first();
 
-            if ($product->quantity >= $registerPriceList->trade_quantity) {
+            if ($product->quantity >= $tradeQuantity) {
                 $protocolPrices->register_price = round(
-                    $registerPriceList->trade_price
-                    - $registerPriceList->trade_price * $registerPriceList->nds,
+                    $tradePrice
+                    - $tradePrice * $registerPriceList->nds,
                     2
                 );
-                $protocolPrices->fact_price = $registerPriceList->trade_price;
+                $protocolPrices->fact_price = $tradePrice;
             } else {
                 $protocolPrices->register_price = round(
                     $registerPriceList->retail_price
@@ -222,9 +226,11 @@ class ProtocolCreator extends Creator
     {
         $productCatalog = $packingListProduct->productCatalog;
 
+        $registrationNumber = $endProduct->registrationNumber->number ?? '';
+
         return $endProduct->full_name
             . ' '
-            . $endProduct->registrationNumber->number
+            . $registrationNumber
             . ' код ОКПД2 '
             . $endProduct->okpd2->code
             . ', '
