@@ -10,6 +10,7 @@ use App\Models\Admin\Organizations\Staff;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Classifiers\BankRepository;
 use App\Repositories\Classifiers\LegalFormRepository;
+use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер организации.
+ */
 class OrganizationController extends CoreController
 {
     /**
@@ -24,7 +28,7 @@ class OrganizationController extends CoreController
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $organizations = $this->repository->getAll();
 
@@ -41,10 +45,16 @@ class OrganizationController extends CoreController
      *
      * @return JsonResponse
      */
-    public function show(Organization $organization)
+    public function show(Organization $organization): JsonResponse
     {
+        $invoiceLastNumber = (new InvoiceForPaymentRepository())
+            ->getLastNumber($organization->id);
+
         return new JsonResponse(
-            ['organization' => $this->repository->getById($organization->id)],
+            [
+                'organization' => $this->repository->getById($organization->id),
+                'number' => $invoiceLastNumber
+            ],
             200
         );
     }
@@ -56,7 +66,7 @@ class OrganizationController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreOrganizationRequest $request)
+    public function store(StoreOrganizationRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -92,7 +102,7 @@ class OrganizationController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function create()
+    public function create(): View
     {
         $legalForms = (new LegalFormRepository())->getAll();
 
@@ -111,7 +121,7 @@ class OrganizationController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function edit(Organization $organization)
+    public function edit(Organization $organization): View
     {
         $organization = $this->repository->getById($organization->id);
         $legalForms = (new LegalFormRepository())->getAll();
@@ -137,7 +147,7 @@ class OrganizationController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateOrganizationRequest $request, Organization $organization)
+    public function update(UpdateOrganizationRequest $request, Organization $organization): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -170,7 +180,7 @@ class OrganizationController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Organization $organization)
+    public function destroy(Organization $organization): RedirectResponse
     {
         $organization->delete();
 
@@ -190,7 +200,7 @@ class OrganizationController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Organization $organization)
+    public function restore(Organization $organization): RedirectResponse
     {
         $organization->restore();
 
@@ -206,7 +216,7 @@ class OrganizationController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Organization::class, 'organization');
     }
@@ -214,7 +224,7 @@ class OrganizationController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return OrganizationRepository::class;
     }

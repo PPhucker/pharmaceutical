@@ -2,19 +2,25 @@
 
 namespace App\Repositories\Documents\InvoicesForPayment;
 
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment as Model;
 use App\Repositories\CoreRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
+/**
+ * Репозиторий счетов на оплату.
+ */
 class InvoiceForPaymentRepository extends CoreRepository
 {
     /**
+     * Все счета на оплату.
+     *
      * @param array $filters
      *
      * @return Collection
      */
-    public function getAll(array $filters)
+    public function getAll(array $filters): Collection
     {
         $invoices = $this->clone()->select(
             [
@@ -64,11 +70,13 @@ class InvoiceForPaymentRepository extends CoreRepository
     }
 
     /**
+     * Счет на оплату по ID.
+     *
      * @param int $id
      *
-     * @return Collection
+     * @return InvoiceForPayment
      */
-    public function getById(int $id)
+    public function getById(int $id): InvoiceForPayment
     {
         $invoice = $this->clone()->find($id);
 
@@ -145,9 +153,13 @@ class InvoiceForPaymentRepository extends CoreRepository
     }
 
     /**
+     * Хранилище счетов на оплату.
+     *
+     * @param int $id
+     *
      * @return Collection
      */
-    public function getStorage(int $id)
+    public function getStorage(int $id): Collection
     {
         $invoice = $this->model::find($id);
 
@@ -172,14 +184,22 @@ class InvoiceForPaymentRepository extends CoreRepository
     /**
      * Получить последний номер счета за текущий год.
      *
+     * @param int $organizationId
+     *
      * @return int
      */
-    public function getLastNumber(): int
+    public function getLastNumber(int $organizationId): int
     {
         return (int)$this->model::whereYear(
             'created_at',
             date('Y')
         )
+            ->where(
+                'organization_id',
+                '=',
+                $organizationId
+            )
+            ->withoutTrashed()
             ->latest()
             ->first()
             ->number;
@@ -188,7 +208,7 @@ class InvoiceForPaymentRepository extends CoreRepository
     /**
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return Model::class;
     }
