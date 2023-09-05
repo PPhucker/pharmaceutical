@@ -41,7 +41,9 @@
                     <input type="hidden"
                            name="places_of_business[{{$key}}][contractor_id]"
                            value="{{$place->contractor_id}}">
-
+                    <input type="hidden"
+                           name="places_of_business[{{$key}}][identifier]"
+                           value="{{$place->identifier}}">
                     @digital_communication
                     <td class="border-start">
                         <span class="d-none">
