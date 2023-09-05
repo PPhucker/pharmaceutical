@@ -31,7 +31,7 @@ class StoreLegalFormRequest extends FormRequest
                 'required',
                 'string',
                 'max: 15',
-                'unique: classifier_legal_forms,abbreviation',
+                'unique:classifier_legal_forms,abbreviation',
             ],
 
             $prefix . 'decoding' => [
