@@ -19,6 +19,7 @@
 
     @page :first {
         margin-top: -10mm;
+        margin-bottom: -5mm;
     }
 
     #document-template {
