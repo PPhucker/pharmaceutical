@@ -39,7 +39,7 @@ class InvoiceForPaymentController extends CoreController
      *
      * @return View
      */
-    public function index(IndexInvoiceForPaymentRequest $request)
+    public function index(IndexInvoiceForPaymentRequest $request): View
     {
         $validated = $request->validated();
 
@@ -56,6 +56,7 @@ class InvoiceForPaymentController extends CoreController
         ];
 
         $organizations = (new OrganizationRepository())->getAll();
+
         $invoicesForPayment = $this->repository->getAll($filters);
 
         $fillingTypes = self::FILLING_TYPES;
@@ -79,7 +80,7 @@ class InvoiceForPaymentController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreInvoiceForPaymentRequest $request)
+    public function store(StoreInvoiceForPaymentRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -121,13 +122,11 @@ class InvoiceForPaymentController extends CoreController
      *
      * @return View
      */
-    public function create(Contractor $contractor)
+    public function create(Contractor $contractor): View
     {
         $organizations = (new OrganizationRepository())->getForDocument();
 
         $fillingTypes = self::FILLING_TYPES;
-
-        $number = $this->repository->getLastNumber() + 1;
 
         $currentDate = Carbon::now()->format('Y-m-d');
 
@@ -137,7 +136,6 @@ class InvoiceForPaymentController extends CoreController
                 'contractor',
                 'organizations',
                 'fillingTypes',
-                'number',
                 'currentDate',
             )
         );
@@ -206,8 +204,10 @@ class InvoiceForPaymentController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateInvoiceForPaymentRequest $request, InvoiceForPayment $invoiceForPayment)
-    {
+    public function update(
+        UpdateInvoiceForPaymentRequest $request,
+        InvoiceForPayment $invoiceForPayment
+    ): RedirectResponse {
         $validated = $request->validated();
 
         $file = $validated['filename'] ?? null;
@@ -254,7 +254,7 @@ class InvoiceForPaymentController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(InvoiceForPayment $invoiceForPayment)
+    public function destroy(InvoiceForPayment $invoiceForPayment): RedirectResponse
     {
         $invoiceForPayment->delete();
 
@@ -275,7 +275,7 @@ class InvoiceForPaymentController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(InvoiceForPayment $invoiceForPayment)
+    public function restore(InvoiceForPayment $invoiceForPayment): RedirectResponse
     {
         $invoiceForPayment->restore();
 
@@ -292,7 +292,7 @@ class InvoiceForPaymentController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(InvoiceForPayment::class, 'invoice_for_payment');
     }
@@ -300,7 +300,7 @@ class InvoiceForPaymentController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return InvoiceForPaymentRepository::class;
     }
