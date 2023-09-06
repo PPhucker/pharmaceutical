@@ -5,6 +5,9 @@ namespace App\Http\Requests\Contractors\ContactPersons;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+/**
+ * Валидация обновления контактного лица контрагента.
+ */
 class UpdateContactPersonRequest extends FormRequest
 {
     /**
@@ -12,7 +15,7 @@ class UpdateContactPersonRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,7 +25,7 @@ class UpdateContactPersonRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'contact_persons.*.';
 
@@ -45,7 +48,7 @@ class UpdateContactPersonRequest extends FormRequest
             $prefix . 'phone' => [
                 'nullable',
                 'string',
-                'max: 15'
+                'max: 60'
             ],
             $prefix . 'email' => [
                 'nullable',
@@ -54,7 +57,12 @@ class UpdateContactPersonRequest extends FormRequest
         ];
     }
 
-    public function withValidator(Validator $validator)
+    /**
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
