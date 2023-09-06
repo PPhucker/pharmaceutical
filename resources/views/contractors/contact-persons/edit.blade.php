@@ -1,4 +1,4 @@
-@marketing
+@roles(['marketing'])
 <x-forms.collapse.card route="{{route('contact_persons.update', ['contact_person' => 1])}}"
                        cardId="card_contact_persons"
                        formId="form_contact_persons"
@@ -104,4 +104,4 @@
         <x-buttons.collapse formId="div_add_contact_person"/>
     </x-slot>
 </x-forms.collapse.card>
-@end_marketing
+@end_roles
