@@ -4,17 +4,23 @@ namespace App\Repositories\Admin;
 
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
+use App\Models\Auth\User;
 use App\Repositories\CoreRepository;
 use App\Models\Auth\User as Model;
 use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Репозиторий пользователя.
+ */
 class UserRepository extends CoreRepository
 {
 
     /**
+     * Все пользователи.
+     *
      * @return Collection
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this
             ->clone()
@@ -34,11 +40,13 @@ class UserRepository extends CoreRepository
     }
 
     /**
+     * Пользователь по ID.
+     *
      * @param int $id
      *
-     * @return Model
+     * @return User
      */
-    public function getForEdit(int $id)
+    public function getForEdit(int $id): User
     {
         return $this->clone()
             ->find($id)
@@ -50,7 +58,7 @@ class UserRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForEmailCreatedContractorNotification()
+    public function getForEmailCreatedContractorNotification(): Collection
     {
         $permissions = Permission::whereIn('slug', ['all', 'verification_contractors'])
             ->first();
@@ -60,9 +68,11 @@ class UserRepository extends CoreRepository
     }
 
     /**
+     * Пользователи с ролью 'marketing'.
+     *
      * @return Collection
      */
-    public function getMarketingUsers()
+    public function getMarketingUsers(): Collection
     {
         $role = Role::whereIn('slug', ['admin', 'marketing'])
             ->first();
@@ -76,7 +86,7 @@ class UserRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForCreatedShipmentNotification()
+    public function getForCreatedShipmentNotification(): Collection
     {
         $permissions = Permission::whereIn('slug', ['all', 'approve_shipment_documents'])
             ->first();
@@ -88,7 +98,7 @@ class UserRepository extends CoreRepository
     /**
      * @inheritDoc
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return Model::class;
     }

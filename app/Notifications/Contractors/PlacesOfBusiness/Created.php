@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Notifications\Contractors;
+namespace App\Notifications\Contractors\PlacesOfBusiness;
 
-use App\Models\Contractors\Contractor;
+use App\Models\Contractors\PlaceOfBusiness;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Шаблон e-mail оповещения о заведении нового контрагента.
+ * Шаблон e-mail сообщении о добавлении нового места осуществления деятельности контрагента.
  */
 class Created extends Notification implements ShouldQueue
 {
@@ -18,18 +18,18 @@ class Created extends Notification implements ShouldQueue
     private const DELAY_IN_MINUTES = 1;
 
     /**
-     * @var Contractor
+     * @var PlaceOfBusiness
      */
-    private $contactor;
+    private $placeOfBusiness;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Contractor $contractor)
+    public function __construct(PlaceOfBusiness $placeOfBusiness)
     {
-        $this->contactor = $contractor;
+        $this->placeOfBusiness = $placeOfBusiness;
 
         $this->delay(
             now()->addMinutes(self::DELAY_IN_MINUTES)
@@ -57,23 +57,23 @@ class Created extends Notification implements ShouldQueue
      */
     public function toMail($notifiable): MailMessage
     {
-        $url = url('/contractors/' . $this->contactor->id . '/edit');
+        $url = url('/contractors/' . $this->placeOfBusiness->contractor->id . '/edit');
 
         return (new MailMessage())
-            ->subject(__('notifications.contractors.created.subject'))
+            ->subject(__('notifications.contractors.places_of_business.created.subject'))
             ->greeting(__('notifications.greeting'))
             ->line(
                 __(
-                    'notifications.contractors.created.body'
+                    'notifications.contractors.places_of_business.created.body'
                 )
             )
             ->line(
                 __(
                     'notifications.contractors.created.contractor',
                     [
-                        'contractor' => $this->contactor->legalForm->abbreviation
+                        'contractor' => $this->placeOfBusiness->contractor->legalForm->abbreviation
                             . ' '
-                            . $this->contactor->name,
+                            . $this->placeOfBusiness->contractor->name,
                     ]
                 )
             )
@@ -81,7 +81,15 @@ class Created extends Notification implements ShouldQueue
                 __(
                     'notifications.contractors.created.INN',
                     [
-                        'INN' => $this->contactor->INN,
+                        'INN' => $this->placeOfBusiness->contractor->INN,
+                    ]
+                )
+            )
+            ->line(
+                __(
+                    'notifications.contractors.places_of_business.created.address',
+                    [
+                        'address' => $this->placeOfBusiness->address,
                     ]
                 )
             )
@@ -89,7 +97,7 @@ class Created extends Notification implements ShouldQueue
                 __(
                     'notifications.contractors.created.created_at',
                     [
-                        'created_at' => $this->contactor->created_at,
+                        'created_at' => $this->placeOfBusiness->created_at,
                     ]
                 )
             )
@@ -97,7 +105,7 @@ class Created extends Notification implements ShouldQueue
                 __(
                     'notifications.contractors.created.user',
                     [
-                        'user' => $this->contactor->user->name,
+                        'user' => $this->placeOfBusiness->user->name,
                     ]
                 )
             )

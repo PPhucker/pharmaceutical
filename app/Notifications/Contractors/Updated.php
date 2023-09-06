@@ -4,23 +4,27 @@ namespace App\Notifications\Contractors;
 
 use App\Models\Contractors\Contractor;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Шаблон e-mail оповещения о заведении нового контрагента.
+ * Шаблон e-mail оповещения об изменении основной информации контрагента.
  */
-class Created extends Notification implements ShouldQueue
+class Updated extends Notification
 {
     use Queueable;
-
-    private const DELAY_IN_MINUTES = 1;
 
     /**
      * @var Contractor
      */
     private $contactor;
+
+    /**
+     * Измененные атрибуты.
+     *
+     * @var array
+     */
+    private $changes;
 
     /**
      * Create a new notification instance.
@@ -31,9 +35,7 @@ class Created extends Notification implements ShouldQueue
     {
         $this->contactor = $contractor;
 
-        $this->delay(
-            now()->addMinutes(self::DELAY_IN_MINUTES)
-        );
+        $this->changes = $contractor->getDirty();
     }
 
     /**
@@ -59,14 +61,11 @@ class Created extends Notification implements ShouldQueue
     {
         $url = url('/contractors/' . $this->contactor->id . '/edit');
 
-        return (new MailMessage())
-            ->subject(__('notifications.contractors.created.subject'))
+        $mailMessage = new MailMessage();
+
+        $mailMessage->subject(__('notifications.contractors.updated.subject'))
             ->greeting(__('notifications.greeting'))
-            ->line(
-                __(
-                    'notifications.contractors.created.body'
-                )
-            )
+            ->line(__('notifications.contractors.updated.body'))
             ->line(
                 __(
                     'notifications.contractors.created.contractor',
@@ -77,30 +76,35 @@ class Created extends Notification implements ShouldQueue
                     ]
                 )
             )
-            ->line(
-                __(
-                    'notifications.contractors.created.INN',
-                    [
-                        'INN' => $this->contactor->INN,
-                    ]
-                )
+            ->line(__('notifications.contractors.updated.changes'))
+            ->line(__('notifications.contractors.updated.before'));
+
+        foreach ($this->changes as $key => $change) {
+            $mailMessage->line(
+                __('contractors.' . $key) .
+                ': ' .
+                Contractor::find($this->contactor->id)->$key
+            );
+        }
+
+        $mailMessage->line(__('notifications.contractors.updated.after'));
+
+        foreach ($this->changes as $key => $change) {
+            $mailMessage->line(
+                __('contractors.' . $key) .
+                ': ' .
+                $change
+            );
+        }
+
+        return $mailMessage->line(
+            __(
+                'notifications.contractors.created.user',
+                [
+                    'user' => $this->contactor->user->name,
+                ]
             )
-            ->line(
-                __(
-                    'notifications.contractors.created.created_at',
-                    [
-                        'created_at' => $this->contactor->created_at,
-                    ]
-                )
-            )
-            ->line(
-                __(
-                    'notifications.contractors.created.user',
-                    [
-                        'user' => $this->contactor->user->name,
-                    ]
-                )
-            )
+        )
             ->action(
                 __('notifications.contractors.created.action'),
                 $url
