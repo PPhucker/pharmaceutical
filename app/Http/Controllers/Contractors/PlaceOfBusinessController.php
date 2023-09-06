@@ -77,7 +77,7 @@ class PlaceOfBusinessController extends CoreController
         $validated = $request->validated();
 
         foreach ($validated['places_of_business'] as $item) {
-            $placeOfBusiness = PlaceOfBusiness::find((int)$item['id']);
+            $placeOfBusiness = PlaceOfBusiness::withTrashed()->find((int)$item['id']);
 
             $registered = (int)$validated['registered'] === $placeOfBusiness->id;
 
