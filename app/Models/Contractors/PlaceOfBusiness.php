@@ -4,51 +4,22 @@ namespace App\Models\Contractors;
 
 use App\Models\Auth\User;
 use App\Traits\Contractors\PlacesOfBusiness\Documents\HasDocuments;
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
+use App\Traits\Contractors\PlacesOfBusiness\Notifications;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\Contractors\PlaceOfBusiness
- *
- * @property int             $id
- * @property int|null        $userId
- * @property int             $contractorId
- * @property string|null     $identifier
- * @property int             $registered
- * @property string          $index
- * @property string          $address
- * @property Carbon|null     $createdAt
- * @property Carbon|null     $updatedAt
- * @property Carbon|null     $deletedAt
- * @property-read Contractor $contractor
- * @property-read User|null  $user
- * @method static Builder|PlaceOfBusiness newModelQuery()
- * @method static Builder|PlaceOfBusiness newQuery()
- * @method static Builder|PlaceOfBusiness onlyTrashed()
- * @method static Builder|PlaceOfBusiness query()
- * @method static Builder|PlaceOfBusiness whereAddress($value)
- * @method static Builder|PlaceOfBusiness whereContractorId($value)
- * @method static Builder|PlaceOfBusiness whereCreatedAt($value)
- * @method static Builder|PlaceOfBusiness whereDeletedAt($value)
- * @method static Builder|PlaceOfBusiness whereId($value)
- * @method static Builder|PlaceOfBusiness whereIdentifier($value)
- * @method static Builder|PlaceOfBusiness whereIndex($value)
- * @method static Builder|PlaceOfBusiness whereRegistered($value)
- * @method static Builder|PlaceOfBusiness whereUpdatedAt($value)
- * @method static Builder|PlaceOfBusiness whereUserId($value)
- * @method static Builder|PlaceOfBusiness withTrashed()
- * @method static Builder|PlaceOfBusiness withoutTrashed()
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
- * @property-read int|null $invoicesForPaymentCount
- * @mixin Eloquent
+ * Модель места осуществления деятельности контрагента.
  */
 class PlaceOfBusiness extends Model
 {
-    use HasFactory, HasDocuments, SoftDeletes;
+    use HasDocuments;
+    use HasFactory;
+    use SoftDeletes;
+    use Notifications;
 
     protected $table = 'contractors_places_of_business';
 
@@ -68,19 +39,32 @@ class PlaceOfBusiness extends Model
         'deleted_at',
     ];
 
-    public function getCreatedAtAttribute($date)
+    /**
+     * Дата создания в формате d.m.Y.
+     *
+     * @param $date
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($date): string
     {
         return Carbon::create($date)
             ->format('d.m.Y');
     }
 
-    public function user()
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class)
             ->withTrashed();
     }
 
-    public function contractor()
+    /**
+     * @return BelongsTo
+     */
+    public function contractor(): BelongsTo
     {
         return $this->belongsTo(Contractor::class)
             ->withTrashed();

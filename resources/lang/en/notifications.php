@@ -13,6 +13,17 @@ return [
             'user' => 'User: :user',
             'action' => 'Check',
         ],
+        'updated' => [
+            'subject' => 'Changing basic information of the contractor',
+            'body' => 'You received this email because the contractor basic information has been changed.',
+            'contractor' => 'Contractor: :contractor',
+            'changes' => 'Changes:',
+            'before' => 'Before: ',
+            'after' => 'After: ',
+            'updated_at' => 'Date: :updated_at',
+            'user' => 'User: :user',
+            'action' => 'Check',
+        ],
     ],
     'shipment' => [
         'organization' => 'Organization: :organization',

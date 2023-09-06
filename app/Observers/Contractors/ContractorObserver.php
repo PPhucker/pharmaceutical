@@ -4,9 +4,16 @@ namespace App\Observers\Contractors;
 
 use App\Logging\Logger;
 use App\Models\Contractors\Contractor;
+use Auth;
 
+/**
+ * Наблюдатель контрагента.
+ */
 class ContractorObserver
 {
+    /**
+     * Таблицы с отношениями.
+     */
     private const RELATIONS = [
         'placesOfBusiness',
         'bankAccountDetails',
@@ -23,7 +30,7 @@ class ContractorObserver
      *
      * @return void
      */
-    public function created(Contractor $contractor)
+    public function created(Contractor $contractor): void
     {
         Logger::userActionNotice('create', $contractor);
 
@@ -37,9 +44,23 @@ class ContractorObserver
      *
      * @return void
      */
-    public function updated(Contractor $contractor)
+    public function updated(Contractor $contractor): void
     {
         Logger::userActionNotice('update', $contractor);
+    }
+
+    /**
+     * Handle the Contractor "updating" event.
+     *
+     * @param Contractor $contractor
+     *
+     * @return void
+     */
+    public function updating(Contractor $contractor): void
+    {
+        if (Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
+            $contractor->sendEmailUpdatedNotification();
+        }
     }
 
     /**
@@ -49,7 +70,7 @@ class ContractorObserver
      *
      * @return void
      */
-    public function deleted(Contractor $contractor)
+    public function deleted(Contractor $contractor): void
     {
         Logger::userActionNotice('destroy', $contractor);
 
@@ -67,7 +88,7 @@ class ContractorObserver
      *
      * @return void
      */
-    public function restored(Contractor $contractor)
+    public function restored(Contractor $contractor): void
     {
         Logger::userActionNotice('restore', $contractor);
 
