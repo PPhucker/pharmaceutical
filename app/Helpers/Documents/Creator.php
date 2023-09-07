@@ -18,6 +18,9 @@ use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Абстрактный класс для создания печатных форм документов.
+ */
 abstract class Creator
 {
     protected const RUBLES = ['рубль', 'рубля', 'рублей'];

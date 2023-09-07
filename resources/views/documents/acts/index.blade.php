@@ -46,12 +46,6 @@
                     class="text-center">
                     {{__('documents.acts.contractor_id')}}
                 </th>
-                <th scope="col"
-                    class="text-center">
-                    <span class="d-none">
-                        {{__('form.button.show')}}
-                    </span>
-                </th>
                 <x-tables.columns.thead.edit/>
                 <x-tables.columns.thead.delete/>
             </tr>
@@ -70,13 +64,6 @@
                     </td>
                     <td class="align-middle text-wrap">
                         {{$act->contractor->legalForm->abbreviation}} {{$act->contractor->name}}
-                    </td>
-                    <td class="text-center align-middle">
-                        <x-buttons.href
-                            route="{{route('acts.show', ['act' => $act->id])}}"
-                            title="{{__('form.button.show')}}"
-                            icon="bi bi-zoom-in"
-                            disabled="{{$act->trashed()}}"/>
                     </td>
                     <td class="text-center align-middle">
                         <x-buttons.edit

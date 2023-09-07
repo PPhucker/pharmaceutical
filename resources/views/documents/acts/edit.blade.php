@@ -2,13 +2,10 @@
 @extends('layouts.app')
 @section('content')
     <x-forms.main back="{{route('acts.index')}}"
-                  title="
-                  {{__('documents.acts.act')
-                    . ' №'
-                    . $act->number
-                    . ' '
-                    . $act->date}}
-                  ">
+                  title="{{$title}}">
+        <x-forms.document title="{{$title}}">
+            @include('templates.documents.act')
+        </x-forms.document>
         <x-forms.collapse.card
             route="{{route('acts.update', ['act' => $act->id])}}"
             cardId="card_main_info"

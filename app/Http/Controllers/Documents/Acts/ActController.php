@@ -12,23 +12,27 @@ use App\Http\Requests\Documents\Acts\UpdateActRequest;
 use App\Models\Documents\Acts\Act;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Classifiers\Nomenclature\Services\ServiceRepository;
-use App\Repositories\Contractors\ContractorRepository;
 use App\Repositories\Documents\Acts\ActRepository;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер актов.
+ */
 class ActController extends CoreController
 {
     /**
      * Display a listing of the resource.
      *
+     * @param IndexActRequest $request
+     *
      * @return View
      */
-    public function index(IndexActRequest $request)
+    public function index(IndexActRequest $request): View
     {
         $validated = $request->validated();
 
@@ -64,7 +68,7 @@ class ActController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreActRequest $request)
+    public function store(StoreActRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -97,34 +101,17 @@ class ActController extends CoreController
      *
      * @return View
      */
-    public function create()
+    public function create(): View
     {
         $organizations = (new OrganizationRepository())->getAll(false);
 
+        $currentDate = Carbon::now()->format('Y-m-d');
+
         return view(
             'documents.acts.create',
-            compact('organizations')
-        );
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Act $act
-     *
-     * @return View
-     */
-    public function show(Act $act)
-    {
-        $creator = new ActCreator($act);
-
-        $data = $creator->getData();
-
-        return view(
-            'documents.acts.show',
             compact(
-                'act',
-                'data'
+                'organizations',
+                'currentDate',
             )
         );
     }
@@ -138,17 +125,27 @@ class ActController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function edit(Act $act)
+    public function edit(Act $act): View
     {
+        $data = (new ActCreator($act))->getData();
+
         $act = $this->repository->getById($act->id);
 
         $services = (new ServiceRepository())->getAll(false);
+
+        $title = __('documents.acts.act')
+            . ' №'
+            . $act->number
+            . ' '
+            . $act->date;
 
         return view(
             'documents.acts.edit',
             compact(
                 'act',
                 'services',
+                'data',
+                'title',
             )
         );
     }
@@ -161,7 +158,7 @@ class ActController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateActRequest $request, Act $act)
+    public function update(UpdateActRequest $request, Act $act): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -203,7 +200,7 @@ class ActController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Act $act)
+    public function destroy(Act $act): RedirectResponse
     {
         $act->delete();
 
@@ -224,7 +221,7 @@ class ActController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Act $act)
+    public function restore(Act $act): RedirectResponse
     {
         $act->restore();
 
@@ -239,17 +236,17 @@ class ActController extends CoreController
     }
 
     /**
-     * @return void
+     * @inheritDoc
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(Act::class, 'act');
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return ActRepository::class;
     }
