@@ -12,40 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\Documents\Acts\Act
- *
- * @property int $id
- * @property int|null $userId Пользователь
- * @property string $number Номер
- * @property string $date Дата
- * @property int $organizationId Исполнитель
- * @property int $contractorId Заказчик
- * @property string|null $filename Прикрепленный файл
- * @property Carbon|null $deletedAt
- * @property Carbon|null $createdAt
- * @property string $updatedAt
- * @property-read Organization $contractor
- * @property-read Organization $organization
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\Acts\ActService> $production
- * @property-read int|null $productionCount
- * @property-read User|null $user
- * @method static \Illuminate\Database\Eloquent\Builder|Act newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Act newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Act onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Act query()
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereContractorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereOrganizationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Act withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Act withoutTrashed()
- * @mixin \Eloquent
+ * Модель акта.
  */
 class Act extends Model
 {
@@ -74,7 +41,7 @@ class Act extends Model
     /**
      * @return BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id')
             ->withTrashed();
@@ -85,7 +52,7 @@ class Act extends Model
      *
      * @return string
      */
-    public function getUpdatedAtAttribute($date)
+    public function getUpdatedAtAttribute($date): string
     {
         return Carbon::parse($date)
             ->format('d.m.Y H:i');
@@ -96,7 +63,7 @@ class Act extends Model
      *
      * @return string
      */
-    public function getDateAttribute($date)
+    public function getDateAttribute($date): string
     {
         return Carbon::parse($date)
             ->format('d.m.Y');
@@ -105,7 +72,7 @@ class Act extends Model
     /**
      * @return BelongsTo
      */
-    public function organization()
+    public function organization(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'organization_id');
     }
@@ -113,7 +80,7 @@ class Act extends Model
     /**\
      * @return BelongsTo
      */
-    public function contractor()
+    public function contractor(): BelongsTo
     {
         return $this->belongsTo(Organization::class, 'contractor_id');
     }
@@ -121,7 +88,16 @@ class Act extends Model
     /**
      * @return HasMany
      */
-    public function production()
+    public function production(): HasMany
+    {
+        return $this->hasMany(ActService::class, 'act_id')
+            ->withTrashed();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function data(): HasMany
     {
         return $this->hasMany(ActService::class, 'act_id')
             ->withTrashed();
