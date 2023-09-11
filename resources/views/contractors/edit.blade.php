@@ -133,6 +133,8 @@
 
         @include('contractors.places-of-business.create')
         @include('contractors.places-of-business.edit')
+        @include('contractors.contracts.create')
+        @include('contractors.contracts.edit')
         @include('contractors.bank-account-details.create')
         @include('contractors.bank-account-details.edit')
         @include('contractors.contact-persons.create')

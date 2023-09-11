@@ -21,6 +21,7 @@ class ContractorObserver
         'drivers',
         'cars',
         'trailers',
+        'contracts',
     ];
 
     /**

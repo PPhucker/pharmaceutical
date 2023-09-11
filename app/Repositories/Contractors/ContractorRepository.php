@@ -85,6 +85,9 @@ class ContractorRepository extends CoreRepository
                 'trailers' => static function ($query) {
                     $query->orderBy('type');
                 },
+                'contracts' => static function ($query) {
+                    $query->orderBy('date');
+                },
             ]
         );
 

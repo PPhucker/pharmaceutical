@@ -41,6 +41,7 @@ return [
                     'Car' => 'Company car',
                     'Driver' => 'Driver of the organization',
                     'Trailer' => 'Company trailer',
+                    'Contract' => 'Contractor contract',
                 ],
             ],
             'Contractors' => [
