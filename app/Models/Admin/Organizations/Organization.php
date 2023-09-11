@@ -6,6 +6,7 @@ use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
+use App\Models\Contractors\Contract;
 use App\Traits\Organizations\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * App\Models\Admin\Organizations\Organization
@@ -173,6 +175,15 @@ class Organization extends Model
     public function trailers()
     {
         return $this->hasMany(Trailer::class, 'organization_id')
+            ->withTrashed();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function contracts(): HasMany
+    {
+        return $this->hasMany(Contract::class, 'organization_id')
             ->withTrashed();
     }
 }

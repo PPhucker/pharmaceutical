@@ -16,4 +16,5 @@ Route::prefix('contractors')
         require_once __DIR__ . '/drivers.php';
         require_once __DIR__ . '/cars.php';
         require_once __DIR__ . '/trailers.php';
+        require_once __DIR__ . '/contracts.php';
     });

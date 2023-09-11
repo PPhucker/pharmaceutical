@@ -214,6 +214,31 @@ return [
             ],
         ],
     ],
+    'contracts' => [
+        'contracts' => 'Contracts',
+        'contract' => 'Contract',
+        'organization_id' => 'The contract is concluded with',
+        'number' => 'Number',
+        'date' => 'Date',
+        'comment' => 'Comment',
+        'is_valid' => 'Is valid',
+        'actions' => [
+            'create' => [
+                'success' => 'Contract successfully added',
+                'fail' => 'Failed to add a contract'
+            ],
+            'update' => [
+                'success' => 'Contracts successfully updated',
+                'fail' => 'Failed to update contracts',
+            ],
+            'delete' => [
+                'success' => 'The contract has been successfully deleted'
+            ],
+            'restore' => [
+                'success' => 'The treaty has been successfully restored'
+            ],
+        ],
+    ],
 
     'name' => 'Name',
     'inn' => 'NIP Number',
