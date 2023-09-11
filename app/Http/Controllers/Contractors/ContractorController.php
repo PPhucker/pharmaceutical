@@ -6,6 +6,7 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\StoreContractorRequest;
 use App\Http\Requests\Contractors\UpdateContractorRequest;
 use App\Models\Contractors\Contractor;
+use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Classifiers\BankRepository;
 use App\Repositories\Classifiers\LegalFormRepository;
 use App\Repositories\Contractors\ContractorRepository;
@@ -119,13 +120,15 @@ class ContractorController extends CoreController
         $contractor = $this->repository->getById($contractor->id);
         $legalForms = (new LegalFormRepository())->getAll();
         $banks = (new BankRepository())->getAll();
+        $organizations = (new OrganizationRepository())->getAll();
 
         return view(
             'contractors.edit',
             compact(
                 'contractor',
                 'legalForms',
-                'banks'
+                'banks',
+                'organizations',
             )
         );
     }

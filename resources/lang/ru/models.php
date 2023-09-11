@@ -51,6 +51,7 @@ return [
                 'Car' => 'Автомобиль контрагента',
                 'Driver' => 'Водитель контрагента',
                 'Trailer' => 'Прицеп контрагента',
+                'Contract' => 'Договор c контрагентом',
             ],
             'Documents' => [
                 'InvoicesForPayment' => [
