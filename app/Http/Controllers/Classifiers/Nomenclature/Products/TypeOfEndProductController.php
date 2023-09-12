@@ -10,31 +10,18 @@ use App\Repositories\Classifiers\Nomenclature\Products\TypeOfEndProductRepositor
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер типа готовой продукции.
+ */
 class TypeOfEndProductController extends CoreController
 {
-
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(TypeOfEndProduct::class, 'types_of_end_product');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return TypeOfEndProductRepository::class;
-    }
 
     /**
      * Display a listing of the resource.
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $typesOfEndProducts = $this->repository->getAll();
 
@@ -51,7 +38,7 @@ class TypeOfEndProductController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreTypeOfEndProductRequest $request)
+    public function store(StoreTypeOfEndProductRequest $request): RedirectResponse
     {
         $validated = $request->validated()['type_of_end_product'];
 
@@ -80,8 +67,10 @@ class TypeOfEndProductController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateTypeOfEndProductRequest $request, TypeOfEndProduct $types_of_end_product = null)
-    {
+    public function update(
+        UpdateTypeOfEndProductRequest $request,
+        TypeOfEndProduct $types_of_end_product = null
+    ): RedirectResponse {
         $validated = $request->validated();
 
         foreach ($validated['types_of_end_products'] as $type) {
@@ -98,8 +87,24 @@ class TypeOfEndProductController extends CoreController
         return back()
             ->with(
                 'success',
-                __('classifiers.nomenclature.products.types_of_end_products.actions.create.success')
+                __('classifiers.nomenclature.products.types_of_end_products.actions.update.success')
             );
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function authorizeActions(): void
+    {
+        $this->authorizeResource(TypeOfEndProduct::class, 'types_of_end_product');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getRepository(): string
+    {
+        return TypeOfEndProductRepository::class;
     }
 
 }
