@@ -1,52 +1,86 @@
 @roles(['marketing', 'bookkeeping'])
 <x-forms.collapse.creation cardId="div_add_invoice_for_payment_product"
-                           errorName="invoice_for_payment_product.*">
+                           errorName="invoice_for_payment_products.*">
     <x-slot name="cardBody">
-        <form id="form_add_invoice_for_payment_product"
+        <form id="form_add_invoice_for_payment_products"
               method="POST"
               action="{{route('invoices_for_payment_products.store')}}">
             @csrf
             <input type="hidden"
-                   name="invoice_for_payment_product[invoice_for_payment_id]"
+                   name="invoice_for_payment_id"
                    value="{{$invoiceForPayment->id}}">
             <input type="hidden"
                    name="organization_id"
                    value="{{$invoiceForPayment->organization->id}}">
-            <x-forms.row id="product_catalog_id"
-                         label="{{__('documents.invoices_for_payment.data.product_catalog_id')}}">
-                <select id="product_catalog_id"
-                        name="invoice_for_payment_product[product_catalog_id]"
-                        class="form-control form-control-sm text-primary
-                        @error('invoice_for_payment_product.product_catalog_id') is-invalid @enderror"
-                        required>
-                    @foreach($production as $product)
-                        <option value="{{$product->id}}"
-                                style="background-color: {{$product->endProduct->type->color}}"
-                                class="fs-6"
-                                @if($product->id === (int)(old('invoice_for_payment_product.product_catalog_id')))
-                                    selected
-                            @endif>
-                            {{$product->endProduct->full_name}} - {{$product->organization->name}}
-                            - {{$product->placeOfBusiness->address}}
-                        </option>
-                    @endforeach
-                </select>
-                <x-forms.span-error name="invoice_for_payment_product.product_catalog_id"/>
-            </x-forms.row>
-            <x-forms.row id="quantity"
-                         label="{{__('documents.invoices_for_payment.data.quantity')}}">
-                <input id="qauntity"
-                       name="invoice_for_payment_product[quantity]"
-                       class="form-control form-control-sm text-primary
-                       @error('invoice_for_payment_product.quantity') is-invalid @enderror"
-                       value="{{old('invoice_for_payment_product.quantity')}}"
-                       required>
-                <x-forms.span-error name="invoice_for_payment_product.quantity"/>
-            </x-forms.row>
+            <input type="hidden"
+                   name="invoice_for_payment_products[]">
+            <x-tables.main id="add_table_product_catalog" targets="0">
+                <thead class="bg-secondary">
+                <tr class="text-primary small">
+                    <th scope="col"
+                        class="text-center">
+                    </th>
+                    <th scope="col"
+                        class="text-center">
+                        {{__('classifiers.nomenclature.products.full_name')}}
+                    </th>
+                    <th scope="col"
+                        class="text-center">
+                        {{__('documents.invoices_for_payment.data.quantity')}}
+                    </th>
+                    <th scope="col"
+                        class="text-center">
+                        {{__('classifiers.nomenclature.products.product_catalog.place_of_business_id')}}
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="text-primary">
+                @foreach($production as $key => $product)
+                    <tr class="small">
+                        <td class="align-middle text-center">
+                            <input type="checkbox"
+                                   name="add_invoice_for_payment_products[{{$key}}][product_catalog_id]"
+                                   value="{{$product->id}}"
+                                   class="form-check-input
+                                @error('invoice_for_payment_products.' . $key . '.product_catalog_id')
+                                is-invalid
+                                @enderror"
+                                   @if(
+                                   (int)old('add_invoice_for_payment_products.' . $key . '.product_catalog_id')
+                                   ===
+                                   (int)$product->id
+                                   )
+                                       checked
+                                @endif>
+                        </td>
+                        <td class="align-middle">
+                            {{$product->endProduct->full_name}}
+                            @if(
+                            $errors->has('invoice_for_payment_products.' . $key . '.price')
+                            || $errors->has('invoice_for_payment_products.' . $key . '.nds')
+                           )
+                                <br><span class="text-danger fw-bolder">
+                                ({{__('documents.invoices_for_payment.data.fails.price_list')}})
+                            </span>
+                            @endif
+                        </td>
+                        <td class="align-middle text-center">
+                            <input name="add_invoice_for_payment_products[{{$key}}][quantity]"
+                                   class="form-control form-control-sm text-primary p-1
+                                    @error('invoice_for_payment_products.' . $key . '.quantity') is-invalid @enderror"
+                                   value="{{old('add_invoice_for_payment_products.' . $key . '.quantity')}}">
+                        </td>
+                        <td class="align-middle">
+                            {{$product->organization->name}} - {{$product->placeOfBusiness->address}}
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </x-tables.main>
         </form>
     </x-slot>
     <x-slot name="footer">
-        <x-buttons.save formId="form_add_invoice_for_payment_product"/>
+        <x-buttons.save formId="form_add_invoice_for_payment_products"/>
     </x-slot>
 </x-forms.collapse.creation>
 <x-forms.collapse.card

@@ -5,6 +5,7 @@ namespace App\Http\Requests\Documents\InvoicesForPayment\Data\Products;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
@@ -30,17 +31,14 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        $quantity = ProductCatalog::find(
-            (int)$this->input(
-                'invoice_for_payment_product.product_catalog_id'
-            )
-        )
-            ->getQuantityInAggregationType('sscc01');
-
-        $prefix = 'invoice_for_payment_product.';
+        $prefix = 'invoice_for_payment_products.*.';
 
         return [
-            $prefix . 'invoice_for_payment_id' => [
+            'invoice_for_payment_id' => [
+                'required',
+                'numeric',
+            ],
+            'organization_id' => [
                 'required',
                 'numeric',
             ],
@@ -52,8 +50,24 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
                 'required',
                 'numeric',
                 'min:1',
-                static function ($attribute, $value, $fail) use ($quantity) {
-                    if ($value % $quantity !== 0) {
+                function ($attribute, $value, $fail) {
+                    /**
+                     * Нужный индекс массива.
+                     */
+                    $key = (int)substr($attribute, 29, 2);
+
+                    /**
+                     * Кол-во продукта в упаковке ssc01.
+                     */
+                    $quantity = ProductCatalog::find(
+                        (int)$this->input('invoice_for_payment_products.' . $key . '.product_catalog_id')
+                    )
+                        ->getQuantityInAggregationType('sscc01');
+
+                    /**
+                     * Если кол-во в счете не кратно количесву в sscc01.
+                     */
+                    if ((int)$value % $quantity !== 0) {
                         $fail(
                             __(
                                 'documents.invoices_for_payment.data.fails.quantity',
@@ -102,12 +116,23 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
                     'fail',
                     __('documents.invoices_for_payment.data.actions.create.fail')
                 );
-                $validator->errors()->add(
-                    'alert-errors',
-                    __('documents.invoices_for_payment.data.fails.price_list')
-                );
             }
         });
+    }
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @return void
+     */
+    protected function passedValidation(): void
+    {
+        $validated = $this->validated();
+        $validated['invoice_for_payment_products'] = $this->input('invoice_for_payment_products');
+
+        $this->merge([
+            'mergedValidated' => $validated
+        ]);
     }
 
     /**
@@ -115,23 +140,36 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        $productCatalogRepository = new ProductCatalogRepository();
+        $products = [];
 
-        $priceList = $productCatalogRepository->getPriceList(
-            (int)$this->input('organization_id'),
-            (int)$this->input('invoice_for_payment_product.product_catalog_id'),
-            (int)$this->input('invoice_for_payment_product.quantity'),
-        );
+        /**
+         * Добавляем в валидацию только выбранную продукцию.
+         */
+        foreach ($this->input('add_invoice_for_payment_products') as $key => $product) {
+            if (count($product) >= 2) {
+                $products[$key] = $product;
+            }
+        }
+
+        /**
+         * Цена и НДС для выбранной продукции.
+         */
+        foreach ($products as $key => $product) {
+            $productCatalogRepository = new ProductCatalogRepository();
+
+            $priceList = $productCatalogRepository->getPriceList(
+                (int)$this->input('organization_id'),
+                (int)$product['product_catalog_id'],
+                (int)$product['quantity'],
+            );
+
+            $products[$key]['price'] = (string)$priceList->get('price');
+            $products[$key]['nds'] = (string)$priceList->get('nds');
+        }
 
         $this->merge(
             [
-                'invoice_for_payment_product' => array_merge(
-                    $this->input('invoice_for_payment_product'),
-                    [
-                        'price' => (string)$priceList->get('price'),
-                        'nds' => (string)$priceList->get('nds'),
-                    ]
-                ),
+                'invoice_for_payment_products' => $products,
             ]
         );
     }
