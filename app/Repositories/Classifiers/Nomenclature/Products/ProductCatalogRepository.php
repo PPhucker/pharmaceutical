@@ -149,8 +149,7 @@ class ProductCatalogRepository extends CoreRepository
             ]
         )
             ->get()
-            ->sortBy('endProduct.full_name')
-            ->sortBy('organization.name');
+            ->sortBy('endProduct.full_name');
     }
 
     /**

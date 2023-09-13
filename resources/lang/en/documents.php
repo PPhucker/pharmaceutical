@@ -52,7 +52,7 @@ return [
             ],
             'actions' => [
                 'create' => [
-                    'success' => 'Product :name added to invoice successfully',
+                    'success' => 'Products successfully added to invoice',
                     'fail' => 'Failed to add product to invoice',
                 ],
                 'update' => [
