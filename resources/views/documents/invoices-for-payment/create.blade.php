@@ -26,6 +26,26 @@
                 </div>
             </div>
             <div class="row mb-2">
+                <label for="organization_id"
+                       class="col-md-4 col-form-label text-md-end">
+                    {{__('documents.invoices_for_payment.organization_id')}}
+                </label>
+                <div class="col-md-6">
+                    <select class="form-control form-control-sm text-primary
+                            @error('organization_id') is-invalid @enderror"
+                            id="organization_id"
+                            name="organization_id">
+                        <option selected disabled></option>
+                        @foreach($organizations as $organization)
+                            <option value="{{$organization->id}}">
+                                {{$organization->legalForm->abbreviation}} {{$organization->name}}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-forms.span-error name="organization_id"/>
+                </div>
+            </div>
+            <div class="row mb-2">
                 <label for="number"
                        class="col-md-4 col-form-label text-md-end">
                     {{__('documents.invoices_for_payment.number')}}
@@ -36,7 +56,7 @@
                            name="number"
                            class="form-control form-control-sm text-primary
                            @error('number') is-invalid @enderror"
-                           value="{{$number}}"
+                           value="{{old('number')}}"
                            required>
                     <x-forms.span-error name="number"/>
                 </div>
@@ -55,26 +75,6 @@
                            value="{{$currentDate}}"
                            required>
                     <x-forms.span-error name="date"/>
-                </div>
-            </div>
-            <div class="row mb-2">
-                <label for="organization_id"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('documents.invoices_for_payment.organization_id')}}
-                </label>
-                <div class="col-md-6">
-                    <select class="form-control form-control-sm text-primary
-                            @error('organization_id') is-invalid @enderror"
-                            id="organization_id"
-                            name="organization_id">
-                        <option selected disabled></option>
-                        @foreach($organizations as $organization)
-                            <option value="{{$organization->id}}">
-                                {{$organization->legalForm->abbreviation}} {{$organization->name}}
-                            </option>
-                        @endforeach
-                    </select>
-                    <x-forms.span-error name="organization_id"/>
                 </div>
             </div>
             <div class="row mb-2">
@@ -202,7 +202,12 @@
                 const response = await fetch(url);
 
                 if (response.ok) {
-                    const data = (await response.json()).organization;
+                    const json = (await response.json());
+                    const number = json.number;
+                    const data = json.organization;
+
+                    document.getElementById('number').value = number + 1;
+
                     const selectPlaces = document.getElementById('organization_place_id');
 
                     selectPlaces.innerHTML = '';

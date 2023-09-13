@@ -1,4 +1,4 @@
-<div class="card mb-2">
+<div class="card print mb-2">
     <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
         <li class="list-inline-item">
             <a class="btn-light btn-link"
@@ -55,9 +55,6 @@
     <div id="printing-document" class="show">
         <div class="show card-body print p-0">
             {{$slot}}
-        </div>
-        <div class="card-footer bg-secondary border-0 sticky-top">
-
         </div>
     </div>
 </div>

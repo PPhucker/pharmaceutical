@@ -1,5 +1,5 @@
-<div id="div_add_material"
-     class="@if ($errors->has('material.*')) collapsed @else collapse @endif mb-2 sticky-top position-sticky">
+@extends('layouts.app')
+@section('content')
     <x-forms.main title="{{__('form.titles.add')}}"
                   withAlert="{{false}}">
         <form id="form_add_material"
@@ -13,16 +13,16 @@
                 </label>
                 <div class="col-md">
                     <select
-                        name="material[type_id]"
-                        class="form-control form-control-sm
-                            @error('material.type_id') is-invalid @enderror">
+                        name="type_id"
+                        class="form-control form-control-sm text-primary
+                            @error('type_id') is-invalid @enderror">
                         @foreach($typesOfMaterials as $type)
                             <option value="{{$type->id}}">
                                 {{$type->name}}
                             </option>
                         @endforeach
                     </select>
-                    @error('material.type_id')
+                    @error('type_id')
                     <span class="invalid-feedback"
                           role="alert">
                             <strong>
@@ -39,16 +39,16 @@
                 </label>
                 <div class="col-md">
                     <select
-                        name="material[okei_code]"
-                        class="form-control form-control-sm
-                            @error('material.okei_code') is-invalid @enderror">
-                        @foreach($okei as $item)
+                        name="okei_code"
+                        class="form-control form-control-sm text-primary
+                            @error('okei_code') is-invalid @enderror">
+                        @foreach($okeiClassifier as $item)
                             <option value="{{$item->code}}">
                                 {{$item->symbol}}
                             </option>
                         @endforeach
                     </select>
-                    @error('material.okei_code')
+                    @error('okei_code')
                     <span class="invalid-feedback"
                           role="alert">
                             <strong>
@@ -66,12 +66,57 @@
                 <div class="col-md">
                     <input id="name"
                            type="text"
-                           class="form-control form-control-sm
-                               @error('material.name') is-invalid @enderror"
-                           name="material[name]"
-                           value="{{ old('material[name]') }}"
+                           class="form-control form-control-sm text-primary
+                               @error('name') is-invalid @enderror"
+                           name="name"
+                           value="{{ old('name') }}"
                            required>
-                    @error('material.name')
+                    @error('name')
+                    <span class="invalid-feedback"
+                          role="alert">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="price"
+                       class="col-md-2 col-form-label text-md-end">
+                    {{__('classifiers.nomenclature.materials.price')}}
+                </label>
+                <div class="col-md">
+                    <input id="price"
+                           type="text"
+                           class="form-control form-control-sm text-primary
+                               @error('price') is-invalid @enderror"
+                           name="price"
+                           value="{{ old('price') }}">
+                    @error('price')
+                    <span class="invalid-feedback"
+                          role="alert">
+                            <strong>
+                                {{ $message }}
+                            </strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
+            <div class="row mb-2">
+                <label for="nds"
+                       class="col-md-2 col-form-label text-md-end">
+                    {{__('classifiers.nomenclature.materials.nds')}}
+                </label>
+                <div class="col-md">
+                    <input id="name"
+                           type="text"
+                           class="form-control form-control-sm text-primary
+                               @error('nds') is-invalid @enderror"
+                           name="nds"
+                           value="{{ old('nds') }}"
+                           required>
+                    @error('nds')
                     <span class="invalid-feedback"
                           role="alert">
                             <strong>
@@ -86,4 +131,4 @@
             </x-slot>
         </form>
     </x-forms.main>
-</div>
+@endsection

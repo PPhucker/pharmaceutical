@@ -24,26 +24,25 @@ class InvoiceForPaymentProductController extends CoreController
      */
     public function store(StoreInvoiceForPaymentProductRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['invoice_for_payment_product'];
+        $validated = $request->mergedValidated;
 
-        $invoiceForPaymentProduct = InvoiceForPaymentProduct::create(
-            [
-                'user_id' => Auth::user()->id,
-                'invoice_for_payment_id' => (int)$validated['invoice_for_payment_id'],
-                'product_catalog_id' => (int)$validated['product_catalog_id'],
-                'quantity' => (int)$validated['quantity'],
-                'price' => (float)$validated['price'],
-                'nds' => (float)$validated['nds'],
-            ]
-        );
+        foreach ($validated['invoice_for_payment_products'] as $product) {
+            InvoiceForPaymentProduct::create(
+                [
+                    'user_id' => Auth::user()->id,
+                    'invoice_for_payment_id' => (int)$validated['invoice_for_payment_id'],
+                    'product_catalog_id' => (int)$product['product_catalog_id'],
+                    'quantity' => (int)$product['quantity'],
+                    'price' => (float)$product['price'],
+                    'nds' => (float)$product['nds'],
+                ]
+            );
+        }
 
         return back()
             ->with(
                 'success',
-                __(
-                    'documents.invoices_for_payment.data.actions.create.success',
-                    ['name' => $invoiceForPaymentProduct->productCatalog->endProduct->short_name]
-                )
+                __('documents.invoices_for_payment.data.actions.create.success')
             );
     }
 
@@ -88,7 +87,7 @@ class InvoiceForPaymentProductController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(InvoiceForPaymentProduct $invoicesForPaymentProduct)
+    public function destroy(InvoiceForPaymentProduct $invoicesForPaymentProduct): RedirectResponse
     {
         $invoicesForPaymentProduct->delete();
 
@@ -109,7 +108,7 @@ class InvoiceForPaymentProductController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(InvoiceForPaymentProduct $invoicesForPaymentProduct)
+    public function restore(InvoiceForPaymentProduct $invoicesForPaymentProduct): RedirectResponse
     {
         $invoicesForPaymentProduct->restore();
 
@@ -126,7 +125,7 @@ class InvoiceForPaymentProductController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(InvoiceForPaymentProduct::class, 'invoices_for_payment_product');
     }
@@ -134,7 +133,7 @@ class InvoiceForPaymentProductController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return InvoiceForPaymentProductRepository::class;
     }

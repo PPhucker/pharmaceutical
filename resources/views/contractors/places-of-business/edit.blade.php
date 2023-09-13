@@ -11,12 +11,12 @@
             </x-slot>
             <thead class="bg-secondary">
             <tr class="text-primary">
-                @digital_communication
+                @roles(['digital_communication'])
                 <th scope="col"
                     class="text-center">
                     {{__('contractors.places_of_business.identifier')}}
                 </th>
-                @end_digital_communication
+                @end_roles
                 <th scope="col"
                     class="text-center border-start">
                     {{__('contractors.places_of_business.index')}}
@@ -41,8 +41,10 @@
                     <input type="hidden"
                            name="places_of_business[{{$key}}][contractor_id]"
                            value="{{$place->contractor_id}}">
-
-                    @digital_communication
+                    <input type="hidden"
+                           name="places_of_business[{{$key}}][identifier]"
+                           value="{{$place->identifier}}">
+                    @roles(['digital_communication'])
                     <td class="border-start">
                         <span class="d-none">
                             {{$place->identifier}}
@@ -54,7 +56,7 @@
                                value="{{$place->identifier}}">
                         <x-forms.span-error name="places_of_business.{{$key}}.identifier"/>
                     </td>
-                    @end_digital_communication
+                    @end_roles
                     <td>
                         <span class="d-none">
                             {{$place->index}}

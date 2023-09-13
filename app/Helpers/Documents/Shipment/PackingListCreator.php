@@ -4,12 +4,22 @@ namespace App\Helpers\Documents\Shipment;
 
 use App\Helpers\Documents\Creator;
 
+/**
+ * Класс для формирования печати товарной накладной.
+ */
 class PackingListCreator extends Creator
 {
     /**
-     * @return object
+     * Кол-во продукции на каждой странице документа.
      */
-    public function getData()
+    protected $countProductsOnPages = [1, 4, 10];
+
+    /**
+     * Все данные для печати.
+     *
+     * @return object|null
+     */
+    public function getData(): ?object
     {
         if (!(count($this->document->data))) {
             return null;
@@ -18,6 +28,8 @@ class PackingListCreator extends Creator
         $invoiceForPayment = $this->document->production->first()->invoiceForPayment;
 
         $productsOnPage = $this->getProductionOnPage();
+
+        /*dd($productsOnPage->pages);*/
 
         return (object)[
             'organization' => (object)[
@@ -49,7 +61,7 @@ class PackingListCreator extends Creator
     /**
      * @return string
      */
-    protected function getBuyerField()
+    protected function getBuyerField(): string
     {
         $contractor = $this->document->contractor;
 

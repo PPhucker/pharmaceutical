@@ -1,21 +1,16 @@
 @media print {
-    nav, .card-header, .card-footer {
+    .card .card-body .card :not(.print *), nav, .card-header, .card-footer {
+        content-visibility: hidden;
         visibility: hidden;
         display: none;
-        content-visibility: hidden;
+    }
+
+    .card-body {
         margin: 0;
         padding: 0;
     }
 
-    .card .card .card-body :not(.print *) {
-        content-visibility: hidden;
-        visibility: hidden;
-        display: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    .card, .justify-content-center {
+    .justify-content-center .card{
         visibility: hidden;
     }
 }
