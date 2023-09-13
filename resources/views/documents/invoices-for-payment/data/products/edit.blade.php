@@ -142,7 +142,7 @@
                                    @error('invoice_for_payment_products.' . $key. '.quantity') is-invalid @enderror"
                                    value="{{$invoiceProduct->quantity}}"
                                    required>
-                            <span class="input-group-text col-2">
+                            <span class="input-group-text">
                                     {{$invoiceProduct->productCatalog->endProduct->okei->symbol}}
                                 </span>
                             <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.quantity'}}"/>
