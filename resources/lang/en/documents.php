@@ -33,6 +33,10 @@ return [
             'restore' => [
                 'success' => 'Invoice for payment №:number successfully restored'
             ],
+            'copy' => [
+                'success' => 'The invoice for payment has been successfully copied',
+                'fail' => 'Failed to copy the invoice for payment',
+            ],
         ],
         'buttons' => [
             'create_based_on' => 'Create based on',
