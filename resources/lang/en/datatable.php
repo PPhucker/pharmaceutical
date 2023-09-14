@@ -17,6 +17,7 @@ return [
         'hide' => 'Hide',
         'restore' => 'Retore',
         'save_as' => 'Save As',
+        'copy' => 'Copy',
     ],
     'filter' => 'Filter',
     'interval' => 'Interval',

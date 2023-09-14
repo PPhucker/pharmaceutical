@@ -87,6 +87,11 @@
                         class="text-center">
                         {{__('documents.invoices_for_payment.contractor_place_id')}}
                     </th>
+                    <th>
+                        <span class="d-none">{
+                            {__('datatable.buttons.copy')}}
+                        </span>
+                    </th>
                     <x-tables.columns.thead.edit/>
                     <x-tables.columns.thead.delete/>
                 </tr>
@@ -120,6 +125,12 @@
                         </td>
                         <td class="align-middle text-wrap">
                             {{$invoice->contractorPlaceOfBusiness->address}}
+                        </td>
+                        <td class="text-center align-middle">
+                            <x-buttons.copy
+                                route="{{route('invoices_for_payment.copy', ['invoice_for_payment' => $invoice->id])}}"
+                                itemId="{{$invoice->id}}"
+                                disabled="{{$invoice->trashed()}}"/>
                         </td>
                         <td class="text-center align-middle">
                             <x-buttons.edit

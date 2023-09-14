@@ -95,7 +95,7 @@
                 <x-tables.filters.trashed-filter tableId="table_invoice_for_payment_production"/>
             </x-slot>
             <thead class="bg-secondary">
-            <tr class="text-primary">
+            <tr class="text-primary small">
                 <th scope="col"
                     class="text-center align-middle">
                     {{__('documents.invoices_for_payment.data.product_catalog_id')}}
@@ -115,7 +115,7 @@
                 <x-tables.columns.thead.delete/>
             </tr>
             </thead>
-            <tbody class="text-primary">
+            <tbody class="text-primary small">
             @foreach($invoiceForPayment->production as $key => $invoiceProduct)
                 <tr @if($invoiceProduct->trashed()) class="d-none trashed" @endif>
                     <input type="hidden"
@@ -124,7 +124,7 @@
                     <input type="hidden"
                            name="invoice_for_payment_products[{{$key}}][product_catalog_id]"
                            value="{{$invoiceProduct->productCatalog->id}}">
-                    <td class="align-middle border-start">
+                    <td class="align-middle border-start text-wrap">
                         {{$invoiceProduct->productCatalog->endProduct->full_name}} -
                         <small>
                             {{$invoiceProduct->productCatalog->organization->name}},
@@ -142,7 +142,7 @@
                                    @error('invoice_for_payment_products.' . $key. '.quantity') is-invalid @enderror"
                                    value="{{$invoiceProduct->quantity}}"
                                    required>
-                            <span class="input-group-text col-2">
+                            <span class="input-group-text">
                                     {{$invoiceProduct->productCatalog->endProduct->okei->symbol}}
                                 </span>
                             <x-forms.span-error name="{{'invoice_for_payment_products.' . $key. '.quantity'}}"/>
