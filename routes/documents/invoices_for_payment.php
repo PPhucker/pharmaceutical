@@ -12,4 +12,6 @@ Route::controller(Controller::class)->group(static function () {
         ->withTrashed();
     Route::get('invoices_for_payment/{contractor}/create', 'create')
         ->name('invoices_for_payment.create');
+    Route::post('/invoices_for_payment/{invoice_for_payment}/copy', 'copy')
+        ->name('invoices_for_payment.copy');
 });

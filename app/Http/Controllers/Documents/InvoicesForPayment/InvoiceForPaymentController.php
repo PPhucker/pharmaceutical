@@ -6,11 +6,14 @@ use App\Helpers\Date;
 use App\Helpers\Documents\InvoiceForPaymentCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
+use App\Http\Requests\Documents\InvoicesForPayment\CopyInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\IndexInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\StoreInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\UpdateInvoiceForPaymentRequest;
 use App\Models\Contractors\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
@@ -244,6 +247,77 @@ class InvoiceForPaymentController extends CoreController
                     'documents.invoices_for_payment.actions.update.success',
                     ['number' => $invoiceForPayment->number]
                 )
+            );
+    }
+
+    /**
+     * Копирование счета на оплату.
+     *
+     * @param InvoiceForPayment $invoiceForPayment
+     *
+     * @return RedirectResponse
+     */
+    public function copy(InvoiceForPayment $invoiceForPayment): RedirectResponse
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        $number = (new InvoiceForPaymentRepository())
+                ->getLastNumber($invoiceForPayment->organization_id) + 1;
+
+        $userId = Auth::user()->id;
+
+        $copiedInvoiceForPayment = InvoiceForPayment::create(
+            [
+                'user_id' => $userId,
+                'organization_id' => $invoiceForPayment->organization_id,
+                'organization_place_id' => $invoiceForPayment->organization_place_id,
+                'organization_bank_id' => $invoiceForPayment->organization_bank_id,
+                'contractor_id' => $invoiceForPayment->contractor_id,
+                'contractor_place_id' => $invoiceForPayment->contractor_place_id,
+                'contractor_bank_id' => $invoiceForPayment->contractor_bank_id,
+                'number' => $number,
+                'date' => $currentDate,
+                'director' => $invoiceForPayment->director,
+                'bookkeeper' => $invoiceForPayment->bookkeeper,
+                'filling_type' => $invoiceForPayment->filling_type,
+            ]
+        );
+
+        switch ($invoiceForPayment->filling_type) {
+            case 'materials':
+                foreach ($invoiceForPayment->production as $material) {
+                    InvoiceForPaymentMaterial::create(
+                        [
+                            'user_id' => $userId,
+                            'invoice_for_payment_id' => $copiedInvoiceForPayment->id,
+                            'material_id' => $material->id,
+                            'quantity' => $material->quantity,
+                            'price' => $material->price,
+                            'nds' => $material->nds,
+                        ]
+                    );
+                }
+                break;
+            default:
+                foreach ($invoiceForPayment->production as $product) {
+                    InvoiceForPaymentProduct::create(
+                        [
+                            'user_id' => $userId,
+                            'invoice_for_payment_id' => $copiedInvoiceForPayment->id,
+                            'product_catalog_id' => $product->product_catalog_id,
+                            'quantity' => $product->quantity,
+                            'price' => $product->price,
+                            'nds' => $product->nds,
+                        ]
+                    );
+                }
+                break;
+        }
+
+        return back()
+            ->with(
+                'success',
+                __('documents.invoices_for_payment.actions.copy.success')
             );
     }
 
