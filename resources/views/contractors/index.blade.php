@@ -1,3 +1,4 @@
+@php use App\Models\Admin\Organizations\Organization; @endphp
 @extends('layouts.app')
 @section('content')
     <x-forms.main title="{{__('contractors.contractors')}}">
@@ -6,35 +7,55 @@
             <x-slot name="filter">
                 <x-tables.filters.trashed-filter tableId="table_contractors"/>
             </x-slot>
-            <thead class="bg-secondary">
+            <thead class="bg-secondary text-uppercase">
             <tr class="text-primary">
                 <th scope="col"
-                    class="text-center">
+                    class="text-center align-middle"
+                    rowspan="2">
                     {{__('ID')}}
                 </th>
                 <th scope="col"
-                    class="text-center">
+                    class="text-center align-middle"
+                    rowspan="2">
                     {{__('contractors.name')}}
                 </th>
                 <th scope="col"
-                    class="text-center">
+                    class="text-center align-middle"
+                    rowspan="2">
                     {{__('contractors.comment')}}
                 </th>
                 <th scope="col"
-                    class="text-center">
+                    class="text-center align-middle"
+                    colspan="{{$organizations->count()}}">
+                    {{__('contractors.contracts.contracts')}}
+                </th>
+                <th scope="col"
+                    class="text-center align-middle"
+                    rowspan="2">
                     {{__('contractors.inn')}}
                 </th>
-                <th>
+                <th rowspan="2">
                     <span class="d-none">
                         {{__('documents.invoices_for_payment.buttons.create')}}
                     </span>
                 </th>
-                <th>
+                <th rowspan="2">
                     <span class="d-none">
                         {{__('datatable.buttons.edit')}}
                     </span>
                 </th>
-                <x-tables.columns.thead.delete/>
+                <th rowspan="2">
+                    <span class="d-none">
+                        {{__('datatable.buttons.delete')}}
+                    </span>
+                </th>
+            </tr>
+            <tr>
+                @foreach($organizations as $organization)
+                    <th class="text-center text-primary">
+                        {{trim($organization->name, '"')}}
+                    </th>
+                @endforeach
             </tr>
             </thead>
             <tbody class="text-primary">
@@ -49,6 +70,17 @@
                     <td class="align-middle">
                         {{$contractor->comment}}
                     </td>
+                    @foreach($organizations as $organization)
+                        <td class="align-middle text-center">
+                            @if($contractor->hasContract($organization->id))
+                                <span class="d-none">{{true}}</span>
+                                <i class="bi bi-check-circle text-success fs-5"></i>
+                            @else
+                                <span class="d-none">{{false}}</span>
+                                <i class="bi bi-exclamation-circle text-danger fs-5"></i>
+                            @endif
+                        </td>
+                    @endforeach
                     <td class="align-middle text-center">
                         {{$contractor->INN}}
                     </td>
