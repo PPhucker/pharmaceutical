@@ -135,4 +135,20 @@ class Contractor extends Model
         return $this->hasMany(Contract::class, 'contractor_id')
             ->withTrashed();
     }
+
+    /**
+     * @param int $organizationId
+     *
+     * @return bool
+     */
+    public function hasContract(int $organizationId): bool
+    {
+        foreach ($this->contracts as $contract) {
+            if ($contract->is_valid && $contract->organization_id === $organizationId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

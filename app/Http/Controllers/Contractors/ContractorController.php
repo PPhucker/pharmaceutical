@@ -45,10 +45,11 @@ class ContractorController extends CoreController
     public function index(): View
     {
         $contractors = $this->repository->getAll();
+        $organizations = (new OrganizationRepository())->getAll();
 
         return view(
             'contractors.index',
-            compact('contractors')
+            compact('contractors', 'organizations')
         );
     }
 
