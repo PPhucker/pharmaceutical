@@ -37,6 +37,22 @@ return [
         ],
     ],
 
+    'regions' => [
+        'regions' => 'Regions',
+        'region' => 'Region',
+        'name' => 'Name',
+        'zone' => 'Zone',
+
+        'actions' => [
+            'update' => [
+                'success' => 'Regions updated successfully'
+            ],
+            'create' => [
+                'success' => 'Region created successfully'
+            ]
+        ],
+    ],
+
     'nomenclature' => [
         'nomenclature' => 'Nomenclature',
         'products' => [

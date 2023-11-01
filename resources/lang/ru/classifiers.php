@@ -37,6 +37,22 @@ return [
         ],
     ],
 
+    'regions' => [
+        'regions' => 'Регионы',
+        'region' => 'Регион',
+        'name' => 'Название региона',
+        'zone' => 'Зона',
+
+        'actions' => [
+            'update' => [
+                'success' => 'Регионы успешно обновлены'
+            ],
+            'create' => [
+                'success' => 'Регион успешно добавлен'
+            ]
+        ],
+    ],
+
     'nomenclature' => [
         'nomenclature' => 'Номенклатура',
         'products' => [
