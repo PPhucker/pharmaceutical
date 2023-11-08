@@ -10,24 +10,11 @@ use App\Repositories\Contractors\PlaceOfBusinessRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Контроллер мест осуществления деятельности контрагнетов.
+ */
 class PlaceOfBusinessController extends CoreController
 {
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(PlaceOfBusiness::class, 'places_of_business');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return PlaceOfBusinessRepository::class;
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -35,18 +22,16 @@ class PlaceOfBusinessController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StorePlaceOfBusinessRequest $request)
+    public function store(StorePlaceOfBusinessRequest $request): RedirectResponse
     {
         $validated = $request->validated()['place_of_business'];
-
-        $registered = isset($validated['registered']) ? 1 : 0;
 
         $placeOfBusiness = PlaceOfBusiness::create(
             [
                 'user_id' => Auth::user()->id,
                 'contractor_id' => (int)$validated['contractor_id'],
                 'identifier' => $validated['identifier'],
-                'registered' => $registered,
+                'registered' => isset($validated['registered']) ? 1 : 0,
                 'index' => $validated['index'],
                 'address' => $validated['address']
             ]
@@ -66,30 +51,31 @@ class PlaceOfBusinessController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdatePlaceOfBusinessRequest $request
-     * @param PlaceOfBusiness|null         $places_of_business
+     * @param PlaceOfBusiness|null         $placesOfBusiness
      *
      * @return RedirectResponse
      */
     public function update(
         UpdatePlaceOfBusinessRequest $request,
-        PlaceOfBusiness $places_of_business = null
-    ) {
+        PlaceOfBusiness $placesOfBusiness = null
+    ): RedirectResponse {
         $validated = $request->validated();
 
-        foreach ($validated['places_of_business'] as $item) {
-            $placeOfBusiness = PlaceOfBusiness::withTrashed()->find((int)$item['id']);
+        foreach ($validated['places_of_business'] as $validatedPlace) {
+            $placeOfBusinessId = (int)$validatedPlace['id'];
 
-            $registered = (int)$validated['registered'] === $placeOfBusiness->id;
-
-            $placeOfBusiness->fill(
-                [
-                    'user_id' => Auth::user()->id,
-                    'identifier' => $item['identifier'],
-                    'registered' => $registered,
-                    'index' => $item['index'],
-                    'address' => $item['address']
-                ]
-            )
+            PlaceOfBusiness::withTrashed()
+                ->find($placeOfBusinessId)
+                ->fill(
+                    [
+                        'user_id' => Auth::user()->id,
+                        'identifier' => $validatedPlace['identifier'],
+                        'registered' => (int)$validated['registered'] === $placeOfBusinessId,
+                        'index' => $validatedPlace['index'],
+                        'region_id' => $validatedPlace['region_id'] ?? null,
+                        'address' => $validatedPlace['address'],
+                    ]
+                )
                 ->save();
         }
 
@@ -107,7 +93,7 @@ class PlaceOfBusinessController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(PlaceOfBusiness $places_of_business)
+    public function destroy(PlaceOfBusiness $places_of_business): RedirectResponse
     {
         $places_of_business->delete();
 
@@ -128,7 +114,7 @@ class PlaceOfBusinessController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(PlaceOfBusiness $places_of_business)
+    public function restore(PlaceOfBusiness $places_of_business): RedirectResponse
     {
         $places_of_business->restore();
 
@@ -140,5 +126,21 @@ class PlaceOfBusinessController extends CoreController
                     ['name' => $places_of_business->address]
                 )
             );
+    }
+
+    /**
+     * @return void
+     */
+    protected function authorizeActions(): void
+    {
+        $this->authorizeResource(PlaceOfBusiness::class, 'places_of_business');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepository(): string
+    {
+        return PlaceOfBusinessRepository::class;
     }
 }

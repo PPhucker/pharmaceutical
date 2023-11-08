@@ -22,6 +22,10 @@
                     {{__('contractors.places_of_business.index')}}
                 </th>
                 <th scope="col"
+                    class="text-center">
+                    {{__('classifiers.regions.region')}}
+                </th>
+                <th scope="col"
                     class="text-center col-md-6">
                     {{__('contractors.places_of_business.address')}}
                 </th>
@@ -68,15 +72,36 @@
                                value="{{$place->index}}">
                         <x-forms.span-error name="places_of_business.{{$key}}.index"/>
                     </td>
+                    <td>
+                        <span class="d-none">
+                            {{$place->region->name ?? ''}}
+                        </span>
+                        <select type="text"
+                                name="places_of_business[{{$key}}][region_id]"
+                                class="form-control form-control-sm text-primary mt-1 mb-1
+                                   @error('places_of_business.' . $key . '.region_id') is-invalid @enderror">
+                            <option value="{{null}}">
+                                {{'-'}}
+                            </option>
+                            @foreach($regions as $region)
+                                <option value="{{$region->id}}"
+                                        @if(($place->region->id ?? null) === $region->id) selected @endif>
+                                    {{$region->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-forms.span-error name="places_of_business.{{$key}}.region_id"/>
+                    </td>
                     <td class="col-md-6">
                         <span class="d-none">
                             {{$place->address}}
                         </span>
-                        <input type="text"
-                               name="places_of_business[{{$key}}][address]"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('places_of_business.' . $key . '.address') is-invalid @enderror"
-                               value="{{$place->address}}">
+                        <textarea type="text"
+                                  rows="1"
+                                  name="places_of_business[{{$key}}][address]"
+                                  class="form-control form-control-sm text-primary mt-1 mb-1
+                                   @error('places_of_business.' . $key . '.address') is-invalid @enderror">{{$place->address}}
+                        </textarea>
                         <x-forms.span-error name="places_of_business.{{$key}}.address"/>
                     </td>
                     <td class="align-middle text-center">

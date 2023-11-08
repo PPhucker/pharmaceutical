@@ -9,6 +9,7 @@ use App\Models\Contractors\Contractor;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Classifiers\BankRepository;
 use App\Repositories\Classifiers\LegalFormRepository;
+use App\Repositories\Classifiers\RegionRepository;
 use App\Repositories\Contractors\ContractorRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -22,22 +23,6 @@ use Psr\Container\NotFoundExceptionInterface;
 class ContractorController extends CoreController
 {
     /**
-     * @return void
-     */
-    protected function authorizeActions(): void
-    {
-        $this->authorizeResource(Contractor::class, 'contractor');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository(): string
-    {
-        return ContractorRepository::class;
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return View
@@ -50,23 +35,6 @@ class ContractorController extends CoreController
         return view(
             'contractors.index',
             compact('contractors', 'organizations')
-        );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function create(): View
-    {
-        $legalForms = (new LegalFormRepository())->getAll();
-
-        return view(
-            'contractors.create',
-            compact('legalForms')
         );
     }
 
@@ -108,6 +76,23 @@ class ContractorController extends CoreController
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return View
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function create(): View
+    {
+        $legalForms = (new LegalFormRepository())->getAll();
+
+        return view(
+            'contractors.create',
+            compact('legalForms')
+        );
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param Contractor $contractor
@@ -119,9 +104,11 @@ class ContractorController extends CoreController
     public function edit(Contractor $contractor): View
     {
         $contractor = $this->repository->getById($contractor->id);
+
         $legalForms = (new LegalFormRepository())->getAll();
         $banks = (new BankRepository())->getAll();
         $organizations = (new OrganizationRepository())->getAll();
+        $regions = (new RegionRepository())->getAll();
 
         return view(
             'contractors.edit',
@@ -130,6 +117,7 @@ class ContractorController extends CoreController
                 'legalForms',
                 'banks',
                 'organizations',
+                'regions',
             )
         );
     }
@@ -207,5 +195,21 @@ class ContractorController extends CoreController
                 'success',
                 __($key, ['name' => "$contractor->legal_form_type $contractor->name"])
             );
+    }
+
+    /**
+     * @return void
+     */
+    protected function authorizeActions(): void
+    {
+        $this->authorizeResource(Contractor::class, 'contractor');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRepository(): string
+    {
+        return ContractorRepository::class;
     }
 }

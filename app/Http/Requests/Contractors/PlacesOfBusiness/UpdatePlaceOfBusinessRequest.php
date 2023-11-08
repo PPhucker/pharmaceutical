@@ -6,6 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
+/**
+ * Валидация обновления мест осуществления деятельности контрагента.
+ */
 class UpdatePlaceOfBusinessRequest extends FormRequest
 {
     /**
@@ -13,7 +16,7 @@ class UpdatePlaceOfBusinessRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +26,7 @@ class UpdatePlaceOfBusinessRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'places_of_business.*.';
 
@@ -50,6 +53,10 @@ class UpdatePlaceOfBusinessRequest extends FormRequest
                 'numeric',
                 'digits:6'
             ],
+            $prefix . 'region_id' => [
+                'nullable',
+                'numeric',
+            ],
             $prefix . 'address' => [
                 'required',
                 'string'
@@ -60,7 +67,12 @@ class UpdatePlaceOfBusinessRequest extends FormRequest
         ];
     }
 
-    public function withValidator(Validator $validator)
+    /**
+     * @param Validator $validator
+     *
+     * @return void
+     */
+    public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
