@@ -56,6 +56,9 @@ class ProductCatalogRepository extends CoreRepository
                         ->orderBy('organization_id')
                         ->get();
                 },
+                'regionalAllowances' => static function ($query) {
+                    $query->orderBy('region_id');
+                }
             ]
         );
 
