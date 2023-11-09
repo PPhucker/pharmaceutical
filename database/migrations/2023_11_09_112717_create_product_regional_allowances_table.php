@@ -45,6 +45,7 @@ class CreateProductRegionalAllowancesTable extends Migration
             $table->float('allowance')
                 ->comment('Размер надбавки');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
