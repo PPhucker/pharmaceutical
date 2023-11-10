@@ -90,7 +90,7 @@ class ProductRegionalAllowanceController extends CoreController
         return back()
             ->with(
                 'success',
-                __('classifiers.nomenclature.products.regional_allowances.action.delete.success')
+                __('classifiers.nomenclature.products.regional_allowances.actions.delete.success')
             );
     }
 
@@ -106,7 +106,7 @@ class ProductRegionalAllowanceController extends CoreController
         return back()
             ->with(
                 'success',
-                __('classifiers.nomenclature.products.regional_allowances.action.restore.success')
+                __('classifiers.nomenclature.products.regional_allowances.actions.restore.success')
             );
     }
 

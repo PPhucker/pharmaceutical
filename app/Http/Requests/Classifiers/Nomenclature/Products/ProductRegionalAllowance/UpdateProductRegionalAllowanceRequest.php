@@ -11,9 +11,9 @@ use Illuminate\Validation\Rule;
 class UpdateProductRegionalAllowanceRequest extends CoreFormRequest
 {
     public const AFTER_VALIDATOR_SUCCESS_KEY_MESSAGE
-        = 'classifiers.nomenclature.products.regional_allowances.action.update.success';
+        = 'classifiers.nomenclature.products.regional_allowances.actions.update.success';
     protected $afterValidatorFailKeyMessage
-        = 'classifiers.nomenclature.products.regional_allowances.action.update.fail';
+        = 'classifiers.nomenclature.products.regional_allowances.actions.update.fail';
 
     /**
      * Get the validation rules that apply to the request.
