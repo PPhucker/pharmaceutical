@@ -202,6 +202,27 @@ return [
                     ],
                 ],
             ],
+            'regional_allowances' => [
+                'regional_allowances' => 'Regional allowances',
+                'region_id' => 'Region',
+                'allowance' => 'Allowance',
+                'actions' => [
+                    'create' => [
+                        'success' => 'Regional allowance successfully added',
+                        'fail' => 'Failed to add regional allowance',
+                    ],
+                    'update' => [
+                        'success' => 'Regional allowances successfully updated',
+                        'fail' => 'Failed to update regional allowances',
+                    ],
+                    'delete' => [
+                        'success' => 'Regional allowance successfully removed',
+                    ],
+                    'restore' => [
+                        'success' => 'Regional allowance successfully reinstated',
+                    ],
+                ],
+            ],
         ],
         'materials' => [
             'materials' => 'Components',
