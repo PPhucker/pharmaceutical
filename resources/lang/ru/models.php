@@ -11,6 +11,7 @@ return [
             'Classifiers' => [
                 'LegalForm' => 'Организационно-правовая форма',
                 'Bank' => 'Банк',
+                'Region' => 'Регион',
                 'Nomenclature' => [
                     'Products' => [
                         'TypeOfEndProduct' => 'Тип готового продукта',

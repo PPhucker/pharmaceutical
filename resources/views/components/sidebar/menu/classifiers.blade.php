@@ -23,6 +23,11 @@
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                           route="{{route('banks.index')}}"/>
         </x-sidebar.menu.dropdown.item>
+        <x-sidebar.menu.dropdown.item icon="bi bi-archive"
+                                      title="{{__('classifiers.regions.regions')}}">
+            <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
+                                          route="{{route('regions.index')}}"/>
+        </x-sidebar.menu.dropdown.item>
         @end_marketing
         {{--Номенклатура--}}
         <div class="card border-0">

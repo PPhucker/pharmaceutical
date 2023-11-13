@@ -183,6 +183,7 @@
             </x-slot>
         </x-forms.collapse.card>
         @include('classifiers.nomenclature.products.product-catalog.prices')
+        @include('classifiers.nomenclature.products.product-catalog.regional_allowances')
         @include('classifiers.nomenclature.products.product-catalog.materials')
         @include('classifiers.nomenclature.products.product-catalog.aggregation-types')
     </x-forms.main>
