@@ -3,16 +3,29 @@
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog as Model;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Репозиторий готовой продукции.
+ */
 class ProductCatalogRepository extends CoreRepository
 {
-
-    public function getForEdit(int $id)
+    /**
+     * @param int $id
+     *
+     * @return \Illuminate\Support\Collection
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function getForEdit(int $id): \Illuminate\Support\Collection
     {
         $product = $this->model::find($id);
 
@@ -65,11 +78,16 @@ class ProductCatalogRepository extends CoreRepository
         return collect(
             [
                 'product' => $product,
-                'end_products' => (new EndProductRepository())->getAll(false),
-                'materials' => (new MaterialRepository())->getAll(false),
-                'aggregation_types' => (new TypeOfAggregationRepository())->getAll(false),
-                'places_of_business' => (new PlaceOfBusinessRepository())->getAll(false),
-                'organizations' => (new OrganizationRepository())->getAll(false),
+                'end_products' => (new EndProductRepository())
+                    ->getAll(false),
+                'materials' => (new MaterialRepository())
+                    ->getAll(false),
+                'aggregation_types' => (new TypeOfAggregationRepository())
+                    ->getAll(false),
+                'places_of_business' => (new PlaceOfBusinessRepository())
+                    ->getAll(false),
+                'organizations' => (new OrganizationRepository())
+                    ->getAll(false),
             ]
         );
     }
@@ -77,7 +95,7 @@ class ProductCatalogRepository extends CoreRepository
     /**
      * @return Collection
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this->clone()
             ->select(
@@ -105,7 +123,7 @@ class ProductCatalogRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getProductCatalog(float $nds = 0, array $invoiceProducts = [])
+    public function getProductCatalog(float $nds = 0, array $invoiceProducts = []): Collection
     {
         $catalog = $this->clone()
             ->select(
@@ -156,30 +174,45 @@ class ProductCatalogRepository extends CoreRepository
     }
 
     /**
-     * @param int $organizationId
-     * @param int $id
-     * @param int $quantity
+     * @param InvoiceForPayment $invoiceForPayment
+     * @param int               $productCatalogId
+     * @param int               $quantity
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getPriceList(int $organizationId, int $id, int $quantity)
-    {
-        $productCatalog = $this->clone()->find($id);
+    public function getPriceList(
+        InvoiceForPayment $invoiceForPayment,
+        int $productCatalogId,
+        int $quantity
+    ): \Illuminate\Support\Collection {
+        $productCatalog = $this->clone()->find($productCatalogId);
 
         $priceList = $productCatalog->prices->where(
             'organization_id',
-            $organizationId
+            $invoiceForPayment->organization_id
         )
             ->first();
 
+        $price = 0;
+
         $nds = $priceList ? $priceList->nds : 0;
+
+        $regionalAllowance = $productCatalog->regionalAllowances
+            ->where(
+                'product_catalog_id',
+                $productCatalogId
+            )
+            ->where(
+                'region_id',
+                $invoiceForPayment->contractorPlaceOfBusiness->region_id
+            )
+            ->first();
+
+        $allowance = $regionalAllowance ? $regionalAllowance->allowance : 0;
 
         if (!$priceList) {
             return collect(
-                [
-                    'price' => 0,
-                    'nds' => $nds
-                ]
+                compact('price', 'nds', 'allowance')
             );
         }
 
@@ -187,26 +220,20 @@ class ProductCatalogRepository extends CoreRepository
          * Если кол-во в документе больше или равно оптовому кол-ву в прайсе и существует оптовая цена
          */
         if ($quantity >= $priceList->trade_quantity && $priceList->trade_price) {
-            return collect(
-                [
-                    'price' => $priceList->traide_price,
-                    'nds' => $nds,
-                ]
-            );
+            $price = $priceList->trade_price;
+        } else {
+            $price = $priceList->retail_price;
         }
 
         return collect(
-            [
-                'price' => $priceList->retail_price,
-                'nds' => $nds,
-            ]
+            compact('price', 'nds', 'allowance')
         );
     }
 
     /**
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return Model::class;
     }
