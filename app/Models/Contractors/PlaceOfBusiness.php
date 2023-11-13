@@ -3,6 +3,7 @@
 namespace App\Models\Contractors;
 
 use App\Models\Auth\User;
+use App\Models\Classifiers\Region;
 use App\Traits\Contractors\PlacesOfBusiness\Documents\HasDocuments;
 use App\Traits\Contractors\PlacesOfBusiness\Notifications;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,6 +30,7 @@ class PlaceOfBusiness extends Model
         'identifier',
         'registered',
         'index',
+        'region_id',
         'address',
     ];
 
@@ -68,5 +70,13 @@ class PlaceOfBusiness extends Model
     {
         return $this->belongsTo(Contractor::class)
             ->withTrashed();
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class, 'region_id');
     }
 }

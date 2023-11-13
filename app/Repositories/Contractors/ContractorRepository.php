@@ -67,7 +67,8 @@ class ContractorRepository extends CoreRepository
                         ->orderBy('abbreviation');
                 },
                 'placesOfBusiness' => static function ($query) {
-                    $query->orderByDesc('contractors_places_of_business.registered');
+                    $query->orderByDesc('contractors_places_of_business.registered')
+                        ->with('region');
                 },
                 'bankAccountDetails' => static function ($query) {
                     $query->orderBy('contractors_bank_account_details.bank')

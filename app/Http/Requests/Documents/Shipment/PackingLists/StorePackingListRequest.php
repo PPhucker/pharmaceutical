@@ -93,10 +93,9 @@ class StorePackingListRequest extends FormRequest
             ],
             'invoice_for_payment_product.*.quantity' => [
                 function ($attribute, $value, $fail) {
-                    $key = (int)mb_substr($attribute, 29, 1);
+                    $key = (int)mb_substr($attribute, 28, 1);
 
-                    $productCatalogId = (int)$this
-                        ->input('invoice_for_payment_product.*.product_catalog_id')[$key];
+                    $productCatalogId = $this->input('invoice_for_payment_product.' . $key . '.product_catalog_id');
 
                     $productCatalog = ProductCatalog::find(
                         $productCatalogId
@@ -155,7 +154,7 @@ class StorePackingListRequest extends FormRequest
             if (!isset($product['id'])) {
                 continue;
             }
-            $invoiceProducts[(int)$key] = $product;
+            $invoiceProducts[$key] = $product;
         }
 
         $this->merge(

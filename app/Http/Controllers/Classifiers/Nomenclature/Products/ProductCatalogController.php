@@ -9,13 +9,11 @@ use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\StoreProd
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\UpdateProductCatalogRequest;
 use App\Models\Admin\Organizations\PlaceOfBusiness;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\EndProductRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
+use App\Repositories\Classifiers\RegionRepository;
 use App\Repositories\Contractors\ContractorRepository;
-use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
-use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
 use App\Traits\Classifiers\Nomenclature\Products\AggregationTypes;
 use App\Traits\Classifiers\Nomenclature\Products\Materials;
 use Auth;
@@ -24,16 +22,20 @@ use Illuminate\Http\RedirectResponse;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер каталога готовой продукции.
+ */
 class ProductCatalogController extends CoreController
 {
-    use Materials, AggregationTypes;
+    use AggregationTypes;
+    use Materials;
 
     /**
      * Display a listing of the resource.
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
         $catalog = $this->repository->getAll();
 
@@ -50,7 +52,7 @@ class ProductCatalogController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreProductCatalogRequest $request)
+    public function store(StoreProductCatalogRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -86,7 +88,7 @@ class ProductCatalogController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function create()
+    public function create(): View
     {
         $endProducts = (new EndProductRepository())->getAll(false);
         $placesOfBusiness = (new PlaceOfBusinessRepository())->getAll();
@@ -104,9 +106,10 @@ class ProductCatalogController extends CoreController
      *
      * @return View
      */
-    public function edit(ProductCatalog $productCatalog)
+    public function edit(ProductCatalog $productCatalog): View
     {
         $productCatalog = $this->repository->getForEdit($productCatalog->id);
+        $regions = (new RegionRepository())->getAll();
 
         return view(
             'classifiers.nomenclature.products.product-catalog.edit',
@@ -117,6 +120,7 @@ class ProductCatalogController extends CoreController
                 'aggregation_types' => $productCatalog['aggregation_types'],
                 'places_of_business' => $productCatalog['places_of_business'],
                 'organizations' => $productCatalog['organizations'],
+                'regions' => $regions
             ]
         );
     }
@@ -129,7 +133,7 @@ class ProductCatalogController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateProductCatalogRequest $request, ProductCatalog $productCatalog)
+    public function update(UpdateProductCatalogRequest $request, ProductCatalog $productCatalog): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -162,7 +166,7 @@ class ProductCatalogController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(ProductCatalog $productCatalog)
+    public function destroy(ProductCatalog $productCatalog): RedirectResponse
     {
         $productCatalog->delete();
 
@@ -183,7 +187,7 @@ class ProductCatalogController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(ProductCatalog $productCatalog)
+    public function restore(ProductCatalog $productCatalog): RedirectResponse
     {
         $productCatalog->restore();
 
@@ -205,7 +209,7 @@ class ProductCatalogController extends CoreController
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function statistic(StatisticProductCatalogRequest $request, ProductCatalog $productCatalog)
+    public function statistic(StatisticProductCatalogRequest $request, ProductCatalog $productCatalog): View
     {
         $request->validated();
 
@@ -235,7 +239,7 @@ class ProductCatalogController extends CoreController
     /**
      * @return void
      */
-    protected function authorizeActions()
+    protected function authorizeActions(): void
     {
         $this->authorizeResource(ProductCatalog::class, 'product_catalog');
     }
@@ -243,7 +247,7 @@ class ProductCatalogController extends CoreController
     /**
      * @return string
      */
-    protected function getRepository()
+    protected function getRepository(): string
     {
         return ProductCatalogRepository::class;
     }

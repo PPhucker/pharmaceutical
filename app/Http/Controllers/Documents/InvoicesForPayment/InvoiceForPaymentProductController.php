@@ -6,6 +6,7 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\StoreInvoiceForPaymentProductRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\UpdateInvoiceForPaymentProductRequest;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
+use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -27,13 +28,14 @@ class InvoiceForPaymentProductController extends CoreController
         $validated = $request->mergedValidated;
 
         foreach ($validated['invoice_for_payment_products'] as $product) {
+            $price = round((float)$product['price'] * (1 + (float)$product['allowance']), 2) - 0.01;
             InvoiceForPaymentProduct::create(
                 [
                     'user_id' => Auth::user()->id,
                     'invoice_for_payment_id' => (int)$validated['invoice_for_payment_id'],
                     'product_catalog_id' => (int)$product['product_catalog_id'],
                     'quantity' => (int)$product['quantity'],
-                    'price' => (float)$product['price'],
+                    'price' => $price,
                     'nds' => (float)$product['nds'],
                 ]
             );
@@ -57,7 +59,7 @@ class InvoiceForPaymentProductController extends CoreController
     public function update(
         UpdateInvoiceForPaymentProductRequest $request,
         InvoiceForPaymentProduct $invoicesForPaymentProduct
-    ) {
+    ): RedirectResponse {
         $validated = $request->validated();
 
         foreach ($validated['invoice_for_payment_products'] as $product) {

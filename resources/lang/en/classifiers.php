@@ -37,6 +37,22 @@ return [
         ],
     ],
 
+    'regions' => [
+        'regions' => 'Regions',
+        'region' => 'Region',
+        'name' => 'Name',
+        'zone' => 'Zone',
+
+        'actions' => [
+            'update' => [
+                'success' => 'Regions updated successfully'
+            ],
+            'create' => [
+                'success' => 'Region created successfully'
+            ]
+        ],
+    ],
+
     'nomenclature' => [
         'nomenclature' => 'Nomenclature',
         'products' => [
@@ -183,6 +199,27 @@ return [
                     ],
                     'restore' => [
                         'success' => 'Price successfully restored',
+                    ],
+                ],
+            ],
+            'regional_allowances' => [
+                'regional_allowances' => 'Regional allowances',
+                'region_id' => 'Region',
+                'allowance' => 'Allowance',
+                'actions' => [
+                    'create' => [
+                        'success' => 'Regional allowance successfully added',
+                        'fail' => 'Failed to add regional allowance',
+                    ],
+                    'update' => [
+                        'success' => 'Regional allowances successfully updated',
+                        'fail' => 'Failed to update regional allowances',
+                    ],
+                    'delete' => [
+                        'success' => 'Regional allowance successfully removed',
+                    ],
+                    'restore' => [
+                        'success' => 'Regional allowance successfully reinstated',
                     ],
                 ],
             ],
