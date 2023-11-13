@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Documents\InvoicesForPayment\Data\Products;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -98,6 +99,14 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
                         );
                     }
                 },
+                'min:0',
+                'max:100',
+            ],
+            $prefix . 'allowance' => [
+                'required',
+                'numeric',
+                'min:0',
+                'max:100',
             ],
         ];
     }
@@ -158,13 +167,14 @@ class StoreInvoiceForPaymentProductRequest extends FormRequest
             $productCatalogRepository = new ProductCatalogRepository();
 
             $priceList = $productCatalogRepository->getPriceList(
-                (int)$this->input('organization_id'),
+                InvoiceForPayment::find((int)$this->input('invoice_for_payment_id')),
                 (int)$product['product_catalog_id'],
                 (int)$product['quantity'],
             );
 
             $products[$key]['price'] = (string)$priceList->get('price');
             $products[$key]['nds'] = (string)$priceList->get('nds');
+            $products[$key]['allowance'] = (string)$priceList->get('allowance');
         }
 
         $this->merge(
