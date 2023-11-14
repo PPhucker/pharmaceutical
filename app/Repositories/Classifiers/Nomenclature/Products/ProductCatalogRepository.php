@@ -112,6 +112,7 @@ class ProductCatalogRepository extends CoreRepository
             ->with('endProduct:id,full_name')
             ->with('organization:id,name')
             ->with('placeOfBusiness:id,address')
+            ->with('prices')
             ->get()
             ->sortBy('endProduct.full_name')
             ->sortBy('organization.name');

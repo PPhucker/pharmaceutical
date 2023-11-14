@@ -81,9 +81,13 @@
 }
 
 .form-control {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    border-radius: 0;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+card, table {
+    border-radius: 4px;
 }
 
 table.dataTable tbody tr.row-selected {

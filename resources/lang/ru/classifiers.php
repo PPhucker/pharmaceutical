@@ -188,6 +188,10 @@ return [
                 'trade_price' => 'Оптовая цена',
                 'nds' => 'НДС %',
                 'trade_quantity' => 'Оптовое кол-во',
+                'tips' => [
+                    'price_added' => 'Прайс добавлен',
+                    'price_not_added' => 'Прайс не добавлен',
+                ],
                 'actions' => [
                     'create' => [
                         'success' => 'Прайс успешно добавлен',
