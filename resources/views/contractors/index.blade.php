@@ -7,7 +7,7 @@
             <x-slot name="filter">
                 <x-tables.filters.trashed-filter tableId="table_contractors"/>
             </x-slot>
-            <thead class="bg-secondary text-uppercase">
+            <thead class="bg-secondary">
             <tr class="text-primary">
                 <th scope="col"
                     class="text-center align-middle"
@@ -74,10 +74,9 @@
                         <td class="align-middle text-center">
                             @if($contractor->hasContract($organization->id))
                                 <span class="d-none">{{true}}</span>
-                                <i class="bi bi-check-circle text-success fs-5"></i>
+                                <i class="bi bi-check-square-fill text-success fs-5 fw-bolder"></i>
                             @else
                                 <span class="d-none">{{false}}</span>
-                                <i class="bi bi-exclamation-circle text-danger fs-5"></i>
                             @endif
                         </td>
                     @endforeach

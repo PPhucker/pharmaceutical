@@ -1,7 +1,7 @@
 @roles(['admin'])
 <div class="card border-0">
     <div class="card-header d-grid gap-2 bg-white p-1 border-0">
-        <button class="btn text-primary dropdown-toggle text-start fs-5"
+        <button class="btn text-primary dropdown-toggle text-start"
                 type="button"
                 data-bs-toggle="collapse"
                 href="#admin"
@@ -31,7 +31,6 @@
             <x-sidebar.menu.dropdown.link title="{{__('form.titles.list')}}"
                                           route="{{route('logs.index')}}"/>
         </x-sidebar.menu.dropdown.item>
-
     </div>
 </div>
 @end_roles

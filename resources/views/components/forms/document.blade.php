@@ -1,5 +1,5 @@
 <div class="card print mb-2">
-    <ul class="card-header list-inline form-control form-control-sm bg-secondary border-0">
+    <ul class="card-header list-inline form-control form-control-sm bg-info border-0">
         <li class="list-inline-item">
             <a class="btn-light btn-link"
                data-bs-toggle="collapse"
@@ -8,7 +8,7 @@
                aria-expanded="false"
                aria-controls="card_main_info"
                title="{{__('form.collapse')}}">
-                <i class="bi bi-card-text text-primary fs-5 align-middle"></i>
+                <i class="bi bi-arrows-expand text-primary fs-5 align-middle"></i>
             </a>
         </li>
         <li class="list-inline-item">
