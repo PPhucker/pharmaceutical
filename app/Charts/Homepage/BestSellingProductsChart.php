@@ -87,7 +87,7 @@ class BestSellingProductsChart extends Chart
 
         foreach ($products as $product) {
             $data['values'][] = $product['value'];
-            $data['labels'][] = $product['label'];
+            $data['labels'][] = wordwrap($product['label'], 150, "<br />\n");
         }
 
         return $data;
