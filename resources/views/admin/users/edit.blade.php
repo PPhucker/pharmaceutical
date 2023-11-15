@@ -3,7 +3,7 @@
     <x-forms.main back="{{route('users.index')}}"
                   title="{{__('users.action.edit', ['name' => $user->name])}}">
         <form method="POST"
-              action="{{ route('users.update', ['user' => $user->id]) }}">
+              action="{{ route('users.update', ['user' => $user->id]) }}" class="text-primary">
             @csrf
             @method('PATCH')
             <div class="row mb-3">
@@ -14,7 +14,7 @@
                 <div class="col-md-6">
                     <input id="name"
                            type="text"
-                           class="form-control
+                           class="form-control text-primary
                            @error('name') is-invalid @enderror"
                            name="name"
                            value="{{$user->name}}"
@@ -37,7 +37,7 @@
                 <div class="col-md-6">
                     <input id="email"
                            type="email"
-                           class="form-control
+                           class="form-control text-primary
                            @error('email') is-invalid @enderror"
                            name="email"
                            value="{{$user->email}}">

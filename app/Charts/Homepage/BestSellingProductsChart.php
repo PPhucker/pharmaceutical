@@ -77,7 +77,7 @@ class BestSellingProductsChart extends Chart
                 $productName = $product
                     ->productCatalog
                     ->endProduct
-                    ->short_name;
+                    ->full_name;
 
                 return [
                     'value' => $product->sum,

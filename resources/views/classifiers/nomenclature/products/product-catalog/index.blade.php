@@ -6,27 +6,33 @@
             <x-slot name="filter">
                 <x-tables.filters.trashed-filter tableId="table_product_catalog"/>
             </x-slot>
-            <thead class="bg-primary text-white">
+            <thead class="bg-secondary text-primary">
             <tr>
-                <td class="text-center">
+                <th scope="col"
+                    class="text-center">
                     {{__('ID')}}
-                </td>
-                <td class="text-center">
-                </td>
-                <td class="text-center">
+                </th>
+                <th scope="col"
+                    class="text-center">
+                </th>
+                <th scope="col"
+                    class="text-center">
                     {{__('classifiers.nomenclature.products.full_name')}}
-                </td>
-                <td class="text-center">
+                </th>
+                <th scope="col"
+                    class="text-center">
                     {{__('classifiers.nomenclature.products.product_catalog.place_of_business_id')}}
-                </td>
-                <td class="text-center">
+                </th>
+                <th scope="col"
+                    class="text-center">
                     {{__('classifiers.nomenclature.products.product_catalog.GTIN')}}
-                </td>
-                <td class="text-center">
+                </th>
+                <th scope="col"
+                    class="text-center">
                     <span class="d-none">
                         {{__('form.button.statistic')}}
                     </span>
-                </td>
+                </th>
                 <x-tables.columns.thead.edit/>
                 <x-tables.columns.thead.delete/>
             </tr>
