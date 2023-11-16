@@ -22,6 +22,7 @@ return [
                         'TypeOfAggregation' => 'Тип аггрегации',
                         'ProductCatalog' => 'Каталог готовой продукции',
                         'ProductPrice' => 'Прайс продукта',
+                        'ProductRegionalAllowance' => 'Региональная надбавка',
                     ],
                     'OKEI' => 'Классификатор ОКЕИ',
                     'Services' => [
