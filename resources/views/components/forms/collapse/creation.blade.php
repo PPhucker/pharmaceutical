@@ -1,4 +1,4 @@
-<div class="card
+<div class="card mb-2
 @if($errors->has($errorName)) collapsed @else collapse @endif"
      id="{{$cardId}}">
     <div class="card-header bg-info form-control form-control-sm fw-bold border-0 text-primary">

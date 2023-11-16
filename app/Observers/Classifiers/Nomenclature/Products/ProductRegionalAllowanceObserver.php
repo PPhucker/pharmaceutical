@@ -19,7 +19,7 @@ class ProductRegionalAllowanceObserver
      */
     public function created(ProductRegionalAllowance $productRegionalAllowance): void
     {
-        Logger::userActionNotice('store', $productRegionalAllowance);
+        Logger::userActionNotice('create', $productRegionalAllowance);
     }
 
     /**

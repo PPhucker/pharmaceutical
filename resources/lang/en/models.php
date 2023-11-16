@@ -21,6 +21,7 @@ return [
                         'TypeOfAggregation' => 'Aggregation type',
                         'ProductCatalog' => 'Finished products catalog',
                         'ProductPrice' => 'Product price',
+                        'ProductRegionalAllowance' => 'Regional allowance',
                     ],
                     'OKEI' => 'OKEI classifier',
                     'Services' => [
