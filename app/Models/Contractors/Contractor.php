@@ -2,10 +2,10 @@
 
 namespace App\Models\Contractors;
 
-use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
-use App\Traits\Contractors\Documents\HasDocuments;
 use App\Traits\Contractors\Notifications;
+use App\Traits\Document\HasInvoicesAndPackingLists;
+use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,12 +18,14 @@ use Illuminate\Support\Carbon;
  */
 class Contractor extends Model
 {
-    use HasDocuments;
+    use HasInvoicesAndPackingLists;
     use HasFactory;
     use Notifications;
     use SoftDeletes;
+    use HasUser;
 
     protected $table = 'contractors';
+    protected $foreign_key = 'contractor_id';
 
     protected $fillable = [
         'user_id',
@@ -38,9 +40,16 @@ class Contractor extends Model
 
     protected $guarded = [
         'id',
+    ];
+
+    protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at'
+    ];
+
+    protected $appends = [
+        'full_name'
     ];
 
     /**
@@ -57,12 +66,13 @@ class Contractor extends Model
     }
 
     /**
-     * @return BelongsTo
+     * Возвращает имя контрагента вместе с организационно-правовой формой.
+     *
+     * @return string
      */
-    public function user(): BelongsTo
+    public function getFullNameAttribute(): string
     {
-        return $this->belongsTo(User::class)
-            ->withTrashed();
+        return "{$this->attributes['legal_form_type']} {$this->attributes['name']}";
     }
 
     /**

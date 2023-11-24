@@ -2,10 +2,13 @@
 
 namespace App\Repositories\Admin\Organizations;
 
-use App\Models\Admin\Organizations\Organization as Model;
+use App\Models\Admin\Organizations\Organization;
 use App\Repositories\CoreRepository;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Репозиторий организации.
+ */
 class OrganizationRepository extends CoreRepository
 {
     /**
@@ -13,26 +16,24 @@ class OrganizationRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getAll(bool $withTrashed = true)
+    public function getAll(bool $withTrashed = false): Collection
     {
         $organizations = $this->clone()
             ->select(
                 [
-                    'organizations.id',
-                    'organizations.legal_form_type',
-                    'organizations.name',
-                    'organizations.INN',
-                    'organizations.OKPO',
-                    'organizations.contacts',
-                    'organizations.deleted_at'
+                    'id',
+                    'legal_form_type',
+                    'name',
+                    'INN',
+                    'OKPO',
+                    'contacts',
+                    'deleted_at'
                 ]
             )
-            ->orderBy('organizations.name');
+            ->orderBy('name');
 
         if ($withTrashed) {
             $organizations->withTrashed();
-        } else {
-            $organizations->withoutTrashed();
         }
 
         return $organizations->with('legalForm:abbreviation')
@@ -43,31 +44,55 @@ class OrganizationRepository extends CoreRepository
     /**
      * @return Collection
      */
-    public function getForDocument()
+    public function getForDocument(): Collection
     {
         return $this->clone()
             ->select(
                 [
-                    'organizations.id',
-                    'organizations.legal_form_type',
-                    'organizations.name',
-                    'organizations.deleted_at'
+                    'id',
+                    'legal_form_type',
+                    'name',
+                    'deleted_at'
                 ]
             )
-            ->orderBy('organizations.name')
+            ->orderBy('name')
             ->withoutTrashed()
             ->with('legalForm:abbreviation')
             ->get();
     }
 
     /**
-     * @param $id
+     * @param int $id
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection|null
      */
-    public function getById($id)
+    public function getRegisteredAddress(int $id): ?\Illuminate\Support\Collection
     {
-        $organization = $this->model::find($id);
+        $registered = $this->clone()
+            ->find($id)
+            ->placesOfBusiness()
+            ->where('registered', 1)
+            ->first();
+
+        if (!$registered) {
+            return null;
+        }
+        return collect(
+            [
+                'index' => $registered->index,
+                'address' => $registered->address,
+            ]
+        );
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Organization
+     */
+    public function getForEdit(int $id): Organization
+    {
+        $organization = $this->model::findOrFail($id);
 
         $organization->load([
             'legalForm' => static function ($query) {
@@ -99,33 +124,21 @@ class OrganizationRepository extends CoreRepository
         return $organization;
     }
 
-    /**
-     * @return Collection|null
-     */
-    public function getRegisteredAddress(int $id)
+    public function create(array $validated)
     {
-        $registered = $this->clone()
-            ->find($id)
-            ->placesOfBusiness()
-            ->where('registered', 1)
-            ->first();
+        // TODO: Implement create() method.
+    }
 
-        if (!$registered) {
-            return null;
-        }
-        return collect(
-            [
-                'index' => $registered->index,
-                'address' => $registered->address,
-            ]
-        );
+    public function update($model, array $validated)
+    {
+        // TODO: Implement update() method.
     }
 
     /**
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
-        return Model::class;
+        return Organization::class;
     }
 }

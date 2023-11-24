@@ -83,7 +83,7 @@ class Updated extends Notification
             $mailMessage->line(
                 __('contractors.' . $key) .
                 ': ' .
-                Contractor::find($this->contactor->id)->$key
+                Contractor::withTrashed()->find($this->contactor->id)->$key
             );
         }
 

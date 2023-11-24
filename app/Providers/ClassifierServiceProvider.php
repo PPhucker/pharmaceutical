@@ -33,7 +33,5 @@ class ClassifierServiceProvider extends ServiceProvider
     public function boot(): void
     {
         LegalForm::observe(LegalFormObserver::class);
-        Bank::observe(BankObserver::class);
-        Region::observe(RegionObserver::class);
     }
 }

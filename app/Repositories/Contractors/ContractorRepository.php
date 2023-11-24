@@ -3,96 +3,50 @@
 namespace App\Repositories\Contractors;
 
 use App\Models\Contractors\Contractor;
-use App\Repositories\CoreRepository;
-use App\Models\Contractors\Contractor as Model;
+use App\Repositories\ResourceRepository;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Репозиторий для контрагента.
  */
-class ContractorRepository extends CoreRepository
+class ContractorRepository extends ResourceRepository
 {
     /**
-     * Получить всех контрагентов.
-     *
      * @param bool $withTrashed
      *
      * @return Collection
      */
-    public function getAll(bool $withTrashed = true): Collection
+    public function getAll(bool $withTrashed = false): Collection
     {
         $contractors = $this->clone()
             ->select(
                 [
-                    'contractors.id',
-                    'contractors.legal_form_type',
-                    'contractors.name',
-                    'contractors.INN',
-                    'contractors.OKPO',
-                    'contractors.contacts',
-                    'contractors.comment',
-                    'contractors.deleted_at'
+                    'id',
+                    'legal_form_type',
+                    'name',
+                    'INN',
+                    'OKPO',
+                    'contacts',
+                    'comment',
+                    'deleted_at'
                 ]
             )
-            ->orderBy('contractors.id');
+            ->orderBy('id');
+
+        //dd($contractors->withTrashed()->get());
 
         if ($withTrashed) {
             $contractors->withTrashed();
-        } else {
-            $contractors->withoutTrashed();
         }
 
         return $contractors->with('legalForm:abbreviation')
-            ->get();
-    }
-
-    /**
-     * Получить контрагента по ID.
-     *
-     * @param int $id
-     *
-     * @return Contractor
-     */
-    public function getById(int $id): Contractor
-    {
-        $contractor = $this->model::find($id);
-
-        $contractor->load(
-            [
-                'legalForm' => static function ($query) {
-                    $query->select('classifier_legal_forms.abbreviation')
-                        ->orderBy('abbreviation');
-                },
-                'placesOfBusiness' => static function ($query) {
-                    $query->orderByDesc('contractors_places_of_business.registered')
-                        ->with('region');
-                },
-                'bankAccountDetails' => static function ($query) {
-                    $query->orderBy('contractors_bank_account_details.bank')
-                        ->with('bankClassifier');
-                },
-                'contactPersons' => static function ($query) {
-                    $query->orderByDesc('contractors_contact_persons.name');
-                },
-                'drivers' => static function ($query) {
-                    $query->orderBy('name');
-                },
-                'cars' => static function ($query) {
-                    $query->orderBy('car_model');
-                },
-                'trailers' => static function ($query) {
-                    $query->orderBy('type');
-                },
-                'contracts' => static function ($query) {
-                    $query->orderBy('date');
-                },
-            ]
-        );
-
-        return $contractor;
+            ->with('contracts')
+            ->get()
+            ->sortBy('full_name');
     }
 
     /**
@@ -205,12 +159,100 @@ class ContractorRepository extends CoreRepository
     }
 
     /**
-     * Получить название класса модели.
+     * @param int $id
      *
+     * @return Contractor
+     */
+    public function getForEdit(int $id): Contractor
+    {
+        $contractor = $this->model::findOrFail($id);
+
+        $contractor->load(
+            [
+                'legalForm' => static function ($query) {
+                    $query->select('classifier_legal_forms.abbreviation')
+                        ->orderBy('abbreviation');
+                },
+                'placesOfBusiness' => static function ($query) {
+                    $query->orderByDesc('contractors_places_of_business.registered')
+                        ->with('region');
+                },
+                'bankAccountDetails' => static function ($query) {
+                    $query->orderBy('contractors_bank_account_details.bank')
+                        ->with('bankClassifier');
+                },
+                'contactPersons' => static function ($query) {
+                    $query->orderByDesc('contractors_contact_persons.name');
+                },
+                'drivers' => static function ($query) {
+                    $query->orderBy('name');
+                },
+                'cars' => static function ($query) {
+                    $query->orderBy('car_model');
+                },
+                'trailers' => static function ($query) {
+                    $query->orderBy('type');
+                },
+                'contracts' => static function ($query) {
+                    $query->orderBy('date');
+                },
+            ]
+        );
+
+        return $contractor;
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return Contractor
+     */
+    public function create(array $validated): Contractor
+    {
+        return Contractor::create(
+            [
+                'user_id' => Auth::user()->id,
+                'legal_form_type' => $validated['legal_form_type'],
+                'name' => $validated['name'],
+                'INN' => $validated['INN'],
+                'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
+                'contacts' => $validated['contacts'],
+                'comment' => $validated['comment'],
+            ]
+        );
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return Contractor
+     */
+    public function update($model, array $validated): Contractor
+    {
+        $model->fill(
+            [
+                'user_id' => Auth::user()->id,
+                'legal_form_type' => $validated['legal_form_type'],
+                'name' => $validated['name'],
+                'INN' => $validated['INN'],
+                'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
+                'contacts' => $validated['contacts'],
+                'comment' => $validated['comment'],
+            ]
+        )
+            ->save();
+
+        return $model;
+    }
+
+    /**
      * @return string
      */
     protected function getModelClass(): string
     {
-        return Model::class;
+        return Contractor::class;
     }
 }

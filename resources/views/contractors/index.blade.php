@@ -1,4 +1,3 @@
-@php use App\Models\Admin\Organizations\Organization; @endphp
 @extends('layouts.app')
 @section('content')
     <x-forms.main title="{{__('contractors.contractors')}}">
@@ -65,7 +64,7 @@
                         {{$contractor->id}}
                     </td>
                     <td class="align-middle">
-                        {{$contractor->legalForm->abbreviation}} {{$contractor->name}}
+                        {{$contractor->full_name}}
                     </td>
                     <td class="align-middle">
                         {{$contractor->comment}}
