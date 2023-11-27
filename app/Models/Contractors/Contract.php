@@ -2,11 +2,11 @@
 
 namespace App\Models\Contractors;
 
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Auth\User;
+use App\Traits\Contractor\HasContractor;
+use App\Traits\Contractor\HasOrganization;
+use App\Traits\User\HasUserAction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -17,6 +17,9 @@ class Contract extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use HasContractor;
+    use HasOrganization;
+    use HasUserAction;
 
     protected $table = 'contractors_contracts';
 
@@ -63,40 +66,4 @@ class Contract extends Model
         return Carbon::create($date)
             ->format('d.m.Y H:i:s');
     }
-
-    /**
-     * @return BelongsTo
-     */
-    public function createdBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by_id')
-            ->withTrashed();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function updatedBy(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'updated_by_id')
-            ->withTrashed();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function organization(): BelongsTo
-    {
-        return $this->belongsTo(Organization::class);
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function contractor(): BelongsTo
-    {
-        return $this->belongsTo(Contractor::class)
-            ->withTrashed();
-    }
-
 }
