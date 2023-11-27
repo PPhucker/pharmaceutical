@@ -2,19 +2,34 @@
 
 namespace App\Http\Controllers\Contractors;
 
+use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\PlacesOfBusiness\StorePlaceOfBusinessRequest;
 use App\Http\Requests\Contractors\PlacesOfBusiness\UpdatePlaceOfBusinessRequest;
 use App\Models\Contractors\PlaceOfBusiness;
-use App\Repositories\Contractors\PlaceOfBusinessRepository;
+use App\Services\Contractor\Address\PlaceOfBusinessService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Контроллер мест осуществления деятельности контрагнетов.
  */
 class PlaceOfBusinessController extends CoreController
 {
+    protected $prefixLocalKey = 'contractors.places_of_business';
+    /**
+     * @var PlaceOfBusinessService
+     */
+    private $service;
+
+    /**
+     * @param PlaceOfBusinessService $service
+     */
+    public function __construct(PlaceOfBusinessService $service)
+    {
+        $this->service = $service;
+        $this->authorizeResource(PlaceOfBusiness::class, 'place_of_business');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -25,24 +40,14 @@ class PlaceOfBusinessController extends CoreController
     public function store(StorePlaceOfBusinessRequest $request): RedirectResponse
     {
         $validated = $request->validated()['place_of_business'];
-
-        $placeOfBusiness = PlaceOfBusiness::create(
-            [
-                'user_id' => Auth::user()->id,
-                'contractor_id' => (int)$validated['contractor_id'],
-                'identifier' => $validated['identifier'],
-                'registered' => isset($validated['registered']) ? 1 : 0,
-                'index' => $validated['index'],
-                'address' => $validated['address']
-            ]
-        );
+        $placeObBusiness = $this->service->create($validated);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.places_of_business.actions.create.success',
-                    ['name' => $placeOfBusiness->address]
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
+                    ['name' => $placeObBusiness->address]
                 )
             );
     }
@@ -51,58 +56,43 @@ class PlaceOfBusinessController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdatePlaceOfBusinessRequest $request
-     * @param PlaceOfBusiness|null         $placesOfBusiness
+     * @param PlaceOfBusiness              $placeOfBusiness
      *
      * @return RedirectResponse
      */
     public function update(
         UpdatePlaceOfBusinessRequest $request,
-        PlaceOfBusiness $placesOfBusiness = null
+        PlaceOfBusiness $placeOfBusiness
     ): RedirectResponse {
-        $validated = $request->validated();
-
-        foreach ($validated['places_of_business'] as $validatedPlace) {
-            $placeOfBusinessId = (int)$validatedPlace['id'];
-
-            PlaceOfBusiness::withTrashed()
-                ->find($placeOfBusinessId)
-                ->fill(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'identifier' => $validatedPlace['identifier'],
-                        'registered' => (int)$validated['registered'] === $placeOfBusinessId,
-                        'index' => $validatedPlace['index'],
-                        'region_id' => $validatedPlace['region_id'] ?? null,
-                        'address' => $validatedPlace['address'],
-                    ]
-                )
-                ->save();
-        }
+        $this->service->update(
+            $placeOfBusiness,
+            $request->validated()
+        );
 
         return back()
             ->with(
                 'success',
-                __('contractors.places_of_business.actions.update.success')
+                __(Local::getSuccessMessageKey($this->prefixLocalKey, 'update'))
             );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param PlaceOfBusiness $places_of_business
+     * @param PlaceOfBusiness $placeOfBusiness
      *
      * @return RedirectResponse
      */
-    public function destroy(PlaceOfBusiness $places_of_business): RedirectResponse
+    public function destroy(PlaceOfBusiness $placeOfBusiness): RedirectResponse
     {
-        $places_of_business->delete();
+        $this->service->delete($placeOfBusiness);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.places_of_business.actions.destroy.success',
-                    ['name' => $places_of_business->address]
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
+                    ['name' => $placeOfBusiness->address]
                 )
             );
     }
@@ -110,37 +100,21 @@ class PlaceOfBusinessController extends CoreController
     /**
      * Restore the specified resource from storage.
      *
-     * @param PlaceOfBusiness $places_of_business
+     * @param PlaceOfBusiness $placeOfBusiness
      *
      * @return RedirectResponse
      */
-    public function restore(PlaceOfBusiness $places_of_business): RedirectResponse
+    public function restore(PlaceOfBusiness $placeOfBusiness): RedirectResponse
     {
-        $places_of_business->restore();
+        $this->service->restore($placeOfBusiness);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.places_of_business.actions.restore.success',
-                    ['name' => $places_of_business->address]
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
+                    ['name' => $placeOfBusiness->address]
                 )
             );
-    }
-
-    /**
-     * @return void
-     */
-    protected function authorizeActions(): void
-    {
-        $this->authorizeResource(PlaceOfBusiness::class, 'places_of_business');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository(): string
-    {
-        return PlaceOfBusinessRepository::class;
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Models\Contractors;
 
-use App\Models\Auth\User;
 use App\Models\Classifiers\Region;
-use App\Traits\Contractors\PlacesOfBusiness\Documents\HasDocuments;
+use App\Traits\Contractor\HasContractor;
 use App\Traits\Contractors\PlacesOfBusiness\Notifications;
+use App\Traits\Document\HasInvoicesAndPackingLists;
+use App\Traits\Documents\Shipment\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,12 +18,16 @@ use Illuminate\Support\Carbon;
  */
 class PlaceOfBusiness extends Model
 {
-    use HasDocuments;
     use HasFactory;
     use SoftDeletes;
     use Notifications;
+    use HasUser;
+    use HasInvoicesAndPackingLists;
+    use HasContractor;
 
     protected $table = 'contractors_places_of_business';
+
+    protected $foreign_key = 'contractor_place_id';
 
     protected $fillable = [
         'user_id',
@@ -52,24 +57,6 @@ class PlaceOfBusiness extends Model
     {
         return Carbon::create($date)
             ->format('d.m.Y');
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class)
-            ->withTrashed();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function contractor(): BelongsTo
-    {
-        return $this->belongsTo(Contractor::class)
-            ->withTrashed();
     }
 
     /**

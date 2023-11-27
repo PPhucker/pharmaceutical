@@ -57,7 +57,7 @@ class PlaceOfBusinessRepository extends CrudRepository
      */
     public function update($model, array $validated): void
     {
-        foreach ($validated as $validatedPlace) {
+        foreach ($validated['places_of_business'] as $validatedPlace) {
             $placeOfBusinessId = (int)$validatedPlace['id'];
             PlaceOfBusiness::withTrashed()
                 ->find($placeOfBusinessId)

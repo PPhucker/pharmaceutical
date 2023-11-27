@@ -28,7 +28,7 @@
                        name="place_of_business[index]"
                        value="{{old('place_of_business[index]')}}"
                        required>
-                <x-forms.span-error name="place_of_busuness.index"/>
+                <x-forms.span-error name="place_of_business.index"/>
             </x-forms.row>
             <x-forms.row id="address"
                          label="{{__('contractors.places_of_business.address')}}">

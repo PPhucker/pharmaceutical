@@ -1,4 +1,4 @@
-<x-forms.collapse.card route="{{route('places_of_business.update', ['places_of_business' => 1])}}"
+<x-forms.collapse.card route="{{route('places_of_business.update', ['place_of_business' => 1])}}"
                        cardId="card_places_of_business"
                        formId="form_places_of_business"
                        title="{{__('contractors.places_of_business.places_of_business')}}">
@@ -120,11 +120,11 @@
                     <x-tables.columns.tbody.delete>
                         @if ($place->trashed())
                             <x-buttons.restore
-                                route="{{route('places_of_business.restore', ['places_of_business' => $place->id])}}"
+                                route="{{route('places_of_business.restore', ['place_of_business' => $place->id])}}"
                                 itemId="places-of-business-{{$place->id}}"/>
                         @else
                             <x-buttons.delete
-                                route="{{route('places_of_business.destroy', ['places_of_business' => $place->id])}}"
+                                route="{{route('places_of_business.destroy', ['place_of_business' => $place->id])}}"
                                 itemId="places-of-business-{{$place->id}}"/>
                         @endif
                     </x-tables.columns.tbody.delete>
