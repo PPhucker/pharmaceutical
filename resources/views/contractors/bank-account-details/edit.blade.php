@@ -37,20 +37,11 @@
                     <input type="hidden"
                            name="bank_account_details[{{$key}}][id]"
                            value="{{$account->id}}">
-                    <td class="border-start">
+                    <td class="border-start align-middle">
                         <span class="d-none" name="print">
                             {{$account->bankClassifier->name}}
                         </span>
-                        <select name="bank_account_details[{{$key}}][bank]"
-                                class="form-control form-control-sm text-primary mt-1 mb-1
-                                @error('bank_account_details.' . $key . '.bank') is-invalid @enderror">
-                            @foreach($banks as $bank)
-                                <option value="{{$bank->BIC}}"
-                                        @if($bank->BIC === $account->bank) selected @endif>
-                                    {{$bank->name}}
-                                </option>
-                            @endforeach
-                        </select>
+                        {{$account->bankClassifier->name}}
                     </td>
                     <td>
                         <span class="d-none">
@@ -58,6 +49,8 @@
                         </span>
                         <input name="bank_account_details[{{$key}}][payment_account]"
                                type="text"
+                               maxlength="20"
+                               minlength="20"
                                value="{{$account->payment_account}}"
                                class="form-control form-control-sm text-primary mt-1 mb-1
                                    @error('bank_account_details.' . $key . '.payment_account') is-invalid @enderror"

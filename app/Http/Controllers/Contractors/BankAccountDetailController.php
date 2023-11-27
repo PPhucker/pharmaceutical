@@ -2,30 +2,32 @@
 
 namespace App\Http\Controllers\Contractors;
 
+use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\BankAccountDetails\StoreBankAccountDetailRequest;
 use App\Http\Requests\Contractors\BankAccountDetails\UpdateBankAccountDetailRequest;
 use App\Models\Contractors\BankAccountDetail;
-use App\Repositories\Contractors\BankAccountDetailRepository;
+use App\Services\Contractor\Bank\AccountDetailService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
+/**
+ * Контроллер банковских реквизитов контрагента.
+ */
 class BankAccountDetailController extends CoreController
 {
+    protected $prefixLocalKey = 'contractors.bank_account_details';
     /**
-     * @return void
+     * @var AccountDetailService
      */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(BankAccountDetail::class, 'bank_account_detail');
-    }
+    private $service;
 
     /**
-     * @return string
+     * @param AccountDetailService $service
      */
-    protected function getRepository()
+    public function __construct(AccountDetailService $service)
     {
-        return BankAccountDetailRepository::class;
+        $this->service = $service;
+        $this->authorizeResource(BankAccountDetail::class);
     }
 
     /**
@@ -35,24 +37,17 @@ class BankAccountDetailController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreBankAccountDetailRequest $request)
+    public function store(StoreBankAccountDetailRequest $request): RedirectResponse
     {
         $validated = $request->validated()['bank_account_detail'];
 
-        $bankAccountDetail = BankAccountDetail::create(
-            [
-                'contractor_id' => (int)$validated['contractor_id'],
-                'user_id' => Auth::user()->id,
-                'bank' => $validated['bank'],
-                'payment_account' => $validated['payment_account'],
-            ]
-        );
+        $bankAccountDetail = $this->service->create($validated);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.bank_account_details.actions.create.success',
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
                     ['name' => $bankAccountDetail->payment_account]
                 )
             );
@@ -62,32 +57,22 @@ class BankAccountDetailController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdateBankAccountDetailRequest $request
-     * @param BankAccountDetail|null         $bank_account_detail
+     * @param BankAccountDetail              $bankAccountDetail
      *
      * @return RedirectResponse
      */
     public function update(
         UpdateBankAccountDetailRequest $request,
-        BankAccountDetail $bank_account_detail = null
-    ) {
+        BankAccountDetail $bankAccountDetail
+    ): RedirectResponse {
         $validated = $request->validated();
 
-        foreach ($validated['bank_account_details'] as $account) {
-            BankAccountDetail::find((int)$account['id'])
-                ->fill(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'bank' => $account['bank'],
-                        'payment_account' => $account['payment_account'],
-                    ]
-                )
-                ->save();
-        }
+        $this->service->update($bankAccountDetail, $validated);
 
         return back()
             ->with(
                 'success',
-                __('contractors.bank_account_details.actions.update.success')
+                __(Local::getSuccessMessageKey($this->prefixLocalKey, 'update'))
             );
     }
 
@@ -98,15 +83,15 @@ class BankAccountDetailController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(BankAccountDetail $bankAccountDetail)
+    public function destroy(BankAccountDetail $bankAccountDetail): RedirectResponse
     {
-        $bankAccountDetail->delete();
+        $this->service->delete($bankAccountDetail);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.bank_account_details.actions.destroy.success',
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
                     ['name' => $bankAccountDetail->payment_account]
                 )
             );
@@ -119,15 +104,15 @@ class BankAccountDetailController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(BankAccountDetail $bankAccountDetail)
+    public function restore(BankAccountDetail $bankAccountDetail): RedirectResponse
     {
-        $bankAccountDetail->restore();
+        $this->service->restore($bankAccountDetail);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.bank_account_details.actions.restore.success',
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
                     ['name' => $bankAccountDetail->payment_account]
                 )
             );

@@ -2,27 +2,21 @@
 
 namespace App\Http\Requests\Contractors\BankAccountDetails;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class UpdateBankAccountDetailRequest extends FormRequest
+/**
+ * Валидация обновления банковских реквизитов контргента.
+ */
+class UpdateBankAccountDetailRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $afterValidatorFailKeyMessage = 'contractors.bank_account_details.actions.update.fail';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'bank_account_details.*.';
 
@@ -31,28 +25,11 @@ class UpdateBankAccountDetailRequest extends FormRequest
                 'required',
                 'numeric',
             ],
-            $prefix . 'bank' => [
-                'required',
-                'numeric',
-                'digits:9'
-            ],
             $prefix . 'payment_account' => [
                 'required',
                 'numeric',
                 'digits:20'
             ]
         ];
-    }
-
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('contractors.bank_account_details.actions.update.fail')
-                );
-            }
-        });
     }
 }

@@ -60,7 +60,7 @@ return [
         'actions' => [
             'create' => [
                 'success' => 'Place of business :name added successfully',
-                'fail' => 'Failed to add activity location :name'
+                'fail' => 'Failed to add activity location'
             ],
             'update' => [
                 'success' => 'Places of business successfully updated',

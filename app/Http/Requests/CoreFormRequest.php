@@ -5,10 +5,13 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
+/**
+ * Базовый класс валидации.
+ */
 abstract class CoreFormRequest extends FormRequest
 {
 
-    protected $afterValidatorFailKeyMessage = 'error';
+    protected $afterValidatorFailKeyMessage;
 
     protected $rules = [];
 
@@ -17,7 +20,7 @@ abstract class CoreFormRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,7 +28,7 @@ abstract class CoreFormRequest extends FormRequest
     /**
      * @return array[]
      */
-    public function rules()
+    public function rules(): array
     {
         return $this->rules;
     }
@@ -35,7 +38,7 @@ abstract class CoreFormRequest extends FormRequest
      *
      * @return void
      */
-    protected function withValidator(Validator $validator)
+    protected function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {

@@ -3,6 +3,7 @@
 namespace App\Services\Contractor\Bank;
 
 use App\Repositories\Contractors\Bank\BankRepository;
+use App\Repositories\Contractors\BankAccountDetailRepository;
 use App\Services\Contractor\CoreDependencyService;
 
 /**
@@ -11,11 +12,13 @@ use App\Services\Contractor\CoreDependencyService;
 class BankServiceDependencies extends CoreDependencyService
 {
     /**
-     * @param BankRepository $bank
+     * @param BankRepository              $bank
+     * @param BankAccountDetailRepository $accountDetail
      */
     public function __construct(
-        BankRepository $bank
+        BankRepository $bank,
+        BankAccountDetailRepository $accountDetail
     ) {
-        $this->repositories = compact('bank');
+        $this->repositories = compact('bank', 'accountDetail');
     }
 }

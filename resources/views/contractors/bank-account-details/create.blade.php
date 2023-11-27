@@ -8,31 +8,58 @@
             <input type="hidden"
                    name="bank_account_detail[contractor_id]"
                    value="{{$contractor->id}}">
-            <x-forms.row id="bank"
-                         label="{{__('contractors.bank_account_details.bank')}}">
-                <select id="bank"
-                        name="bank_account_detail[bank]"
-                        class="form-control form-control-sm text-primary
-                        @error('bank_account_detail.bank') is-invalid @enderror">
-                    @foreach($banks as $bank)
-                        <option value="{{$bank->BIC}}">
-                            {{"$bank->name ---- $bank->BIC"}}
-                        </option>
-                    @endforeach
-                </select>
-                <x-forms.span-error name="bank_account_detail.bank"/>
-            </x-forms.row>
-            <x-forms.row id="payment_account"
-                         label="{{__('contractors.bank_account_details.payment_account')}}">
-                <input id="payment_account"
-                       name="bank_account_detail[payment_account]"
-                       type="text"
-                       value="{{old('bank_account_details[payment_account]')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('bank_account_detail.payment_account') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="bank_account_detail.payment_account"/>
-            </x-forms.row>
+            <x-tables.main id="add_table_account_detail" targets="0">
+                <thead class="bg-secondary">
+                <tr class="text-primary small">
+                    <th scope="col"
+                        class="text-center">
+                    </th>
+                    <th scope="col"
+                        class="text-center">
+                        {{__('contractors.bank_account_details.payment_account')}}
+                    </th>
+                    <th scope="col"
+                        class="text-center">
+                        {{__('contractors.bank_account_details.bank')}}
+                    </th>
+                    <th scope="col"
+                        class="text-center">
+                        {{__('contractors.bank_account_details.BIC')}}
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="text-primary">
+                @foreach($banks as $key => $bank)
+                    <tr class="small">
+                        <td class="align-middle text-center">
+                            <input type="radio"
+                                   id="bank_account_detail[{{$key}}][bank]"
+                                   name="bank_account_detail[bank]"
+                                   value="{{$bank->BIC}}"
+                                   class="form-check-input
+                                @error('bank_account_detail.bank') is-invalid @enderror">
+                        </td>
+                        <td class="align-middle">
+                            <input id="bank_account_detail[payment_account][{{$bank->BIC}}]"
+                                   name="bank_account_detail[payment_account][{{$bank->BIC}}]"
+                                   type="text"
+                                   minlength="20"
+                                   maxlength="20"
+                                   value="{{old("bank_account_detail[payment_account][{{$bank->BIC}]")}}"
+                                   class="form-control form-control-sm text-primary
+                       @error('bank_account_detail.payment_account.' . $bank->BIC) is-invalid @enderror"
+                                   required>
+                        </td>
+                        <td class="align-middle">
+                            {{$bank->name}}
+                        </td>
+                        <td class="align-middle text-center">
+                            {{$bank->BIC}}
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </x-tables.main>
         </form>
     </x-slot>
     <x-slot name="footer">

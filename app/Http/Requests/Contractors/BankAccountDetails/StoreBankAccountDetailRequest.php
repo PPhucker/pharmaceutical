@@ -2,27 +2,21 @@
 
 namespace App\Http\Requests\Contractors\BankAccountDetails;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreBankAccountDetailRequest extends FormRequest
+/**
+ * Валидация добавления банковских реквизитов.
+ */
+class StoreBankAccountDetailRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $afterValidatorFailKeyMessage = 'contractors.bank_account_details.actions.create.fail';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'bank_account_detail.';
 
@@ -36,26 +30,29 @@ class StoreBankAccountDetailRequest extends FormRequest
                 'numeric',
                 'digits:9'
             ],
-            $prefix . 'payment_account' => [
+            $prefix . 'payment_account.' . $this->input('bank_account_detail.bank') => [
                 'required',
                 'numeric',
-                'digits:20'
+                'digits:20',
             ]
         ];
     }
 
-    public function withValidator(Validator $validator)
+    /**
+     * @return void
+     */
+    public function prepareForValidation(): void
     {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __(
-                        'contractors.bank_account_details.actions.create.fail',
-                        ['name' => $this->address]
-                    )
-                );
-            }
-        });
+        $bic = $this->input('bank_account_detail.bank');
+
+        $this->merge([
+            'bank_account_detail' => [
+                'contractor_id' => $this->input('bank_account_detail.contractor_id'),
+                'bank' => $bic,
+                'payment_account' => [
+                    $bic => $this->input("bank_account_detail.payment_account.$bic")
+                ],
+            ]
+        ]);
     }
 }
