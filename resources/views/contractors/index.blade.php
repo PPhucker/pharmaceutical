@@ -1,10 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('contractors.contractors')}}">
-        <x-tables.main id="table_contractors"
-                       targets="-1,-2,-3">
+    <x-form
+        title="{{__('contractors.contractors')}}">
+        <x-data-table.table
+            id="contractors_table"
+            targets="-1,-2,-3">
             <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_contractors"/>
+                <x-data-table.filters.trashed-filter/>
             </x-slot>
             <thead class="bg-secondary">
             <tr class="text-primary">
@@ -83,30 +85,28 @@
                         {{$contractor->INN}}
                     </td>
                     <td class="text-center align-middle">
-                        <x-buttons.href
+                        <x-data-table.buttons.href
                             route="{{route('invoices_for_payment.create', ['contractor' => $contractor->id])}}"
                             title="{{__('documents.invoices_for_payment.buttons.create')}}"
-                            icon="{{'bi bi-file-earmark-fill'}}"/>
+                            icon="bi bi-file-earmark-fill"
+                            :disabled="$contractor->trashed()"/>
                     </td>
                     <td class="text-center align-middle">
-                        <x-buttons.edit route="{{route('contractors.edit', ['contractor' => $contractor->id])}}"
-                                        disabled="{{$contractor->trashed()}}"/>
+                        <x-data-table.buttons.edit
+                            route="{{route('contractors.edit', ['contractor' => $contractor->id])}}"
+                            disabled="{{$contractor->trashed()}}"/>
                     </td>
-                    <x-tables.columns.tbody.delete>
-                        @if ($contractor->trashed())
-                            <x-buttons.restore
-                                route="{{route('contractors.restore', ['contractor' => $contractor->id])}}"
-                                itemId="{{$contractor->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('contractors.destroy', ['contractor' => $contractor->id])}}"
-                                formId="destroy"
-                                itemId="{{$contractor->id}}"/>
-                        @endif
-                    </x-tables.columns.tbody.delete>
+                    <td>
+                        <x-data-table.buttons.soft-delete
+                            :trashed="$contractor->trashed()"
+                            :id="$contractor->id"
+                            route="contractors"
+                            :params="['contractor' => $contractor->id]"/>
+                    </td>
                 </tr>
             @endforeach
             </tbody>
-        </x-tables.main>
-    </x-forms.main>
+        </x-data-table.table>
+    </x-form>
 @endsection
+

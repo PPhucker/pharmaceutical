@@ -11,9 +11,9 @@
             </button>
         @endauth
         <a class="navbar-brand text-primary"
-               href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }} {{config('app.version')}}
-            </a>
+           href="{{ url('/') }}">
+            {{ config('app.name', 'Laravel') }} {{config('app.version')}}
+        </a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto"></ul>
