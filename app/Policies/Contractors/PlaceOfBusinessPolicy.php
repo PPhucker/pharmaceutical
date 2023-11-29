@@ -2,87 +2,24 @@
 
 namespace App\Policies\Contractors;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Contractors\PlaceOfBusiness;
+use App\Policies\CorePolicy;
+use App\Traits\Policy\SoftDeletes;
 
-class PlaceOfBusinessPolicy
+/**
+ * Политика для мест осуществления деятельности контрагента.
+ */
+class PlaceOfBusinessPolicy extends CorePolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'digital_communication',
-        'marketing',
-    ];
+    use SoftDeletes;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @param PlaceOfBusiness $placeOfBusiness
      */
-    public function viewAny(User $user)
+    public function __construct(PlaceOfBusiness $placeOfBusiness)
     {
-        return $user->hasRole(self::ROLES);
-    }
+        $this->roles = config('roles.contractor', ['admin']);
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function view(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function delete(User $user)
-    {
-        return $user->canDelete();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function restore(User $user)
-    {
-        return $user->canRestore();
+        parent::__construct($placeOfBusiness);
     }
 }

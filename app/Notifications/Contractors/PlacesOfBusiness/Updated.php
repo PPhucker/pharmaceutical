@@ -91,7 +91,9 @@ class Updated extends Notification
             $mailMessage->line(
                 __('contractors.places_of_business.' . $key) .
                 ': ' .
-                PlaceOfBusiness::find($this->placeOfBusiness->id)->$key
+                PlaceOfBusiness::withTrashed()
+                    ->find($this->placeOfBusiness->id)
+                    ->$key
             );
         }
 

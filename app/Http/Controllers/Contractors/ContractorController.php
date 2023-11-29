@@ -31,7 +31,7 @@ class ContractorController extends CoreController
     public function __construct(ContractorService $service)
     {
         $this->service = $service;
-        $this->authorizeResource(Contractor::class);
+        $this->authorizeResource(Contractor::class, 'contractor');
     }
 
     /**
