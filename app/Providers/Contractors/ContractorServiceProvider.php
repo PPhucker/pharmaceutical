@@ -8,12 +8,8 @@ use App\Models\Contractors\Contract;
 use App\Models\Contractors\Contractor;
 use App\Models\Contractors\Driver;
 use App\Models\Contractors\Trailer;
-use App\Observers\Contractors\CarObserver;
-use App\Observers\Contractors\ContactPersonObserver;
-use App\Observers\Contractors\ContractObserver;
 use App\Observers\Contractors\ContractorObserver;
-use App\Observers\Contractors\DriverObserver;
-use App\Observers\Contractors\TrailerObserver;
+use App\Observers\CoreObserver;
 use App\Services\Contractor\ContractorService;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,9 +18,23 @@ use Illuminate\Support\ServiceProvider;
  */
 class ContractorServiceProvider extends ServiceProvider
 {
+    /**
+     * @var string[]
+     */
     protected $providers = [
         AddressServiceProvider::class,
         BankServiceProvider::class,
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $coreObservedModels = [
+        Contract::class,
+        ContactPerson::class,
+        Driver::class,
+        Car::class,
+        Trailer::class,
     ];
 
     /**
@@ -50,12 +60,8 @@ class ContractorServiceProvider extends ServiceProvider
     {
         Contractor::observe(ContractorObserver::class);
 
-        ContactPerson::observe(ContactPersonObserver::class);
-
-        Driver::observe(DriverObserver::class);
-        Car::observe(CarObserver::class);
-        Trailer::observe(TrailerObserver::class);
-
-        Contract::observe(ContractObserver::class);
+        foreach ($this->coreObservedModels as $model) {
+            $model::observe(CoreObserver::class);
+        }
     }
 }

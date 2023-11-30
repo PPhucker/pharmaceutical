@@ -4,6 +4,7 @@ namespace App\Models\Contractors;
 
 use App\Traits\Contractor\HasContractor;
 use App\Traits\Contractor\HasOrganization;
+use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUserAction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ class Contract extends Model
     use HasContractor;
     use HasOrganization;
     use HasUserAction;
+    use RelationshipsTrait;
 
     protected $table = 'contractors_contracts';
 

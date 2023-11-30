@@ -4,8 +4,8 @@ namespace App\Providers\Contractors;
 
 use App\Models\Classifiers\Region;
 use App\Models\Contractors\PlaceOfBusiness;
-use App\Observers\Classifiers\RegionObserver;
 use App\Observers\Contractors\PlaceOfBusinessObserver;
+use App\Observers\CoreObserver;
 use App\Services\Contractor\Address\AddressServiceDependencies;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +14,13 @@ use Illuminate\Support\ServiceProvider;
  */
 class AddressServiceProvider extends ServiceProvider
 {
+    /**
+     * @var string[]
+     */
+    protected $coreObservedModels = [
+        Region::class,
+    ];
+
     /**
      * Register services.
      *
@@ -30,6 +37,9 @@ class AddressServiceProvider extends ServiceProvider
     public function boot(): void
     {
         PlaceOfBusiness::observe(PlaceOfBusinessObserver::class);
-        Region::observe(RegionObserver::class);
+
+        foreach ($this->coreObservedModels as $model) {
+            $model::observe(CoreObserver::class);
+        }
     }
 }

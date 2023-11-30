@@ -4,8 +4,7 @@ namespace App\Providers\Contractors;
 
 use App\Models\Classifiers\Bank;
 use App\Models\Contractors\BankAccountDetail;
-use App\Observers\Classifiers\BankObserver;
-use App\Observers\Contractors\BankAccountDetailObserver;
+use App\Observers\CoreObserver;
 use App\Services\Contractor\Bank\BankServiceDependencies;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,6 +13,14 @@ use Illuminate\Support\ServiceProvider;
  */
 class BankServiceProvider extends ServiceProvider
 {
+    protected $coreObservedModels = [
+        BankAccountDetail::class,
+        Bank::class,
+    ];
+
+    /**
+     * @return void
+     */
     public function register(): void
     {
         $this->app->singleton(BankServiceDependencies::class);
@@ -24,7 +31,8 @@ class BankServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        BankAccountDetail::observe(BankAccountDetailObserver::class);
-        Bank::observe(BankObserver::class);
+        foreach ($this->coreObservedModels as $model) {
+            $model::observe(CoreObserver::class);
+        }
     }
 }

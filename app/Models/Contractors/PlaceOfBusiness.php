@@ -7,6 +7,7 @@ use App\Traits\Contractor\HasContractor;
 use App\Traits\Contractors\PlacesOfBusiness\Notifications;
 use App\Traits\Document\HasInvoicesAndPackingLists;
 use App\Traits\Documents\Shipment\HasUser;
+use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,6 +25,7 @@ class PlaceOfBusiness extends Model
     use HasUser;
     use HasInvoicesAndPackingLists;
     use HasContractor;
+    use RelationshipsTrait;
 
     protected $table = 'contractors_places_of_business';
 

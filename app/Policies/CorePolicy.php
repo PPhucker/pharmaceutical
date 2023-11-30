@@ -55,7 +55,6 @@ abstract class CorePolicy
      * Determine whether the user can create models.
      *
      * @param User $user
-     * @param      $model
      *
      * @return bool
      */

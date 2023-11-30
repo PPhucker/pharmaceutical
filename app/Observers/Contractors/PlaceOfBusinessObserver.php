@@ -2,41 +2,29 @@
 
 namespace App\Observers\Contractors;
 
-use App\Logging\Logger;
 use App\Models\Contractors\PlaceOfBusiness;
+use App\Observers\CoreObserver;
 use Auth;
 
 /**
  * Наблюдатель за местом осуществления деятельности контрагента.
  */
-class PlaceOfBusinessObserver
+class PlaceOfBusinessObserver extends CoreObserver
 {
     /**
      * Handle the PlaceOfBusiness "created" event.
      *
-     * @param PlaceOfBusiness $placeOfBusiness
+     * @param $model
      *
      * @return void
      */
-    public function created(PlaceOfBusiness $placeOfBusiness): void
+    public function created($model): void
     {
-        Logger::userActionNotice('create', $placeOfBusiness);
+        parent::created($model);
 
         if (Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
-            $placeOfBusiness->sendEmailCreatedNotification();
+            $model->sendEmailCreatedNotification();
         }
-    }
-
-    /**
-     * Handle the PlaceOfBusiness "updated" event.
-     *
-     * @param PlaceOfBusiness $placeOfBusiness
-     *
-     * @return void
-     */
-    public function updated(PlaceOfBusiness $placeOfBusiness): void
-    {
-        Logger::userActionNotice('update', $placeOfBusiness);
     }
 
     /**
@@ -60,29 +48,5 @@ class PlaceOfBusinessObserver
         if (count($changes) && Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
             $placeOfBusiness->sendEmailUpdatedNotification($changes);
         }
-    }
-
-    /**
-     * Handle the PlaceOfBusiness "deleted" event.
-     *
-     * @param PlaceOfBusiness $placeOfBusiness
-     *
-     * @return void
-     */
-    public function deleted(PlaceOfBusiness $placeOfBusiness): void
-    {
-        Logger::userActionNotice('destroy', $placeOfBusiness);
-    }
-
-    /**
-     * Handle the PlaceOfBusiness "restored" event.
-     *
-     * @param PlaceOfBusiness $placeOfBusiness
-     *
-     * @return void
-     */
-    public function restored(PlaceOfBusiness $placeOfBusiness): void
-    {
-        Logger::userActionNotice('restore', $placeOfBusiness);
     }
 }

@@ -2,52 +2,27 @@
 
 namespace App\Observers\Contractors;
 
-use App\Logging\Logger;
 use App\Models\Contractors\Contractor;
+use App\Observers\CoreObserver;
 use Auth;
 
 /**
  * Наблюдатель контрагента.
  */
-class ContractorObserver
+class ContractorObserver extends CoreObserver
 {
-    /**
-     * Таблицы с отношениями.
-     */
-    private const RELATIONS = [
-        'placesOfBusiness',
-        'bankAccountDetails',
-        'contactPersons',
-        'drivers',
-        'cars',
-        'trailers',
-        'contracts',
-    ];
-
     /**
      * Handle the Contractor "created" event.
      *
-     * @param Contractor $contractor
+     * @param $model
      *
      * @return void
      */
-    public function created(Contractor $contractor): void
+    public function created($model): void
     {
-        Logger::userActionNotice('create', $contractor);
+        parent::created($model);
 
-        $contractor->sendEmailCreatedNotification();
-    }
-
-    /**
-     * Handle the Contractor "updated" event.
-     *
-     * @param Contractor $contractor
-     *
-     * @return void
-     */
-    public function updated(Contractor $contractor): void
-    {
-        Logger::userActionNotice('update', $contractor);
+        $model->sendEmailCreatedNotification();
     }
 
     /**
@@ -61,42 +36,6 @@ class ContractorObserver
     {
         if (Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
             $contractor->sendEmailUpdatedNotification();
-        }
-    }
-
-    /**
-     * Handle the Contractor "deleted" event.
-     *
-     * @param Contractor $contractor
-     *
-     * @return void
-     */
-    public function deleted(Contractor $contractor): void
-    {
-        Logger::userActionNotice('destroy', $contractor);
-
-        foreach (self::RELATIONS as $relation) {
-            foreach ($contractor->$relation()->get() as $item) {
-                $item->delete();
-            }
-        }
-    }
-
-    /**
-     * Handle the Contractor "restored" event.
-     *
-     * @param Contractor $contractor
-     *
-     * @return void
-     */
-    public function restored(Contractor $contractor): void
-    {
-        Logger::userActionNotice('restore', $contractor);
-
-        foreach (self::RELATIONS as $relation) {
-            foreach ($contractor->$relation()->get() as $item) {
-                $item->restore();
-            }
         }
     }
 }

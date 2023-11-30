@@ -5,6 +5,7 @@ namespace App\Models\Contractors;
 use App\Models\Classifiers\LegalForm;
 use App\Traits\Contractors\Notifications;
 use App\Traits\Document\HasInvoicesAndPackingLists;
+use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -18,6 +19,7 @@ use Illuminate\Support\Carbon;
  */
 class Contractor extends Model
 {
+    use RelationshipsTrait;
     use HasInvoicesAndPackingLists;
     use HasFactory;
     use Notifications;
@@ -25,6 +27,7 @@ class Contractor extends Model
     use HasUser;
 
     protected $table = 'contractors';
+
     protected $foreign_key = 'contractor_id';
 
     protected $fillable = [
@@ -72,7 +75,7 @@ class Contractor extends Model
      */
     public function getFullNameAttribute(): string
     {
-        return "{$this->attributes['legal_form_type']} {$this->attributes['name']}";
+        return "{$this->legal_form_type} {$this->name}";
     }
 
     /**

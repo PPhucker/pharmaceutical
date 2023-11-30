@@ -5,6 +5,9 @@ namespace App\Traits\Document;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Отношение к счетам на оплату.
+ */
 trait HasInvoicesForPayment
 {
     /**

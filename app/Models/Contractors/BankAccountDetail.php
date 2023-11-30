@@ -5,6 +5,7 @@ namespace App\Models\Contractors;
 use App\Models\Classifiers\Bank;
 use App\Traits\Contractor\HasContractor;
 use App\Traits\Document\HasInvoicesForPayment;
+use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ class BankAccountDetail extends Model
     use HasUser;
     use HasContractor;
     use HasInvoicesForPayment;
+    use RelationshipsTrait;
 
     protected $table = 'contractors_bank_account_details';
 
