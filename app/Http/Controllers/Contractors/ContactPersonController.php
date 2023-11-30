@@ -2,29 +2,35 @@
 
 namespace App\Http\Controllers\Contractors;
 
+use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\ContactPersons\StoreContactPersonRequest;
 use App\Http\Requests\Contractors\ContactPersons\UpdateContactPersonRequest;
 use App\Models\Contractors\ContactPerson;
-use App\Repositories\Contractors\ContactPersonRepository;
+use App\Services\Contractor\ContactPersonService;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер контактного лица контрагента.
+ */
 class ContactPersonController extends CoreController
 {
     /**
-     * @return void
+     * @var string
      */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(ContactPerson::class, 'contact_person');
-    }
+    protected $prefixLocalKey = 'contractors.contact_persons';
+    /**
+     * @var ContactPersonService
+     */
+    private $service;
 
     /**
-     * @return string
+     * @param ContactPersonService $service
      */
-    protected function getRepository()
+    public function __construct(ContactPersonService $service)
     {
-        return ContactPersonRepository::class;
+        $this->service = $service;
+        $this->authorizeResource(ContactPerson::class);
     }
 
     /**
@@ -34,25 +40,17 @@ class ContactPersonController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreContactPersonRequest $request)
+    public function store(StoreContactPersonRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['contact_person'];
-
-        $contactPerson = ContactPerson::create(
-            [
-                'contractor_id' => $validated['contractor_id'],
-                'name' => $validated['name'],
-                'post' => $validated['post'],
-                'phone' => $validated['phone'],
-                'email' => $validated['email']
-            ]
+        $contactPerson = $this->service->create(
+            $request->validated()['contact_person']
         );
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.contact_persons.actions.create.success',
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
                     ['name' => $contactPerson->name]
                 )
             );
@@ -63,31 +61,21 @@ class ContactPersonController extends CoreController
      * Update the specified resource in storage.
      *
      * @param UpdateContactPersonRequest $request
-     * @param ContactPerson|null         $contact_person
+     * @param ContactPerson              $contactPerson
      *
      * @return RedirectResponse
      */
-    public function update(UpdateContactPersonRequest $request, ContactPerson $contact_person = null)
+    public function update(UpdateContactPersonRequest $request, ContactPerson $contactPerson): RedirectResponse
     {
-        $validated = $request->validated();
-
-        foreach ($validated['contact_persons'] as $person) {
-            ContactPerson::find((int)$person['id'])
-                ->fill(
-                    [
-                        'name' => $person['name'],
-                        'post' => $person['post'],
-                        'phone' => $person['phone'],
-                        'email' => $person['email']
-                    ]
-                )
-                ->save();
-        }
+        $this->service->update(
+            $contactPerson,
+            $request->validated()['contact_persons']
+        );
 
         return back()
             ->with(
                 'success',
-                __('contractors.contact_persons.actions.update.success')
+                __(Local::getSuccessMessageKey($this->prefixLocalKey, 'update'))
             );
     }
 
@@ -98,15 +86,15 @@ class ContactPersonController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(ContactPerson $contactPerson)
+    public function destroy(ContactPerson $contactPerson): RedirectResponse
     {
-        $contactPerson->delete();
+        $this->service->delete($contactPerson);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.contact_persons.actions.destroy.success',
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
                     ['name' => $contactPerson->name]
                 )
             );
@@ -119,15 +107,15 @@ class ContactPersonController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(ContactPerson $contactPerson)
+    public function restore(ContactPerson $contactPerson): RedirectResponse
     {
-        $contactPerson->restore();
+        $this->service->restore($contactPerson);
 
         return back()
             ->with(
                 'success',
                 __(
-                    'contractors.contact_persons.actions.restore.success',
+                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
                     ['name' => $contactPerson->name]
                 )
             );
