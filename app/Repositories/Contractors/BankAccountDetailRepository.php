@@ -49,7 +49,8 @@ class BankAccountDetailRepository extends CrudRepository
     public function update($model, array $validated): void
     {
         foreach ($validated['bank_account_details'] as $account) {
-            BankAccountDetail::find((int)$account['id'])
+            BankAccountDetail::withTrashed()
+                ->findOrFail((int)$account['id'])
                 ->fill(
                     [
                         'user_id' => Auth::user()->id,
