@@ -2,24 +2,17 @@
 
 namespace App\Http\Requests\Contractors\PlacesOfBusiness;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 /**
  * Валидация обновления мест осуществления деятельности контрагента.
  */
-class UpdatePlaceOfBusinessRequest extends FormRequest
+class UpdatePlaceOfBusinessRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'contractors.places_of_business';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
@@ -65,25 +58,5 @@ class UpdatePlaceOfBusinessRequest extends FormRequest
                 'nullable'
             ],
         ];
-    }
-
-    /**
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator): void
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __(
-                        'contractors.places_of_business.actions.update.fail',
-                        ['name' => $this->address]
-                    )
-                );
-            }
-        });
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contractors;
 
-use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\StoreContractorRequest;
 use App\Http\Requests\Contractors\UpdateContractorRequest;
@@ -55,15 +54,12 @@ class ContractorController extends CoreController
     {
         $contractor = $this->service->create($request->validated());
 
-        return redirect()
-            ->route('contractors.edit', ['contractor' => $contractor->id])
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
-                    ['name' => $contractor->full_name]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $contractor->full_name],
+            'contractors.edit',
+            ['contractor' => $contractor->id]
+        );
     }
 
     /**
@@ -100,14 +96,10 @@ class ContractorController extends CoreController
     {
         $updatedContractor = $this->service->update($contractor, $request->validated());
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'update'),
-                    ['name' => $updatedContractor->full_name]
-                )
-            );
+        return $this->successRedirect(
+            'update',
+            ['name' => $updatedContractor->full_name]
+        );
     }
 
     /**
@@ -119,14 +111,12 @@ class ContractorController extends CoreController
      */
     public function destroy(Contractor $contractor): RedirectResponse
     {
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
-                    ['name' => $this->service->delete($contractor)->full_name]
-                )
-            );
+        $this->service->delete($contractor);
+
+        return $this->successRedirect(
+            'delete',
+            ['name' => $contractor->full_name]
+        );
     }
 
     /**
@@ -138,13 +128,11 @@ class ContractorController extends CoreController
      */
     public function restore(Contractor $contractor): RedirectResponse
     {
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
-                    ['name' => $this->service->restore($contractor)->full_name]
-                )
-            );
+        $this->service->restore($contractor);
+
+        return $this->successRedirect(
+            'restore',
+            ['name' => $contractor->full_name]
+        );
     }
 }

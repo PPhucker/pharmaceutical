@@ -2,23 +2,16 @@
 
 namespace App\Http\Requests\Contractors\ContactPersons;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
 /**
  * Валидация добавления крнтактного лица контрагента.
  */
-class StoreContactPersonRequest extends FormRequest
+class StoreContactPersonRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'contractors.contact_persons';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
@@ -55,22 +48,5 @@ class StoreContactPersonRequest extends FormRequest
                 'email',
             ],
         ];
-    }
-
-    /**
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator): void
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('contractors.contact_persons.actions.create.fail', ['name' => $this->name])
-                );
-            }
-        });
     }
 }

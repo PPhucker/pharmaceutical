@@ -9,7 +9,9 @@ use App\Http\Requests\CoreFormRequest;
  */
 class UpdateBankAccountDetailRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.bank_account_details.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.bank_account_details';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.

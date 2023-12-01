@@ -9,7 +9,9 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreContractRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.contracts.actions.create.fail';
+    protected $prefixLocalKey = 'contractors.contracts';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.

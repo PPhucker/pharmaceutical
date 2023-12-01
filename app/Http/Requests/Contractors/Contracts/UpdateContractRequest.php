@@ -2,14 +2,16 @@
 
 namespace App\Http\Requests\Contractors\Contracts;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 
 /**
  * Валидация обновления договоров с контрагентом.
  */
-class UpdateContractRequest extends FormRequest
+class UpdateContractRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.contracts.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.contracts';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.

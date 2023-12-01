@@ -14,7 +14,7 @@ return [
             'success' => 'Contractor :name updated successfully',
             'fail' => 'Failed to update contractor :name'
         ],
-        'destroy' => [
+        'delete' => [
             'success' => 'Contractor :name deleted successfully'
         ],
         'restore' => [
@@ -36,7 +36,7 @@ return [
                 'success' => 'Organization :name updated successfully',
                 'fail' => 'Failed to update organization :name'
             ],
-            'destroy' => [
+            'delete' => [
                 'success' => 'Organization :name deleted successfully'
             ],
             'restore' => [
@@ -66,7 +66,7 @@ return [
                 'success' => 'Places of business successfully updated',
                 'fail' => 'Failed to update places of business',
             ],
-            'destroy' => [
+            'delete' => [
                 'success' => 'Place of business :name removed successfully'
             ],
             'restore' => [
@@ -89,7 +89,7 @@ return [
                 'success' => 'Bank details updated successfully',
                 'fail' => 'Failed to update bank details',
             ],
-            'destroy' => [
+            'delete' => [
                 'success' => 'Bank details :name deleted successfully'
             ],
             'restore' => [
@@ -112,7 +112,7 @@ return [
                 'success' => 'Employees updated successfully',
                 'fail' => 'Failed to update employees',
             ],
-            'destroy' => [
+            'delete' => [
                 'success' => 'Employee :name was successfully deleted'
             ],
             'restore' => [
@@ -138,7 +138,7 @@ return [
                 'success' => 'Contacts updated successfully',
                 'fail' => 'Failed to update contacts',
             ],
-            'destroy' => [
+            'delete' => [
                 'success' => 'Contact person :name deleted successfully'
             ],
             'restore' => [

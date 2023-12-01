@@ -2,28 +2,21 @@
 
 namespace App\Http\Requests\Contractors\PlacesOfBusiness;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
-class StorePlaceOfBusinessRequest extends FormRequest
+class StorePlaceOfBusinessRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'contractors.places_of_business';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'place_of_business.';
 
@@ -55,20 +48,5 @@ class StorePlaceOfBusinessRequest extends FormRequest
                 'string'
             ]
         ];
-    }
-
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __(
-                        'contractors.places_of_business.actions.create.fail',
-                        ['name' => $this->address]
-                    )
-                );
-            }
-        });
     }
 }

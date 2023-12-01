@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contractors;
 
-use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\PlacesOfBusiness\StorePlaceOfBusinessRequest;
 use App\Http\Requests\Contractors\PlacesOfBusiness\UpdatePlaceOfBusinessRequest;
@@ -40,16 +39,12 @@ class PlaceOfBusinessController extends CoreController
     public function store(StorePlaceOfBusinessRequest $request): RedirectResponse
     {
         $validated = $request->validated()['place_of_business'];
-        $placeObBusiness = $this->service->create($validated);
+        $placeOfBusiness = $this->service->create($validated);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
-                    ['name' => $placeObBusiness->address]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $placeOfBusiness->address]
+        );
     }
 
     /**
@@ -69,11 +64,7 @@ class PlaceOfBusinessController extends CoreController
             $request->validated()
         );
 
-        return back()
-            ->with(
-                'success',
-                __(Local::getSuccessMessageKey($this->prefixLocalKey, 'update'))
-            );
+        return $this->successRedirect('update');
     }
 
     /**
@@ -87,14 +78,10 @@ class PlaceOfBusinessController extends CoreController
     {
         $this->service->delete($placeOfBusiness);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
-                    ['name' => $placeOfBusiness->address]
-                )
-            );
+        return $this->successRedirect(
+            'delete',
+            ['name' => $placeOfBusiness->address]
+        );
     }
 
     /**
@@ -108,13 +95,9 @@ class PlaceOfBusinessController extends CoreController
     {
         $this->service->restore($placeOfBusiness);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
-                    ['name' => $placeOfBusiness->address]
-                )
-            );
+        return $this->successRedirect(
+            'restore',
+            ['name' => $placeOfBusiness->address]
+        );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contractors;
 
-use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\BankAccountDetails\StoreBankAccountDetailRequest;
 use App\Http\Requests\Contractors\BankAccountDetails\UpdateBankAccountDetailRequest;
@@ -16,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 class BankAccountDetailController extends CoreController
 {
     protected $prefixLocalKey = 'contractors.bank_account_details';
+
     /**
      * @var AccountDetailService
      */
@@ -43,14 +43,10 @@ class BankAccountDetailController extends CoreController
 
         $bankAccountDetail = $this->service->create($validated);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
-                    ['name' => $bankAccountDetail->payment_account]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $bankAccountDetail->payment_account]
+        );
     }
 
     /**
@@ -69,11 +65,7 @@ class BankAccountDetailController extends CoreController
 
         $this->service->update($bankAccountDetail, $validated);
 
-        return back()
-            ->with(
-                'success',
-                __(Local::getSuccessMessageKey($this->prefixLocalKey, 'update'))
-            );
+        return $this->successRedirect('update');
     }
 
     /**
@@ -87,14 +79,10 @@ class BankAccountDetailController extends CoreController
     {
         $this->service->delete($bankAccountDetail);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
-                    ['name' => $bankAccountDetail->payment_account]
-                )
-            );
+        return $this->successRedirect(
+            'delete',
+            ['name' => $bankAccountDetail->payment_account]
+        );
     }
 
     /**
@@ -108,13 +96,9 @@ class BankAccountDetailController extends CoreController
     {
         $this->service->restore($bankAccountDetail);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
-                    ['name' => $bankAccountDetail->payment_account]
-                )
-            );
+        return $this->successRedirect(
+            'restore',
+            ['name' => $bankAccountDetail->payment_account]
+        );
     }
 }

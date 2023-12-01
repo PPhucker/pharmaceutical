@@ -9,7 +9,9 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreBankAccountDetailRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.bank_account_details.actions.create.fail';
+    protected $prefixLocalKey = 'contractors.bank_account_details';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
@@ -36,23 +38,5 @@ class StoreBankAccountDetailRequest extends CoreFormRequest
                 'digits:20',
             ]
         ];
-    }
-
-    /**
-     * @return void
-     */
-    public function prepareForValidation(): void
-    {
-        $bic = $this->input('bank_account_detail.bank');
-
-        $this->merge([
-            'bank_account_detail' => [
-                'contractor_id' => $this->input('bank_account_detail.contractor_id'),
-                'bank' => $bic,
-                'payment_account' => [
-                    $bic => $this->input("bank_account_detail.payment_account.$bic")
-                ],
-            ]
-        ]);
     }
 }

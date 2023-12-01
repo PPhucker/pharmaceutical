@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\Message\MessageTrait;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -10,9 +11,16 @@ use Illuminate\Validation\Validator;
  */
 abstract class CoreFormRequest extends FormRequest
 {
+    use MessageTrait;
 
-    protected $afterValidatorFailKeyMessage;
+    /**
+     * @var string
+     */
+    protected $action;
 
+    /**
+     * @var array
+     */
     protected $rules = [];
 
     /**
@@ -43,8 +51,8 @@ abstract class CoreFormRequest extends FormRequest
         $validator->after(function ($validator) {
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
-                    'fail',
-                    __($this->afterValidatorFailKeyMessage)
+                    $this->failKey,
+                    __($this->getFullKeyForLocal($this->action, $this->failKey))
                 );
             }
         });

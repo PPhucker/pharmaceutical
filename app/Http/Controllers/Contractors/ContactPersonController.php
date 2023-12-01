@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contractors;
 
-use App\Helpers\Local;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Contractors\ContactPersons\StoreContactPersonRequest;
 use App\Http\Requests\Contractors\ContactPersons\UpdateContactPersonRequest;
@@ -46,14 +45,10 @@ class ContactPersonController extends CoreController
             $request->validated()['contact_person']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'create'),
-                    ['name' => $contactPerson->name]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $contactPerson->name]
+        );
     }
 
 
@@ -72,11 +67,7 @@ class ContactPersonController extends CoreController
             $request->validated()['contact_persons']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(Local::getSuccessMessageKey($this->prefixLocalKey, 'update'))
-            );
+        return $this->successRedirect('update');
     }
 
     /**
@@ -90,14 +81,10 @@ class ContactPersonController extends CoreController
     {
         $this->service->delete($contactPerson);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'destroy'),
-                    ['name' => $contactPerson->name]
-                )
-            );
+        return $this->successRedirect(
+            'delete',
+            ['name' => $contactPerson->name]
+        );
     }
 
     /**
@@ -111,13 +98,9 @@ class ContactPersonController extends CoreController
     {
         $this->service->restore($contactPerson);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    Local::getSuccessMessageKey($this->prefixLocalKey, 'restore'),
-                    ['name' => $contactPerson->name]
-                )
-            );
+        return $this->successRedirect(
+            'restore',
+            ['name' => $contactPerson->name]
+        );
     }
 }

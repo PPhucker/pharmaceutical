@@ -2,24 +2,17 @@
 
 namespace App\Http\Requests\Contractors;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
 /**
  * Валидация создания контрагента.
  */
-class StoreContractorRequest extends FormRequest
+class StoreContractorRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'contractors';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
@@ -67,22 +60,5 @@ class StoreContractorRequest extends FormRequest
                 'max:255'
             ]
         ];
-    }
-
-    /**
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator): void
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'contractors.actions.create.fail',
-                    __('fail', ['name' => $this->name])
-                );
-            }
-        });
     }
 }
