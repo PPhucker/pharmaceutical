@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Contractors;
+namespace App\Repositories\Contractors\Bank;
 
 use App\Models\Contractors\BankAccountDetail;
 use App\Repositories\CrudRepository;
@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Auth;
  */
 class BankAccountDetailRepository extends CrudRepository
 {
-
     /**
      * @return Collection
      */
@@ -30,7 +29,7 @@ class BankAccountDetailRepository extends CrudRepository
     {
         $paymentAccount = $validated['payment_account'][$validated['bank']];
 
-        return BankAccountDetail::create(
+        return $this->model->create(
             [
                 'contractor_id' => (int)$validated['contractor_id'],
                 'user_id' => Auth::user()->id,
@@ -49,7 +48,8 @@ class BankAccountDetailRepository extends CrudRepository
     public function update($model, array $validated): void
     {
         foreach ($validated['bank_account_details'] as $account) {
-            BankAccountDetail::withTrashed()
+            $this->model
+                ->withTrashed()
                 ->findOrFail((int)$account['id'])
                 ->fill(
                     [

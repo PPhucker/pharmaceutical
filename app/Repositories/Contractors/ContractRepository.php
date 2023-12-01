@@ -17,6 +17,7 @@ class ContractRepository extends CrudRepository
      */
     public function getAll(): Collection
     {
+        return $this->clone()->all();
     }
 
     /**
@@ -28,7 +29,7 @@ class ContractRepository extends CrudRepository
     {
         $userId = Auth::user()->id;
 
-        return Contract::create(
+        return $this->model->create(
             [
                 'created_by_id' => $userId,
                 'updated_by_id' => $userId,
@@ -51,7 +52,9 @@ class ContractRepository extends CrudRepository
     public function update($model, array $validated): void
     {
         foreach ($validated['contracts'] as $validatedContract) {
-            Contract::withTrashed()->find((int)$validatedContract['id'])
+            $this->model
+                ->withTrashed()
+                ->findOrFail((int)$validatedContract['id'])
                 ->fill(
                     [
                         'updated_by_id' => Auth::user()->id,

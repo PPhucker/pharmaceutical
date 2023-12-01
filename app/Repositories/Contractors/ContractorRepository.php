@@ -37,8 +37,6 @@ class ContractorRepository extends ResourceRepository
             )
             ->orderBy('id');
 
-        //dd($contractors->withTrashed()->get());
-
         if ($withTrashed) {
             $contractors->withTrashed();
         }
@@ -209,7 +207,7 @@ class ContractorRepository extends ResourceRepository
      */
     public function create(array $validated): Contractor
     {
-        return Contractor::create(
+        return $this->model->create(
             [
                 'user_id' => Auth::user()->id,
                 'legal_form_type' => $validated['legal_form_type'],

@@ -37,16 +37,17 @@ class PlaceOfBusinessRepository extends CrudRepository
      */
     public function create(array $validated): PlaceOfBusiness
     {
-        return PlaceOfBusiness::create(
-            [
-                'user_id' => Auth::user()->id,
-                'contractor_id' => (int)$validated['contractor_id'],
-                'identifier' => $validated['identifier'],
-                'registered' => isset($validated['registered']) ? 1 : 0,
-                'index' => $validated['index'],
-                'address' => $validated['address']
-            ]
-        );
+        return $this->model
+            ->create(
+                [
+                    'user_id' => Auth::user()->id,
+                    'contractor_id' => (int)$validated['contractor_id'],
+                    'identifier' => $validated['identifier'],
+                    'registered' => isset($validated['registered']) ? 1 : 0,
+                    'index' => $validated['index'],
+                    'address' => $validated['address']
+                ]
+            );
     }
 
     /**
@@ -59,7 +60,8 @@ class PlaceOfBusinessRepository extends CrudRepository
     {
         foreach ($validated['places_of_business'] as $validatedPlace) {
             $placeOfBusinessId = (int)$validatedPlace['id'];
-            PlaceOfBusiness::withTrashed()
+            $this->model
+                ->withTrashed()
                 ->find($placeOfBusinessId)
                 ->fill(
                     [

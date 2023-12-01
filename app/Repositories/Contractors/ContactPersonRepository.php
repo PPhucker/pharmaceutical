@@ -26,7 +26,7 @@ class ContactPersonRepository extends CrudRepository
      */
     public function create(array $validated): ContactPerson
     {
-        return ContactPerson::create(
+        return $this->model->create(
             [
                 'contractor_id' => $validated['contractor_id'],
                 'name' => $validated['name'],
@@ -46,7 +46,8 @@ class ContactPersonRepository extends CrudRepository
     public function update($model, array $validated): void
     {
         foreach ($validated as $person) {
-            ContactPerson::withTrashed()
+            $this->model
+                ->withTrashed()
                 ->findOrFail((int)$person['id'])
                 ->fill(
                     [
