@@ -1,15 +1,23 @@
 <?php
 
-namespace App\Http\Requests\Contractors\Trailers;
+namespace App\Http\Requests\Contractors\Transport\Trailers;
 
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидация добавления прицепа контрагента.
+ */
 class StoreTrailerRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.trailers.actions.create.fail';
+    protected $prefixLocalKey = 'contractors.trailers';
 
-    public function rules()
+    protected $action = 'create';
+
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         $prefix = 'trailer.';
 

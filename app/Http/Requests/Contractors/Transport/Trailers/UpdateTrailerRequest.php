@@ -1,17 +1,27 @@
 <?php
 
-namespace App\Http\Requests\Contractors\Cars;
+namespace App\Http\Requests\Contractors\Transport\Trailers;
 
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdateCarRequest extends CoreFormRequest
+/**
+ * Валидация обноления прицепа контрагента.
+ */
+class UpdateTrailerRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.cars.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.trailers';
 
-    public function rules()
+    protected $action = 'update';
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules(): array
     {
-        $prefix = 'cars.*.';
+        $prefix = 'trailers.*.';
 
         return [
             $prefix . 'id' => [
@@ -22,16 +32,16 @@ class UpdateCarRequest extends CoreFormRequest
                 'required',
                 'numeric',
             ],
-            $prefix . 'car_model' => [
+            $prefix . 'type' => [
                 'required',
                 'string',
-                'max:20',
+                'max:5',
             ],
             $prefix . 'state_number' => [
                 'required',
                 'string',
                 'max:15',
-                Rule::unique('contractors_cars', 'state_number')
+                Rule::unique('contractors_trailers', 'state_number')
                     ->whereNotIn('state_number', $this->input($prefix . 'state_number'))
                     ->whereNull('deleted_at'),
             ],

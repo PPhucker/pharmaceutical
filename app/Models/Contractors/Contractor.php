@@ -3,6 +3,9 @@
 namespace App\Models\Contractors;
 
 use App\Models\Classifiers\LegalForm;
+use App\Models\Contractors\Transport\Car;
+use App\Models\Contractors\Transport\Driver;
+use App\Models\Contractors\Transport\Trailer;
 use App\Traits\Contractors\Notifications;
 use App\Traits\Document\HasInvoicesAndPackingLists;
 use App\Traits\Model\RelationshipsTrait;

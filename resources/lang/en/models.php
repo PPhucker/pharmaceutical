@@ -42,7 +42,6 @@ return [
                     'Car' => 'Company car',
                     'Driver' => 'Driver of the organization',
                     'Trailer' => 'Company trailer',
-                    'Contract' => 'Contractor contract',
                 ],
             ],
             'Contractors' => [
@@ -50,9 +49,12 @@ return [
                 'PlaceOfBusiness' => 'Place of business',
                 'BankAccountDetail' => 'Bank details of the organization',
                 'ContactPerson' => 'Contractor contact person',
-                'Car' => 'Car of the contractor',
-                'Driver' => 'Driver of the contractor',
-                'Trailer' => 'Trailer of the contractor',
+                'Contract' => 'Contractor contract',
+                'Transport' => [
+                    'Car' => 'Car of the contractor',
+                    'Driver' => 'Driver of the contractor',
+                    'Trailer' => 'Trailer of the contractor',
+                ],
             ],
             'Documents' => [
                 'InvoicesForPayment' => [

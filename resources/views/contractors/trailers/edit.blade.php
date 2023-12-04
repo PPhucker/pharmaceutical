@@ -35,9 +35,9 @@
                         <span class="d-none">
                             {{$trailer->type}}
                         </span>
-                        <select name="trailer[{{$key}}][type]"
+                        <select name="trailers[{{$key}}][type]"
                                 id="type"
-                                class="form-control form-control-sm text-primary
+                                class="form-control form-control-sm text-primary mt-1 mb-1
                                 @error('trailer.' . $key . '.type') is-invalid @enderror">
                             <option value="п" @if($trailer->type === 'п') selected @endif>Прицеп</option>
                             <option value="п/п" @if($trailer->type === 'п/п') selected @endif>Полуприцеп</option>

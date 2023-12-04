@@ -2,12 +2,9 @@
 
 namespace App\Providers\Contractors;
 
-use App\Models\Contractors\Car;
 use App\Models\Contractors\ContactPerson;
 use App\Models\Contractors\Contract;
 use App\Models\Contractors\Contractor;
-use App\Models\Contractors\Driver;
-use App\Models\Contractors\Trailer;
 use App\Observers\Contractors\ContractorObserver;
 use App\Observers\CoreObserver;
 use App\Services\Contractor\ContractorService;
@@ -24,6 +21,7 @@ class ContractorServiceProvider extends ServiceProvider
     protected $providers = [
         AddressServiceProvider::class,
         BankServiceProvider::class,
+        TransportServiceProvider::class
     ];
 
     /**
@@ -32,9 +30,6 @@ class ContractorServiceProvider extends ServiceProvider
     protected $coreObservedModels = [
         Contract::class,
         ContactPerson::class,
-        Driver::class,
-        Car::class,
-        Trailer::class,
     ];
 
     /**

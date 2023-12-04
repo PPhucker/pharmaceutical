@@ -1,26 +1,28 @@
 <?php
 
-namespace App\Http\Requests\Contractors\Drivers;
+namespace App\Http\Requests\Contractors\Transport\Drivers;
 
 use App\Http\Requests\CoreFormRequest;
 
-class UpdateDriverRequest extends CoreFormRequest
+/**
+ * Валидация добавления водителя контрагента.
+ */
+class StoreDriverRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.drivers.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.drivers';
+
+    protected $action = 'create';
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
-        $prefix = 'drivers.*.';
+        $prefix = 'driver.';
 
         return [
-            $prefix . 'id' => [
-                'required',
-                'numeric',
-            ],
             $prefix . 'contractor_id' => [
                 'required',
                 'numeric',
