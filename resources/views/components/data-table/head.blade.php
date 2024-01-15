@@ -1,15 +1,5 @@
-<thead class="bg-secondary">
+<thead class="bg-secondary text-nowrap">
 <tr class="text-primary">
-    @foreach($columns as $column)
-        <th scope="col"
-            class="text-center align-middle"
-            rowspan="{{$column['rowspan'] ?? ''}}"
-            colspan="{{$column['colspan'] ?? ''}}">
-            {{__($column['localKey'] ?? '')}}
-        </th>
-    @endforeach
+    {{$slot}}
 </tr>
-@if(isset($additionalRow))
-    {{$additionalRow}}
-@endif
 </thead>

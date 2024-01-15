@@ -1,57 +1,59 @@
-<x-forms.collapse.creation cardId="div_add_contact_person"
-                           errorName="contact_person.*">
-    <x-slot name="cardBody">
-        <form id="form_add_contact_person"
-              method="POST"
-              action="{{route('contact_persons.store')}}">
-            @csrf
-            <input type="hidden"
-                   name="contact_person[contractor_id]"
-                   value="{{$contractor->id}}">
-            <x-forms.row id="contact-person-name"
-                         label="{{__('contractors.contact_persons.name')}}">
-                <input type="text"
-                       name="contact_person[name]"
-                       id="contact-person-name"
-                       value="{{old('contact_person.name')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('contact_person.name') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="contact_person.name"/>
-            </x-forms.row>
-            <x-forms.row id="contact-person-post"
-                         label="{{__('contractors.contact_persons.post')}}">
-                <input type="text"
-                       name="contact_person[post]"
-                       id="contact-person-post"
-                       value="{{old('contact_person.post')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('contact_person.post') is-invalid @enderror">
-                <x-forms.span-error name="contact_person.post"/>
-            </x-forms.row>
-            <x-forms.row id="contact-person-phone"
-                         label="{{__('contractors.contact_persons.phone')}}">
-                <input type="text"
-                       name="contact_person[phone]"
-                       id="contact-person-phone"
-                       value="{{old('contact_person.phone')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('contact_person.phone') is-invalid @enderror">
-                <x-forms.span-error name="contact_person.phone"/>
-            </x-forms.row>
-            <x-forms.row id="contact-person-email"
-                         label="{{__('contractors.contact_persons.email')}}">
-                <input type="text"
-                       name="contact_person[email]"
-                       id="contact-person-email"
-                       value="{{old('contact_person.email')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('contact_person.email') is-invalid @enderror">
-                <x-forms.span-error name="contact_person.email"/>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_add_contact_person"/>
-    </x-slot>
-</x-forms.collapse.creation>
+<x-form
+    :route="route('contact_persons.store')"
+    formId="contact_persons_add_form">
+    <input type="hidden"
+           name="contact_person[contractor_id]"
+           value="{{$contractor->id}}">
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="contact_person[name]"
+                :text="__('contractors.contact_persons.name')"/>
+        </x-slot>
+        <x-form.element.input
+            id="contact_person[name]"
+            name="contact_person[name]"
+            :value="old('contact_person[name]')"
+            :required="true"/>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="contact_person[post]"
+                :text="__('contractors.contact_persons.post')"/>
+        </x-slot>
+        <x-form.element.input
+            id="contact_person[post]"
+            name="contact_person[post]"
+            :value="old('contact_person[post]')"/>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="contact_person[phone]"
+                :text="__('contractors.contact_persons.phone')"/>
+        </x-slot>
+        <x-form.element.input
+            id="contact_person[phone]"
+            name="contact_person[phone]"
+            :value="old('contact_person[phone]')"/>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="contact_person[email]"
+                :text="__('contractors.contact_persons.email')"/>
+        </x-slot>
+        <x-form.element.input
+            id="contact_person[email]"
+            name="contact_person[email]"
+            :value="old('contact_person[email]')"/>
+    </x-form.row>
+    <footer class="mt-auto me-auto">
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                <x-form.button.save formId="contact_persons_add_form"/>
+            </li>
+        </ul>
+    </footer>
+</x-form>

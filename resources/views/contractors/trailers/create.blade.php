@@ -1,37 +1,42 @@
-<x-forms.collapse.creation cardId="div_add_trailer"
-                           errorName="trailer.*">
-    <x-slot name="cardBody">
-        <form id="form_add_trailer"
-              method="POST"
-              action="{{route('trailers.store')}}">
-            @csrf
-            <input type="hidden"
-                   name="trailer[contractor_id]"
-                   value="{{$contractor->id}}">
-            <x-forms.row id="type"
-                         label="{{__('contractors.trailers.type')}}">
-                <select name="trailer[type]"
-                        id="type"
-                        class="form-control form-control-sm text-primary  @error('trailer.type') is-invalid @enderror">
-                    <option value="п">Прицеп</option>
-                    <option value="п/п">Полуприцеп</option>
-                </select>
-                <x-forms.span-error name="trailer.type"/>
-            </x-forms.row>
-            <x-forms.row id="state_number"
-                         label="{{__('contractors.trailers.state_number')}}">
-                <input type="text"
-                       name="trailer[state_number]"
-                       id="state_number"
-                       value="{{old('trailer.state_number')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('trailer.state_number') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="trailer.state_number"/>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_add_trailer"/>
-    </x-slot>
-</x-forms.collapse.creation>
+<x-form
+    :route="route('trailers.store')"
+    formId="trailers_add_form">
+    <input type="hidden"
+           name="trailer[contractor_id]"
+           value="{{$contractor->id}}">
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="trailer_type"
+                :text="__('contractors.trailers.type')"/>
+        </x-slot>
+        <x-form.element.select
+            name="trailer[type]">
+            <x-form.element.option
+                value="п"
+                text="п"/>
+            <x-form.element.option
+                value="п/п"
+                text="п/п"/>
+        </x-form.element.select>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="trailer_state_number"
+                :text="__('contractors.trailers.state_number')"/>
+        </x-slot>
+        <x-form.element.input
+            id="trailer_state_number"
+            name="trailer[state_number]"
+            :value="old('trailer[state_number]')"
+            :required="true"/>
+    </x-form.row>
+    <footer class="mt-auto me-auto">
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                <x-form.button.save formId="trailers_add_form"/>
+            </li>
+        </ul>
+    </footer>
+</x-form>

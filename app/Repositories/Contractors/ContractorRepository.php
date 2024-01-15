@@ -173,6 +173,7 @@ class ContractorRepository extends ResourceRepository
                 },
                 'placesOfBusiness' => static function ($query) {
                     $query->orderByDesc('contractors_places_of_business.registered')
+                        ->orderByDesc('contractors_places_of_business.address')
                         ->with('region');
                 },
                 'bankAccountDetails' => static function ($query) {

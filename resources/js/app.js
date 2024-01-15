@@ -1,19 +1,11 @@
 require('./bootstrap');
-
 global.$ = global.jQuery = require('jquery');
-
 require('suggestions-jquery');
 
-import {DataTable} from './components/data-table.js';
-
-global.DataTable = DataTable;
-
-import {Filter} from './components/filter-table-records.js';
-
-global.Filter = Filter;
-
+import {DataTableMnager} from './components/datatable/DataTableManager.js';
+import {DataTable} from './components/datatable/DataTableConfig.js';
+import {Filter} from './components/FilterTableRecords.js';
+import {FormUtils} from './components/form/FormUtils.js';
 import {DaData} from './components/dadata/DaData.js';
 
 global.DaData = DaData;
-
-

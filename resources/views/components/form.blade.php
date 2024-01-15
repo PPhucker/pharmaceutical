@@ -1,28 +1,29 @@
-@props(['title', 'back' => null, 'footer' => null])
-<div class="d-flex justify-content-center m-3">
-    <div class="card shadow w-100">
-        <ul class="card-header bg-primary list-inline ps-0 pe-0 pt-1 pb-1">
-            <li class="list-inline-item ms-2">
-                <a class="btn btn-sm btn-primary text-white"
-                   href="{{$back}}"
-                   title="{{__('form.button.back')}}">
-                    <i class="bi bi-arrow-90deg-left align-middle fs-6"></i>
-                </a>
-            </li>
-            <li class="list-inline-item">
-                <span class="align-middle fs-6 text-white">
-                    {{mb_strtoupper($title)}}
-                </span>
-            </li>
-        </ul>
-        <div class="card-body p-2">
-            <x-notifications.alert/>
-            {{$slot}}
-        </div>
-        @if(isset($footer))
-            <div class="card-footer sticky-bottom bg-secondary border-0 ps-2 pe-2">
-                {{$footer}}
-            </div>
-        @endif
-    </div>
-</div>
+@props([
+    'formId',
+    'route',
+    'method' => null,
+    'active' => null,
+    'class' => null
+    ])
+@aware(['formId'])
+<style>
+    form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    footer {
+        margin-top: auto;
+    }
+</style>
+<form id="{{$formId}}"
+      class="text-primary {{$class}} h-100"
+      method="POST"
+      action="{{$route}}">
+    {{$slot}}
+    @if($method)
+        @method($method)
+    @endif
+    @csrf
+</form>

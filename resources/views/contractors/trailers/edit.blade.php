@@ -1,80 +1,83 @@
-<x-forms.collapse.card route="{{route('trailers.update', ['trailer' => 1])}}"
-                       cardId="card_trailers"
-                       formId="form_trailers"
-                       title="{{__('contractors.trailers.trailers')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_trailers"
-                       targets="-1"
-                       domOrderType="{{true}}">
-            <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_trailers"/>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.trailers.type')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.trailers.state_number')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($contractor->trailers as $key => $trailer)
-                <tr @if($trailer->trashed()) class="d-none trashed" @endif>
-                    <input type="hidden"
-                           name="trailers[{{$key}}][id]"
-                           value="{{$trailer->id}}">
-                    <input type="hidden"
-                           name="trailers[{{$key}}][contractor_id]"
-                           value="{{$contractor->id}}">
-                    <td class="border-start">
-                        <span class="d-none">
-                            {{$trailer->type}}
-                        </span>
-                        <select name="trailers[{{$key}}][type]"
-                                id="type"
-                                class="form-control form-control-sm text-primary mt-1 mb-1
-                                @error('trailer.' . $key . '.type') is-invalid @enderror">
-                            <option value="п" @if($trailer->type === 'п') selected @endif>Прицеп</option>
-                            <option value="п/п" @if($trailer->type === 'п/п') selected @endif>Полуприцеп</option>
-                        </select>
-                        <x-forms.span-error name="cars.{{$key}}.car_model"/>
-                    </td>
-                    <td class="col-11 border-start">
-                        <span class="d-none">
-                            {{$trailer->state_number}}
-                        </span>
-                        <input type="text"
-                               name="trailers[{{$key}}][state_number]"
-                               value="{{$trailer->state_number}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('trailers.' . $key . '.state_number') is-invalid @enderror">
-                        <x-forms.span-error name="trailers.{{$key}}.state_number"/>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if($trailer->trashed())
-                            <x-buttons.restore
-                                route="{{route('trailers.restore', ['trailer' => $trailer->id])}}"
-                                itemId="trailer-{{$trailer->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('trailers.destroy', ['trailer' => $trailer->id])}}"
-                                itemId="trailer-{{$trailer->id}}"/>
+<x-form.nav-tab
+    formId="trailers_main_form">
+    <div class="row">
+        <div class="col-md col-auto mb-2">
+            @include('contractors.trailers.create')
+        </div>
+        <div class="col-md-12">
+            <x-form
+                :route="route('trailers.update', ['trailer' => $contractor->trailers->first()->id ?? 1])"
+                formId="trailers_main_form"
+                method="PATCH">
+                <x-data-table.table
+                    id="trailers_main_table"
+                    type="edit"
+                    targets="-1">
+                    <x-data-table.head>
+                        <x-data-table.th
+                            :text="__('contractors.trailers.type')">
+                        </x-data-table.th>
+                        <x-data-table.th
+                            :text="__('contractors.trailers.state_number')">
+                        </x-data-table.th>
+                        <x-data-table.th/>
+                    </x-data-table.head>
+                    <x-data-table.body>
+                        @foreach($contractor->trailers as $key => $trailer)
+                            <x-data-table.tr
+                                :model="$trailer">
+                                <x-slot name="hiddenInputs">
+                                    <input type="hidden"
+                                           name="trailers[{{$key}}][id]"
+                                           value="{{$trailer->id}}">
+                                    <input type="hidden"
+                                           name="trailers[{{$key}}][contractor_id]"
+                                           value="{{$contractor->id}}">
+                                </x-slot>
+                                <x-data-table.td>
+                                    <x-form.element.select
+                                        name="trailers[{{$key}}][type]"
+                                        :readonly="$trailer->trashed()">
+                                        <x-form.element.option
+                                            value="п"
+                                            text="п"
+                                            :selected="$trailer->type === 'п'"/>
+                                        <x-form.element.option
+                                            value="п/п"
+                                            text="п/п"
+                                            :selected="$trailer->type === 'п/п'"/>
+                                    </x-form.element.select>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-form.element.input
+                                        name="trailers[{{$key}}][state_number]"
+                                        :value="$trailer->state_number"
+                                        :required="true"/>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-data-table.button.soft-delete
+                                        :trashed="$trailer->trashed()"
+                                        :id="$trailer->id"
+                                        route="trailers"
+                                        :params="['trailer' => $trailer->id]"/>
+                                </x-data-table.td>
+                            </x-data-table.tr>
+                        @endforeach
+                    </x-data-table.body>
+                </x-data-table.table>
+                <footer class="mt-auto">
+                    <ul class="list-inline mb-0">
+                        @if(count($contractor->trailers) > 0)
+                            <li class="list-inline-item">
+                                <x-form.button.save formId="trailers_main_form"/>
+                            </li>
                         @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        @if(count($contractor->trailers) > 0)
-            <x-buttons.save formId="form_trailers"/>
-        @endif
-        <x-buttons.collapse formId="div_add_trailer"/>
-    </x-slot>
-</x-forms.collapse.card>
+                        <li class="list-inline-item">
+                            <x-data-table.filter.trashed-filter id="trailers_main_table"/>
+                        </li>
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+    </div>
+</x-form.nav-tab>

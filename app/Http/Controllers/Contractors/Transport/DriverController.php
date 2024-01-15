@@ -76,7 +76,10 @@ class DriverController extends CoreController
     {
         $this->service->delete($driver);
 
-        return $this->successRedirect('delete');
+        return $this->successRedirect(
+            'delete',
+            ['name' => $driver->name]
+        );
     }
 
     /**
@@ -90,6 +93,9 @@ class DriverController extends CoreController
     {
         $this->service->restore($driver);
 
-        return $this->successRedirect('restore');
+        return $this->successRedirect(
+            'restore',
+            ['name' => $driver->name]
+        );
     }
 }

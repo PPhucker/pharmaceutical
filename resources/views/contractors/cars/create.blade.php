@@ -1,41 +1,41 @@
-<x-forms.collapse.creation cardId="div_add_car"
-                           errorName="car.*">
-    <x-slot name="cardBody">
-        <form id="form_add_car"
-              method="POST"
-              action="{{route('cars.store')}}">
-            @csrf
-            <input type="hidden"
-                   name="car[contractor_id]"
-                   value="{{$contractor->id}}">
-            <x-forms.row id="car_model"
-                         label="{{__('contractors.cars.car_model')}}">
-                <input type="text"
-                       name="car[car_model]"
-                       id="car_model"
-                       value="{{old('car.car_model')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('car.car_model') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="car.car_model"/>
-            </x-forms.row>
-            <x-forms.row id="state_number"
-                         label="{{__('contractors.cars.state_number')}}">
-                <input type="text"
-                       name="car[state_number]"
-                       id="state_number"
-                       value="{{old('car.state_number')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('car.state_number') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="car.state_number"/>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_add_car"/>
-    </x-slot>
-</x-forms.collapse.creation>
+<x-form
+    :route="route('cars.store')"
+    formId="cars_add_form">
+    <input type="hidden"
+           name="car[contractor_id]"
+           value="{{$contractor->id}}">
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="car_model"
+                :text="__('contractors.cars.car_model')"/>
+        </x-slot>
+        <x-form.element.input
+            id="car_model"
+            name="car[car_model]"
+            :value="old('car[car_model]')"
+            :required="true"/>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="state_number"
+                :text="__('contractors.cars.state_number')"/>
+        </x-slot>
+        <x-form.element.input
+            id="state_number"
+            name="car[state_number]"
+            :value="old('car[state_number]')"
+            :required="true"/>
+    </x-form.row>
+    <footer class="mt-auto me-auto">
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                <x-form.button.save formId="cars_add_form"/>
+            </li>
+        </ul>
+    </footer>
+</x-form>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         $('#car_model').suggestions({

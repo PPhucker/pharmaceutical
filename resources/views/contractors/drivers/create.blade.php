@@ -1,27 +1,26 @@
-<x-forms.collapse.creation cardId="div_add_driver"
-                           errorName="driver.*">
-    <x-slot name="cardBody">
-        <form id="form_add_driver"
-              method="POST"
-              action="{{route('drivers.store')}}">
-            @csrf
-            <input type="hidden"
-                   name="driver[contractor_id]"
-                   value="{{$contractor->id}}">
-            <x-forms.row id="driver-name"
-                         label="{{__('contractors.drivers.name')}}">
-                <input type="text"
-                       name="driver[name]"
-                       id="driver-name"
-                       value="{{old('driver.name')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('driver.name') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="driver.name"/>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_add_driver"/>
-    </x-slot>
-</x-forms.collapse.creation>
+<x-form
+    :route="route('drivers.store')"
+    formId="drivers_add_form">
+    <input type="hidden"
+           name="driver[contractor_id]"
+           value="{{$contractor->id}}">
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="driver_name"
+                :text="__('contractors.drivers.name')"/>
+        </x-slot>
+        <x-form.element.input
+            id="driver_name"
+            name="driver[name]"
+            :value="old('driver[name]')"
+            :required="true"/>
+    </x-form.row>
+    <footer class="mt-auto me-auto">
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                <x-form.button.save formId="drivers_add_form"/>
+            </li>
+        </ul>
+    </footer>
+</x-form>

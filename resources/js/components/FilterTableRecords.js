@@ -1,5 +1,5 @@
-export class Filter {
-    static showTrashed(tableId, recordType) {
+const Filter = {
+    showTrashed: function(tableId, recordType) {
         const table = document.getElementById(tableId);
 
         for (const item of table.getElementsByTagName(
@@ -24,5 +24,7 @@ export class Filter {
                 }
             }
         }
-    }
-}
+    },
+};
+
+window.Filter = Filter;

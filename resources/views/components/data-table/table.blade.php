@@ -1,13 +1,23 @@
 @aware(['title'])
-@props(['id', 'targets', 'domOrderType' => null])
+@props([
+    'id',
+    'type' => 'table',
+    'title' => '',
+    'targets' => null,
+    'domOrderType' => null,
+    'pageLength' => 20
+    ])
+
+<div id="localization-data"
+     data-localization='@json(__('datatable'))'>
+</div>
+
 <div class="table-responsive p-0">
     <div class="list-inline">
         @if(isset($filter))
-            <x-data-table.filters.data-table-filter :tableId="$id">
-                @if (isset($filter))
-                    {{$filter}}
-                @endif
-            </x-data-table.filters.data-table-filter>
+            <x-data-table.filter.data-table-filter :tableId="$id">
+                {{$filter}}
+            </x-data-table.filter.data-table-filter>
         @endif
     </div>
     <input id="tableId_{{$id}}"
@@ -16,11 +26,17 @@
     <input id="targets_{{$id}}"
            type="hidden"
            value="{{$targets}}">
-    <input id="domOrderType_{{$id}}"
+    <input id="orderType_{{$id}}"
            type="hidden"
            value="{{$domOrderType}}">
+    <input id="tableType_{{$id}}"
+           type="hidden"
+           value="{{$type}}">
+    <input id="pageLength_{{$id}}"
+           type="hidden"
+           value="{{$pageLength}}">
     <table id="{{$id}}"
-           class="table table-sm table-bordered table-hover text-nowrap w-100 mt-0">
+           class="table table-hover">
         @if(isset($head))
             {{$head}}
         @endif
@@ -34,50 +50,10 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const localization = {
-            all: '{{__('datatable.entries.all')}}',
-            entries: '{{__('datatable.entries.entries')}}',
-            hide: '{{__('datatable.buttons.hide')}}',
-            noEntries: '{{__('datatable.entries.no')}}',
-            noEntriesToFind: '{{__('datatable.entries.no_to_find')}}',
-            of: '{{__('datatable.entries.of')}}',
-            saveAs: '{{__('datatable.buttons.save_as')}}',
-            search: '{{__('datatable.search')}}',
-            show: '{{__('datatable.entries.show')}}',
-            wait: '{{__('datatable.wait')}}',
-        };
-        const id = '{{$id}}';
+        const table = {{$id}};
+        const settings = DataTableManager.getSettings(table.id);
+        const dt = new DataTableConfig(settings);
 
-        function initializeDataTable() {
-            const tableId = document.getElementById(`tableId_${id}`).value;
-            const targets = document.getElementById(`targets_${id}`).value;
-            const domOrderType = document.getElementById(`domOrderType_${id}`).value;
-            const targetsArray = targets ? targets.split(',').map(Number) : null;
-
-            const dt = new DataTable(tableId, domOrderType, targetsArray, localization);
-            dt.render();
-        }
-
-        function appendFilterToWrapper() {
-            const wrapper = document.getElementById(`${id}_wrapper`);
-            const listInline = wrapper.querySelector('.list-inline');
-            const filter = document.getElementById(`filter_${id}`);
-
-            listInline.appendChild(filter);
-        }
-
-        function setPrintCaption() {
-            const caption = document.getElementById(`caption_${id}`);
-            caption.textContent = `{{$title}}`;
-            caption.classList.remove('d-none', 'd-print-none');
-        }
-
-        try {
-            initializeDataTable();
-            appendFilterToWrapper();
-            setPrintCaption();
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
+        dt.render();
     });
 </script>

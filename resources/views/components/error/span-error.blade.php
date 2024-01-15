@@ -1,8 +1,9 @@
+@props(['name'])
 @error($name)
 <span class="invalid-feedback"
       role="alert">
     <strong>
-        {{ $message }}
+        {{$message}}
     </strong>
 </span>
 @enderror

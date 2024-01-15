@@ -1,142 +1,138 @@
-<x-forms.collapse.card route="{{route('places_of_business.update', ['place_of_business' => 1])}}"
-                       cardId="card_places_of_business"
-                       formId="form_places_of_business"
-                       title="{{__('contractors.places_of_business.places_of_business')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_places_of_business"
-                       targets='-1,-2'
-                       domOrderType="{{true}}">
-            <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_places_of_business"/>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                @roles(['digital_communication'])
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.places_of_business.identifier')}}
-                </th>
-                @end_roles
-                <th scope="col"
-                    class="text-center border-start">
-                    {{__('contractors.places_of_business.index')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('classifiers.regions.region')}}
-                </th>
-                <th scope="col"
-                    class="text-center col-md-6">
-                    {{__('contractors.places_of_business.address')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.places_of_business.registered')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($contractor->placesOfBusiness as $key => $place)
-                <tr @if($place->trashed()) class="d-none trashed" @endif>
-                    <input type="hidden"
-                           name="places_of_business[{{$key}}][id]"
-                           value="{{$place->id}}">
-                    <input type="hidden"
-                           name="places_of_business[{{$key}}][contractor_id]"
-                           value="{{$place->contractor_id}}">
-                    <input type="hidden"
-                           name="places_of_business[{{$key}}][identifier]"
-                           value="{{$place->identifier}}">
-                    @roles(['digital_communication'])
-                    <td class="border-start">
-                        <span class="d-none">
-                            {{$place->identifier}}
-                        </span>
-                        <input type="text"
-                               name="places_of_business[{{$key}}][identifier]"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('places_of_business.' . $key . '.identifier') is-invalid @enderror"
-                               value="{{$place->identifier}}">
-                        <x-forms.span-error name="places_of_business.{{$key}}.identifier"/>
-                    </td>
-                    @end_roles
-                    <td>
-                        <span class="d-none">
-                            {{$place->index}}
-                        </span>
-                        <input type="text"
-                               name="places_of_business[{{$key}}][index]"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('places_of_business.' . $key . '.index') is-invalid @enderror"
-                               value="{{$place->index}}">
-                        <x-forms.span-error name="places_of_business.{{$key}}.index"/>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$place->region->name ?? ''}}
-                        </span>
-                        <select type="text"
-                                name="places_of_business[{{$key}}][region_id]"
-                                class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('places_of_business.' . $key . '.region_id') is-invalid @enderror">
-                            <option value="{{null}}">
-                                {{'-'}}
-                            </option>
-                            @foreach($regions as $region)
-                                <option value="{{$region->id}}"
-                                        @if(($place->region->id ?? null) === $region->id) selected @endif>
-                                    {{$region->name}}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-forms.span-error name="places_of_business.{{$key}}.region_id"/>
-                    </td>
-                    <td class="col-md-6">
-                        <span class="d-none">
-                            {{$place->address}}
-                        </span>
-                        <textarea type="text"
-                                  rows="1"
-                                  name="places_of_business[{{$key}}][address]"
-                                  class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('places_of_business.' . $key . '.address') is-invalid @enderror">{{$place->address}}
-                        </textarea>
-                        <x-forms.span-error name="places_of_business.{{$key}}.address"/>
-                    </td>
-                    <td class="align-middle text-center">
-                        <span class="d-none">
-                            @if($place->registered)
-                                {{__('contractors.places_of_business.is_registered')}}
-                            @endif
-                        </span>
-                        <input type="radio"
-                               name="registered"
-                               value="{{$place->id}}"
-                               class="form-check-input
-                               @error('registered') is-invalid @enderror"
-                               @if($place->registered) checked @endif>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if ($place->trashed())
-                            <x-buttons.restore
-                                route="{{route('places_of_business.restore', ['place_of_business' => $place->id])}}"
-                                itemId="places-of-business-{{$place->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('places_of_business.destroy', ['place_of_business' => $place->id])}}"
-                                itemId="places-of-business-{{$place->id}}"/>
+<x-form.nav-tab
+    formId="places_main_form">
+    <div class="row">
+        <div class="col-md col-auto mb-2">
+            @include('contractors.places-of-business.create')
+        </div>
+        <div class="col-md-12 col-auto">
+            <x-form
+                :route="route('places_of_business.update', ['place_of_business' => $contractor->placesOfBusiness->first()->id])"
+                method="PATCH">
+                <x-data-table.table
+                    id="places_of_business"
+                    type="edit"
+                    targets="-1,-2">
+                    <x-data-table.head>
+                        @roles(['digital_communication'])
+                        <x-data-table.th
+                            :text="__('contractors.places_of_business.identifier')"/>
+                        @end_roles
+                        <x-data-table.th
+                            :text="__('contractors.places_of_business.index')"/>
+                        <x-data-table.th
+                            :text="__('classifiers.regions.region')"/>
+                        <x-data-table.th
+                            :text="__('contractors.places_of_business.address')"/>
+                        <x-data-table.th
+                            :text="__('contractors.places_of_business.registered')"/>
+                        <x-data-table.th/>
+                    </x-data-table.head>
+                    <x-data-table.body>
+                        @foreach($contractor->placesOfBusiness as $key => $place)
+                            <x-data-table.tr :model="$place">
+                                <x-slot name="hiddenInputs">
+                                    <input type="hidden"
+                                           name="places_of_business[{{$key}}][id]"
+                                           value="{{$place->id}}">
+                                    <input type="hidden"
+                                           name="places_of_business[{{$key}}][contractor_id]"
+                                           value="{{$place->contractor_id}}">
+                                </x-slot>
+                                @roles(['digital_communication'])
+                                <x-data-table.td
+                                    class="col-md-1 col-auto">
+                                    <x-form.element.input
+                                        name="places_of_business[{{$key}}][identifier]"
+                                        :value="$place->identifier"
+                                        :readonly="$place->trashed()"/>
+                                </x-data-table.td>
+                                @end_roles
+                                <x-data-table.td
+                                    class="col-md-1 col-auto">
+                                    <x-form.element.input
+                                        name="places_of_business[{{$key}}][index]"
+                                        :value="$place->index"
+                                        :readonly="$place->trashed()"/>
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="col-md-1 col-auto">
+                                    <x-form.element.select
+                                        name="places_of_business[{{$key}}][region_id]"
+                                        :readonly="$place->trashed()">
+                                        <x-form.element.option
+                                            :value="null"
+                                            text="-"
+                                            :selected="true"/>
+                                        @foreach($regions as $region)
+                                            <x-form.element.option
+                                                :value="$region->id"
+                                                :text="$region->name"
+                                                :selected="($place->region->id ?? null) === $region->id"/>
+                                        @endforeach
+                                    </x-form.element.select>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-form.element.textarea
+                                        name="places_of_business[{{$key}}][address]"
+                                        :text="$place->address"
+                                        rows="1"
+                                        :readonly="$place->trashed()"/>
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="col-md-1 col-auto text-center">
+                                    <x-form.element.input
+                                        type="radio"
+                                        name="registered"
+                                        :value="$place->id"
+                                        class="form-check-input"
+                                        :checked="$place->registered"/>
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="col-md-1 col-auto text-center">
+                                    <x-data-table.button.soft-delete
+                                        :trashed="$place->trashed()"
+                                        :id="$place->id"
+                                        route="places_of_business"
+                                        :params="['place_of_business' => $place->id]"/>
+                                </x-data-table.td>
+                            </x-data-table.tr>
+                        @endforeach
+                    </x-data-table.body>
+                </x-data-table.table>
+                <footer class="mt-auto">
+                    <ul class="list-inline mb-0">
+                        @if(count($contractor->placesOfBusiness) > 0)
+                            <li class="list-inline-item">
+                                <x-form.button.save formId="places_main_form"/>
+                            </li>
                         @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        @if(count($contractor->placesOfBusiness) > 0)
-            <x-buttons.save formId="form_places_of_business"/>
-        @endif
-        <x-buttons.collapse formId="div_add_place_of_business"/>
-    </x-slot>
-</x-forms.collapse.card>
+                        <li class="list-inline-item">
+                            <x-data-table.filter.trashed-filter id="places_of_business"/>
+                        </li>
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+    </div>
+
+</x-form.nav-tab>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const addressInput = $('#address');
+        const indexInput = $('#index');
+        const dadataToken = $('#dadata_token').val();
+
+        addressInput.suggestions({
+            token: dadataToken,
+            type: 'ADDRESS',
+            onSelect: handleSuggestionSelect,
+        });
+
+        function handleSuggestionSelect(suggestion) {
+            const address = suggestion.data;
+            indexInput.val(DaData.showPostalCode(address));
+            addressInput.val(DaData.showAddress(address));
+        }
+    });
+
+</script>
