@@ -3,22 +3,22 @@
     'id',
     'type' => 'table',
     'title' => '',
+    'class' => null,
     'targets' => null,
     'domOrderType' => null,
-    'pageLength' => 20
+    'pageLength' => 50
     ])
 
 <div id="localization-data"
      data-localization='@json(__('datatable'))'>
 </div>
-
 <div class="table-responsive p-0">
     <div class="list-inline">
-        @if(isset($filter))
-            <x-data-table.filter.data-table-filter :tableId="$id">
+        <x-data-table.filter.data-table-filter tableId="{{$id}}">
+            @if (isset($filter))
                 {{$filter}}
-            </x-data-table.filter.data-table-filter>
-        @endif
+            @endif
+        </x-data-table.filter.data-table-filter>
     </div>
     <input id="tableId_{{$id}}"
            type="hidden"
@@ -36,7 +36,7 @@
            type="hidden"
            value="{{$pageLength}}">
     <table id="{{$id}}"
-           class="table table-hover">
+           class="table table-hover {{$class}}">
         @if(isset($head))
             {{$head}}
         @endif
@@ -55,5 +55,14 @@
         const dt = new DataTableConfig(settings);
 
         dt.render();
+
+        const wrapper = document.getElementById(
+            table.id + '_' + 'wrapper');
+
+        const listInline = wrapper.getElementsByClassName('list-inline')[0];
+
+        const filter = document.getElementById('filter_' + table.id);
+
+        listInline.append(filter);
     });
 </script>

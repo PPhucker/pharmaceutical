@@ -46,7 +46,7 @@ const DataTableConfig = (settings) => ({
      *
      * @link https://datatables.net/reference/option/pageLength
      */
-    _pageLength: settings.pageLength ?? 20,
+    _pageLength: settings.pageLength ?? 50,
     /**
      * Настройки расширения Select.
      *
@@ -181,7 +181,7 @@ const DataTableConfig = (settings) => ({
      * @private
      */
     _buttons: function() {
-        const saveAs = settings.localization.saveAs;
+        const saveAs = settings.localization.buttons.save_as;
         const caption = document.getElementById(
             'caption_' + settings.tableId,
         );
@@ -249,7 +249,7 @@ const DataTableConfig = (settings) => ({
                 split: [
                     {
                         extend: 'colvis',
-                        text: settings.localization.hide,
+                        text: settings.localization.buttons.hide,
                     },
                 ],
             },
@@ -264,7 +264,7 @@ const DataTableConfig = (settings) => ({
     _lengthMenu: function() {
         return [
             [this._pageLength, 20, 50, 100, -1],
-            [this._pageLength, 20, 50, 100, settings.localization.all],
+            [this._pageLength, 20, 50, 100, settings.localization.entries.all],
         ];
     },
 
@@ -311,11 +311,11 @@ const DataTableConfig = (settings) => ({
         const local = settings.localization;
         return {
             emptyTable: local.noEntries,
-            info: local.entries + ': _START_ - _END_ ' +
-                local.of + ' _TOTAL_ ',
-            infoEmpty: local.noEntriesToFind,
+            info: local.entries.entries + ': _START_ - _END_ ' +
+                local.entries.of + ' _TOTAL_ ',
+            infoEmpty: local.entries.no_to_find,
             infoFiltered: '',
-            lengthMenu: local.show + ' _MENU_',
+            lengthMenu: local.entries.show + ' _MENU_',
             loadingRecords: local.wait,
             paginate: {
                 first: '«',
@@ -325,7 +325,7 @@ const DataTableConfig = (settings) => ({
             },
             processing: local.wait,
             search: local.search,
-            zeroRecords: local.noEntries,
+            zeroRecords: local.entries.no,
         };
     },
     /**
@@ -333,6 +333,23 @@ const DataTableConfig = (settings) => ({
      */
     render: function() {
         new dt('#' + settings.tableId, this._options());
+
+        for (const button of document.getElementsByClassName(
+            'dt-btn-split-drop')) {
+            button.classList.remove('btn-secondary');
+            button.classList.add('btn-sm', 'btn-primary');
+        }
+
+        let splitWrapperButtons = document.getElementsByClassName(
+            'dt-btn-split-wrapper btn-group');
+
+        for (const button of splitWrapperButtons) {
+            if (button ===
+                splitWrapperButtons[splitWrapperButtons.length - 1]) {
+                break;
+            }
+            button.classList.add('pe-2');
+        }
     },
 
 });
