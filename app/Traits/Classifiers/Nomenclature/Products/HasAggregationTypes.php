@@ -11,7 +11,7 @@ trait HasAggregationTypes
     /**
      * @return BelongsToMany
      */
-    public function aggregationTypes()
+    public function aggregationTypes(): BelongsToMany
     {
         return $this->belongsToMany(
             TypeOfAggregation::class,

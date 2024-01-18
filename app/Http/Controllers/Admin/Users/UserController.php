@@ -3,31 +3,31 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Admin\User\StoreUserRequest;
 use App\Http\Requests\Admin\User\UpdateUserRequest;
-use App\Models\Auth\Permission;
-use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Repositories\Admin\UserRepository;
+use App\Services\User\UserService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер пользователя.
+ */
 class UserController extends CoreController
 {
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(User::class, 'user');
-    }
+    protected $prefixLocalKey = 'users';
 
     /**
-     * @return string
+     * @var UserService
      */
-    protected function getRepository()
+    private $service;
+
+    /**
+     * @param UserService $service
+     */
+    public function __construct(UserService $service)
     {
-        return UserRepository::class;
+        $this->service = $service;
+        $this->authorizeResource(User::class, 'user');
     }
 
     /**
@@ -35,13 +35,11 @@ class UserController extends CoreController
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $users = $this->repository->getAll();
-
         return view(
             'admin.users.index',
-            compact('users')
+            $this->service->getIndexData()
         );
     }
 
@@ -52,19 +50,11 @@ class UserController extends CoreController
      *
      * @return View
      */
-    public function edit(User $user)
+    public function edit(User $user): View
     {
-        $user = $this->repository->getForEdit($user->id);
-        $roles = Role::orderBy('name')->get();
-        $permissions = Permission::orderBy('name')->get();
-
         return view(
             'admin.users.edit',
-            compact(
-                'user',
-                'roles',
-                'permissions'
-            )
+            $this->service->getEditData($user)
         );
     }
 
@@ -76,28 +66,14 @@ class UserController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-        $validated = $request->validated();
+        $updatedUser = $this->service->update($user, $request->validated());
 
-        $roles = $validated['roles'] ?? null;
-        $permissions = $validated['permissions'] ?? null;
-
-        $user->fill(
-            [
-                'name' => $validated['name'],
-                'email' => $validated['email']
-            ]
-        )
-            ->refreshRoles($roles)
-            ->refreshPermissions($permissions)
-            ->save();
-
-        return back()
-            ->with(
-                'success',
-                __('users.action.update.success', ['name' => $user->name])
-            );
+        return $this->successRedirect(
+            'update',
+            ['name' => $updatedUser->name]
+        );
     }
 
     /**
@@ -107,13 +83,13 @@ class UserController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
-        $user->delete();
+        $this->service->delete($user);
 
-        return back()->with(
-            'success',
-            __('users.action.destroy', ['name' => $user->name])
+        return $this->successRedirect(
+            'delete',
+            ['name' => $user->name]
         );
     }
 
@@ -124,13 +100,13 @@ class UserController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(User $user)
+    public function restore(User $user): RedirectResponse
     {
-        $user->restore();
+        $this->service->restore($user);
 
-        return back()->with(
-            'success',
-            __('users.action.restore', ['name' => $user->name])
+        return $this->successRedirect(
+            'restore',
+            ['name' => $user->name]
         );
     }
 }

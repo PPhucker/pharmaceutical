@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Notifications\Contractors;
+namespace App\Notifications\Contractor;
 
 use App\Models\Contractors\Contractor;
 use Illuminate\Bus\Queueable;

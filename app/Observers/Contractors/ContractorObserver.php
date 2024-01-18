@@ -3,6 +3,8 @@
 namespace App\Observers\Contractors;
 
 use App\Models\Contractors\Contractor;
+use App\Notifications\Contractor\Created;
+use App\Notifications\Contractor\Updated;
 use App\Observers\CoreObserver;
 use Auth;
 
@@ -22,7 +24,7 @@ class ContractorObserver extends CoreObserver
     {
         parent::created($model);
 
-        $model->sendEmailCreatedNotification();
+        $model->sendEmail((new Created($model)));
     }
 
     /**
@@ -35,7 +37,7 @@ class ContractorObserver extends CoreObserver
     public function updating(Contractor $contractor): void
     {
         if (Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
-            $contractor->sendEmailUpdatedNotification();
+            $contractor->sendEmail((new Updated($contractor)));
         }
     }
 }

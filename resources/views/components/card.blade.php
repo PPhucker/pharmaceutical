@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="list-inline-item">
-                <span class="align-middle text-white fs-5 text-uppercase">
+                <span class="align-middle text-white fs-6 text-uppercase">
                     {{$title}}
                 </span>
             </li>

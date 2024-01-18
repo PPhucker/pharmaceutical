@@ -2,15 +2,18 @@
 
 namespace App\Models\Classifiers\Nomenclature\Products;
 
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Admin\Organizations\PlaceOfBusiness;
-use App\Models\Auth\User;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
+use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
+use App\Traits\Classifier\Nomenclature\Product\HasEndProduct;
+use App\Traits\Classifier\Nomenclature\Product\Price\HasPrices;
+use App\Traits\Classifier\Nomenclature\Product\Price\HasRegionalAllowances;
 use App\Traits\Classifiers\Nomenclature\Products\HasAggregationTypes;
-use App\Traits\Classifiers\Nomenclature\Products\HasDocuments;
 use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
+use App\Traits\Organization\HasOrganization;
+use App\Traits\Organization\HasPlaceOfBusiness;
+use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -24,9 +27,16 @@ class ProductCatalog extends Model
     use SoftDeletes;
     use HasMaterials;
     use HasAggregationTypes;
-    use HasDocuments;
+    use HasUser;
+    use HasEndProduct;
+    use HasOrganization;
+    use HasPlaceOfBusiness;
+    use HasPrices;
+    use HasRegionalAllowances;
 
     protected $table = 'product_catalog';
+
+    protected $foreign_key = 'product_catalog_id';
 
     protected $fillable = [
         'user_id',
@@ -55,55 +65,18 @@ class ProductCatalog extends Model
     }
 
     /**
-     * @return BelongsTo
+     * @return HasMany
      */
-    public function user(): BelongsTo
+    public function invoiceForPaymentProduction()
     {
-        return $this->belongsTo(User::class, 'user_id')
-            ->withTrashed();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function endProduct(): BelongsTo
-    {
-        return $this->belongsTo(EndProduct::class, 'product_id')
-            ->withTrashed();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function organization(): BelongsTo
-    {
-        return $this->belongsTo(Organization::class, 'organization_id')
-            ->withTrashed();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function placeOfBusiness(): BelongsTo
-    {
-        return $this->belongsTo(PlaceOfBusiness::class, 'place_of_business_id')
-            ->withTrashed();
+        return $this->hasMany(InvoiceForPaymentProduct::class, 'product_catalog_id');
     }
 
     /**
      * @return HasMany
      */
-    public function prices(): HasMany
+    public function packingListProduction()
     {
-        return $this->hasMany(ProductPrice::class, 'product_catalog_id')
-            ->withTrashed();
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function regionalAllowances(): HasMany
-    {
-        return $this->hasMany(ProductRegionalAllowance::class, 'product_catalog_id');
+        return $this->hasMany(PackingListProduct::class, 'product_id');
     }
 }

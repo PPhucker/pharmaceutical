@@ -3,7 +3,7 @@
 namespace App\Traits\Documents\Shipment;
 
 use App\Notifications\Shipment\Created;
-use App\Repositories\Admin\UserRepository;
+use App\Repositories\Auth\UserRepository;
 use Illuminate\Support\Facades\Notification;
 
 trait Notifications

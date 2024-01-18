@@ -2,32 +2,38 @@
 
 namespace App\Models\Contractors;
 
-use App\Models\Classifiers\LegalForm;
 use App\Models\Contractors\Transport\Car;
 use App\Models\Contractors\Transport\Driver;
 use App\Models\Contractors\Transport\Trailer;
-use App\Traits\Contractors\Notifications;
+use App\Traits\Classifier\HasLegalForm;
+use App\Traits\Contractor\HasBankAccountDetails;
+use App\Traits\Contractor\HasContactPersons;
+use App\Traits\Contractor\HasPlacesOfBusiness;
 use App\Traits\Document\HasInvoicesAndPackingLists;
 use App\Traits\Model\RelationshipsTrait;
+use App\Traits\Notification\Email\EmailToVerificationContractorsUsers;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
- * Контрагент
+ * Модель контрагента
  */
 class Contractor extends Model
 {
-    use RelationshipsTrait;
-    use HasInvoicesAndPackingLists;
+    use EmailToVerificationContractorsUsers;
+    use HasBankAccountDetails;
+    use HasContactPersons;
     use HasFactory;
-    use Notifications;
-    use SoftDeletes;
+    use HasInvoicesAndPackingLists;
+    use HasLegalForm;
+    use HasPlacesOfBusiness;
     use HasUser;
+    use RelationshipsTrait;
+    use SoftDeletes;
 
     protected $table = 'contractors';
 
@@ -79,41 +85,6 @@ class Contractor extends Model
     public function getFullNameAttribute(): string
     {
         return "{$this->legal_form_type} {$this->name}";
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function legalForm(): BelongsTo
-    {
-        return $this->belongsTo(LegalForm::class, 'legal_form_type');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function placesOfBusiness(): HasMany
-    {
-        return $this->hasMany(PlaceOfBusiness::class)
-            ->withTrashed();
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function bankAccountDetails(): HasMany
-    {
-        return $this->hasMany(BankAccountDetail::class)
-            ->withTrashed();
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function contactPersons(): HasMany
-    {
-        return $this->hasMany(ContactPerson::class)
-            ->withTrashed();
     }
 
     /**

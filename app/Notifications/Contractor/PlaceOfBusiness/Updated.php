@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Notifications\Contractors\PlacesOfBusiness;
+namespace App\Notifications\Contractor\PlaceOfBusiness;
 
 use App\Models\Contractors\PlaceOfBusiness;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 /**
- * Шаблон e-mail сообщении о добавлении нового места осуществления деятельности контрагента.
+ * Шаблон e-mail сообщения об изменении места осуществления деятельности контрагента.
  */
-class Created extends Notification implements ShouldQueue
+class Updated extends Notification
 {
     use Queueable;
-
-    private const DELAY_IN_MINUTES = 1;
 
     /**
      * @var PlaceOfBusiness
@@ -23,17 +20,22 @@ class Created extends Notification implements ShouldQueue
     private $placeOfBusiness;
 
     /**
+     * Изменения.
+     *
+     * @var array|null
+     */
+    private $changes;
+
+    /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(PlaceOfBusiness $placeOfBusiness)
+    public function __construct(PlaceOfBusiness $placeOfBusiness, array $changes)
     {
         $this->placeOfBusiness = $placeOfBusiness;
 
-        $this->delay(
-            now()->addMinutes(self::DELAY_IN_MINUTES)
-        );
+        $this->changes = $changes;
     }
 
     /**
@@ -53,20 +55,17 @@ class Created extends Notification implements ShouldQueue
      *
      * @param mixed $notifiable
      *
-     * @return MailMessage
+     * @return MailMessage|void
      */
-    public function toMail($notifiable): MailMessage
+    public function toMail($notifiable)
     {
         $url = url('/contractors/' . $this->placeOfBusiness->contractor->id . '/edit');
 
-        return (new MailMessage())
-            ->subject(__('notifications.contractors.places_of_business.created.subject'))
+        $mailMessage = new MailMessage();
+
+        $mailMessage->subject(__('notifications.contractors.places_of_business.updated.subject'))
             ->greeting(__('notifications.greeting'))
-            ->line(
-                __(
-                    'notifications.contractors.places_of_business.created.body'
-                )
-            )
+            ->line(__('notifications.contractors.places_of_business.updated.body'))
             ->line(
                 __(
                     'notifications.contractors.created.contractor',
@@ -85,30 +84,37 @@ class Created extends Notification implements ShouldQueue
                     ]
                 )
             )
-            ->line(
-                __(
-                    'notifications.contractors.places_of_business.created.address',
-                    [
-                        'address' => $this->placeOfBusiness->address,
-                    ]
-                )
+            ->line(__('notifications.contractors.updated.changes'))
+            ->line(__('notifications.contractors.updated.before'));
+
+        foreach ($this->changes as $key => $change) {
+            $mailMessage->line(
+                __('contractors.places_of_business.' . $key) .
+                ': ' .
+                PlaceOfBusiness::withTrashed()
+                    ->find($this->placeOfBusiness->id)
+                    ->$key
+            );
+        }
+
+        $mailMessage->line(__('notifications.contractors.updated.after'));
+
+        foreach ($this->changes as $key => $change) {
+            $mailMessage->line(
+                __('contractors.places_of_business.' . $key) .
+                ': ' .
+                $change
+            );
+        }
+
+        return $mailMessage->line(
+            __(
+                'notifications.contractors.created.user',
+                [
+                    'user' => $this->placeOfBusiness->contractor->user->name,
+                ]
             )
-            ->line(
-                __(
-                    'notifications.contractors.created.created_at',
-                    [
-                        'created_at' => $this->placeOfBusiness->created_at,
-                    ]
-                )
-            )
-            ->line(
-                __(
-                    'notifications.contractors.created.user',
-                    [
-                        'user' => $this->placeOfBusiness->user->name,
-                    ]
-                )
-            )
+        )
             ->action(
                 __('notifications.contractors.created.action'),
                 $url

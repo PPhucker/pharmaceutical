@@ -3,6 +3,8 @@
 namespace App\Observers\Contractors;
 
 use App\Models\Contractors\PlaceOfBusiness;
+use App\Notifications\Contractor\PlaceOfBusiness\Created;
+use App\Notifications\Contractor\PlaceOfBusiness\Updated;
 use App\Observers\CoreObserver;
 use Auth;
 
@@ -23,7 +25,7 @@ class PlaceOfBusinessObserver extends CoreObserver
         parent::created($model);
 
         if (Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
-            $model->sendEmailCreatedNotification();
+            $model->sendEmail((new Created($model)));
         }
     }
 
@@ -46,7 +48,7 @@ class PlaceOfBusinessObserver extends CoreObserver
             }
         }
         if (count($changes) && Auth::user()->hasRole(['marketing', 'bookkeeping'])) {
-            $placeOfBusiness->sendEmailUpdatedNotification($changes);
+            $placeOfBusiness->sendEmail((new Updated($placeOfBusiness, $changes)));
         }
     }
 }

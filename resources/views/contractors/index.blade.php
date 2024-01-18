@@ -2,11 +2,13 @@
 @section('content')
     <x-card
         :title="__('contractors.contractors')">
+        <x-notification.alert/>
         <x-data-table.table
             id="contractors_table"
             class="table-bordered"
             targets="-1,-2,-3"
-            type="index">
+            type="index"
+            pageLength="20">
             <x-slot name="filter">
                 <x-data-table.filter.trashed-filter tableId="contractors_table"/>
             </x-slot>

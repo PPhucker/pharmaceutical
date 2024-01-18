@@ -2,28 +2,24 @@
 
 namespace App\Http\Requests\Admin\User;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
-class UpdateUserRequest extends FormRequest
+/**
+ * Валидация обновления пользователя.
+ */
+class UpdateUserRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'users';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => [
@@ -55,24 +51,5 @@ class UpdateUserRequest extends FormRequest
                 'nullable'
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'update.fail',
-                    __('users.action.update.fail', ['name' => $this->input('name')])
-                );
-            }
-        });
     }
 }

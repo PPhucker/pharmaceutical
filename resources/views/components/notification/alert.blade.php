@@ -1,6 +1,6 @@
 <div class="col-12">
     @if (session('success'))
-        <div class="alert alert-success m-2"
+        <div class="alert alert-success m-2 ms-0 me-0"
              role="alert">
             <svg class="bi flex-shrink-0"
                  width="16" height="16"
@@ -17,7 +17,7 @@
     @endif
     @error('fail')
 
-    <div class="alert alert-danger m-2"
+    <div class="alert alert-danger  m-2 ms-0 me-0"
          role="alert">
         <svg class="bi flex-shrink-0"
              width="16"
@@ -36,7 +36,7 @@
     @enderror
     @if($errors->has('alert-errors'))
         @foreach($errors->get('alert-errors') as $error)
-            <div class="alert alert-danger m-2"
+            <div class="alert alert-danger  m-2 ms-0 me-0"
                  role="alert">
                 <svg class="bi flex-shrink-0"
                      width="16"

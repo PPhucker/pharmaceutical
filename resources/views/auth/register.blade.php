@@ -1,154 +1,115 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main back="{{route('users.index')}}"
-                  title="{{__('auth.register.action')}}">
-        <form method="POST"
-              action="{{ route('register') }}">
-            @csrf
-            <div class="row mb-3">
-                <label for="name"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('users.name')}}
-                </label>
-
-                <div class="col-md-6">
-                    <input id="name"
-                           type="text"
-                           class="form-control
-                               @error('name') is-invalid @enderror"
-                           name="name"
-                           value="{{ old('name') }}"
-                           required>
-                    @error('name')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="email"
-                       class="col-md-4 col-form-label text-md-end">
-                    E-Mail
-                </label>
-                <div class="col-md-6">
-                    <input id="email"
-                           type="email"
-                           class="form-control
-                               @error('email') is-invalid @enderror"
-                           name="email"
-                           value="{{ old('email') }}">
-                    @error('email')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="password"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('auth.passwords.password')}}
-                </label>
-                <div class="col-md-6">
-                    <input id="password"
-                           type="password"
-                           class="form-control
-                               @error('password') is-invalid @enderror"
-                           name="password">
-                    @error('password')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="password-confirm"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('auth.passwords.confirm.action')}}
-                </label>
-                <div class="col-md-6">
-                    <input id="password-confirm"
-                           type="password"
-                           class="form-control"
-                           name="password_confirmation"
-                           required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="roles"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('auth.roles')}}
-                </label>
+    <x-card
+        :title="__('auth.register.action')"
+        :back="route('users.index')">
+        <x-notification.alert/>
+        <x-form
+            :route="route('register')"
+            formId="users_register_form">
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="name"
+                        :text="__('users.name')"/>
+                </x-slot>
+                <x-form.element.input
+                    id="name"
+                    name="name"
+                    :value="old('name')"
+                    :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="email"
+                        text="Email"/>
+                </x-slot>
+                <x-form.element.input
+                    id="email"
+                    name="email"
+                    type="email"
+                    :value="old('email')"
+                    :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="password"
+                        :text="__('auth.passwords.password')"/>
+                </x-slot>
+                <x-form.element.input
+                    id="password"
+                    name="password"
+                    type="password"
+                    :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="password-confirm"
+                        :text="__('auth.passwords.confirm.action')"/>
+                </x-slot>
+                <x-form.element.input
+                    id="password-confirm"
+                    name="password_confirmation"
+                    type="password"
+                    :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="roles"
+                        :text="__('auth.roles')"/>
+                </x-slot>
                 <div class="col-md-6 pt-2">
                     @foreach($roles as $role)
-                        <div class="form-check form-switch">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="roles[]"
-                                   id="{{$role->slug}}"
-                                   value="{{$role->slug}}">
+                        <div class="form-check form-switch ps-1">
+                            <x-form.element.input
+                                type="checkbox"
+                                name="roles[]"
+                                class="form-check-input"
+                                :id="$role->slug"
+                                :value="$role->slug"/>
                             <label class="form-check-label"
                                    for="{{$role->slug}}">
                                 {{$role->name}}
                             </label>
                         </div>
                     @endforeach
-                    @error('roles')
-                    <label class="text-danger">
-                        <strong>
-                            {{ $message }}
-                        </strong>
-                    </label>
-                    @enderror
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="permissions"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('auth.permissions')}}
-                </label>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="permissions"
+                        :text="__('auth.permissions')"/>
+                </x-slot>
                 <div class="col-md-6 pt-2">
                     @foreach($permissions as $permission)
-                        <div class="form-check form-switch">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="permissions[]"
-                                   id="{{$permission->slug}}"
-                                   value="{{$permission->slug}}">
+                        <div class="form-check form-switch ps-1">
+                            <x-form.element.input
+                                type="checkbox"
+                                name="permissions[]"
+                                class="form-check-input"
+                                :id="$permission->slug"
+                                :value="$permission->slug"/>
                             <label class="form-check-label"
                                    for="{{$permission->slug}}">
                                 {{$permission->name}}
                             </label>
                         </div>
                     @endforeach
-                    @error('permissions')
-                    <label class="text-danger">
-                        <strong>
-                            {{ $message }}
-                        </strong>
-                    </label>
-                    @enderror
                 </div>
-            </div>
-            <div class="row mb-0">
-                <div class="col-md-6 offset-md-4">
-                    <button type="submit"
-                            class="btn btn-primary">
-                        {{__('auth.register.button')}}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </x-forms.main>
+            </x-form.row>
+            <footer class="mt-auto me-auto ps-2">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <x-form.button.save formId="users_register_form"
+                                            :text="__('auth.register.button')"/>
+                    </li>
+                </ul>
+            </footer>
+        </x-form>
+    </x-card>
 @endsection
