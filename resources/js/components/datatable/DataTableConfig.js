@@ -46,7 +46,7 @@ const DataTableConfig = (settings) => ({
      *
      * @link https://datatables.net/reference/option/pageLength
      */
-    _pageLength: settings.pageLength ?? 50,
+    _pageLength: Number(settings.pageLength) ?? 50,
     /**
      * Настройки расширения Select.
      *
