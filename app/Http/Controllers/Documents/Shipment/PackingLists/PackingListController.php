@@ -20,7 +20,7 @@ use App\Notifications\Shipment\ToDigitalCommunication;
 use App\Notifications\Shipment\ToMarketing;
 use App\Repositories\Admin\Organizations\OrganizationRepository;
 use App\Repositories\Auth\UserRepository;
-use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;

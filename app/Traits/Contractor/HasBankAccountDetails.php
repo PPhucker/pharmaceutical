@@ -2,7 +2,7 @@
 
 namespace App\Traits\Contractor;
 
-use App\Models\Contractors\BankAccountDetail;
+use App\Models\Contractor\BankAccountDetail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasBankAccountDetails

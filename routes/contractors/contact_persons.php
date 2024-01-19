@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Contractors\ContactPersonController as Controller;
+use App\Http\Controllers\Contractor\ContactPersonController as Controller;
 
 Route::resource('contact_persons', Controller::class)
     ->except(['create', 'edit', 'show', 'index']);

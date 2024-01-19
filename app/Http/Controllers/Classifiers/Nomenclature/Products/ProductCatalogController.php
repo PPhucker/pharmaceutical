@@ -13,7 +13,7 @@ use App\Repositories\Admin\Organizations\PlaceOfBusinessRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\EndProductRepository;
 use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Classifiers\RegionRepository;
-use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Contractor\ContractorRepository;
 use App\Traits\Classifiers\Nomenclature\Products\AggregationTypes;
 use App\Traits\Classifiers\Nomenclature\Products\Materials;
 use Auth;

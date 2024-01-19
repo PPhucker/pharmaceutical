@@ -4,7 +4,7 @@ namespace App\Charts\Homepage;
 
 use App\Charts\Chart;
 use App\Helpers\Date;
-use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use ArielMejiaDev\LarapexCharts\BarChart;
 

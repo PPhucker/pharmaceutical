@@ -2,8 +2,8 @@
 
 namespace App\Services\Contractor\Address;
 
-use App\Repositories\Contractors\Address\PlaceOfBusinessRepository;
-use App\Repositories\Contractors\Address\RegionRepository;
+use App\Repositories\Contractor\Address\PlaceOfBusinessRepository;
+use App\Repositories\Contractor\Address\RegionRepository;
 use App\Services\Contractor\CoreDependencyService;
 
 /**

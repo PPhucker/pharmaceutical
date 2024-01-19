@@ -10,7 +10,7 @@ use App\Http\Requests\Documents\InvoicesForPayment\CopyInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\IndexInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\StoreInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\UpdateInvoiceForPaymentRequest;
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;

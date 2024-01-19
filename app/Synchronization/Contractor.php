@@ -5,8 +5,8 @@ namespace App\Synchronization;
 use App\Helpers\Dadata\DadataClient;
 use App\Models\Classifiers\Bank;
 use App\Models\Classifiers\LegalForm;
-use App\Models\Contractors\BankAccountDetail;
-use App\Models\Contractors\PlaceOfBusiness;
+use App\Models\Contractor\BankAccountDetail;
+use App\Models\Contractor\PlaceOfBusiness;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -49,7 +49,7 @@ class Contractor
                     return $inn->inn;
                 })
                 ->diff(
-                    \App\Models\Contractors\Contractor::select('INN')
+                    \App\Models\Contractor\Contractor::select('INN')
                         ->whereNull('deleted_at')
                         ->get()
                         ->map(function ($inn) {
@@ -96,7 +96,7 @@ class Contractor
         /**
          * Занесение основной информации о контрагенте.
          */
-        $contractor = \App\Models\Contractors\Contractor::create(
+        $contractor = \App\Models\Contractor\Contractor::create(
             [
                 'legal_form_type' => $opf->get('abbreviation'),
                 'name' => '"' . $client->get('name') . '"',
@@ -277,7 +277,7 @@ class Contractor
             ->get();
 
         foreach ($devContractors as $devContractor) {
-            $contractor = \App\Models\Contractors\Contractor::where('INN', $devContractor->inn)->first();
+            $contractor = \App\Models\Contractor\Contractor::where('INN', $devContractor->inn)->first();
             if (!$contractor) {
                 continue;
             }

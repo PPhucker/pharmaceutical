@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Contractors\ContractorController as Controller;
+use App\Http\Controllers\Contractor\ContractorController as Controller;
 
 Route::resource('contractors', Controller::class)
     ->except(['show']);

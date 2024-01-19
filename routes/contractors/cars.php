@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Contractors\Transport\CarController as Controller;
+use App\Http\Controllers\Contractor\Transport\CarController as Controller;
 
 Route::resource('cars', Controller::class)
     ->except(['create', 'edit', 'show', 'index']);

@@ -23,27 +23,27 @@ use Illuminate\Support\Carbon;
  * @property int|null $organizationBankId ID Банковских реквизитов организации
  * @property int $contractorId ID Контрагента
  * @property int $contractorPlaceId ID Адреса Доставки
- * @property int|null $contractorBankId ID Банковских Реквизитов Контрагента
- * @property string $number Номер
- * @property string $date Дата выставления
- * @property string|null $director Руководитель
- * @property string|null $bookkeeper Главный бухгалтер
- * @property string|null $filename Прикрепленный файл
- * @property Carbon|null $createdAt
- * @property string $updatedAt
- * @property Carbon|null $deletedAt
- * @property string|null $fillingType Наполнение счета (Продукция, комплектующие и тд.)
- * @property-read \App\Models\Contractors\Contractor $contractor
- * @property-read \App\Models\Contractors\BankAccountDetail|null $contractorBankAccountDetail
- * @property-read \App\Models\Contractors\PlaceOfBusiness $contractorPlaceOfBusiness
- * @property-read \App\Models\Admin\Organizations\Organization $organization
- * @property-read \App\Models\Admin\Organizations\BankAccountDetail|null $organizationBankAccountDetail
- * @property-read \App\Models\Admin\Organizations\PlaceOfBusiness $organizationPlaceOfBusiness
- * @property-read \Illuminate\Database\Eloquent\Collection<int, PackingListProduct> $packingListProdiction
- * @property-read int|null $packingListProdictionCount
+ * @property int|null                                                                                                              $contractorBankId ID Банковских Реквизитов Контрагента
+ * @property string                                                                                                                $number Номер
+ * @property string                                                                                                                $date Дата выставления
+ * @property string|null                                                                                                           $director Руководитель
+ * @property string|null                                                                                                           $bookkeeper Главный бухгалтер
+ * @property string|null                                                                                                           $filename Прикрепленный файл
+ * @property Carbon|null                                                                                                           $createdAt
+ * @property string                                                                                                                $updatedAt
+ * @property Carbon|null                                                                                                           $deletedAt
+ * @property string|null                                                                                                           $fillingType Наполнение счета (Продукция, комплектующие и тд.)
+ * @property-read \App\Models\Contractor\Contractor                                                                                $contractor
+ * @property-read \App\Models\Contractor\BankAccountDetail|null                                                                    $contractorBankAccountDetail
+ * @property-read \App\Models\Contractor\PlaceOfBusiness                                                                           $contractorPlaceOfBusiness
+ * @property-read \App\Models\Admin\Organizations\Organization                                                                     $organization
+ * @property-read \App\Models\Admin\Organizations\BankAccountDetail|null                                                           $organizationBankAccountDetail
+ * @property-read \App\Models\Admin\Organizations\PlaceOfBusiness                                                                  $organizationPlaceOfBusiness
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PackingListProduct>                                                $packingListProdiction
+ * @property-read int|null                                                                                                         $packingListProdictionCount
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct> $production
- * @property-read int|null $productionCount
- * @property-read User|null $user
+ * @property-read int|null                                                                                                         $productionCount
+ * @property-read User|null                                                                                                        $user
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|InvoiceForPayment onlyTrashed()

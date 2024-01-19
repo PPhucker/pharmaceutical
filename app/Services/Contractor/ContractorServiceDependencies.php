@@ -3,8 +3,8 @@
 namespace App\Services\Contractor;
 
 use App\Repositories\Admin\Organizations\OrganizationRepository;
-use App\Repositories\Contractors\ContractorRepository;
-use App\Repositories\Contractors\LegalFormRepository;
+use App\Repositories\Contractor\ContractorRepository;
+use App\Repositories\Contractor\LegalFormRepository;
 
 /**
  * Сервис зависимостей для ContractorService

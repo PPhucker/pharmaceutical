@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Contractors\Transport\TrailerController as Controller;
+use App\Http\Controllers\Contractor\Transport\TrailerController as Controller;
 
 Route::resource('trailers', Controller::class)
     ->except(['create', 'edit', 'show', 'index']);

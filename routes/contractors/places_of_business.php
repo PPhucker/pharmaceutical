@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Contractors\PlaceOfBusinessController as Controller;
+use App\Http\Controllers\Contractor\PlaceOfBusinessController as Controller;
 
 Route::resource('places_of_business', Controller::class)
     ->parameters(['places_of_business' => 'place_of_business'])

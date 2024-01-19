@@ -2,9 +2,9 @@
 
 namespace App\Services\Contractor\Transport;
 
-use App\Repositories\Contractors\Transport\CarRepository;
-use App\Repositories\Contractors\Transport\DriverRepository;
-use App\Repositories\Contractors\Transport\TrailerRepository;
+use App\Repositories\Contractor\Transport\CarRepository;
+use App\Repositories\Contractor\Transport\DriverRepository;
+use App\Repositories\Contractor\Transport\TrailerRepository;
 use App\Services\Contractor\CoreDependencyService;
 
 /**

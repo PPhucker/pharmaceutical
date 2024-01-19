@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Contractors\ContractorController as Controller;
+use App\Http\Controllers\Contractor\ContractorController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(Controller::class)

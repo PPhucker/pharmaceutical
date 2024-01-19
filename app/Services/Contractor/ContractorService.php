@@ -2,7 +2,7 @@
 
 namespace App\Services\Contractor;
 
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use App\Services\Contractor\Address\AddressServiceDependencies;
 use App\Services\Contractor\Bank\BankServiceDependencies;
 use App\Services\ResourceService;

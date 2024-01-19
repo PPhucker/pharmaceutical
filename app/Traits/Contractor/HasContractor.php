@@ -2,7 +2,7 @@
 
 namespace App\Traits\Contractor;
 
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**

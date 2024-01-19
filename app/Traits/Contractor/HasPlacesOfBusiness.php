@@ -2,7 +2,7 @@
 
 namespace App\Traits\Contractor;
 
-use App\Models\Contractors\PlaceOfBusiness;
+use App\Models\Contractor\PlaceOfBusiness;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasPlacesOfBusiness

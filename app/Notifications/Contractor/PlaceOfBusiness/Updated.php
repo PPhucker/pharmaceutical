@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Contractor\PlaceOfBusiness;
 
-use App\Models\Contractors\PlaceOfBusiness;
+use App\Models\Contractor\PlaceOfBusiness;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

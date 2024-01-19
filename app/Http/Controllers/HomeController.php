@@ -10,7 +10,7 @@ use App\Helpers\Date;
 use App\Models\Admin\Organizations\Organization;
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;

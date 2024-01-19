@@ -2,7 +2,7 @@
 
 namespace App\Traits\Contractor;
 
-use App\Models\Contractors\ContactPerson;
+use App\Models\Contractor\ContactPerson;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasContactPersons

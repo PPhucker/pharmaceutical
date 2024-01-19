@@ -3,7 +3,7 @@
 namespace App\Models\Classifiers;
 
 use App\Models\Admin\Organizations\BankAccountDetail;
-use App\Models\Contractors\BankAccountDetail as ContractorBankAccountDetail;
+use App\Models\Contractor\BankAccountDetail as ContractorBankAccountDetail;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

@@ -3,7 +3,7 @@
 namespace App\Models\Classifiers;
 
 use App\Models\Admin\Organizations\Organization;
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

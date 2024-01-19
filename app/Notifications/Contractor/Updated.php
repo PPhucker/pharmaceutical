@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Contractor;
 
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;

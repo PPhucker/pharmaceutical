@@ -6,7 +6,7 @@ use App\Models\Auth\User;
 use App\Models\Classifiers\LegalForm;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
-use App\Models\Contractors\Contract;
+use App\Models\Contractor\Contract;
 use App\Traits\Organizations\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;

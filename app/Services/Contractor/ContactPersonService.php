@@ -2,7 +2,7 @@
 
 namespace App\Services\Contractor;
 
-use App\Repositories\Contractors\ContactPersonRepository;
+use App\Repositories\Contractor\ContactPersonRepository;
 use App\Services\CrudService;
 use App\Traits\Repository\SoftDeletesTrait;
 
