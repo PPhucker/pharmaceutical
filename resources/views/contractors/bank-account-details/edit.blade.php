@@ -4,12 +4,12 @@
         :text="__('contractors.bank_account_details.actions.create.info')"/>
     <div class="row">
         <div class="col-md-12">
-            <div class="collapse card"
+            <div class="collapse card border-0"
                  id="account_details_add_card">
                 <div class="card-header bg-primary text-white">
                     {{__('form.titles.add')}}
                 </div>
-                <div class="card-body p-1">
+                <div class="card-body p-1 border-0">
                     @include('contractors.bank-account-details.create')
                 </div>
             </div>

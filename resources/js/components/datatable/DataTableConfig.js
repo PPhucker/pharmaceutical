@@ -159,7 +159,9 @@ const DataTableConfig = (settings) => ({
                 dom = '<\'list-inline\'' +
                     '<\'list-inline-item mb-1\'f>>' +
                     '<\'row\'<\'col-sm-12\'r>>' +
-                    '<\'row\'<\'col-sm-12\'tr>>';
+                    '<\'row\'<\'col-sm-12\'tr>>' +
+                    '<\'row\'<\'col-sm-12 col-md-5 pb-2\'i>' +
+                    '<\'col-sm-12 col-md-7\'p>>';
                 break;
             default:
                 dom = '<\'list-inline\'' +
