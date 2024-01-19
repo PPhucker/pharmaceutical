@@ -91,6 +91,8 @@ class Contractor
         $legalForm->decoding = $opf->get('decoding');
         $legalForm->save();
 
+        $syncData = $this->getSyncData($client->get('inn'));
+
         /**
          * Занесение основной информации о контрагенте.
          */
@@ -100,8 +102,8 @@ class Contractor
                 'name' => '"' . $client->get('name') . '"',
                 'INN' => $client->get('inn'),
                 'OKPO' => $client->get('okpo'),
-                'contacts' => $this->getSyncContacts($client->get('inn')),
-                'kpp' => $client->get('kpp'),
+                'contacts' => $syncData->contacts ?? null,
+                'kpp' => $syncData->kpp ?? null,
             ]
         );
 
@@ -186,20 +188,21 @@ class Contractor
     }
 
     /**
-     * Получение контактов контрагента, которых нет в БД проекта.
-     *
      * @param string $inn
      *
-     * @return mixed
+     * @return Builder|Model|object|null
      */
-    private function getSyncContacts(string $inn)
+    private function getSyncData(string $inn)
     {
         return DB::connection('mysql@dev')
             ->table('clients')
-            ->select('contacts')
+            ->select([
+                'kpp',
+                'contacts'
+            ])
             ->where('inn', $inn)
             ->whereNull('deleted_at')
-            ->first()->contacts;
+            ->first();
     }
 
     /**
@@ -285,5 +288,22 @@ class Contractor
             )
                 ->save();
         }
+    }
+
+    /**
+     * Получение контактов контрагента, которых нет в БД проекта.
+     *
+     * @param string $inn
+     *
+     * @return mixed
+     */
+    private function getSyncContacts(string $inn)
+    {
+        return DB::connection('mysql@dev')
+            ->table('clients')
+            ->select('contacts')
+            ->where('inn', $inn)
+            ->whereNull('deleted_at')
+            ->first()->contacts;
     }
 }
