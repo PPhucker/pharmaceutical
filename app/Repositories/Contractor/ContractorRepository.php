@@ -32,7 +32,8 @@ class ContractorRepository extends ResourceRepository
                     'OKPO',
                     'contacts',
                     'comment',
-                    'deleted_at'
+                    'kpp',
+                    'deleted_at',
                 ]
             )
             ->orderBy('id');

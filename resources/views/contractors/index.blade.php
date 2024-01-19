@@ -36,6 +36,10 @@
                     :text="__('contractors.inn')"/>
                 <x-data-table.th
                     class="p-0"
+                    rowspan="2"
+                    :text="__('contractors.kpp')"/>
+                <x-data-table.th
+                    class="p-0"
                     rowspan="2"/>
                 <x-data-table.th
                     class="p-0"
@@ -78,6 +82,9 @@
                         @endforeach
                         <x-data-table.td>
                             {{$contractor->INN}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$contractor->kpp}}
                         </x-data-table.td>
                         <x-data-table.td>
                             <x-data-table.button.href
