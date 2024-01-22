@@ -3,7 +3,7 @@
 namespace App\Console;
 
 use App\Logging\Logger;
-use App\Synchronization\Contractor;
+use App\Synchronization\ContractorSync;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -22,8 +22,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('queue:work --tries=3 --stop-when-empty')
             ->everyMinute();
 
-        $schedule->call(static function () {
-            (new Contractor())->sync();
+        $schedule->call(function () {
+            (new ContractorSync())->sync();
         })
             ->daily();
 

@@ -6,6 +6,7 @@ use App\Helpers\Dadata\DadataClient;
 use App\Models\Classifiers\Bank;
 use App\Models\Classifiers\LegalForm;
 use App\Models\Contractor\BankAccountDetail;
+use App\Models\Contractor\Contractor;
 use App\Models\Contractor\PlaceOfBusiness;
 use DB;
 use Illuminate\Database\Eloquent\Model;
@@ -15,14 +16,14 @@ use Illuminate\Support\Collection;
 /**
  * Синхронизация конрагентов с rosbio-laravel-dev.
  */
-class Contractor
+class ContractorSync
 {
     /**
      * Синхронизация.
      *
      * @return void
      */
-    public function sync()
+    public function sync(): void
     {
         $innList = $this->getSyncInnList();
 
@@ -32,30 +33,32 @@ class Contractor
     }
 
     /**
-     * Получение списка контрагентов, которых нет в БД проекта.
+     * Получение списка ИНН контрагентов для синхронизации.
      *
      * @return array
      */
-    private function getSyncInnList()
+    private function getSyncInnList(): array
     {
+        $mdlpInnList = DB::connection('mysql@mdpl01')
+            ->table('clients')
+            ->select(
+                'inn'
+            )->whereNull('deleted_at')
+            ->get()
+            ->map(function ($inn) {
+                return $inn->inn;
+            });
+
+        $ecmInnList = Contractor::select('INN')
+            ->withTrashed()
+            ->get()
+            ->map(function ($inn) {
+                return $inn->INN;
+            });
+
         return array_unique(
-            DB::connection('mysql@mdpl01')
-                ->table('clients')
-                ->select(
-                    'inn'
-                )->whereNull('deleted_at')
-                ->get()
-                ->map(function ($inn) {
-                    return $inn->inn;
-                })
-                ->diff(
-                    \App\Models\Contractor\Contractor::select('INN')
-                        ->whereNull('deleted_at')
-                        ->get()
-                        ->map(function ($inn) {
-                            return $inn->INN;
-                        })
-                )
+            $mdlpInnList
+                ->diff($ecmInnList)
                 ->all()
         );
     }
@@ -65,7 +68,7 @@ class Contractor
      *
      * @return void
      */
-    private function create(string $inn)
+    private function create(string $inn): void
     {
         $dadataClient = new DadataClient();
 
@@ -96,7 +99,7 @@ class Contractor
         /**
          * Занесение основной информации о контрагенте.
          */
-        $contractor = \App\Models\Contractor\Contractor::create(
+        $contractor = Contractor::create(
             [
                 'legal_form_type' => $opf->get('abbreviation'),
                 'name' => '"' . $client->get('name') . '"',
@@ -277,7 +280,7 @@ class Contractor
             ->get();
 
         foreach ($devContractors as $devContractor) {
-            $contractor = \App\Models\Contractor\Contractor::where('INN', $devContractor->inn)->first();
+            $contractor = Contractor::where('INN', $devContractor->inn)->first();
             if (!$contractor) {
                 continue;
             }
