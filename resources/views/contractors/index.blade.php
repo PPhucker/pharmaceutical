@@ -23,7 +23,7 @@
                     rowspan="2"
                     :text="__('contractors.name')"/>
                 <x-data-table.th
-                    class="p-0"
+                    class="p-0 col-md-2"
                     rowspan="2"
                     :text="__('contractors.comment')"/>
                 <x-data-table.th
@@ -51,7 +51,8 @@
             <tr>
                 @foreach($organizations as $organization)
                     <x-data-table.th
-                        :text="$organization->name"/>
+                        class="col-md-1 p-0"
+                        :text="$organization->full_name"/>
                 @endforeach
             </tr>
             </thead>
@@ -72,12 +73,15 @@
                         </x-data-table.td>
                         @foreach($organizations as $organization)
                             <x-data-table.td>
-                                @if($contractor->hasContract($organization->id))
-                                    <span class="d-none">{{true}}</span>
-                                    <i class="bi bi-check-square-fill text-success fs-6 fw-bolder"></i>
-                                @else
-                                    <span class="d-none">{{false}}</span>
-                                @endif
+                                @foreach($organization->contracts as $contract)
+                                    @if($contractor->id === $contract->contractor_id)
+                                        <span class="d-none">{{true}}</span>
+                                        <i class="bi bi-check-square-fill text-success fs-6 fw-bolder"></i>
+                                        <span>{{$contract->date}}</span>
+                                    @else
+                                        <span class="d-none">{{false}}</span>
+                                    @endif
+                                @endforeach
                             </x-data-table.td>
                         @endforeach
                         <x-data-table.td>

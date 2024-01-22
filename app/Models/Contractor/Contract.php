@@ -57,6 +57,17 @@ class Contract extends Model
     }
 
     /**
+     * @param $date
+     *
+     * @return string
+     */
+    public function getDateAttribute($date): string
+    {
+        return Carbon::create($date)
+            ->format('d.m.Y');
+    }
+
+    /**
      * Получить дату обновления в формате d.m.Y H:i:s.
      *
      * @param $date

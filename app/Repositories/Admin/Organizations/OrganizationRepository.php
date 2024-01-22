@@ -29,16 +29,32 @@ class OrganizationRepository extends CoreRepository
                     'contacts',
                     'deleted_at'
                 ]
-            )
-            ->orderBy('name');
+            );
 
         if ($withTrashed) {
             $organizations->withTrashed();
         }
 
         return $organizations->with('legalForm:abbreviation')
+            ->with(
+                [
+                    'contracts' => function ($query) {
+                        $query->select(
+                            [
+                                'id',
+                                'organization_id',
+                                'contractor_id',
+                                'is_valid',
+                                'date',
+                            ]
+                        )
+                            ->where('is_valid', '=', 1)
+                            ->orderBy('organization_id');
+                    },
+                ]
+            )
             ->get()
-            ->sortBy('legalForm.abbreviation');
+            ->sortBy('full_name');
     }
 
     /**

@@ -7,6 +7,8 @@ use App\Models\Classifiers\LegalForm;
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
 use App\Models\Contractor\Contract;
+use App\Models\Documents\Acts\Act;
+use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Traits\Organizations\Documents\HasDocuments;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,28 +24,28 @@ use Illuminate\Testing\Fluent\Concerns\Has;
 /**
  * App\Models\Admin\Organizations\Organization
  *
- * @property int                                     $id
- * @property int|null                                $userId
- * @property string|null                             $legalFormType
- * @property string                                  $name
- * @property string                                  $INN
- * @property string                                  $OKPO
- * @property string|null                             $contacts
- * @property Carbon|null                             $createdAt
- * @property Carbon|null                             $updatedAt
- * @property Carbon|null                             $deletedAt
- * @property-read Collection<int, BankAccountDetail> $bankAccountDetails
- * @property-read int|null                           $bankAccountDetailsCount
- * @property-read Collection<int, ProductCatalog>    $catalogProducts
- * @property-read int|null                           $catalogProductsCount
- * @property-read LegalForm|null                     $legalForm
- * @property-read Collection<int, PlaceOfBusiness>   $placesOfBusiness
- * @property-read int|null                           $placesOfBusinessCount
- * @property-read Collection<int, ProductPrice>      $productPrices
- * @property-read int|null                           $productPricesCount
- * @property-read Collection<int, Staff>             $staff
- * @property-read int|null                           $staffCount
- * @property-read User|null                          $user
+ * @property int                                                                              $id
+ * @property int|null                                                                         $userId
+ * @property string|null                                                                      $legalFormType
+ * @property string                                                                           $name
+ * @property string                                                                           $INN
+ * @property string                                                                           $OKPO
+ * @property string|null                                                                      $contacts
+ * @property Carbon|null                                                                      $createdAt
+ * @property Carbon|null                                                                      $updatedAt
+ * @property Carbon|null                                                                      $deletedAt
+ * @property-read Collection<int, BankAccountDetail>                                          $bankAccountDetails
+ * @property-read int|null                                                                    $bankAccountDetailsCount
+ * @property-read Collection<int, ProductCatalog>                                             $catalogProducts
+ * @property-read int|null                                                                    $catalogProductsCount
+ * @property-read LegalForm|null                                                              $legalForm
+ * @property-read Collection<int, PlaceOfBusiness>                                            $placesOfBusiness
+ * @property-read int|null                                                                    $placesOfBusinessCount
+ * @property-read Collection<int, ProductPrice>                                               $productPrices
+ * @property-read int|null                                                                    $productPricesCount
+ * @property-read Collection<int, Staff>                                                      $staff
+ * @property-read int|null                                                                    $staffCount
+ * @property-read User|null                                                                   $user
  * @method static Builder|Organization newModelQuery()
  * @method static Builder|Organization newQuery()
  * @method static Builder|Organization onlyTrashed()
@@ -60,28 +62,30 @@ use Illuminate\Testing\Fluent\Concerns\Has;
  * @method static Builder|Organization whereUserId($value)
  * @method static Builder|Organization withTrashed()
  * @method static Builder|Organization withoutTrashed()
- * @property string|null $kpp КПП
- * @property-read Collection<int, \App\Models\Documents\Acts\Act> $acts
- * @property-read int|null $actsCount
- * @property-read Collection<int, \App\Models\Admin\Organizations\BankAccountDetail> $bankAccountDetails
- * @property-read Collection<int, \App\Models\Admin\Organizations\Car> $cars
- * @property-read int|null $carsCount
- * @property-read Collection<int, ProductCatalog> $catalogProducts
- * @property-read Collection<int, \App\Models\Admin\Organizations\Driver> $drivers
- * @property-read int|null $driversCount
- * @property-read Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPayment> $invoicesForPayment
- * @property-read int|null $invoicesForPaymentCount
- * @property-read Collection<int, \App\Models\Admin\Organizations\PlaceOfBusiness> $placesOfBusiness
- * @property-read Collection<int, ProductPrice> $productPrices
- * @property-read Collection<int, \App\Models\Admin\Organizations\Staff> $staff
- * @property-read Collection<int, \App\Models\Admin\Organizations\Trailer> $trailers
- * @property-read int|null $trailersCount
+ * @property string|null                                          $kpp КПП
+ * @property-read Collection<int, Act> $acts
+ * @property-read int|null                                        $actsCount
+ * @property-read Collection<int, BankAccountDetail>              $bankAccountDetails
+ * @property-read Collection<int, Car>                            $cars
+ * @property-read int|null                                        $carsCount
+ * @property-read Collection<int, ProductCatalog>                 $catalogProducts
+ * @property-read Collection<int, Driver>                         $drivers
+ * @property-read int|null                                        $driversCount
+ * @property-read Collection<int, InvoiceForPayment>              $invoicesForPayment
+ * @property-read int|null                                        $invoicesForPaymentCount
+ * @property-read Collection<int, PlaceOfBusiness>                $placesOfBusiness
+ * @property-read Collection<int, ProductPrice>                   $productPrices
+ * @property-read Collection<int, Staff>                          $staff
+ * @property-read Collection<int, Trailer>                                           $trailers
+ * @property-read int|null                                                           $trailersCount
  * @method static Builder|Organization whereKpp($value)
  * @mixin Eloquent
  */
 class Organization extends Model
 {
-    use HasFactory, HasDocuments, SoftDeletes;
+    use HasDocuments;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'organizations';
 
@@ -101,6 +105,16 @@ class Organization extends Model
         'updated_at',
         'deleted_at'
     ];
+
+    protected $appends = [
+        'full_name'
+    ];
+
+
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->legal_form_type} {$this->name}";
+    }
 
     public function getCreatedAtAttribute($date)
     {

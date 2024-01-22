@@ -35,15 +35,13 @@ class ContractorRepository extends ResourceRepository
                     'kpp',
                     'deleted_at',
                 ]
-            )
-            ->orderBy('id');
+            );
 
         if ($withTrashed) {
             $contractors->withTrashed();
         }
 
         return $contractors->with('legalForm:abbreviation')
-            ->with('contracts')
             ->get()
             ->sortBy('full_name');
     }
