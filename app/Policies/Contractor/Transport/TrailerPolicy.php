@@ -14,12 +14,18 @@ class TrailerPolicy extends CorePolicy
     use SoftDeletes;
 
     /**
-     * @param Trailer $trailer
+     * @return string
      */
-    public function __construct(Trailer $trailer)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return Trailer::class;
+    }
 
-        parent::__construct($trailer);
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Policies\Admin\Organizations;
+namespace App\Policies\Admin\Organization\Transport;
 
+use App\Models\Admin\Organization\Transport\Driver;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CarPolicy
+class DriverPolicy
 {
     use HandlesAuthorization;
 
@@ -48,7 +49,8 @@ class CarPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
+     * @param User   $user
+     * @param Driver $driver
      *
      * @return bool
      */

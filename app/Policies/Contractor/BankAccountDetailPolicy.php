@@ -6,17 +6,26 @@ use App\Models\Contractor\BankAccountDetail;
 use App\Policies\CorePolicy;
 use App\Traits\Policy\SoftDeletes;
 
+/**
+ * Политика для реквизитов контрагента.
+ */
 class BankAccountDetailPolicy extends CorePolicy
 {
     use SoftDeletes;
 
     /**
-     * @param BankAccountDetail $bankAccountDetail
+     * @return string
      */
-    public function __construct(BankAccountDetail $bankAccountDetail)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return BankAccountDetail::class;
+    }
 
-        parent::__construct($bankAccountDetail);
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

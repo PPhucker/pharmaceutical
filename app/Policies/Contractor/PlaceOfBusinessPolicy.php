@@ -14,12 +14,18 @@ class PlaceOfBusinessPolicy extends CorePolicy
     use SoftDeletes;
 
     /**
-     * @param PlaceOfBusiness $placeOfBusiness
+     * @return string
      */
-    public function __construct(PlaceOfBusiness $placeOfBusiness)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return PlaceOfBusiness::class;
+    }
 
-        parent::__construct($placeOfBusiness);
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

@@ -14,12 +14,18 @@ class ContractorPolicy extends CorePolicy
     use SoftDeletes;
 
     /**
-     * @param Contractor $contractor
+     * @return string
      */
-    public function __construct(Contractor $contractor)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return Contractor::class;
+    }
 
-        parent::__construct($contractor);
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

@@ -1,37 +1,13 @@
 <?php
 
-namespace App\Policies\Admin\Organizations;
+namespace App\Policies\Admin\Organization\Transport;
 
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class BankAccountDetailPolicy
+class TrailerPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function viewAny(User $user)
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function view(User $user)
-    {
-        return $user->isAdmin();
-    }
 
     /**
      * Determine whether the user can create models.
@@ -48,7 +24,7 @@ class BankAccountDetailPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
+     * @param  User   $user
      *
      * @return bool
      */
@@ -60,7 +36,7 @@ class BankAccountDetailPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param User $user
+     * @param  User   $user
      *
      * @return bool
      */
@@ -72,7 +48,7 @@ class BankAccountDetailPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User $user
+     * @param User    $user
      *
      * @return bool
      */

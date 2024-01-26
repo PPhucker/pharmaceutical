@@ -19,13 +19,21 @@ abstract class CorePolicy
 
     protected $model;
 
-    /**
-     * @param $model
-     */
-    public function __construct($model)
+    public function __construct()
     {
-        $this->model = $model;
+        $this->model = app($this->getModelClass());
+        $this->roles = $this->getRoles();
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getModelClass(): string;
+
+    /**
+     * @return array
+     */
+    abstract protected function getRoles(): array;
 
     /**
      * Determine whether the user can view any models.

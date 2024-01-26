@@ -14,12 +14,18 @@ class ContactPersonPolicy extends CorePolicy
     use SoftDeletes;
 
     /**
-     * @param ContactPerson $contactPerson
+     * @return string
      */
-    public function __construct(ContactPerson $contactPerson)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return ContactPerson::class;
+    }
 
-        parent::__construct($contactPerson);
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

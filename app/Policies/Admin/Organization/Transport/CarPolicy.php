@@ -1,37 +1,13 @@
 <?php
 
-namespace App\Policies\Admin\Organizations;
+namespace App\Policies\Admin\Organization\Transport;
 
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PlaceOfBusinessPolicy
+class CarPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function viewAny(User $user)
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function view(User $user)
-    {
-        return $user->isAdmin();
-    }
 
     /**
      * Determine whether the user can create models.

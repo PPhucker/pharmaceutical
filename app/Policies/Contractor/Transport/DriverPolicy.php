@@ -14,12 +14,18 @@ class DriverPolicy extends CorePolicy
     use SoftDeletes;
 
     /**
-     * @param Driver $driver
+     * @return string
      */
-    public function __construct(Driver $driver)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return Driver::class;
+    }
 
-        parent::__construct($driver);
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

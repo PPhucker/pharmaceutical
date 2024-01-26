@@ -14,12 +14,15 @@ class CarPolicy extends CorePolicy
     use SoftDeletes;
 
     /**
-     * @param Car $car
+     * @return string
      */
-    public function __construct(Car $car)
+    protected function getModelClass(): string
     {
-        $this->roles = config('roles.contractor', ['admin']);
+        return Car::class;
+    }
 
-        parent::__construct($car);
+    protected function getRoles(): array
+    {
+        return config('roles.contractor', ['admin']);
     }
 }

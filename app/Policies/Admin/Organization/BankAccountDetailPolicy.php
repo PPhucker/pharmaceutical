@@ -1,15 +1,37 @@
 <?php
 
-namespace App\Policies\Admin\Organizations;
+namespace App\Policies\Admin\Organization;
 
-use App\Models\Admin\Organizations\Driver;
 use App\Models\Auth\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
-class DriverPolicy
+class BankAccountDetailPolicy
 {
     use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view any models.
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function viewAny(User $user)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     *
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function view(User $user)
+    {
+        return $user->isAdmin();
+    }
 
     /**
      * Determine whether the user can create models.
@@ -50,8 +72,7 @@ class DriverPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param User   $user
-     * @param Driver $driver
+     * @param User $user
      *
      * @return bool
      */
