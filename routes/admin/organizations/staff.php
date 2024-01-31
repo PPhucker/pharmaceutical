@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Organizations\StaffController as Controller;
+use App\Http\Controllers\Admin\Organization\StaffController as Controller;
 
 Route::resource('staff', Controller::class)
     ->except(['create', 'edit', 'show', 'update', 'index']);

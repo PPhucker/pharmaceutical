@@ -2,60 +2,31 @@
 
 namespace App\Policies\Admin\Organization\Transport;
 
+
 use App\Models\Admin\Organization\Transport\Driver;
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Policies\CorePolicy;
+use App\Traits\Policy\SoftDeletes;
 
-class DriverPolicy
+/**
+ * Политика для водителя организации.
+ */
+class DriverPolicy extends CorePolicy
 {
-    use HandlesAuthorization;
+    use SoftDeletes;
 
     /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return string
      */
-    public function create(User $user)
+    protected function getModelClass(): string
     {
-        return $user->isAdmin();
+        return Driver::class;
     }
 
     /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return string[]
      */
-    public function update(User $user)
+    protected function getRoles(): array
     {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function delete(User $user)
-    {
-        return $user->isAdmin();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User   $user
-     * @param Driver $driver
-     *
-     * @return bool
-     */
-    public function restore(User $user)
-    {
-        return $user->isAdmin();
+        return ['admin'];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Traits\Organization;
 
-use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organization\Organization;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasOrganization

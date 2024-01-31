@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\Organizations\OrganizationController as Controller;
+use App\Http\Controllers\Admin\Organization\OrganizationController as Controller;
 
 Route::resource('organizations', Controller::class);
 

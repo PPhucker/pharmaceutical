@@ -14,7 +14,7 @@ use App\Models\Contractor\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;

@@ -4,7 +4,7 @@ namespace App\Services\Contractor\Bank;
 
 use App\Repositories\Contractor\Bank\BankAccountDetailRepository;
 use App\Repositories\Contractor\Bank\BankRepository;
-use App\Services\Contractor\CoreDependencyService;
+use App\Services\CoreDependencyService;
 
 /**
  * Сервис зависимостей банка контргагента.

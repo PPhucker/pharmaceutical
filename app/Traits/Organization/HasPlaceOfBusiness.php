@@ -2,7 +2,7 @@
 
 namespace App\Traits\Organization;
 
-use App\Models\Admin\Organizations\PlaceOfBusiness;
+use App\Models\Admin\Organization\PlaceOfBusiness;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasPlaceOfBusiness

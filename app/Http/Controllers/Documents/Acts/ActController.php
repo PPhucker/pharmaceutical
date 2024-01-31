@@ -10,7 +10,7 @@ use App\Http\Requests\Documents\Acts\IndexActRequest;
 use App\Http\Requests\Documents\Acts\StoreActRequest;
 use App\Http\Requests\Documents\Acts\UpdateActRequest;
 use App\Models\Documents\Acts\Act;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Classifiers\Nomenclature\Services\ServiceRepository;
 use App\Repositories\Documents\Acts\ActRepository;
 use Auth;

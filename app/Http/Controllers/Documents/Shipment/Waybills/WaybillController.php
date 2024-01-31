@@ -13,7 +13,7 @@ use App\Http\Requests\Documents\Shipment\Waybills\StoreWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\UpdateWaybillRequest;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\Waybills\Waybill;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
 use App\Repositories\Documents\Shipment\Waybills\WaybillRepository;
 use Carbon\Carbon;

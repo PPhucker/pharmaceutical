@@ -36,9 +36,9 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Contractor\Contractor                                                                                $contractor
  * @property-read \App\Models\Contractor\BankAccountDetail|null                                                                    $contractorBankAccountDetail
  * @property-read \App\Models\Contractor\PlaceOfBusiness                                                                           $contractorPlaceOfBusiness
- * @property-read \App\Models\Admin\Organizations\Organization                                                                     $organization
- * @property-read \App\Models\Admin\Organizations\BankAccountDetail|null                                                           $organizationBankAccountDetail
- * @property-read \App\Models\Admin\Organizations\PlaceOfBusiness                                                                  $organizationPlaceOfBusiness
+ * @property-read \App\Models\Admin\Organization\Organization                                                                      $organization
+ * @property-read \App\Models\Admin\Organization\BankAccountDetail|null                                                            $organizationBankAccountDetail
+ * @property-read \App\Models\Admin\Organization\PlaceOfBusiness                                                                   $organizationPlaceOfBusiness
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PackingListProduct>                                                $packingListProdiction
  * @property-read int|null                                                                                                         $packingListProdictionCount
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct> $production

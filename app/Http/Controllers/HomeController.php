@@ -7,7 +7,7 @@ use App\Charts\Homepage\AverageSalesChart;
 use App\Charts\Homepage\BestSalesToContractorsChart;
 use App\Charts\Homepage\BestSellingProductsChart;
 use App\Helpers\Date;
-use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use App\Models\Contractor\Contractor;

@@ -5,23 +5,14 @@ namespace App\Models\Auth;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
 use App\Traits\Auth\HasRolesAndPermissions;
-use App\Traits\Classifier\Nomenclature\Product\HasCatalogProducts;
-use App\Traits\Classifier\Nomenclature\Product\Price\HasPrices;
-use App\Traits\Contractor\HasContractors;
-use App\Traits\Contractor\HasPlacesOfBusiness;
 use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Модель пользователя.

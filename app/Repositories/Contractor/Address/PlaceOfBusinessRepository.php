@@ -35,7 +35,7 @@ class PlaceOfBusinessRepository extends CrudRepository
      *
      * @return PlaceOfBusiness
      */
-    public function create(array $validated): PlaceOfBusiness
+    public function create(array $validated)
     {
         return $this->model
             ->create(

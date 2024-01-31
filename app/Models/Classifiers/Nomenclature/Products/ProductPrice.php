@@ -2,7 +2,7 @@
 
 namespace App\Models\Classifiers\Nomenclature\Products;
 
-use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;

@@ -5,7 +5,7 @@ namespace App\Services\Contractor\Transport;
 use App\Repositories\Contractor\Transport\CarRepository;
 use App\Repositories\Contractor\Transport\DriverRepository;
 use App\Repositories\Contractor\Transport\TrailerRepository;
-use App\Services\Contractor\CoreDependencyService;
+use App\Services\CoreDependencyService;
 
 /**
  * Сервис зависимостей транспорта.

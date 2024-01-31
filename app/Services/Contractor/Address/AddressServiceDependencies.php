@@ -4,7 +4,7 @@ namespace App\Services\Contractor\Address;
 
 use App\Repositories\Contractor\Address\PlaceOfBusinessRepository;
 use App\Repositories\Contractor\Address\RegionRepository;
-use App\Services\Contractor\CoreDependencyService;
+use App\Services\CoreDependencyService;
 
 /**
  * Сервис зависимостей адреса контрагента.

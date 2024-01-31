@@ -2,9 +2,9 @@
 
 namespace App\Traits\Documents\InvoicesForPayment;
 
-use App\Models\Admin\Organizations\BankAccountDetail;
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Admin\Organizations\PlaceOfBusiness;
+use App\Models\Admin\Organization\BankAccountDetail;
+use App\Models\Admin\Organization\Organization;
+use App\Models\Admin\Organization\PlaceOfBusiness;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasOrganization

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\Organizations\DriverController as Controller;
+use App\Http\Controllers\Admin\Organization\Transport\DriverController as Controller;
 
 Route::resource('drivers', Controller::class)
     ->except(['create', 'edit', 'show', 'index']);

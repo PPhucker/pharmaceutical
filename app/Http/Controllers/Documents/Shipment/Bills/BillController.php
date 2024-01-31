@@ -13,7 +13,7 @@ use App\Http\Requests\Documents\Shipment\Bills\StoreBillRequest;
 use App\Http\Requests\Documents\Shipment\Bills\UpdateBillRequest;
 use App\Models\Documents\Shipment\Bills\Bill;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Bills\BillRepository;
 use Auth;
 use Carbon\Carbon;

@@ -13,7 +13,7 @@ use App\Http\Requests\Documents\Shipment\Protocols\StoreProtocolRequest;
 use App\Http\Requests\Documents\Shipment\Protocols\UpdateProtocolRequest;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\Protocols\Protocol;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Protocols\ProtocolRepository;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;

@@ -13,7 +13,7 @@ use App\Http\Requests\Documents\Shipment\Appendixes\StoreAppendixRequest;
 use App\Http\Requests\Documents\Shipment\Appendixes\UpdateAppendixRequest;
 use App\Models\Documents\Shipment\Appendixes\Appendix;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Appendixes\AppendixRepository;
 use Auth;
 use Carbon\Carbon;

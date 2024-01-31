@@ -5,7 +5,7 @@ namespace App\Services\Auth;
 use App\Repositories\Auth\PermissionRepository;
 use App\Repositories\Auth\RoleRepository;
 use App\Repositories\Auth\UserRepository;
-use App\Services\Contractor\CoreDependencyService;
+use App\Services\CoreDependencyService;
 
 /**
  * Сервис зависимостей для UserService.

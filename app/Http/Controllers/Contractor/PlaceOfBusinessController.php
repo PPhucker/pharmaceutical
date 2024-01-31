@@ -7,6 +7,7 @@ use App\Http\Requests\Contractor\PlacesOfBusines\StorePlaceOfBusinessRequest;
 use App\Http\Requests\Contractor\PlacesOfBusines\UpdatePlaceOfBusinessRequest;
 use App\Models\Contractor\PlaceOfBusiness;
 use App\Services\Contractor\Address\PlaceOfBusinessService;
+use App\Traits\Contractor\Controller\PlaceOfBusinessControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
 /**
@@ -14,7 +15,10 @@ use Illuminate\Http\RedirectResponse;
  */
 class PlaceOfBusinessController extends CoreController
 {
+    use PlaceOfBusinessControllerTrait;
+
     protected $prefixLocalKey = 'contractors.places_of_business';
+
     /**
      * @var PlaceOfBusinessService
      */
@@ -38,13 +42,7 @@ class PlaceOfBusinessController extends CoreController
      */
     public function store(StorePlaceOfBusinessRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['place_of_business'];
-        $placeOfBusiness = $this->service->create($validated);
-
-        return $this->successRedirect(
-            'create',
-            ['name' => $placeOfBusiness->address]
-        );
+        return $this->traitStore($request);
     }
 
     /**
@@ -59,12 +57,7 @@ class PlaceOfBusinessController extends CoreController
         UpdatePlaceOfBusinessRequest $request,
         PlaceOfBusiness $placeOfBusiness
     ): RedirectResponse {
-        $this->service->update(
-            $placeOfBusiness,
-            $request->validated()
-        );
-
-        return $this->successRedirect('update');
+        return $this->traitUpdate($request, $placeOfBusiness);
     }
 
     /**
@@ -76,12 +69,7 @@ class PlaceOfBusinessController extends CoreController
      */
     public function destroy(PlaceOfBusiness $placeOfBusiness): RedirectResponse
     {
-        $this->service->delete($placeOfBusiness);
-
-        return $this->successRedirect(
-            'delete',
-            ['name' => $placeOfBusiness->address]
-        );
+        return $this->traitDestroy($placeOfBusiness);
     }
 
     /**
@@ -93,11 +81,6 @@ class PlaceOfBusinessController extends CoreController
      */
     public function restore(PlaceOfBusiness $placeOfBusiness): RedirectResponse
     {
-        $this->service->restore($placeOfBusiness);
-
-        return $this->successRedirect(
-            'restore',
-            ['name' => $placeOfBusiness->address]
-        );
+        return $this->traitRestore($placeOfBusiness);
     }
 }

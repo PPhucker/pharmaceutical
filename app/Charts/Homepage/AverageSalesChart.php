@@ -4,7 +4,7 @@ namespace App\Charts\Homepage;
 
 use App\Charts\Chart;
 use App\Helpers\Date;
-use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organization\Organization;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use ArielMejiaDev\LarapexCharts\AreaChart;
 use Carbon\CarbonPeriod;

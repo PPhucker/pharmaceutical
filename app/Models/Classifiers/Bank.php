@@ -2,7 +2,7 @@
 
 namespace App\Models\Classifiers;
 
-use App\Models\Admin\Organizations\BankAccountDetail;
+use App\Models\Admin\Organization\BankAccountDetail;
 use App\Models\Contractor\BankAccountDetail as ContractorBankAccountDetail;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;

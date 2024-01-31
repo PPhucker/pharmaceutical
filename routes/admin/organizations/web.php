@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\Organizations\OrganizationController as Controller;
+use App\Http\Controllers\Admin\Organization\OrganizationController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(Controller::class)

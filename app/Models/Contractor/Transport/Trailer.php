@@ -2,7 +2,7 @@
 
 namespace App\Models\Contractor\Transport;
 
-use App\Traits\Contractor\HasContractor;
+use App\Traits\Contractor\Relation\HasContractor;
 use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -2,30 +2,40 @@
 
 namespace App\Providers\Contractor;
 
-use App\Models\Admin\Organizations\BankAccountDetail;
-use App\Models\Admin\Organizations\Driver;
-use App\Models\Admin\Organizations\Organization;
-use App\Models\Admin\Organizations\PlaceOfBusiness;
-use App\Models\Admin\Organizations\Staff;
-use App\Models\Admin\Organizations\Trailer;
-use App\Observers\Admin\Organizations\BankAccountDetailObserver;
-use App\Observers\Admin\Organizations\DriverObserver;
-use App\Observers\Admin\Organizations\OrganizationObserver;
-use App\Observers\Admin\Organizations\PlaceOfBusinessObserver;
-use App\Observers\Admin\Organizations\StaffObserver;
-use App\Observers\Admin\Organizations\TrailerObserver;
+use App\Models\Admin\Organization\BankAccountDetail;
+use App\Models\Admin\Organization\Organization;
+use App\Models\Admin\Organization\PlaceOfBusiness;
+use App\Models\Admin\Organization\Staff;
+use App\Models\Admin\Organization\Transport\Car;
+use App\Models\Admin\Organization\Transport\Driver;
+use App\Models\Admin\Organization\Transport\Trailer;
+use App\Observers\CoreObserver;
+use App\Services\Admin\Organization\OrganizationService;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Сервис провайдер организации.
+ */
 class OrganizationServiceProvider extends ServiceProvider
 {
+    protected $observedModels = [
+        Organization::class,
+        PlaceOfBusiness::class,
+        BankAccountDetail::class,
+        Staff::class,
+        Driver::class,
+        Car::class,
+        Trailer::class,
+    ];
+
     /**
      * Register services.
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
+        $this->app->singleton(OrganizationService::class);
     }
 
     /**
@@ -33,13 +43,10 @@ class OrganizationServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        Organization::observe(OrganizationObserver::class);
-        PlaceOfBusiness::observe(PlaceOfBusinessObserver::class);
-        BankAccountDetail::observe(BankAccountDetailObserver::class);
-        Staff::observe(StaffObserver::class);
-        Driver::observe(DriverObserver::class);
-        Trailer::observe(TrailerObserver::class);
+        foreach ($this->observedModels as $model) {
+            $model::observe(CoreObserver::class);
+        }
     }
 }

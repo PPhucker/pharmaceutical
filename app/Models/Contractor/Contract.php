@@ -2,8 +2,8 @@
 
 namespace App\Models\Contractor;
 
-use App\Traits\Contractor\HasContractor;
-use App\Traits\Contractor\HasOrganization;
+use App\Traits\Contractor\Relation\HasContractor;
+use App\Traits\Contractor\Relation\HasOrganization;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUserAction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

@@ -2,14 +2,14 @@
 
 namespace App\Helpers\Documents;
 
-use App\Models\Admin\Organizations\BankAccountDetail as OrganizationAccount;
-use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organization\BankAccountDetail as OrganizationAccount;
+use App\Models\Admin\Organization\Organization;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use App\Models\Contractor\BankAccountDetail as ContractorAccount;
 use App\Models\Contractor\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use Illuminate\Support\Carbon;

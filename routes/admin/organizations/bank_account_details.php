@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Organizations\BankAccountDetailController as Controller;
+use App\Http\Controllers\Admin\Organization\BankAccountDetailController as Controller;
 
 Route::resource('bank_account_details', Controller::class)
     ->except(['create', 'edit', 'show', 'update', 'index']);

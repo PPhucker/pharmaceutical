@@ -6,9 +6,9 @@ use App\Models\Contractor\Transport\Car;
 use App\Models\Contractor\Transport\Driver;
 use App\Models\Contractor\Transport\Trailer;
 use App\Traits\Classifier\HasLegalForm;
-use App\Traits\Contractor\HasBankAccountDetails;
-use App\Traits\Contractor\HasContactPersons;
-use App\Traits\Contractor\HasPlacesOfBusiness;
+use App\Traits\Contractor\Relation\HasBankAccountDetails;
+use App\Traits\Contractor\Relation\HasContactPersons;
+use App\Traits\Contractor\Relation\HasPlacesOfBusiness;
 use App\Traits\Document\HasInvoicesAndPackingLists;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\Notification\Email\EmailToVerificationContractorsUsers;
@@ -121,21 +121,5 @@ class Contractor extends Model
     {
         return $this->hasMany(Contract::class, 'contractor_id')
             ->withTrashed();
-    }
-
-    /**
-     * @param int $organizationId
-     *
-     * @return bool
-     */
-    public function hasContract(int $organizationId): bool
-    {
-        foreach ($this->contracts as $contract) {
-            if ($contract->is_valid && $contract->organization_id === $organizationId) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

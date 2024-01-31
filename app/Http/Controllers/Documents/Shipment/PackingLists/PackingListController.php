@@ -18,7 +18,7 @@ use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Notifications\Shipment\ToDigitalCommunication;
 use App\Notifications\Shipment\ToMarketing;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Auth\UserRepository;
 use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
