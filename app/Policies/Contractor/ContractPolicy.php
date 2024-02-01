@@ -4,14 +4,14 @@ namespace App\Policies\Contractor;
 
 use App\Models\Contractor\Contract;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика для договора с контрагентом.
  */
 class ContractPolicy extends CorePolicy
 {
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string

@@ -4,14 +4,14 @@ namespace App\Policies\Admin\Organization;
 
 use App\Models\Admin\Organization\PlaceOfBusiness;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика для места осущетвления деятельности контрагента.
  */
 class PlaceOfBusinessPolicy extends CorePolicy
 {
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string

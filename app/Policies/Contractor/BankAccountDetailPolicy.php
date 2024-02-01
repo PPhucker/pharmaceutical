@@ -4,14 +4,14 @@ namespace App\Policies\Contractor;
 
 use App\Models\Contractor\BankAccountDetail;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика для реквизитов контрагента.
  */
 class BankAccountDetailPolicy extends CorePolicy
 {
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string

@@ -5,14 +5,14 @@ namespace App\Policies\Admin\Organization\Transport;
 
 use App\Models\Admin\Organization\Transport\Driver;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика для водителя организации.
  */
 class DriverPolicy extends CorePolicy
 {
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string

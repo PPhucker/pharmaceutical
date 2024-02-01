@@ -7,7 +7,7 @@ use App\Models\Auth\User;
 /**
  * Трейт политики для удаления/восстановления
  */
-trait SoftDeletes
+trait SoftDeletesPolicy
 {
     /**
      * Determine whether the user can delete the model.

@@ -4,14 +4,14 @@ namespace App\Policies\Admin\Organization;
 
 use App\Models\Admin\Organization\Organization;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политики для организации.
  */
 class OrganizationPolicy extends CorePolicy
 {
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string

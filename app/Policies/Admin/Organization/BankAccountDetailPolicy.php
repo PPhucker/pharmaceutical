@@ -4,14 +4,14 @@ namespace App\Policies\Admin\Organization;
 
 use App\Models\Admin\Organization\BankAccountDetail;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика для банковских реквизитов организации.
  */
 class BankAccountDetailPolicy extends CorePolicy
 {
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string

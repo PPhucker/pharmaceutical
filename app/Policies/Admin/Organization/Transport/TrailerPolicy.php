@@ -4,7 +4,7 @@ namespace App\Policies\Admin\Organization\Transport;
 
 use App\Models\Admin\Organization\Transport\Trailer;
 use App\Policies\CorePolicy;
-use App\Traits\Policy\SoftDeletes;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика для прицепа организации.
@@ -12,7 +12,7 @@ use App\Traits\Policy\SoftDeletes;
 class TrailerPolicy extends CorePolicy
 {
 
-    use SoftDeletes;
+    use SoftDeletesPolicy;
 
     /**
      * @return string
