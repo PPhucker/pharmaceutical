@@ -4,13 +4,13 @@ namespace App\Models\Classifiers\Nomenclature\Products;
 
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
-use App\Traits\Classifier\Nomenclature\Product\HasEndProduct;
-use App\Traits\Classifier\Nomenclature\Product\Price\HasPrices;
-use App\Traits\Classifier\Nomenclature\Product\Price\HasRegionalAllowances;
+use App\Traits\Classifier\Nomenclature\Product\Price\Relation\HasPrices;
+use App\Traits\Classifier\Nomenclature\Product\Price\Relation\HasRegionalAllowances;
+use App\Traits\Classifier\Nomenclature\Product\Relation\HasEndProduct;
 use App\Traits\Classifiers\Nomenclature\Products\HasAggregationTypes;
 use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
-use App\Traits\Organization\HasOrganization;
-use App\Traits\Organization\HasPlaceOfBusiness;
+use App\Traits\Organization\Relation\HasOrganization;
+use App\Traits\Organization\Relation\HasPlaceOfBusiness;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

@@ -2,14 +2,13 @@
 
 namespace App\Models\Admin\Organization;
 
-use App\Traits\Document\HasInvoicesAndPackingLists;
-use App\Traits\Model\RelationshipsTrait;
-use App\Traits\Organization\HasOrganization;
+use App\Models\Contractor\PlaceOfBusiness as ContractorPlaceOfBusiness;
+use App\Traits\Document\Relation\HasInvoicesAndPackingLists;
+use App\Traits\Organization\Relation\HasOrganization;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use \App\Models\Contractor\PlaceOfBusiness as ContractorPlaceOfBusiness;
 
 /**
  * Модель места осуществления деятельности контрагента.

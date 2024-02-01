@@ -4,7 +4,7 @@ namespace App\Models\Auth;
 
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
-use App\Traits\Auth\HasRolesAndPermissions;
+use App\Traits\Auth\Relation\HasRolesAndPermissions;
 use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

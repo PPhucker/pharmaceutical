@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Traits\Auth;
+namespace App\Traits\Auth\Relation;
 
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Collection;
 
 /**
  * Трейт ролей и прав пользователя.

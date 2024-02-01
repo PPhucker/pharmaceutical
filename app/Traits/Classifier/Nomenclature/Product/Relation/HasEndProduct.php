@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifier\Nomenclature\Product;
+namespace App\Traits\Classifier\Nomenclature\Product\Relation;
 
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

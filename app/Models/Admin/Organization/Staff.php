@@ -3,7 +3,7 @@
 namespace App\Models\Admin\Organization;
 
 use App\Traits\Model\RelationshipsTrait;
-use App\Traits\Organization\HasOrganization;
+use App\Traits\Organization\Relation\HasOrganization;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

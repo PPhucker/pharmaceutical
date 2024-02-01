@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifier\Nomenclature;
+namespace App\Traits\Classifier\Nomenclature\Relation;
 
 use App\Models\Classifiers\Nomenclature\OKEI;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

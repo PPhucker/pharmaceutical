@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Document;
+namespace App\Traits\Document\Relation;
 
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\Shipment\PackingLists\PackingList;

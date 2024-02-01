@@ -2,12 +2,12 @@
 
 namespace App\Models\Classifiers\Nomenclature\Products;
 
-use App\Traits\Classifier\Nomenclature\HasOkeiClassifier;
-use App\Traits\Classifier\Nomenclature\HasOkpd2Classifier;
-use App\Traits\Classifier\Nomenclature\Product\HasCatalogProducts;
-use App\Traits\Classifier\Nomenclature\Product\HasInternationalName;
-use App\Traits\Classifier\Nomenclature\Product\HasRegistrationNumber;
-use App\Traits\Classifier\Nomenclature\Product\HasTypeOfEndProduct;
+use App\Traits\Classifier\Nomenclature\Product\Relation\HasCatalogProducts;
+use App\Traits\Classifier\Nomenclature\Product\Relation\HasInternationalName;
+use App\Traits\Classifier\Nomenclature\Product\Relation\HasRegistrationNumber;
+use App\Traits\Classifier\Nomenclature\Product\Relation\HasTypeOfEndProduct;
+use App\Traits\Classifier\Nomenclature\Relation\HasOkeiClassifier;
+use App\Traits\Classifier\Nomenclature\Relation\HasOkpd2Classifier;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

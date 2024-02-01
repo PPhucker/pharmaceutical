@@ -4,7 +4,7 @@ namespace App\Models\Contractor;
 
 use App\Models\Classifiers\Bank;
 use App\Traits\Contractor\Relation\HasContractor;
-use App\Traits\Document\HasInvoicesForPayment;
+use App\Traits\Document\Relation\HasInvoicesForPayment;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

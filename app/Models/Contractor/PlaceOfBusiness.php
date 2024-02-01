@@ -4,7 +4,7 @@ namespace App\Models\Contractor;
 
 use App\Models\Classifiers\Region;
 use App\Traits\Contractor\Relation\HasContractor;
-use App\Traits\Document\HasInvoicesAndPackingLists;
+use App\Traits\Document\Relation\HasInvoicesAndPackingLists;
 use App\Traits\Documents\Shipment\HasUser;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\Notification\Email\EmailToVerificationContractorsUsers;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifier\Nomenclature;
+namespace App\Traits\Classifier\Nomenclature\Relation;
 
 use App\Models\Classifiers\Nomenclature\Products\OKPD2;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifier;
+namespace App\Traits\Classifier\Relation;
 
 use App\Models\Classifiers\LegalForm;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

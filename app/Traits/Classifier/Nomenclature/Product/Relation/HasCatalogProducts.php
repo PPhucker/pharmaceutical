@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifier\Nomenclature\Product;
+namespace App\Traits\Classifier\Nomenclature\Product\Relation;
 
 use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
 use Illuminate\Database\Eloquent\Relations\HasMany;

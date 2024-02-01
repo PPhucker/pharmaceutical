@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Organization;
+namespace App\Traits\Organization\Relation;
 
 use App\Models\Admin\Organization\PlaceOfBusiness;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
