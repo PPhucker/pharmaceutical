@@ -22,7 +22,7 @@ class BankAccountDetailPolicy extends CorePolicy
     }
 
     /**
-     * @return string[]
+     * @return array
      */
     protected function getRoles(): array
     {

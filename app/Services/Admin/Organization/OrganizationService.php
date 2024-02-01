@@ -2,8 +2,10 @@
 
 namespace App\Services\Admin\Organization;
 
+use App\Repositories\Classifier\BankRepository;
 use App\Services\ResourceService;
 use App\Traits\Repository\SoftDeletesTrait;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 /**
  * Сервис организации.
@@ -14,18 +16,20 @@ class OrganizationService extends ResourceService
 
     /**
      * @param OrganizationServiceDependencies $organizationServiceDependencies
-     * @param BankServiceDependencies         $bankServiceDependencies
+     *
+     * @throws BindingResolutionException
      */
     public function __construct(
-        OrganizationServiceDependencies $organizationServiceDependencies,
-        BankServiceDependencies $bankServiceDependencies
+        OrganizationServiceDependencies $organizationServiceDependencies
     ) {
         $this->repositories = $this->getRepositoriesFromDependencies(
             [
                 $organizationServiceDependencies,
-                $bankServiceDependencies
             ]
         );
+
+        $this->repositories->bank = app()
+            ->make(BankRepository::class);
 
         $this->selectedRepo = $this->repositories->organization;
     }

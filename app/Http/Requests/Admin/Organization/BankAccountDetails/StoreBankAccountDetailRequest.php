@@ -2,60 +2,24 @@
 
 namespace App\Http\Requests\Admin\Organization\BankAccountDetails;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\Contractor\BankAccountDetail\StoreBankAccountDetailRequest
+    as ContractorStoreBankAccountDetailRequest;
 
-class StoreBankAccountDetailRequest extends FormRequest
+/**
+ * Валидация добавления банковских реквизитов орагнизации.
+ */
+class StoreBankAccountDetailRequest extends ContractorStoreBankAccountDetailRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
+     * @return array[]
      */
-    public function authorize()
+    protected function getMoreRules(): array
     {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        $prefix = 'bank_account_detail.';
-
         return [
-            $prefix . 'organization_id' => [
-                'required',
-                'numeric'
-            ],
-            $prefix . 'bank' => [
+            $this->prefixRuleKey . 'organization_id' => [
                 'required',
                 'numeric',
-                'digits:9'
             ],
-            $prefix . 'payment_account' => [
-                'required',
-                'numeric',
-                'digits:20'
-            ]
         ];
-    }
-
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __(
-                        'contractors.bank_account_details.actions.create.fail',
-                        ['name' => $this->address]
-                    )
-                );
-            }
-        });
     }
 }

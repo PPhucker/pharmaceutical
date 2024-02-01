@@ -7,6 +7,7 @@ use App\Http\Requests\Contractor\BankAccountDetail\StoreBankAccountDetailRequest
 use App\Http\Requests\Contractor\BankAccountDetail\UpdateBankAccountDetailRequest;
 use App\Models\Contractor\BankAccountDetail;
 use App\Services\Contractor\Bank\AccountDetailService;
+use App\Traits\Contractor\Controller\BankAccountDetailControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Http\RedirectResponse;
  */
 class BankAccountDetailController extends CoreController
 {
+    use BankAccountDetailControllerTrait;
+
     protected $prefixLocalKey = 'contractors.bank_account_details';
 
     /**
@@ -31,27 +34,16 @@ class BankAccountDetailController extends CoreController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreBankAccountDetailRequest $request
      *
      * @return RedirectResponse
      */
     public function store(StoreBankAccountDetailRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['bank_account_detail'];
-
-        $bankAccountDetail = $this->service->create($validated);
-
-        return $this->successRedirect(
-            'create',
-            ['name' => $bankAccountDetail->payment_account]
-        );
+        return $this->traitStore($request);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateBankAccountDetailRequest $request
      * @param BankAccountDetail              $bankAccountDetail
      *
@@ -61,44 +53,26 @@ class BankAccountDetailController extends CoreController
         UpdateBankAccountDetailRequest $request,
         BankAccountDetail $bankAccountDetail
     ): RedirectResponse {
-        $validated = $request->validated();
-
-        $this->service->update($bankAccountDetail, $validated);
-
-        return $this->successRedirect('update');
+        return $this->traitUpdate($request, $bankAccountDetail);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param BankAccountDetail $bankAccountDetail
      *
      * @return RedirectResponse
      */
     public function destroy(BankAccountDetail $bankAccountDetail): RedirectResponse
     {
-        $this->service->delete($bankAccountDetail);
-
-        return $this->successRedirect(
-            'delete',
-            ['name' => $bankAccountDetail->payment_account]
-        );
+        return $this->traitDestroy($bankAccountDetail);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param BankAccountDetail $bankAccountDetail
      *
      * @return RedirectResponse
      */
     public function restore(BankAccountDetail $bankAccountDetail): RedirectResponse
     {
-        $this->service->restore($bankAccountDetail);
-
-        return $this->successRedirect(
-            'restore',
-            ['name' => $bankAccountDetail->payment_account]
-        );
+        return $this->traitRestore($bankAccountDetail);
     }
 }

@@ -9,9 +9,10 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreBankAccountDetailRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.bank_account_details';
-
     protected $action = 'create';
+
+    protected $prefixLocalKey = 'contractors.bank_account_details';
+    protected $prefixRuleKey = 'bank_account_detail.';
 
     /**
      * Get the validation rules that apply to the request.
@@ -20,23 +21,32 @@ class StoreBankAccountDetailRequest extends CoreFormRequest
      */
     public function rules(): array
     {
-        $prefix = 'bank_account_detail.';
-
-        return [
-            $prefix . 'contractor_id' => [
-                'required',
-                'numeric'
-            ],
-            $prefix . 'bank' => [
+        $rules = [
+            $this->prefixRuleKey . 'bank' => [
                 'required',
                 'numeric',
                 'digits:9'
             ],
-            $prefix . 'payment_account.' . $this->input('bank_account_detail.bank') => [
+            $this->prefixRuleKey . 'payment_account.' . $this->input('bank_account_detail.bank') => [
                 'required',
                 'numeric',
                 'digits:20',
             ]
+        ];
+
+        return array_merge($rules, $this->getMoreRules());
+    }
+
+    /**
+     * @return array[]
+     */
+    protected function getMoreRules(): array
+    {
+        return [
+            $this->prefixRuleKey . 'contractor_id' => [
+                'required',
+                'numeric',
+            ],
         ];
     }
 }

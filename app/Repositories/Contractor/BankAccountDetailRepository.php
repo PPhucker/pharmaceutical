@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Contractor\Bank;
+namespace App\Repositories\Contractor;
 
 use App\Models\Contractor\BankAccountDetail;
 use App\Repositories\CrudRepository;
@@ -25,7 +25,7 @@ class BankAccountDetailRepository extends CrudRepository
      *
      * @return BankAccountDetail
      */
-    public function create(array $validated): BankAccountDetail
+    public function create(array $validated)
     {
         $paymentAccount = $validated['payment_account'][$validated['bank']];
 

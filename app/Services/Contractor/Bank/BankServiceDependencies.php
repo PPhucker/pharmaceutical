@@ -2,8 +2,8 @@
 
 namespace App\Services\Contractor\Bank;
 
-use App\Repositories\Contractor\Bank\BankAccountDetailRepository;
-use App\Repositories\Contractor\Bank\BankRepository;
+use App\Repositories\Classifier\BankRepository;
+use App\Repositories\Contractor\BankAccountDetailRepository;
 use App\Services\CoreDependencyService;
 
 /**

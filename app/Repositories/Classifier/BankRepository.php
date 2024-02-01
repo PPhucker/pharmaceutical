@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Contractor\Bank;
+namespace App\Repositories\Classifier;
 
 use App\Models\Classifiers\Bank;
 use App\Repositories\CrudRepository;

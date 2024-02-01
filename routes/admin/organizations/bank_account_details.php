@@ -3,12 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Organization\BankAccountDetailController as Controller;
 
-Route::resource('bank_account_details', Controller::class)
-    ->except(['create', 'edit', 'show', 'update', 'index']);
-Route::controller(Controller::class)->group(static function () {
-    Route::patch('/bank_account_details/update', 'update')
-        ->name('organizations.bank_account_details.update');
-    Route::post('/bank_account_details/{bank_account_detail}/restore', 'restore')
-        ->name('bank_account_details.restore')
-        ->withTrashed();
-});
+Route::delete('/bank_account_details/{bank_account_detail}', [Controller::class, 'destroy'])
+    ->name('organization.bank_account_details.destroy');
+
+Route::post('/bank_account_details', [Controller::class, 'store'])
+    ->name('organization.bank_account_details.store');
+
+Route::patch('/bank_account_details/{bank_account_detail}', [Controller::class, 'update'])
+    ->name('organization.bank_account_details.update');
+
+Route::post('/bank_account_details/{bank_account_detail}/restore', [Controller::class, 'restore'])
+    ->name('organization.bank_account_details.restore')
+    ->withTrashed();

@@ -2,19 +2,21 @@
 
 namespace App\Models\Admin\Organization;
 
-use App\Models\Auth\User;
-use App\Models\Classifiers\Bank;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
+use App\Models\Contractor\BankAccountDetail as ContractorBankAccountDetail;
 
-
-class BankAccountDetail extends Model
+/**
+ * Модель банковских реквизитов организации.
+ */
+class BankAccountDetail extends ContractorBankAccountDetail
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+    use SoftDeletes;
 
     protected $table = 'organizations_bank_account_details';
+
+    protected $foreign_key = 'organization_bank_id';
 
     protected $fillable = [
         'organization_id',
@@ -22,33 +24,4 @@ class BankAccountDetail extends Model
         'bank',
         'payment_account'
     ];
-
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
-    public function getCreatedAtAttribute($date)
-    {
-        return Carbon::create($date)
-            ->format('d.m.Y');
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class)
-            ->withTrashed();
-    }
-
-    public function organization()
-    {
-        return $this->belongsTo(Organization::class);
-    }
-
-    public function bankClassifier()
-    {
-        return $this->belongsTo(Bank::class, 'bank');
-    }
 }
