@@ -1,13 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\Organization\PlacesOfBusiness;
+namespace App\Http\Requests\Contractor\PlaceOfBusiness;
 
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
-/**
- * Валидация добавления места осуществления деятельности организации.
- */
 class StorePlaceOfBusinessRequest extends CoreFormRequest
 {
     protected $prefixLocalKey = 'contractors.places_of_business';
@@ -24,7 +21,7 @@ class StorePlaceOfBusinessRequest extends CoreFormRequest
         $prefix = 'place_of_business.';
 
         return [
-            $prefix . 'organization_id' => [
+            $prefix . 'contractor_id' => [
                 'required',
                 'numeric',
             ],
@@ -33,12 +30,12 @@ class StorePlaceOfBusinessRequest extends CoreFormRequest
                 'numeric',
                 'digits:14',
                 'distinct',
-                'unique:organizations_places_of_business,identifier',
+                'unique:contractors_places_of_business,identifier',
             ],
             $prefix . 'registered' => [
                 'nullable',
-                Rule::unique('organizations_places_of_business', 'registered')
-                    ->where('organization_id', $this->input($prefix . 'organization_id'))
+                Rule::unique('contractors_places_of_business', 'registered')
+                    ->where('contractor_id', $this->input($prefix . 'contractor_id'))
                     ->whereNull('deleted_at')
             ],
             $prefix . 'index' => [

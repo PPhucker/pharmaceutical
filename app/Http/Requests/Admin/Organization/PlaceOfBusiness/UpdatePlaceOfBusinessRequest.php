@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Contractor\PlacesOfBusines;
+namespace App\Http\Requests\Admin\Organization\PlaceOfBusiness;
 
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
-class StorePlaceOfBusinessRequest extends CoreFormRequest
+class UpdatePlaceOfBusinessRequest extends CoreFormRequest
 {
     protected $prefixLocalKey = 'contractors.places_of_business';
 
-    protected $action = 'create';
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
@@ -18,10 +18,14 @@ class StorePlaceOfBusinessRequest extends CoreFormRequest
      */
     public function rules(): array
     {
-        $prefix = 'place_of_business.';
+        $prefix = 'places_of_business.*.';
 
         return [
-            $prefix . 'contractor_id' => [
+            $prefix . 'id' => [
+                'required',
+                'numeric',
+            ],
+            $prefix . 'organization_id' => [
                 'required',
                 'numeric',
             ],
@@ -30,13 +34,9 @@ class StorePlaceOfBusinessRequest extends CoreFormRequest
                 'numeric',
                 'digits:14',
                 'distinct',
-                'unique:contractors_places_of_business,identifier',
-            ],
-            $prefix . 'registered' => [
-                'nullable',
-                Rule::unique('contractors_places_of_business', 'registered')
-                    ->where('contractor_id', $this->input($prefix . 'contractor_id'))
-                    ->whereNull('deleted_at')
+                Rule::unique('organizations_places_of_business', 'identifier')
+                    ->whereNotIn('identifier', $this->input($prefix . 'identifier'))
+                    ->whereNull('deleted_at'),
             ],
             $prefix . 'index' => [
                 'required',
@@ -46,7 +46,10 @@ class StorePlaceOfBusinessRequest extends CoreFormRequest
             $prefix . 'address' => [
                 'required',
                 'string'
-            ]
+            ],
+            'registered' => [
+                'nullable'
+            ],
         ];
     }
 }

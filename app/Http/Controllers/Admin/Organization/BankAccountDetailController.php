@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Organization;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Admin\Organization\BankAccountDetails\StoreBankAccountDetailRequest;
-use App\Http\Requests\Admin\Organization\BankAccountDetails\UpdateBankAccountDetailRequest;
+use App\Http\Requests\Admin\Organization\BankAccountDetail\StoreBankAccountDetailRequest;
+use App\Http\Requests\Admin\Organization\BankAccountDetail\UpdateBankAccountDetailRequest;
 use App\Models\Admin\Organization\BankAccountDetail;
 use App\Services\Admin\Organization\Bank\AccountDetailService;
 use App\Traits\Contractor\Controller\BankAccountDetailControllerTrait;

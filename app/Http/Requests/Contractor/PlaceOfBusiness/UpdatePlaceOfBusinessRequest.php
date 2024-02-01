@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Contractor\PlacesOfBusines;
+namespace App\Http\Requests\Contractor\PlaceOfBusiness;
 
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;

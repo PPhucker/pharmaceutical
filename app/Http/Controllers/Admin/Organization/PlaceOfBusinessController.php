@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Organization;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Admin\Organization\PlacesOfBusiness\StorePlaceOfBusinessRequest;
-use App\Http\Requests\Admin\Organization\PlacesOfBusiness\UpdatePlaceOfBusinessRequest;
+use App\Http\Requests\Admin\Organization\PlaceOfBusiness\StorePlaceOfBusinessRequest;
+use App\Http\Requests\Admin\Organization\PlaceOfBusiness\UpdatePlaceOfBusinessRequest;
 use App\Models\Admin\Organization\PlaceOfBusiness;
 use App\Services\Admin\Organization\PlaceOfBusinessService;
 use App\Traits\Contractor\Controller\PlaceOfBusinessControllerTrait;
