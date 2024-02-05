@@ -139,7 +139,7 @@
         @include('admin.organizations.bank-account-details.edit')
         @include('admin.organizations.staff.edit')
         @include('admin.organizations..cars.edit')
-        {{--@include('admin.organizations..trailers.edit')--}}
+        @include('admin.organizations..trailers.edit')
         {{--@include('admin.organizations..drivers.edit')--}}
     </x-card>
 @endsection

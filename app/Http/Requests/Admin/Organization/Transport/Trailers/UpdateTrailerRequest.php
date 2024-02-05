@@ -5,16 +5,21 @@ namespace App\Http\Requests\Admin\Organization\Transport\Trailers;
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидация обновления трейлеров орагнизации.
+ */
 class UpdateTrailerRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.trailers.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.trailers';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'trailers.*.';
 

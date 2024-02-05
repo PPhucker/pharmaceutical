@@ -3,12 +3,12 @@
 namespace App\Policies\Admin\Organization\Transport;
 
 use App\Models\Admin\Organization\Transport\Car;
-use App\Policies\Contractor\Transport\CarPolicy as ContractorCarPolicy;
+use App\Policies\CorePolicy;
 
 /**
  * Политика для автомобиля контрагента.
  */
-class CarPolicy extends ContractorCarPolicy
+class CarPolicy extends CorePolicy
 {
     /**
      * @return string
@@ -16,5 +16,13 @@ class CarPolicy extends ContractorCarPolicy
     protected function getModelClass(): string
     {
         return Car::class;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        return ['admin'];
     }
 }

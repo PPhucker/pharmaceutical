@@ -7,6 +7,7 @@ use App\Http\Requests\Contractor\Transport\Trailer\StoreTrailerRequest;
 use App\Http\Requests\Contractor\Transport\Trailer\UpdateTrailerRequest;
 use App\Models\Contractor\Transport\Trailer;
 use App\Services\Contractor\Transport\TrailerService;
+use App\Traits\Contractor\Controller\Transport\TrailerControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Http\RedirectResponse;
  */
 class TrailerController extends CoreController
 {
+    use TrailerControllerTrait;
+
     protected $prefixLocalKey = 'contractors.trailers';
 
     /**
@@ -31,27 +34,16 @@ class TrailerController extends CoreController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreTrailerRequest $request
      *
      * @return RedirectResponse
      */
     public function store(StoreTrailerRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $trailer = $this->service->create($validated['trailer']);
-
-        return $this->successRedirect(
-            'create',
-            ['number' => $trailer->state_number]
-        );
+        return $this->traitStore($request);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateTrailerRequest $request
      * @param Trailer              $trailer
      *
@@ -59,44 +51,26 @@ class TrailerController extends CoreController
      */
     public function update(UpdateTrailerRequest $request, Trailer $trailer): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $this->service->update($trailer, $validated['trailers']);
-
-        return $this->successRedirect('update');
+        return $this->traitUpdate($request, $trailer);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Trailer $trailer
      *
      * @return RedirectResponse
      */
     public function destroy(Trailer $trailer): RedirectResponse
     {
-        $this->service->delete($trailer);
-
-        return $this->successRedirect(
-            'delete',
-            ['number' => $trailer->state_number]
-        );
+        return $this->traitDestroy($trailer);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param Trailer $trailer
      *
      * @return RedirectResponse
      */
     public function restore(Trailer $trailer): RedirectResponse
     {
-        $this->service->restore($trailer);
-
-        return $this->successRedirect(
-            'restore',
-            ['number' => $trailer->state_number]
-        );
+        return $this->traitRestore($trailer);
     }
 }

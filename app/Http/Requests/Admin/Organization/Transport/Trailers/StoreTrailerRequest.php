@@ -5,11 +5,19 @@ namespace App\Http\Requests\Admin\Organization\Transport\Trailers;
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидация добавления трейлера организации.
+ */
 class StoreTrailerRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.trailers.actions.create.fail';
+    protected $prefixLocalKey = 'contractors.trailers';
 
-    public function rules()
+    protected $action = 'create';
+
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         $prefix = 'trailer.';
 

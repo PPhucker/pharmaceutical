@@ -6,128 +6,67 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Admin\Organization\Transport\Trailers\StoreTrailerRequest;
 use App\Http\Requests\Admin\Organization\Transport\Trailers\UpdateTrailerRequest;
 use App\Models\Admin\Organization\Transport\Trailer;
-use App\Repositories\Admin\Organization\Transport\TrailerRepository;
+use App\Services\Admin\Organization\Trasport\TrailerService;
+use App\Traits\Contractor\Controller\Transport\TrailerControllerTrait;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 class TrailerController extends CoreController
 {
+    use TrailerControllerTrait;
+
+    protected $prefixLocalKey = 'contractors.trailers';
     /**
-     * Store a newly created resource in storage.
-     *
+     * @var TrailerService
+     */
+    private $service;
+
+    /**
+     * @param TrailerService $service
+     */
+    public function __construct(TrailerService $service)
+    {
+        $this->service = $service;
+        $this->authorizeResource(Trailer::class, 'trailer');
+    }
+
+    /**
      * @param StoreTrailerRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreTrailerRequest $request)
+    public function store(StoreTrailerRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['trailer'];
-
-        $trailer = Trailer::create(
-            [
-                'user_id' => Auth::user()->id,
-                'organization_id' => (int)$validated['organization_id'],
-                'type' => $validated['type'],
-                'state_number' => $validated['state_number'],
-            ]
-        );
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.trailers.actions.create.success',
-                    ['number' => $trailer->state_number]
-                )
-            );
+        return $this->traitStore($request);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateTrailerRequest $request
      * @param Trailer              $trailer
      *
      * @return RedirectResponse
      */
-    public function update(UpdateTrailerRequest $request, Trailer $trailer)
+    public function update(UpdateTrailerRequest $request, Trailer $trailer): RedirectResponse
     {
-        $validated = $request->validated();
-
-        foreach ($validated['trailers'] as $validatedTrailer) {
-            Trailer::find((int)$validatedTrailer['id'])
-                ->fill(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'type' => $validatedTrailer['type'],
-                        'state_number' => $validatedTrailer['state_number'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('contractors.trailers.actions.update.success')
-            );
+        return $this->traitUpdate($request, $trailer);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Trailer $trailer
      *
      * @return RedirectResponse
      */
-    public function destroy(Trailer $trailer)
+    public function destroy(Trailer $trailer): RedirectResponse
     {
-        $trailer->delete();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.trailers.actions.delete.success',
-                    ['number' => $trailer->state_number]
-                )
-            );
+        return $this->traitDestroy($trailer);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param Trailer $trailer
      *
      * @return RedirectResponse
      */
-    public function restore(Trailer $trailer)
+    public function restore(Trailer $trailer): RedirectResponse
     {
-        $trailer->restore();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.trailers.actions.restore.success',
-                    ['number' => $trailer->state_number]
-                )
-            );
-    }
-
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Trailer::class, 'trailer');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return TrailerRepository::class;
+        return $this->traitRestore($trailer);
     }
 }
