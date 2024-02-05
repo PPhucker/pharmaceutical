@@ -2,28 +2,24 @@
 
 namespace App\Http\Requests\Admin\Organization\Staff;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
-class StoreStaffRequest extends FormRequest
+/**
+ * Валидация добавления нового сотрудника организации.
+ */
+class StoreStaffRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'contractors.staff';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'staff.';
 
@@ -56,17 +52,5 @@ class StoreStaffRequest extends FormRequest
                     ->whereNull('deleted_at'),
             ]
         ];
-    }
-
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('contractors.staff.actions.update.fail')
-                );
-            }
-        });
     }
 }

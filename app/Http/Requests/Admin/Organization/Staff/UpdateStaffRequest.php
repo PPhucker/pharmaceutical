@@ -2,28 +2,23 @@
 
 namespace App\Http\Requests\Admin\Organization\Staff;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class UpdateStaffRequest extends FormRequest
+/**
+ * Валидация обновления сотрудников организации.
+ */
+class UpdateStaffRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'contractors.staff';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'staff.*.';
 
@@ -34,12 +29,12 @@ class UpdateStaffRequest extends FormRequest
             ],
             $prefix . 'organization_place_of_business_id' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
             $prefix . 'name' => [
                 'required',
                 'string',
-                'max:50'
+                'max:50',
             ],
             $prefix . 'post' => [
                 'required',
@@ -47,17 +42,5 @@ class UpdateStaffRequest extends FormRequest
                 'max:50',
             ]
         ];
-    }
-
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('contractors.staff.actions.update.fail')
-                );
-            }
-        });
     }
 }

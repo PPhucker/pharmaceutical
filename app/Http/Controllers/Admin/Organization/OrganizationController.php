@@ -11,7 +11,6 @@ use App\Services\Admin\Organization\OrganizationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Контроллер организации.
@@ -57,6 +56,8 @@ class OrganizationController extends CoreController
 
     /**
      * Display the specified resource.
+     *
+     * TODO: удалить метод
      *
      * @param Organization $organization
      *
@@ -131,30 +132,16 @@ class OrganizationController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateOrganizationRequest $request, Organization $organization): RedirectResponse
-    {
-        $validated = $request->validated();
+    public function update(
+        UpdateOrganizationRequest $request,
+        Organization $organization
+    ): RedirectResponse {
+        $updatedOrganization = $this->service->update($organization, $request->validated());
 
-        $organization->fill(
-            [
-                'user_id' => Auth::user()->id,
-                'legal_form_type' => $validated['legal_form_type'],
-                'name' => $validated['name'],
-                'INN' => $validated['INN'],
-                'OKPO' => $validated['OKPO'],
-                'kpp' => $validated['kpp'],
-                'contacts' => $validated['contacts']
-            ]
-        )
-            ->save();
-
-        $key = 'contractors.organizations.actions.update.success';
-
-        return back()
-            ->with(
-                'success',
-                __($key, ['name' => "$organization->legal_form_type $organization->name"])
-            );
+        return $this->successRedirect(
+            'update',
+            ['name' => $updatedOrganization->full_name]
+        );
     }
 
     /**
@@ -166,15 +153,12 @@ class OrganizationController extends CoreController
      */
     public function destroy(Organization $organization): RedirectResponse
     {
-        $organization->delete();
+        $this->service->delete($organization);
 
-        $key = 'contractors.organizations.actions.destroy.success';
-
-        return back()
-            ->with(
-                'success',
-                __($key, ['name' => "$organization->legal_form_type $organization->name"])
-            );
+        return $this->successRedirect(
+            'delete',
+            ['name' => $organization->full_name]
+        );
     }
 
     /**
@@ -186,14 +170,11 @@ class OrganizationController extends CoreController
      */
     public function restore(Organization $organization): RedirectResponse
     {
-        $organization->restore();
+        $this->service->restore($organization);
 
-        $key = 'contractors.organizations.actions.restore.success';
-
-        return back()
-            ->with(
-                'success',
-                __($key, ['name' => "$organization->legal_form_type $organization->name"])
-            );
+        return $this->successRedirect(
+            'restore',
+            ['name' => $organization->full_name]
+        );
     }
 }

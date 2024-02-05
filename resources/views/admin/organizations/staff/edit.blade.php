@@ -1,99 +1,89 @@
-<x-forms.collapse.card route="{{route('staff.update')}}"
-                       cardId="card_staff"
-                       formId="form_staff"
-                       title="{{__('contractors.staff.staff')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_staff"
-                       targets="-1"
-                       domOrderType="{{true}}">
-            <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_staff"/>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.places_of_business.place_of_business')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.staff.name')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.staff.post')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($organization->staff as $key => $staff)
-                <tr @if($staff->trashed()) class="d-none trashed" @endif>
-                    <input type="hidden"
-                           name="staff[{{$key}}][id]"
-                           value="{{$staff->id}}">
-                    <td class="border-start">
-                            <span class="d-none">
-                                {{$staff->placeOfBusiness->address}}
-                            </span>
-                        <select name="staff[{{$key}}][organization_place_of_business_id]"
-                                class="form-control form-control-sm text-primary mt-1 mb-1
-                                @error('staff.' . $key . '.organization_place_of_business_id') is-invalid @enderror">
-                            @foreach($organization->placesOfBusiness as $place)
-                                <option value="{{$place->id}}"
-                                        @if($place->id === $staff->organization_place_of_business_id) selected @endif>
-                                    {{$place->address}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$staff->name}}
-                        </span>
-                        <input type="text"
-                               name="staff[{{$key}}][name]"
-                               value="{{$staff->name}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('staff.' . $key . '.name') is-invalid @enderror">
-                        <x-forms.span-error name="staff.{{$key}}.name"/>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$employees[$staff->post]}}
-                        </span>
-                        <select name="staff[{{$key}}][post]"
-                                class="form-control form-control-sm text-primary mt-1 mb-1
-                                @error('staff.' . $key . '.post') is-invalid @enderror">
-                            @foreach($employees as $value => $employee)
-                                <option value="{{$value}}"
-                                        @if($value === $staff->post) selected @endif>
-                                    {{$employee}}
-                                </option>
-                            @endforeach
-                        </select>
-                        <x-forms.span-error name="staff.{{$key}}.post"/>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if($staff->trashed())
-                            <x-buttons.restore
-                                route="{{route('staff.restore', ['staff' => $staff->id])}}"
-                                itemId="staff-{{$staff->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('staff.destroy', ['staff' => $staff->id])}}"
-                                itemId="staff-{{$staff->id}}"/>
-                        @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        @if(count($organization->staff) > 0)
-            <x-buttons.save formId="form_staff"/>
-        @endif
-        <x-buttons.collapse formId="div_add_staff"/>
-    </x-slot>
-</x-forms.collapse.card>
+<x-form.nav-tab
+    formId="staff_main_form">
+    <div class="col-md col-auto mb-2">
+        @include('admin.organizations.staff.create')
+    </div>
+    <div class="col-md-12 col-auto">
+        <x-form
+            :route="route('staff.update', ['staff' => $organization->staff->first()->id ?? 1])"
+            method="PATCH">
+            <x-data-table.table
+                id="staff_table"
+                type="edit"
+                targets="-1,-2">
+                <x-data-table.head>
+                    <x-data-table.th
+                        :text="__('contractors.places_of_business.place_of_business')"/>
+                    <x-data-table.th
+                        :text="__('contractors.staff.name')"/>
+                    <x-data-table.th
+                        :text="__('contractors.staff.post')"/>
+                    <x-data-table.th/>
+                </x-data-table.head>
+                <x-data-table.body>
+                    @foreach($organization->staff as $key => $staff)
+                        <x-data-table.tr
+                            :model="$staff">
+                            <input type="hidden"
+                                   name="staff[{{$key}}][id]"
+                                   value="{{$staff->id}}"/>
+                            <x-data-table.td
+                                class="col-md-5 col-auto">
+                                <x-form.element.select
+                                    name="staff[{{$key}}][organization_place_of_business_id]"
+                                    :disabled="$staff->trashed()">
+                                    @foreach($organization->placesOfBusiness as $place)
+                                        <x-form.element.option
+                                            :value="$place->id"
+                                            :text="$place->address"
+                                            :selected="$place->id === $staff->organization_place_of_business_id"/>
+                                    @endforeach
+                                </x-form.element.select>
+                            </x-data-table.td>
+                            <x-data-table.td
+                                class="col-md-2 col-auto">
+                                <x-form.element.input
+                                    name="staff[{{$key}}][name]"
+                                    :value="$staff->name"
+                                    :readonly="$staff->trashed()"/>
+                            </x-data-table.td>
+                            <x-data-table.td
+                                class="col-md col-auto">
+                                <x-form.element.select
+                                    name="staff[{{$key}}][post]"
+                                    :readonly="$staff->trashed()">
+                                    @foreach($posts as $value => $post)
+                                        <x-form.element.option
+                                            :value="$value"
+                                            :text="$post"
+                                            :selected="$value === $staff->post"/>
+                                    @endforeach
+                                </x-form.element.select>
+                            </x-data-table.td>
+                            <x-data-table.td
+                                class="col-md-1 col-auto text-center">
+                                <x-data-table.button.soft-delete
+                                    :trashed="$staff->trashed()"
+                                    :id="$staff->id"
+                                    route="staff"
+                                    :params="['staff' => $staff->id]"/>
+                            </x-data-table.td>
+                        </x-data-table.tr>
+                    @endforeach
+                </x-data-table.body>
+            </x-data-table.table>
+            <footer class="mt-auto">
+                <ul class="list-inline mb-0">
+                    @if(count($organization->staff) > 0)
+                        <li class="list-inline-item">
+                            <x-form.button.save formId="staff_main_form"/>
+                        </li>
+                    @endif
+                    <li class="list-inline-item">
+                        <x-data-table.filter.trashed-filter id="staff_table"/>
+                    </li>
+                </ul>
+            </footer>
+        </x-form>
+    </div>
+</x-form.nav-tab>

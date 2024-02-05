@@ -6,25 +6,28 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Admin\Organization\Staff\StoreStaffRequest;
 use App\Http\Requests\Admin\Organization\Staff\UpdateStaffRequest;
 use App\Models\Admin\Organization\Staff;
-use App\Repositories\Admin\Organization\StaffRepozitory;
+use App\Services\Admin\Organization\StaffService;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер сотрудника организации.
+ */
 class StaffController extends CoreController
 {
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Staff::class, 'staff');
-    }
+    protected $prefixLocalKey = 'contractors.staff';
 
     /**
-     * @return string
+     * @var StaffService
      */
-    protected function getRepository()
+    private $service;
+
+    /**
+     * @param StaffService $service
+     */
+    public function __construct(StaffService $service)
     {
-        return StaffRepozitory::class;
+        $this->service = $service;
+        $this->authorizeResource(Staff::class);
     }
 
     /**
@@ -34,57 +37,34 @@ class StaffController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreStaffRequest $request)
+    public function store(StoreStaffRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['staff'];
-
-        $staff = Staff::create(
-            [
-                'organization_id' => $validated['organization_id'],
-                'organization_place_of_business_id' => $validated['organization_place_of_business_id'],
-                'name' => $validated['name'],
-                'post' => $validated['post'],
-            ]
+        $staff = $this->service->create(
+            $request->validated()['staff']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.staff.actions.create.success',
-                    ['name' => $staff->name]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $staff->name]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param UpdateStaffRequest $request
+     * @param Staff              $staff
      *
      * @return RedirectResponse
      */
-    public function update(UpdateStaffRequest $request)
+    public function update(UpdateStaffRequest $request, Staff $staff): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->service->update(
+            $staff,
+            $request->validated()['staff']
+        );
 
-        foreach ($validated['staff'] as $staff) {
-            Staff::find((int)$staff['id'])
-                ->fill(
-                    [
-                        'organization_place_of_business_id' => $staff['organization_place_of_business_id'],
-                        'name' => $staff['name'],
-                        'post' => $staff['post'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('contractors.staff.actions.update.success')
-            );
+        return $this->successRedirect('update');
     }
 
     /**
@@ -94,18 +74,14 @@ class StaffController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Staff $staff)
+    public function destroy(Staff $staff): RedirectResponse
     {
-        $staff->delete();
+        $this->service->delete($staff);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.staff.actions.destroy.success',
-                    ['name' => $staff->name]
-                )
-            );
+        return $this->successRedirect(
+            'delete',
+            ['name' => $staff->name]
+        );
     }
 
     /**
@@ -115,17 +91,13 @@ class StaffController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Staff $staff)
+    public function restore(Staff $staff): RedirectResponse
     {
-        $staff->restore();
+        $this->service->restore($staff);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.staff.actions.restore.success',
-                    ['name' => $staff->name]
-                )
-            );
+        return $this->successRedirect(
+            'restore',
+            ['name' => $staff->name]
+        );
     }
 }

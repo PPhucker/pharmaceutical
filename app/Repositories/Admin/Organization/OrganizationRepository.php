@@ -161,9 +161,28 @@ class OrganizationRepository extends CoreRepository
         );
     }
 
-    public function update($model, array $validated)
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return Organization
+     */
+    public function update($model, array $validated): Organization
     {
-        // TODO: Implement update() method.
+        $model->fill(
+            [
+                'user_id' => Auth::user()->id,
+                'legal_form_type' => $validated['legal_form_type'],
+                'name' => $validated['name'],
+                'INN' => $validated['INN'],
+                'OKPO' => $validated['OKPO'],
+                'kpp' => $validated['kpp'],
+                'contacts' => $validated['contacts']
+            ]
+        )
+            ->save();
+
+        return $model;
     }
 
     /**
