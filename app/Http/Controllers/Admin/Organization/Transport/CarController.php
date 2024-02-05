@@ -6,127 +6,71 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Admin\Organization\Transport\Cars\StoreCarRequest;
 use App\Http\Requests\Admin\Organization\Transport\Cars\UpdateCarRequest;
 use App\Models\Admin\Organization\Transport\Car;
-use App\Repositories\Admin\Organization\Transport\CarRepository;
-use Auth;
+use App\Services\Admin\Organization\Trasport\CarService;
+use App\Traits\Contractor\Controller\Transport\CarControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер автомобиля орагнизации.
+ */
 class CarController extends CoreController
 {
+    use CarControllerTrait;
+
+    protected $prefixLocalKey = 'contractors.cars';
+
     /**
-     * Store a newly created resource in storage.
-     *
+     * @var CarService
+     */
+    private $service;
+
+    /**
+     * @param CarService $service
+     */
+    public function __construct(CarService $service)
+    {
+        $this->service = $service;
+        $this->authorizeResource(Car::class, 'car');
+    }
+
+    /**
      * @param StoreCarRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreCarRequest $request)
+    public function store(StoreCarRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['car'];
-
-        $car = Car::create(
-            [
-                'user_id' => Auth::user()->id,
-                'organization_id' => (int)$validated['organization_id'],
-                'car_model' => $validated['car_model'],
-                'state_number' => $validated['state_number'],
-            ]
-        );
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.cars.actions.create.success',
-                    ['number' => $car->state_number]
-                )
-            );
+        return $this->traitStore($request);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateCarRequest $request
      * @param Car              $car
      *
      * @return RedirectResponse
      */
-    public function update(UpdateCarRequest $request, Car $car)
+    public function update(UpdateCarRequest $request, Car $car): RedirectResponse
     {
-        $validated = $request->validated();
-
-        foreach ($validated['cars'] as $validatedCar) {
-            Car::find((int)$validatedCar['id'])
-                ->fill(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'car_model' => $validatedCar['car_model'],
-                        'state_number' => $validatedCar['state_number'],
-                    ]
-                )
-                ->save();
-        }
-        return back()
-            ->with(
-                'success',
-                __('contractors.cars.actions.update.success')
-            );
+        return $this->traitUpdate($request, $car);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Car $car
      *
      * @return RedirectResponse
      */
-    public function destroy(Car $car)
+    public function destroy(Car $car): RedirectResponse
     {
-        $car->delete();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.cars.actions.delete.success',
-                    ['number' => $car->state_number]
-                )
-            );
+        return $this->traitDestroy($car);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param Car $car
      *
      * @return RedirectResponse
      */
-    public function restore(Car $car)
+    public function restore(Car $car): RedirectResponse
     {
-        $car->restore();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.cars.actions.create.success',
-                    ['number' => $car->state_number]
-                )
-            );
-    }
-
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Car::class, 'car');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return CarRepository::class;
+        return $this->traitRestore($car);
     }
 }

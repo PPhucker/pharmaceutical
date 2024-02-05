@@ -2,16 +2,37 @@
 
 namespace App\Repositories\Admin\Organization\Transport;
 
-use App\Models\Admin\Organization\Transport\Trailer as Model;
-use App\Repositories\CoreRepository;
+use App\Models\Admin\Organization\Transport\Trailer;
+use App\Repositories\Contractor\Transport\TrailerRepository as ContractorTrailerRepository;
+use Auth;
 
-class TrailerRepository extends CoreRepository
+/**
+ * Репозиторий прицепа организации.
+ */
+class TrailerRepository extends ContractorTrailerRepository
 {
     /**
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
-        return Model::class;
+        return Trailer::class;
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return Trailer
+     */
+    public function create(array $validated): Trailer
+    {
+        return $this->model->create(
+            [
+                'user_id' => Auth::user()->id,
+                'organization_id' => (int)$validated['organization_id'],
+                'type' => $validated['type'],
+                'state_number' => $validated['state_number'],
+            ]
+        );
     }
 }

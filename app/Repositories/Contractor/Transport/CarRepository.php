@@ -26,9 +26,9 @@ class CarRepository extends CrudRepository
      *
      * @return Car
      */
-    public function create(array $validated): Car
+    public function create(array $validated)
     {
-        return Car::create(
+        return $this->model->create(
             [
                 'user_id' => Auth::user()->id,
                 'contractor_id' => (int)$validated['contractor_id'],
@@ -47,8 +47,7 @@ class CarRepository extends CrudRepository
     public function update($model, array $validated): void
     {
         foreach ($validated as $validatedCar) {
-            Car::withTrashed()
-                ->findOrFail((int)$validatedCar['id'])
+            $this->model->findOrFail((int)$validatedCar['id'])
                 ->fill(
                     [
                         'user_id' => Auth::user()->id,

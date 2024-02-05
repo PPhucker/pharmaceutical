@@ -7,6 +7,7 @@ use App\Http\Requests\Contractor\Transport\Car\StoreCarRequest;
 use App\Http\Requests\Contractor\Transport\Car\UpdateCarRequest;
 use App\Models\Contractor\Transport\Car;
 use App\Services\Contractor\Transport\CarService;
+use App\Traits\Contractor\Controller\Transport\CarControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Http\RedirectResponse;
  */
 class CarController extends CoreController
 {
+    use CarControllerTrait;
+
     protected $prefixLocalKey = 'contractors.cars';
 
     /**
@@ -31,27 +34,16 @@ class CarController extends CoreController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreCarRequest $request
      *
      * @return RedirectResponse
      */
     public function store(StoreCarRequest $request): RedirectResponse
     {
-        $car = $this->service->create(
-            $request->validated()['car']
-        );
-
-        return $this->successRedirect(
-            'create',
-            ['number' => $car->state_number]
-        );
+        return $this->traitStore($request);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateCarRequest $request
      * @param Car              $car
      *
@@ -59,45 +51,26 @@ class CarController extends CoreController
      */
     public function update(UpdateCarRequest $request, Car $car): RedirectResponse
     {
-        $this->service->update(
-            $car,
-            $request->validated()['cars']
-        );
-
-        return $this->successRedirect('update');
+        return $this->traitUpdate($request, $car);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Car $car
      *
      * @return RedirectResponse
      */
     public function destroy(Car $car): RedirectResponse
     {
-        $this->service->delete($car);
-
-        return $this->successRedirect(
-            'delete',
-            ['number' => $car->state_number]
-        );
+        return $this->traitDestroy($car);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param Car $car
      *
      * @return RedirectResponse
      */
     public function restore(Car $car): RedirectResponse
     {
-        $this->service->restore($car);
-
-        return $this->successRedirect(
-            'restore',
-            ['number' => $car->state_number]
-        );
+        return $this->traitRestore($car);
     }
 }

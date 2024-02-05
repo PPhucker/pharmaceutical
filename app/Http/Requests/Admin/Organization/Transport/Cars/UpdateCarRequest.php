@@ -5,11 +5,19 @@ namespace App\Http\Requests\Admin\Organization\Transport\Cars;
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидация обновления автомобилей организации.
+ */
 class UpdateCarRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.cars.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.cars';
 
-    public function rules()
+    protected $action = 'update';
+
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         $prefix = 'cars.*.';
 

@@ -26,7 +26,7 @@ class DriverRepository extends CrudRepository
      *
      * @return Driver
      */
-    public function create(array $validated): Driver
+    public function create(array $validated)
     {
         return $this->model->create(
             [

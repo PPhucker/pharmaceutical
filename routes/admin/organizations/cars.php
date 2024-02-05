@@ -2,10 +2,15 @@
 
 use App\Http\Controllers\Admin\Organization\Transport\CarController as Controller;
 
-Route::resource('cars', Controller::class)
-    ->except(['create', 'edit', 'show', 'index']);
-Route::controller(Controller::class)->group(static function () {
-    Route::post('/cars/{car}/restore', 'restore')
-        ->name('cars.restore')
-        ->withTrashed();
-});
+Route::delete('/cars/{car}', [Controller::class, 'destroy'])
+    ->name('organization.cars.destroy');
+
+Route::post('/cars', [Controller::class, 'store'])
+    ->name('organization.cars.store');
+
+Route::patch('/cars/{car}', [Controller::class, 'update'])
+    ->name('organization.cars.update');
+
+Route::post('/cars/{car}/restore', [Controller::class, 'restore'])
+    ->name('organization.cars.restore')
+    ->withTrashed();

@@ -2,47 +2,36 @@
 
 namespace App\Repositories\Admin\Organization\Transport;
 
-use App\Models\Admin\Organization\Transport\Driver as Model;
-use App\Repositories\CoreRepository;
-use Illuminate\Contracts\Foundation\Application;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Models\Admin\Organization\Transport\Driver;
+use App\Repositories\Contractor\Transport\DriverRepository as ContractorDriverRepository;
+use Auth;
 
-class DriverRepository extends CoreRepository
+/**
+ * Реоизторий водителя орагнизации.
+ */
+class DriverRepository extends ContractorDriverRepository
 {
-
     /**
-     * @param bool $withTrashed
+     * @param array $validated
      *
-     * @return Application|\Illuminate\Database\Eloquent\Model|mixed
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @return Driver
      */
-    public function getAll(bool $withTrashed = true)
+    public function create(array $validated)
     {
-        $drivers = $this->clone();
-
-        $drivers->select(
+        return $this->model->create(
             [
-                'id',
-                'organization_id',
-                'name',
+                'user_id' => Auth::user()->id,
+                'organization_id' => (int)$validated['organization_id'],
+                'name' => $validated['name'],
             ]
         );
-
-        if (!$withTrashed) {
-            $drivers->withoutTrashed();
-        }
-
-        return $drivers
-            ->get();
     }
 
     /**
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
-        return Model::class;
+        return Driver::class;
     }
 }

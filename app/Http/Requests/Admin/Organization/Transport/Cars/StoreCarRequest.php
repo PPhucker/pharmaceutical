@@ -5,11 +5,19 @@ namespace App\Http\Requests\Admin\Organization\Transport\Cars;
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидация добавления автомобиля организации.
+ */
 class StoreCarRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.cars.actions.create.fail';
+    protected $prefixLocalKey = 'contractors.cars';
 
-    public function rules()
+    protected $action = 'create';
+
+    /**
+     * @return array
+     */
+    public function rules(): array
     {
         $prefix = 'car.';
 

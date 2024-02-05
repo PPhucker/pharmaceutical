@@ -26,7 +26,7 @@ class TrailerRepository extends CrudRepository
      *
      * @return Trailer
      */
-    public function create(array $validated): Trailer
+    public function create(array $validated)
     {
         return $this->model->create(
             [
