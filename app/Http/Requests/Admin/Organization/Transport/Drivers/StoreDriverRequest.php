@@ -4,16 +4,21 @@ namespace App\Http\Requests\Admin\Organization\Transport\Drivers;
 
 use App\Http\Requests\CoreFormRequest;
 
+/**
+ * Валидация добавления водителя организации.
+ */
 class StoreDriverRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.drivers.actions.create.fail';
+    protected $prefixLocalKey = 'contractors.drivers';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'driver.';
 

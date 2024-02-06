@@ -4,15 +4,21 @@ namespace App\Http\Requests\Admin\Organization\Transport\Drivers;
 
 use App\Http\Requests\CoreFormRequest;
 
+/**
+ * Валидация обновления водителей организации.
+ */
 class UpdateDriverRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'contractors.drivers.actions.update.fail';
+    protected $prefixLocalKey = 'contractors.drivers';
+
+    protected $action = 'update';
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'drivers.*.';
 

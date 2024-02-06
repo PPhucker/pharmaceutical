@@ -7,6 +7,7 @@ use App\Http\Requests\Contractor\Transport\Driver\StoreDriverRequest;
 use App\Http\Requests\Contractor\Transport\Driver\UpdateDriverRequest;
 use App\Models\Contractor\Transport\Driver;
 use App\Services\Contractor\Transport\DriverService;
+use App\Traits\Contractor\Controller\Transport\DriverControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
 /**
@@ -14,7 +15,10 @@ use Illuminate\Http\RedirectResponse;
  */
 class DriverController extends CoreController
 {
+    use DriverControllerTrait;
+
     protected $prefixLocalKey = 'contractors.drivers';
+
     /**
      * @var DriverService
      */
@@ -30,27 +34,16 @@ class DriverController extends CoreController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreDriverRequest $request
      *
      * @return RedirectResponse
      */
     public function store(StoreDriverRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $driver = $this->service->create($validated['driver']);
-
-        return $this->successRedirect(
-            'create',
-            ['name' => $driver->name]
-        );
+        return $this->traitStore($request);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateDriverRequest $request
      * @param Driver              $driver
      *
@@ -58,44 +51,26 @@ class DriverController extends CoreController
      */
     public function update(UpdateDriverRequest $request, Driver $driver): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $this->service->update($driver, $validated['drivers']);
-
-        return $this->successRedirect('update');
+        return $this->traitUpdate($request, $driver);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Driver $driver
      *
      * @return RedirectResponse
      */
     public function destroy(Driver $driver): RedirectResponse
     {
-        $this->service->delete($driver);
-
-        return $this->successRedirect(
-            'delete',
-            ['name' => $driver->name]
-        );
+        return $this->traitDestroy($driver);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param Driver $driver
      *
      * @return RedirectResponse
      */
     public function restore(Driver $driver): RedirectResponse
     {
-        $this->service->restore($driver);
-
-        return $this->successRedirect(
-            'restore',
-            ['name' => $driver->name]
-        );
+        return $this->traitRestore($driver);
     }
 }

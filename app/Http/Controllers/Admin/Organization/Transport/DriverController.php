@@ -6,127 +6,71 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Admin\Organization\Transport\Drivers\StoreDriverRequest;
 use App\Http\Requests\Admin\Organization\Transport\Drivers\UpdateDriverRequest;
 use App\Models\Admin\Organization\Transport\Driver;
-use App\Repositories\Admin\Organization\Transport\DriverRepository;
-use Auth;
+use App\Services\Admin\Organization\Trasport\DriverService;
+use App\Traits\Contractor\Controller\Transport\DriverControllerTrait;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер водителя организации.
+ */
 class DriverController extends CoreController
 {
+    use DriverControllerTrait;
+
+    protected $prefixLocalKey = 'contractors.drivers';
+
     /**
-     * Store a newly created resource in storage.
-     *
+     * @var DriverService
+     */
+    private $service;
+
+    /**
+     * @param DriverService $service
+     */
+    public function __construct(DriverService $service)
+    {
+        $this->service = $service;
+        $this->authorizeResource(Driver::class, 'driver');
+    }
+
+    /**
      * @param StoreDriverRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreDriverRequest $request)
+    public function store(StoreDriverRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['driver'];
-
-        $driver = Driver::create(
-            [
-                'user_id' => Auth::user()->id,
-                'organization_id' => (int)$validated['organization_id'],
-                'name' => $validated['name'],
-            ]
-        );
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.drivers.actions.create.success',
-                    ['name' => $driver->name]
-                )
-            );
+        return $this->traitStore($request);
     }
 
-
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateDriverRequest $request
      * @param Driver              $driver
      *
      * @return RedirectResponse
      */
-    public function update(UpdateDriverRequest $request, Driver $driver)
+    public function update(UpdateDriverRequest $request, Driver $driver): RedirectResponse
     {
-        $validated = $request->validated();
-
-        foreach ($validated['drivers'] as $validatedDriver) {
-            Driver::find((int)$validatedDriver['id'])
-                ->fill(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'name' => $validatedDriver['name'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('contractors.drivers.actions.update.success')
-            );
+        return $this->traitUpdate($request, $driver);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
      * @param Driver $driver
      *
      * @return RedirectResponse
      */
-    public function destroy(Driver $driver)
+    public function destroy(Driver $driver): RedirectResponse
     {
-        $driver->delete();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.drivers.actions.delete.success',
-                    ['name' => $driver->name]
-                )
-            );
+        return $this->traitDestroy($driver);
     }
 
     /**
-     * Restore the specified resource from storage.
-     *
      * @param Driver $driver
      *
      * @return RedirectResponse
      */
-    public function restore(Driver $driver)
+    public function restore(Driver $driver): RedirectResponse
     {
-        $driver->restore();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'contractors.drivers.actions.restore.success',
-                    ['name' => $driver->name]
-                )
-            );
-    }
-
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Driver::class, 'driver');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return DriverRepository::class;
+        return $this->traitRestore($driver);
     }
 }
