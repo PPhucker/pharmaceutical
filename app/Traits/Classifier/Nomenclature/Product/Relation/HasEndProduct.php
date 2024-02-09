@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Relation;
 
-use App\Models\Classifiers\Nomenclature\Products\EndProduct;
+use App\Models\Classifier\Nomenclature\Products\EndProduct;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasEndProduct

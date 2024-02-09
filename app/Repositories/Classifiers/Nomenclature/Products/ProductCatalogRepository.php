@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
-use App\Models\Classifiers\Nomenclature\Products\ProductCatalog as Model;
+use App\Models\Classifier\Nomenclature\Products\ProductCatalog as Model;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Repositories\Admin\Organization\OrganizationRepository;

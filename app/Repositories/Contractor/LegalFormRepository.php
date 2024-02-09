@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contractor;
 
-use App\Models\Classifiers\LegalForm;
+use App\Models\Classifier\LegalForm;
 use App\Repositories\CrudRepository;
 use Illuminate\Database\Eloquent\Collection;
 

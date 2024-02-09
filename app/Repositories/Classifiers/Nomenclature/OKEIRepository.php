@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\OKEI as Model;
+use App\Models\Classifier\Nomenclature\OKEI as Model;
 
 class OKEIRepository extends CoreRepository
 {

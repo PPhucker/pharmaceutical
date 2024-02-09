@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Region as Model;
+use App\Models\Classifier\Region as Model;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

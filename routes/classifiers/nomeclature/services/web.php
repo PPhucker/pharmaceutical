@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Classifiers\Nomenclature\Services\ServiceController as Controller;
+use App\Http\Controllers\Classifier\Nomenclature\Service\ServiceController as Controller;
 
 Route::resource('services', Controller::class)
     ->except(['show', 'edit', 'create']);

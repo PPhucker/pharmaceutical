@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct as Model;
+use App\Models\Classifier\Nomenclature\Products\RegistrationNumberOfEndProduct as Model;
 
 class RegistrationNumberOfEndProductRepository extends CoreRepository
 {

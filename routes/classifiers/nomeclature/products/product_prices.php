@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Http\Controllers\Classifiers\Nomenclature\Products\ProductPriceController as Controller;
+use App\Http\Controllers\Classifier\Nomenclature\Product\ProductPriceController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('product_prices', Controller::class)

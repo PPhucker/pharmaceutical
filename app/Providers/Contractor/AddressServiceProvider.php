@@ -2,7 +2,7 @@
 
 namespace App\Providers\Contractor;
 
-use App\Models\Classifiers\Region;
+use App\Models\Classifier\Region;
 use App\Models\Contractor\PlaceOfBusiness;
 use App\Observers\Contractor\PlaceOfBusinessObserver;
 use App\Observers\CoreObserver;

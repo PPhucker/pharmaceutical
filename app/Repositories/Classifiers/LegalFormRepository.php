@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Classifiers;
 
-use App\Models\Classifiers\LegalForm as Model;
+use App\Models\Classifier\LegalForm as Model;
 use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;

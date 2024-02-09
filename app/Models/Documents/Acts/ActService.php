@@ -3,7 +3,7 @@
 namespace App\Models\Documents\Acts;
 
 use App\Models\Auth\User;
-use App\Models\Classifiers\Nomenclature\Services\Service;
+use App\Models\Classifier\Nomenclature\Services\Service;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

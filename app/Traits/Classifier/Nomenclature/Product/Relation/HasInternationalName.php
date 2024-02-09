@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Relation;
 
-use App\Models\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct;
+use App\Models\Classifier\Nomenclature\Products\InternationalNameOfEndProduct;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasInternationalName

@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Products\TypeOfAggregation as Model;
+use App\Models\Classifier\Nomenclature\Products\TypeOfAggregation as Model;
 
 class TypeOfAggregationRepository extends CoreRepository
 {

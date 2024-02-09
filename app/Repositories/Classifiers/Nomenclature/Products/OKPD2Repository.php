@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Products\OKPD2 as Model;
+use App\Models\Classifier\Nomenclature\Products\OKPD2 as Model;
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

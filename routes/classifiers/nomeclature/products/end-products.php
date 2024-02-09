@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Classifiers\Nomenclature\Products\EndProductController as Controller;
+use App\Http\Controllers\Classifier\Nomenclature\Product\EndProductController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('end_products', Controller::class)

@@ -2,7 +2,7 @@
 
 namespace App\Models\Contractor;
 
-use App\Models\Classifiers\Region;
+use App\Models\Classifier\Region;
 use App\Traits\Contractor\Relation\HasContractor;
 use App\Traits\Document\Relation\HasInvoicesAndPackingLists;
 use App\Traits\Documents\Shipment\HasUser;

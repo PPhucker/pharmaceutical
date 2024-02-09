@@ -2,8 +2,8 @@
 
 namespace App\Providers\Nomenclature;
 
-use App\Models\Classifiers\Nomenclature\OKEI;
-use App\Observers\Classifiers\Nomenclature\OKEIObserver;
+use App\Models\Classifier\Nomenclature\OKEI;
+use App\Observers\Classifier\Nomenclature\OKEIObserver;
 use Illuminate\Support\ServiceProvider;
 
 class OKEIProvider extends ServiceProvider

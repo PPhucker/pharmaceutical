@@ -2,24 +2,24 @@
 
 namespace App\Providers\Nomenclature;
 
-use App\Models\Classifiers\Nomenclature\Products\EndProduct;
-use App\Models\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct;
-use App\Models\Classifiers\Nomenclature\Products\OKPD2;
-use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
-use App\Models\Classifiers\Nomenclature\Products\ProductPrice;
-use App\Models\Classifiers\Nomenclature\Products\ProductRegionalAllowance;
-use App\Models\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct;
-use App\Models\Classifiers\Nomenclature\Products\TypeOfAggregation;
-use App\Models\Classifiers\Nomenclature\Products\TypeOfEndProduct;
-use App\Observers\Classifiers\Nomenclature\Products\EndProductObserver;
-use App\Observers\Classifiers\Nomenclature\Products\InternationalNameOfEndProductObserver;
-use App\Observers\Classifiers\Nomenclature\Products\OKPD2Observer;
-use App\Observers\Classifiers\Nomenclature\Products\ProductCatalogObserver;
-use App\Observers\Classifiers\Nomenclature\Products\ProductPriceObserver;
-use App\Observers\Classifiers\Nomenclature\Products\ProductRegionalAllowanceObserver;
-use App\Observers\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProductObserver;
-use App\Observers\Classifiers\Nomenclature\Products\TypeOfAggregationObserver;
-use App\Observers\Classifiers\Nomenclature\Products\TypeOfEndProductObserver;
+use App\Models\Classifier\Nomenclature\Products\EndProduct;
+use App\Models\Classifier\Nomenclature\Products\InternationalNameOfEndProduct;
+use App\Models\Classifier\Nomenclature\Products\OKPD2;
+use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Products\ProductPrice;
+use App\Models\Classifier\Nomenclature\Products\ProductRegionalAllowance;
+use App\Models\Classifier\Nomenclature\Products\RegistrationNumberOfEndProduct;
+use App\Models\Classifier\Nomenclature\Products\TypeOfAggregation;
+use App\Models\Classifier\Nomenclature\Products\TypeOfEndProduct;
+use App\Observers\Classifier\Nomenclature\Product\EndProductObserver;
+use App\Observers\Classifier\Nomenclature\Product\InternationalNameOfEndProductObserver;
+use App\Observers\Classifier\Nomenclature\Product\OKPD2Observer;
+use App\Observers\Classifier\Nomenclature\Product\ProductCatalogObserver;
+use App\Observers\Classifier\Nomenclature\Product\ProductPriceObserver;
+use App\Observers\Classifier\Nomenclature\Product\ProductRegionalAllowanceObserver;
+use App\Observers\Classifier\Nomenclature\Product\RegistrationNumberOfEndProductObserver;
+use App\Observers\Classifier\Nomenclature\Product\TypeOfAggregationObserver;
+use App\Observers\Classifier\Nomenclature\Product\TypeOfEndProductObserver;
 use Illuminate\Support\ServiceProvider;
 
 /**

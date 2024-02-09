@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Bank as Model;
+use App\Models\Classifier\Bank as Model;
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Products\ProductRegionalAllowance as Model;
+use App\Models\Classifier\Nomenclature\Products\ProductRegionalAllowance as Model;
 
 /**
  * Репозиторий региональной надбавки готовой продукции.

@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature\Services;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Services\Service as Model;
+use App\Models\Classifier\Nomenclature\Services\Service as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

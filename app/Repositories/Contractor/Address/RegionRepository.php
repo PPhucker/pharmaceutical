@@ -3,7 +3,7 @@
 namespace App\Repositories\Contractor\Address;
 
 use App\Repositories\CrudRepository;
-use App\Models\Classifiers\Region;
+use App\Models\Classifier\Region;
 use Illuminate\Database\Eloquent\Collection;
 
 /**

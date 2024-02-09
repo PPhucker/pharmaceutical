@@ -3,8 +3,8 @@
 namespace App\Synchronization;
 
 use App\Helpers\Dadata\DadataClient;
-use App\Models\Classifiers\Bank;
-use App\Models\Classifiers\LegalForm;
+use App\Models\Classifier\Bank;
+use App\Models\Classifier\LegalForm;
 use App\Models\Contractor\BankAccountDetail;
 use App\Models\Contractor\Contractor;
 use App\Models\Contractor\PlaceOfBusiness;

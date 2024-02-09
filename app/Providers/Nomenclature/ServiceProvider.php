@@ -2,8 +2,8 @@
 
 namespace App\Providers\Nomenclature;
 
-use App\Models\Classifiers\Nomenclature\Services\Service;
-use App\Observers\Classifiers\Nomenclature\Services\ServiceObserver;
+use App\Models\Classifier\Nomenclature\Services\Service;
+use App\Observers\Classifier\Nomenclature\Service\ServiceObserver;
 use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider

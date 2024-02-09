@@ -3,7 +3,7 @@
 namespace App\Models\Documents\InvoicesForPayment;
 
 use App\Models\Auth\User;
-use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

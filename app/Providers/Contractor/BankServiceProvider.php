@@ -2,7 +2,7 @@
 
 namespace App\Providers\Contractor;
 
-use App\Models\Classifiers\Bank;
+use App\Models\Classifier\Bank;
 use App\Models\Contractor\BankAccountDetail;
 use App\Observers\CoreObserver;
 use App\Services\Contractor\Bank\BankServiceDependencies;

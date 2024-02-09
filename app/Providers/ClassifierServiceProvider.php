@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Classifiers\Bank;
-use App\Models\Classifiers\LegalForm;
-use App\Models\Classifiers\Region;
-use App\Observers\Classifiers\BankObserver;
-use App\Observers\Classifiers\LegalFormObserver;
-use App\Observers\Classifiers\RegionObserver;
+use App\Models\Classifier\Bank;
+use App\Models\Classifier\LegalForm;
+use App\Models\Classifier\Region;
+use App\Observers\Classifier\BankObserver;
+use App\Observers\Classifier\LegalFormObserver;
+use App\Observers\Classifier\RegionObserver;
 use Illuminate\Support\ServiceProvider;
 
 /**

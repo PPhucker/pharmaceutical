@@ -2,10 +2,10 @@
 
 namespace App\Providers\Nomenclature;
 
-use App\Models\Classifiers\Nomenclature\Materials\Material;
-use App\Models\Classifiers\Nomenclature\Materials\TypeOfMaterial;
-use App\Observers\Classifiers\Nomenclature\Materials\MaterialObserver;
-use App\Observers\Classifiers\Nomenclature\Materials\TypeOfMaterialObserver;
+use App\Models\Classifier\Nomenclature\Materials\Material;
+use App\Models\Classifier\Nomenclature\Materials\TypeOfMaterial;
+use App\Observers\Classifier\Nomenclature\Material\MaterialObserver;
+use App\Observers\Classifier\Nomenclature\Material\TypeOfMaterialObserver;
 use Illuminate\Support\ServiceProvider;
 
 class MaterialProvider extends ServiceProvider

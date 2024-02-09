@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Relation;
 
-use App\Models\Classifiers\LegalForm;
+use App\Models\Classifier\LegalForm;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasLegalForm

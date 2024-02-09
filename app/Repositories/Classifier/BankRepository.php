@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Classifier;
 
-use App\Models\Classifiers\Bank;
+use App\Models\Classifier\Bank;
 use App\Repositories\CrudRepository;
 use Illuminate\Database\Eloquent\Collection;
 

@@ -3,8 +3,8 @@
 namespace App\Traits\Classifiers\Nomenclature\Products;
 
 use App\Logging\Logger;
-use App\Models\Classifiers\Nomenclature\Materials\Material;
-use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Materials\Material;
+use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

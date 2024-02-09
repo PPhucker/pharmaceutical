@@ -3,7 +3,7 @@
 namespace App\Repositories\Classifiers\Nomenclature\Materials;
 
 use App\Repositories\CoreRepository;
-use App\Models\Classifiers\Nomenclature\Materials\Material as Model;
+use App\Models\Classifier\Nomenclature\Materials\Material as Model;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

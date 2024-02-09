@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Price\Relation;
 
-use App\Models\Classifiers\Nomenclature\Products\ProductRegionalAllowance;
+use App\Models\Classifier\Nomenclature\Products\ProductRegionalAllowance;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasRegionalAllowances

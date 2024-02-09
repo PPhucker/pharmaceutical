@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Relation;
 
-use App\Models\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct;
+use App\Models\Classifier\Nomenclature\Products\RegistrationNumberOfEndProduct;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasRegistrationNumber

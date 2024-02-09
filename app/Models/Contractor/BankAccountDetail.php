@@ -2,7 +2,7 @@
 
 namespace App\Models\Contractor;
 
-use App\Models\Classifiers\Bank;
+use App\Models\Classifier\Bank;
 use App\Traits\Contractor\Relation\HasContractor;
 use App\Traits\Document\Relation\HasInvoicesForPayment;
 use App\Traits\Model\RelationshipsTrait;

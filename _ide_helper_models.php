@@ -14,7 +14,7 @@
 namespace App\Models\Admin\Organization {
 
     use App\Models\Auth\User;
-    use App\Models\Classifiers\Bank;
+    use App\Models\Classifier\Bank;
     use Eloquent;
     use Illuminate\Database\Query\Builder;
     use Illuminate\Support\Carbon;
@@ -56,7 +56,7 @@ namespace App\Models\Admin\Organization {
 namespace App\Models\Admin\Organization {
 
     use App\Models\Auth\User;
-    use App\Models\Classifiers\LegalForm;
+    use App\Models\Classifier\LegalForm;
     use Eloquent;
     use Illuminate\Database\Eloquent\Collection;
     use Illuminate\Database\Query\Builder;
@@ -353,7 +353,7 @@ namespace App\Models\Auth {
     }
 }
 
-namespace App\Models\Classifiers {
+namespace App\Models\Classifier {
 
     use App\Models\Admin\Organization\BankAccountDetail;
     use Eloquent;
@@ -384,7 +384,7 @@ namespace App\Models\Classifiers {
     }
 }
 
-namespace App\Models\Classifiers {
+namespace App\Models\Classifier {
 
     use App\Models\Admin\Organization\Organization;
     use Eloquent;

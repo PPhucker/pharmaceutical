@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Relation;
 
-use App\Models\Classifiers\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasCatalogProducts
