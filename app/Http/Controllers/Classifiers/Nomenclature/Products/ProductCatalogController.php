@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Classifiers\Nomenclature\Products;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\StatisticProductCatalogRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\StoreProductCatalogRequest;
@@ -213,7 +213,7 @@ class ProductCatalogController extends CoreController
     {
         $request->validated();
 
-        $date = Date::filter($request);
+        $date = DateHelper::filter($request);
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

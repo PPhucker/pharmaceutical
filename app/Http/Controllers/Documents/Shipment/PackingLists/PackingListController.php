@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\Shipment\PackingLists;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\Shipment\PackingListCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -49,7 +49,7 @@ class PackingListController extends CoreController
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request);
+        $date = DateHelper::filter($request);
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');
@@ -343,7 +343,7 @@ class PackingListController extends CoreController
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request, 'day');
+        $date = DateHelper::filter($request, 'day');
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

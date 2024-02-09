@@ -1,6 +1,6 @@
 @props([
     'formId',
-    'route',
+    'route' => null,
     'method' => null,
     'active' => null,
     'class' => null

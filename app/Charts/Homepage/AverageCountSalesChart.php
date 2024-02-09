@@ -3,7 +3,7 @@
 namespace App\Charts\Homepage;
 
 use App\Charts\Chart;
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Models\Admin\Organization\Organization;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
 use ArielMejiaDev\LarapexCharts\BarChart;
@@ -51,7 +51,7 @@ class AverageCountSalesChart extends Chart
         $labels = [];
         $values = [];
 
-        $periods = Date::period($this->fromDate, $this->toDate);
+        $periods = DateHelper::period($this->fromDate, $this->toDate);
 
         $organizations = Organization::select(
             [

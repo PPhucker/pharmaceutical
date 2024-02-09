@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\Shipment\Waybills;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\Shipment\WaybillCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -11,7 +11,6 @@ use App\Http\Requests\Documents\Shipment\Waybills\CreateWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\IndexWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\StoreWaybillRequest;
 use App\Http\Requests\Documents\Shipment\Waybills\UpdateWaybillRequest;
-use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\Waybills\Waybill;
 use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListRepository;
@@ -20,7 +19,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -42,7 +40,7 @@ class WaybillController extends CoreController
     {
         $validated = $request->validated();
 
-        $interval = Date::filter($request);
+        $interval = DateHelper::filter($request);
 
         $filters = [
             'organization_id' => $validated['organization_id'] ?? null,

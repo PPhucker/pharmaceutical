@@ -2,27 +2,21 @@
 
 namespace App\Http\Requests\Admin\Logs;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class LogRequest extends FormRequest
+/**
+ * Валидация для страницы списка логов.
+ */
+class LogRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'logs';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'user' => [
@@ -44,21 +38,19 @@ class LogRequest extends FormRequest
     }
 
     /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
+     * Prepare the data for validation.
      *
      * @return void
      */
-    public function withValidator(Validator $validator)
+    protected function prepareForValidation(): void
     {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'logs.fail',
-                    __('logs.fail')
-                );
+        $filteredInput = array_filter(
+            $this->input(),
+            static function ($value) {
+                return $value !== null;
             }
-        });
+        );
+
+        $this->replace($filteredInput);
     }
 }

@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
             ->daily();
 
         $schedule->call(function () {
-            Logger::delete();
+            (new Logger())->delete();
         })
             ->daily();
 

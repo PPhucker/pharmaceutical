@@ -1,3 +1,4 @@
+@props(['title','name'])
 <div class="list-inline-item pb-2">
     <div class="input-group input-group-sm">
         <span class="input-group-text alert alert-primary mb-0">

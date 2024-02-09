@@ -6,7 +6,7 @@ use App\Charts\Homepage\AverageCountSalesChart;
 use App\Charts\Homepage\AverageSalesChart;
 use App\Charts\Homepage\BestSalesToContractorsChart;
 use App\Charts\Homepage\BestSellingProductsChart;
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;
 use App\Models\Classifiers\Nomenclature\Products\EndProduct;
@@ -50,7 +50,7 @@ class HomeController extends Controller
             ],
         ]);
 
-        $date = Date::filter($request, '2 weeks');
+        $date = DateHelper::filter($request, '2 weeks');
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\Shipment\Appendixes;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\Shipment\AppendixCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -37,7 +37,7 @@ class AppendixController extends CoreController
     {
         $validated = $request->validated();
 
-        $interval = Date::filter($request);
+        $interval = DateHelper::filter($request);
 
         $filters = [
             'organization_id' => $validated['organization_id'] ?? null,

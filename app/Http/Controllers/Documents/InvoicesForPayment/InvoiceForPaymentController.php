@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\InvoicesForPayment;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\InvoiceForPaymentCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -46,7 +46,7 @@ class InvoiceForPaymentController extends CoreController
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request);
+        $date = DateHelper::filter($request);
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

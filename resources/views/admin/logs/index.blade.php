@@ -1,270 +1,237 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('logs.logs')}}">
-        <x-tables.main id="logs"
-                       targets="-1">
+    <x-card
+        :title="__('logs.logs')">
+        <x-notification.alert/>
+        <x-data-table.table
+            id="logs_table"
+            class="table-bordered"
+            targets="-1"
+            type="index"
+            pageLength="25">
             <x-slot name="filter">
-                <div class="list-inline-item">
-                    <form action="{{route('logs.index')}}"
-                          method="GET">
-                        <x-tables.filters.date-filter fromDate="{{$fromDate}}"
-                                                      toDate="{{$toDate}}"/>
-
-                        <x-tables.filters.select-filter title="{{__('users.user')}}"
-                                                        name="user">
+                <form
+                    id="filter_form"
+                    action="{{route('logs.index')}}"
+                    method="GET">
+                    <div class="list-inline">
+                        <x-data-table.filter.date-filter
+                            :startDate="$startDate"
+                            :endDate="$endDate"/>
+                        <x-data-table.filter.select-filter
+                            name="user"
+                            :title="__('users.user')">
                             @foreach($users as $user)
-                                <option value="{{$user->id}}" @if((int)request('user') === $user->id) selected @endif>
-                                    {{$user->name}}
-                                </option>
+                                <x-form.element.option
+                                    :value="$user->id"
+                                    :text="$user->name"
+                                    :selected="(int)request('user') === $user->id"/>
                             @endforeach
-                        </x-tables.filters.select-filter>
-
-                        <x-tables.filters.select-filter title="{{__('logs.actions.action')}}"
-                                                        name="action">
+                        </x-data-table.filter.select-filter>
+                        <x-data-table.filter.select-filter
+                            name="action"
+                            :title="__('logs.actions.action')">
                             @foreach($actions as $action)
-                                <option value="{{$action}}" @if(request('action') === $action) selected @endif>
-                                    {{__('logs.actions.' . $action)}}
-                                </option>
+                                <x-form.element.option
+                                    :value="$action"
+                                    :text="__('logs.actions.' . $action)"
+                                    :selected="request('action') === $action"/>
                             @endforeach
-                        </x-tables.filters.select-filter>
-
-                        <x-tables.filters.select-filter title="{{__('logs.model')}}"
-                                                        name="model">
+                        </x-data-table.filter.select-filter>
+                        <x-data-table.filter.select-filter
+                            name="model"
+                            :title="__('logs.model')">
                             @foreach($models as $model)
-                                <option value="{{$model['class']}}" @if(request('model') === $model['class']) selected @endif>
-                                    {{$model['comment']}}
-                                </option>
+                                <x-form.element.option
+                                    :value="$model['class']"
+                                    :text="$model['comment']"
+                                    :selected="request('model') === $model['class']"/>
                             @endforeach
-                        </x-tables.filters.select-filter>
-
-                        <button type="submit"
-                                class="btn btn-sm btn-primary">
-                            {{__('datatable.filter')}}
-                        </button>
-                    </form>
-                </div>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('users.user')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    IP
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('logs.actions.action')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('logs.model')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('logs.primary_key')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('logs.time')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                </th>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($logs as $key => $log)
-                <tr>
-                    <td class="align-middle text-left">
-                        {{$log->get('context')->user->name}}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{$log->get('context')->user->ip}}
-                    </td>
-                    <td class="align-middle text-left">
-                        {{__('logs.actions.' . $log->get('context')->action)}}
-                    </td>
-                    <td class="align-middle text-left">
-                        {{__('models.' . str_replace('\\', '.', $log->get('context')->model))}}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{$log->get('context')->primary_key}}
-                    </td>
-                    <td class="align-middle text-center">
-                        {{$log->get('datetime')}}
-                    </td>
-                    <td class="align-middle text-center">
-                        <button class="btn btn-hover"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#log{{$key}}"
-                                aria-expanded="true"
-                                aria-controls="log{{$key}}"
-                                title="{{__('datatable.entries.show')}}">
-                            <i class="bi bi-eye-fill fs-6"></i>
-                        </button>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-        @foreach($logs as $key => $log)
-            <div class="collapse mt-2" id="log{{$key}}">
-                <form class="form-control form-control-sm text-primary">
-                    <div class="row mb-3">
-                        <label for="f-action"
-                               class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('logs.actions.action')}}
-                        </label>
-                        <div class="col-md">
-                            <input id="f-action"
-                                   class="form-control form-control-sm"
-                                   value="{{__('logs.actions.' . $log->get('context')->action)}}"
-                                   disabled>
+                        </x-data-table.filter.select-filter>
+                        <div class="list-inline-item">
+                            <x-form.button.save
+                                class="btn-sm"
+                                formId="filter_form"
+                                :text="__('datatable.filter')"/>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <label for="f-datetime"
-                               class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('logs.time')}}
-                        </label>
-                        <div class="col-md">
-                            <input id="f-datetime"
-                                   class="form-control form-control-sm"
-                                   value="{{$log->get('datetime')}}"
-                                   disabled>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="f-user"
-                               class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('users.user')}}
-                        </label>
-                        <div class="col-md">
-                            <div class="card-body p-0">
-                                <div class="row">
-                                    <label for="f-user-id"
-                                           class="col-md-2 col-form-label text-md-end">
-                                        ID
-                                    </label>
-                                    <div class="col-md">
-                                        <input id="f-user-id"
-                                               class="form-control form-control-sm"
-                                               value="{{$log->get('context')->user->id}}"
-                                               disabled>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="f-user-ip"
-                                           class="col-md-2 col-form-label text-md-end">
-                                        IP
-                                    </label>
-                                    <div class="col-md">
-                                        <input id="f-user-ip"
-                                               class="form-control form-control-sm"
-                                               value="{{$log->get('context')->user->ip}}"
-                                               disabled>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="f-user-name"
-                                           class="col-md-2 col-form-label text-md-end">
-                                        {{__('users.name')}}
-                                    </label>
-                                    <div class="col-md">
-                                        <input id="f-user-name"
-                                               class="form-control form-control-sm"
-                                               value="{{$log->get('context')->user->name}}"
-                                               disabled>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="f-model"
-                               class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('logs.model')}}
-                        </label>
-                        <div class="col-md">
-                            <input id="f-model"
-                                   class="form-control form-control-sm"
-                                   value="{{ $log->get('context')->model}}"
-                                   disabled>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="f-table"
-                               class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('logs.table')}}
-                        </label>
-                        <div class="col-md">
-                            <input id="f-table"
-                                   class="form-control form-control-sm"
-                                   value="{{ $log->get('context')->table}}"
-                                   disabled>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <label for="f-item-id"
-                               class="col-md-2 col-form-label text-md-end fw-bold">
-                            {{__('logs.primary_key')}}
-                        </label>
-                        <div class="col-md">
-                            <input id="f-item-id"
-                                   class="form-control form-control-sm"
-                                   value="{{ $log->get('context')->primary_key}}"
-                                   disabled>
-                        </div>
-                    </div>
-                    @if (isset($log->get('context')->changes->attributes))
-                        <div class="row mb-3">
-                            <label for="f-user"
-                                   class="col-md-2 col-form-label text-md-end fw-bold">
-                                {{__('logs.changes')}}
-                            </label>
-                            <div class="col-md">
-                                <div class="card-body p-0">
-                                    @foreach($log->get('context')->changes->attributes as $name => $attribute)
-                                        <div class="row">
-                                            <label for="f-attribute-{{$name}}"
-                                                   class="col-md-2 col-form-label text-md-end">
-                                                {{$name}}
-                                            </label>
-                                            @if($log->get('context')->action === 'update')
-                                                <div class="input-group input-group-sm col-md mb-1"
-                                                     id="f-attribute-{{$name}}">
-                                                   <span class="input-group-text">
-                                                       {{__('logs.before')}}
-                                                   </span>
-                                                    <input class="form-control form-control-sm"
-                                                           value="{{$attribute->before}}"
-                                                           disabled>
-                                                    <span class="input-group-text">
-                                                       {{__('logs.after')}}
-                                                   </span>
-                                                    <input class="form-control form-control-sm"
-                                                           value="{{$attribute->after}}"
-                                                           disabled>
-                                                </div>
-                                            @elseif(in_array($log->get('context')->action, ['create', 'attach', 'detach']))
-                                                <div class="col-md">
-                                                    <input id="f-attribute-{{$name}}"
-                                                           class="form-control form-control-sm"
-                                                           value="{{$attribute}}"
-                                                           disabled>
-                                                </div>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                 </form>
+            </x-slot>
+            <x-data-table.head>
+                <x-data-table.th
+                    :text="__('users.user')"/>
+                <x-data-table.th
+                    text="IP"/>
+                <x-data-table.th
+                    :text="__('logs.actions.action')"/>
+                <x-data-table.th
+                    :text="__('logs.model')"/>
+                <x-data-table.th
+                    :text="__('logs.primary_key')"/>
+                <x-data-table.th
+                    :text="__('logs.time')"/>
+                <x-data-table.th/>
+            </x-data-table.head>
+            <x-data-table.body>
+                @foreach($logs as $key => $log)
+                    <x-data-table.tr>
+                        <x-data-table.td
+                            class="text-start">
+                            {{$log->get('context')->user->name}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$log->get('context')->user->ip}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{__('logs.actions.' . $log->get('context')->action)}}
+                        </x-data-table.td>
+                        <x-data-table.td
+                            class="text-start">
+                            {{__('models.' . str_replace('\\', '.', $log->get('context')->model))}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$log->get('context')->primary_key}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$log->get('datetime')}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <button type="button"
+                                    title="{{__('datatable.entries.show')}}"
+                                    class="btn btn-hover"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#log{{$key}}">
+                                <i class="bi bi-eye-fill fs-6"></i>
+                            </button>
+                        </x-data-table.td>
+                    </x-data-table.tr>
+                @endforeach
+            </x-data-table.body>
+        </x-data-table.table>
+        @foreach($logs as $key => $log)
+            <div class="modal fade"
+                 aria-hidden="true"
+                 id="log{{$key}}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Закрыть"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr class="align-middle">
+                                    <td class="text-primary fw-bolder">
+                                        {{__('logs.actions.action')}}
+                                    </td>
+                                    <td colspan="5">
+                                        <mark>{{__('logs.actions.' . $log->get('context')->action)}}</mark>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td class="text-primary fw-bolder">
+                                        {{__('logs.time')}}
+                                    </td>
+                                    <td colspan="5">
+                                        <mark>{{$log->get('datetime')}}</mark>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td rowspan="3"
+                                        class="text-primary fw-bolder">
+                                        {{__('users.user')}}
+                                    </td>
+                                    <td>
+                                        ID
+                                    </td>
+                                    <td colspan="4">
+                                        <mark>{{$log->get('context')->user->id}}</mark>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td>
+                                        IP
+                                    </td>
+                                    <td colspan="4">
+                                        <mark>{{$log->get('context')->user->ip}}</mark>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td>
+                                        {{__('users.name')}}
+                                    </td>
+                                    <td colspan="4">
+                                        <mark>{{$log->get('context')->user->name}}</mark>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td class="text-primary fw-bolder">
+                                        {{__('logs.model')}}
+                                    </td>
+                                    <td colspan="5">
+                                        <mark>{{$log->get('context')->model}}</mark>
+                                        ({{__('models.' . str_replace('\\', '.', $log->get('context')->model))}})
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td class="text-primary fw-bolder">
+                                        {{__('logs.table')}}
+                                    </td>
+                                    <td colspan="5">
+                                        <mark>{{$log->get('context')->table}}</mark>
+                                    </td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td class="text-primary fw-bolder">
+                                        {{__('logs.primary_key')}}
+                                    </td>
+                                    <td colspan="5">
+                                        <mark>{{$log->get('context')->primary_key}}</mark>
+                                    </td>
+                                </tr>
+                                @if (isset($log->get('context')->changes->attributes))
+                                    @foreach($data = (array)$log->get('context')->changes->attributes as $name => $attribute)
+                                        <tr class="align-middle">
+                                            @if($name === array_key_first($data))
+                                                <td rowspan="{{count($data)}}"
+                                                    class="text-primary fw-bolder">
+                                                    {{__('logs.changes')}}
+                                                </td>
+                                            @endif
+                                            @if(in_array($log->get('context')->action, ['create', 'attach', 'detach']))
+                                                <td>
+                                                    {{$name}}
+                                                </td>
+                                                <td>
+                                                    <mark>{{$attribute}}</mark>
+                                                </td>
+                                            @else
+                                                <td>
+                                                    {{$name}}
+                                                </td>
+                                                <td>
+                                                    {{__('logs.before')}}:
+                                                </td>
+                                                <td>
+                                                    <mark>{{$attribute->before ?? ''}}</mark>
+                                                </td>
+                                                <td>
+                                                    {{__('logs.after')}}:
+                                                </td>
+                                                <td>
+                                                    <mark>{{$attribute->after ?? $attribute}}</mark>
+                                                </td>
+                                            @endif
+                                        </tr>
+                                    @endforeach
+                                @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         @endforeach
-    </x-forms.main>
+    </x-card>
 @endsection

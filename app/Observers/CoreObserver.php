@@ -10,6 +10,16 @@ use App\Logging\Logger;
 class CoreObserver
 {
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    public function __construct()
+    {
+        $this->logger = new Logger();
+    }
+
+    /**
      * Handle the model "created" event.
      *
      * @param $model
@@ -18,7 +28,7 @@ class CoreObserver
      */
     public function created($model): void
     {
-        Logger::userActionNotice('create', $model);
+        $this->logger->userActionNotice('create', $model);
     }
 
     /**
@@ -30,7 +40,7 @@ class CoreObserver
      */
     public function updated($model): void
     {
-        Logger::userActionNotice('update', $model);
+        $this->logger->userActionNotice('update', $model);
     }
 
     /**
@@ -42,7 +52,7 @@ class CoreObserver
      */
     public function deleted($model): void
     {
-        Logger::userActionNotice('destroy', $model);
+        $this->logger->userActionNotice('destroy', $model);
 
         foreach ($model->relationships(['HasMany']) as $relation) {
             foreach ($model->$relation()->get() as $item) {
@@ -60,7 +70,7 @@ class CoreObserver
      */
     public function restored($model): void
     {
-        Logger::userActionNotice('restore', $model);
+        $this->logger->userActionNotice('restore', $model);
 
         foreach ($model->relationships(['HasMany']) as $relation) {
             foreach ($model->$relation()->get() as $item) {
