@@ -13,7 +13,6 @@
         <x-form.element.input
             id="contact_person[name]"
             name="contact_person[name]"
-            :value="old('contact_person[name]')"
             :required="true"/>
     </x-form.row>
     <x-form.row>
@@ -24,8 +23,7 @@
         </x-slot>
         <x-form.element.input
             id="contact_person[post]"
-            name="contact_person[post]"
-            :value="old('contact_person[post]')"/>
+            name="contact_person[post]"/>
     </x-form.row>
     <x-form.row>
         <x-slot name="label">
@@ -35,8 +33,7 @@
         </x-slot>
         <x-form.element.input
             id="contact_person[phone]"
-            name="contact_person[phone]"
-            :value="old('contact_person[phone]')"/>
+            name="contact_person[phone]"/>
     </x-form.row>
     <x-form.row>
         <x-slot name="label">
@@ -46,8 +43,7 @@
         </x-slot>
         <x-form.element.input
             id="contact_person[email]"
-            name="contact_person[email]"
-            :value="old('contact_person[email]')"/>
+            name="contact_person[email]"/>
     </x-form.row>
     <footer class="mt-auto me-auto">
         <ul class="list-inline mb-0">

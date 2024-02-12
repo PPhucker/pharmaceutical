@@ -53,7 +53,7 @@ class Textarea extends FormElement
         $this->errorName = $this->transformBracketedName($name);
         $this->id = $id;
         $this->readonly = $readonly;
-        $this->text = $text;
+        $this->text = $text ?? old($this->transformBracketedName($name));
         $this->rows = $rows;
     }
 

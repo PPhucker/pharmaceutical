@@ -13,7 +13,6 @@
         <x-form.element.input
             id="driver_name"
             name="driver[name]"
-            :value="old('driver[name]')"
             :required="true"/>
     </x-form.row>
     <footer class="mt-auto me-auto">

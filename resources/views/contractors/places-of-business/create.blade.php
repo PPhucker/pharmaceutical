@@ -13,8 +13,7 @@
         </x-slot>
         <x-form.element.input
             id="identifier"
-            name="place_of_business[identifier]"
-            :value="old('place_of_business[identifier]')"/>
+            name="place_of_business[identifier]"/>
     </x-form.row>
     @end_roles
     <x-form.row>
@@ -26,7 +25,6 @@
         <x-form.element.input
             id="address"
             name="place_of_business[address]"
-            :value="old('place_of_business[address]')"
             :required="true"/>
     </x-form.row>
     <x-form.row>
@@ -38,7 +36,6 @@
         <x-form.element.input
             id="index"
             name="place_of_business[index]"
-            :value="old('place_of_business[index]')"
             :required="true"/>
     </x-form.row>
     <x-form.row>
@@ -51,8 +48,7 @@
             id="registered"
             type="checkbox"
             class="form-check-input mt-2"
-            name="place_of_business[registered]"
-            :value="old('place_of_business[registered]')"/>
+            name="place_of_business[registered]"/>
     </x-form.row>
     <footer class="mt-auto me-auto">
         <ul class="list-inline mb-0">

@@ -33,7 +33,6 @@
                 <x-form.element.input
                     id="name"
                     name="name"
-                    :value="old('name')"
                     :required="true"/>
             </x-form.row>
             <x-form.row>
@@ -45,7 +44,6 @@
                 <x-form.element.input
                     id="INN"
                     name="INN"
-                    :value="old('INN')"
                     :required="true"
                     min="10"
                     max="12"/>
@@ -59,7 +57,6 @@
                 <x-form.element.input
                     id="OKPO"
                     name="OKPO"
-                    :value="old('OKPO')"
                     :required="true"
                     min="8"
                     max="10"/>
@@ -73,7 +70,6 @@
                 <x-form.element.input
                     id="kpp"
                     name="kpp"
-                    :value="old('kpp')"
                     :required="true"
                     min="9"
                     max="9"/>
@@ -86,8 +82,7 @@
                 </x-slot>
                 <x-form.element.input
                     id="contacts"
-                    name="contacts"
-                    :value="old('contacts')"/>
+                    name="contacts"/>
             </x-form.row>
             <x-form.row>
                 <x-slot name="label">
@@ -97,8 +92,7 @@
                 </x-slot>
                 <x-form.element.textarea
                     id="comment"
-                    name="comment"
-                    :text="old('comment')"/>
+                    name="comment"/>
             </x-form.row>
             <footer class="mt-auto me-auto">
                 <ul class="list-inline mb-0">

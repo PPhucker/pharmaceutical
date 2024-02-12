@@ -34,7 +34,6 @@
                     <x-data-table.td>
                         <x-form.element.input
                             name="bank_account_detail[payment_account][{{$bank->BIC}}]"
-                            :value="old('bank_account_detail[payment_account][{{$bank->BIC}}]')"
                             min="20"
                             max="20"/>
                     </x-data-table.td>

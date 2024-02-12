@@ -29,7 +29,6 @@
         <x-form.element.input
             id="trailer_state_number"
             name="trailer[state_number]"
-            :value="old('trailer[state_number]')"
             :required="true"/>
     </x-form.row>
     <footer class="mt-auto me-auto">

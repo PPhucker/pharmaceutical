@@ -14,7 +14,6 @@
             <x-form.element.input
                 id="bank_name"
                 name="bank[name]"
-                :value="old('bank.BIC')"
                 :required="true"
                 max="120"/>
         </x-form.row>
@@ -27,7 +26,6 @@
             <x-form.element.input
                 id="BIC"
                 name="bank[BIC]"
-                :value="old('bank.BIC')"
                 :required="true"
                 min="9"
                 max="9"/>
@@ -41,7 +39,6 @@
             <x-form.element.input
                 id="correspondent_account"
                 name="bank[correspondent_account]"
-                :value="old('bank.correspondent_account')"
                 :required="true"
                 min="20"
                 max="20"/>

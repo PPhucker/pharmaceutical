@@ -32,7 +32,6 @@
         <x-form.element.input
             id="contract_number"
             name="contract[number]"
-            :value="old('contract[number]')"
             :required="true"/>
     </x-form.row>
     <x-form.row>
@@ -45,7 +44,6 @@
             id="contract_date"
             name="contract[date]"
             type="date"
-            :value="old('contract[number]')"
             :required="true"/>
     </x-form.row>
     <x-form.row>
@@ -69,8 +67,7 @@
         </x-slot>
         <x-form.element.textarea
             id="contract_comment"
-            name="contract[comment]"
-            :text="old('contract[comment]')"/>
+            name="contract[comment]"/>
     </x-form.row>
     <footer class="mt-auto me-auto">
         <ul class="list-inline mb-0">

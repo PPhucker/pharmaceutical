@@ -13,7 +13,6 @@
         <x-form.element.input
             id="car_model"
             name="car[car_model]"
-            :value="old('car[car_model]')"
             :required="true"/>
     </x-form.row>
     <x-form.row>
@@ -25,7 +24,6 @@
         <x-form.element.input
             id="state_number"
             name="car[state_number]"
-            :value="old('car[state_number]')"
             :required="true"/>
     </x-form.row>
     <footer class="mt-auto me-auto">
