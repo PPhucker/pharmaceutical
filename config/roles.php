@@ -8,6 +8,13 @@ return [
     'contractor' => [
         'bookkeeping',
         'digital_communication',
-        'marketing'
+        'marketing',
+    ],
+    'classifier' => [
+        'bank' => [
+            'bookkeeping',
+            'digital_communication',
+            'marketing',
+        ],
     ],
 ];

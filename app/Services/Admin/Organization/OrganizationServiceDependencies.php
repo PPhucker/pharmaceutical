@@ -3,7 +3,7 @@
 namespace App\Services\Admin\Organization;
 
 use App\Repositories\Admin\Organization\OrganizationRepository;
-use App\Repositories\Contractor\LegalFormRepository;
+use App\Repositories\Classifier\LegalFormRepository;
 use App\Services\CoreDependencyService;
 
 /**

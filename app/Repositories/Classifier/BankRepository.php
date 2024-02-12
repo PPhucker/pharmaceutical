@@ -22,20 +22,47 @@ class BankRepository extends CrudRepository
     }
 
     /**
+     * @param array $validated
+     *
+     * @return Bank
+     */
+    public function create(array $validated): Bank
+    {
+        return $this->model->create(
+            [
+                'BIC' => $validated['BIC'],
+                'correspondent_account' => $validated['correspondent_account'],
+                'name' => $validated['name'],
+            ]
+        );
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return void
+     */
+    public function update($model, array $validated): void
+    {
+        foreach ($validated as $item) {
+            $this->model->findOrFail($item['original_BIC'])
+                ->fill(
+                    [
+                        'BIC' => $item['BIC'],
+                        'correspondent_account' => $item['correspondent_account'],
+                        'name' => $item['name'],
+                    ]
+                )
+                ->save();
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getModelClass(): string
     {
         return Bank::class;
-    }
-
-    public function create(array $validated)
-    {
-        // TODO: Implement create() method.
-    }
-
-    public function update($model, array $validated)
-    {
-        // TODO: Implement update() method.
     }
 }

@@ -3,101 +3,67 @@
 namespace App\Http\Controllers\Classifier;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Bank\StoreBankRequest;
-use App\Http\Requests\Classifiers\Bank\UpdateBankRequest;
+use App\Http\Requests\Classifier\Bank\StoreBankRequest;
+use App\Http\Requests\Classifier\Bank\UpdateBankRequest;
 use App\Models\Classifier\Bank;
-use App\Repositories\Classifiers\BankRepository;
-use Illuminate\Contracts\View\View;
+use Illuminate\View\View;
+use App\Services\Classifier\BankService;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер классификатора банков.
+ */
 class BankController extends CoreController
 {
+    protected $prefixLocalKey = 'classifiers.banks';
+
     /**
-     * @return void
+     * @var BankService
      */
-    protected function authorizeActions()
+    private $service;
+
+    /**
+     * @param BankService $service
+     */
+    public function __construct(BankService $service)
     {
+        $this->service = $service;
         $this->authorizeResource(Bank::class, 'bank');
     }
 
     /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return BankRepository::class;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $banks = $this->repository->getAll();
-
-        return view(
-            'classifiers.banks.index',
-            compact('banks')
-        );
+        return view('classifiers.banks.index', $this->service->getIndexData());
     }
 
-
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreBankRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreBankRequest $request)
+    public function store(StoreBankRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['bank'];
+        $this->service->create($request->validated()['bank']);
 
-        Bank::create(
-            [
-                'BIC' => $validated['BIC'],
-                'correspondent_account' => $validated['correspondent_account'],
-                'name' => $validated['name'],
-            ]
-        );
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.banks.actions.create.success'),
-            );
+        return $this->successRedirect('create');
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * @param Bank              $bank
      * @param UpdateBankRequest $request
-     * @param Bank|null         $bank
      *
      * @return RedirectResponse
      */
-    public function update(UpdateBankRequest $request, Bank $bank = null)
+    public function update(Bank $bank, UpdateBankRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->service->update(
+            $bank,
+            $request->validated()['banks']
+        );
 
-        foreach ($validated['banks'] as $item) {
-            Bank::find($item['original_BIC'])
-            ->fill(
-                [
-                    'BIC' => $item['BIC'],
-                    'correspondent_account' => $item['correspondent_account'],
-                    'name' => $item['name'],
-                ]
-            )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.banks.actions.update.success')
-            );
+        return $this->successRedirect('update');
     }
 }

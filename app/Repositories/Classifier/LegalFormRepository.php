@@ -1,29 +1,32 @@
 <?php
 
-namespace App\Repositories\Contractor\Address;
+namespace App\Repositories\Classifier;
 
+use App\Models\Classifier\LegalForm;
 use App\Repositories\CrudRepository;
-use App\Models\Classifier\Region;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Репозиторий регионов.
+ * Репозиторий организационно правовых форм.
  */
-class RegionRepository extends CrudRepository
+class LegalFormRepository extends CrudRepository
 {
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getAll(): Collection
     {
-        return $this->clone()->orderBy('name')
-            ->orderBy('zone')
+        return $this->clone()
+            ->orderBy('abbreviation')
             ->get();
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function getModelClass(): string
     {
-        return Region::class;
+        return LegalForm::class;
     }
 
     public function create(array $validated)

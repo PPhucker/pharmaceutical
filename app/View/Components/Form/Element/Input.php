@@ -53,7 +53,7 @@ class Input extends FormElement
     ) {
         $this->name = $name;
         $this->errorName = $this->transformBracketedName($name);
-        $this->value = $value;
+        $this->value = $value ?? old($name);
         $this->id = $id;
         $this->type = $type;
         $this->class = $class;

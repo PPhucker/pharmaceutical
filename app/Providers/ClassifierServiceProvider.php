@@ -5,9 +5,8 @@ namespace App\Providers;
 use App\Models\Classifier\Bank;
 use App\Models\Classifier\LegalForm;
 use App\Models\Classifier\Region;
-use App\Observers\Classifier\BankObserver;
-use App\Observers\Classifier\LegalFormObserver;
-use App\Observers\Classifier\RegionObserver;
+use App\Observers\CoreObserver;
+use App\Services\Classifier\ClassifierServiceDependencies;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -15,6 +14,15 @@ use Illuminate\Support\ServiceProvider;
  */
 class ClassifierServiceProvider extends ServiceProvider
 {
+    protected $providers = [
+
+    ];
+    protected $observedModels = [
+        Bank::class,
+        LegalForm::class,
+        Region::class,
+    ];
+
     /**
      * Register services.
      *
@@ -22,7 +30,7 @@ class ClassifierServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ClassifierServiceDependencies::class);
     }
 
     /**
@@ -32,6 +40,8 @@ class ClassifierServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        LegalForm::observe(LegalFormObserver::class);
+        foreach ($this->observedModels as $model) {
+            $model::observe(CoreObserver::class);
+        }
     }
 }
