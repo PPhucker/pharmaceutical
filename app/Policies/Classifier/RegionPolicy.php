@@ -2,91 +2,28 @@
 
 namespace App\Policies\Classifier;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+
+use App\Models\Classifier\Region;
+use App\Policies\CorePolicy;
 
 /**
  * Политика для регионов.
  */
-class RegionPolicy
+class RegionPolicy extends CorePolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'bookkeeping',
-        'digital_communication'
-    ];
-
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return string
      */
-    public function viewAny(User $user): bool
+    protected function getModelClass(): string
     {
-        return $user->hasRole(self::ROLES);
+        return Region::class;
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return array
      */
-    public function view(User $user): bool
+    protected function getRoles(): array
     {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user): bool
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user): bool
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function delete(User $user): bool
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function restore(User $user): bool
-    {
-        return $user->hasRole(self::ROLES);
+        return config('roles.classifier.region', ['admin']);
     }
 }

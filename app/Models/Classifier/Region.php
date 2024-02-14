@@ -2,6 +2,7 @@
 
 namespace App\Models\Classifier;
 
+use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Region extends Model
 {
     use HasFactory;
+    use RelationshipsTrait;
 
     protected $table = 'classifier_regions';
 

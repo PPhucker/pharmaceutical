@@ -1,15 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Region;
+namespace App\Http\Requests\Classifier\Region;
 
 use App\Http\Requests\CoreFormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * Валидация обновления регионов.
  */
 class UpdateRegionRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'classifiers.regions.actions.update.fail';
+    protected $prefixLocalKey = 'classifiers.regions';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
@@ -29,6 +32,14 @@ class UpdateRegionRequest extends CoreFormRequest
                 'required',
                 'string',
                 'max:120',
+                Rule::unique('classifier_regions', 'name')
+                    ->whereNotIn('name', $this->input($prefix . 'name'))
+            ],
+            $prefix . 'zone' => [
+                'nullable',
+                'string',
+                Rule::unique('classifier_regions', 'zone')
+                    ->whereNotIn('zone', $this->input($prefix . 'zone'))
             ],
         ];
     }

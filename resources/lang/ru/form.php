@@ -11,6 +11,7 @@ return [
         'back' => 'Назад',
         'create' => 'Создать',
         'statistic' => 'Статистика',
+        'download' => 'Скачать',
     ],
     'titles' => [
         'add' => 'Добавить',

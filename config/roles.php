@@ -21,5 +21,10 @@ return [
             'digital_communication',
             'marketing',
         ],
+        'region' => [
+            'bookkeeping',
+            'digital_communication',
+            'marketing',
+        ],
     ],
 ];

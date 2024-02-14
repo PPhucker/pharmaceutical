@@ -4,4 +4,5 @@
         <use xlink:href="#info-fill"/>
     </svg>
     {{$text}}
+    {{$slot}}
 </div>

@@ -1,126 +1,62 @@
 @extends('layouts.app')
 @section('content')
-    <div id="div_add_region"
-         class="@if ($errors->has('region.*')) collapsed @else collapse @endif mb-2">
-        <x-forms.main title="{{__('form.titles.add')}}"
-                      withAlert="{{false}}">
-            <form id="form_add_region"
-                  method="POST"
-                  action="{{route('regions.store')}}">
-                @csrf
-                <div class="row mb-2">
-                    <label for="name"
-                           class="col-md-2 col-form-label text-md-end">
-                        {{__('classifiers.regions.name')}}
-                    </label>
-                    <div class="col-md">
-                        <input id="name"
-                               type="text"
-                               class="form-control form-control-sm
-                               @error('region.name') is-invalid @enderror"
-                               name="region[name]"
-                               value="{{ old('region[name]') }}"
-                               required>
-                        @error('region.name')
-                        <span class="invalid-feedback"
-                              role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <label for="zone"
-                           class="col-md-2 col-form-label text-md-end">
-                        {{__('classifiers.regions.zone')}}
-                    </label>
-                    <div class="col-md">
-                        <textarea id="zone"
-                                  rows="3"
-                                  class="form-control form-control-sm
-                               @error('region.zone') is-invalid @enderror"
-                                  name="region[zone]">{{ old('region[zone]') }}</textarea>
-                        @error('region.zone')
-                        <span class="invalid-feedback"
-                              role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <x-slot name="footer">
-                    <x-buttons.save formId="form_add_region"/>
-                </x-slot>
-            </form>
-        </x-forms.main>
+    <div class="ps-2 pe-2">
+        <x-notification.alert/>
     </div>
-    <x-forms.main title="{{__('classifiers.regions.regions')}}">
-        <form id="form_regions"
-              method="POST"
-              action="{{route('regions.update', ['region' => $regions->first()->id ?? 1])}}">
-            @method('PATCH')
-            @csrf
-            <x-tables.main id="table_regions"
-                           domOrderType="{{true}}">
-                <thead class="bg-secondary">
-                <tr class="text-primary">
-                    <th scope="col"
-                        class="text-center col-md-1">
-                        {{__('ID')}}
-                    </th>
-                    <th scope="col"
-                        class="text-center col-md-2">
-                        {{__('classifiers.regions.name')}}
-                    </th>
-                    <th scope="col"
-                        class="text-center col-md">
-                        {{__('classifiers.regions.zone')}}
-                    </th>
-                </tr>
-                </thead>
-                <tbody class="text-primary">
-                @foreach($regions as $key => $region)
-                    <tr>
-                        <input type="hidden" name="regions[{{$key}}][id]" value="{{$region->id}}">
-                        <td class="align-middle text-center border-start">
-                            {{$region->id}}
-                        </td>
-                        <td class="align-middle col-md-2">
-                            <span class="d-none">
-                                {{$region->name}}
-                            </span>
-                            <input type="text"
-                                   id="name-{{$key}}"
-                                   name="regions[{{$key}}][name]"
-                                   class="form-control form-control-sm text-primary mt-1 mb-1
-                                    @error('regions.' . $key . '.name') is-invalid @enderror"
-                                   value="{{$region->name}}"
-                                   required>
-                            @error('regions.' . $key . '.name')
-                            <span class="invalid-feedback"
-                                  role="alert">
-                            <strong>
-                                {{$message}}
-                            </strong>
-                            </span>
-                            @enderror
-                        </td>
-                        <td class="align-middle text-wrap col-md fs-6">
-                            <span class="d-none">{{$region->zone}}</span>
-                            <small>{{$region->zone}}</small>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </x-tables.main>
-            <x-slot name="footer">
-                <x-buttons.save formId="form_regions"/>
-                <x-buttons.collapse formId="div_add_region"/>
-            </x-slot>
-        </form>
-    </x-forms.main>
+    <x-token.dadata-token/>
+    @include('classifiers.regions.create')
+    <x-card
+        :title="__('classifiers.regions.regions')">
+        <x-form
+            :route="route('regions.update', ['region' => $regions->first()->id ?? 1])"
+            formId="regions_edit_form"
+            method="PATCH">
+            <x-notification.info
+                :text="__('classifiers.regions.notifications.info')"/>
+            <x-data-table.table
+                id="regions_table"
+                class="table-bordered"
+                type="index"
+                pageLength="15"
+                :domOrderType="true">
+                <x-data-table.head>
+                    <x-data-table.th
+                        class="col-md-2 col-auto"
+                        :text="__('classifiers.regions.name')"/>
+                    <x-data-table.th
+                        class="col-md col-auto"
+                        :text="__('classifiers.regions.zone')"/>
+                </x-data-table.head>
+                <x-data-table.body>
+                    @foreach($regions as $key => $region)
+                        <x-data-table.tr>
+                            <x-data-table.td>
+                                <x-form.element.input
+                                    name="regions[{{$key}}][name]"
+                                    :value="$region->name"
+                                    :required="true"/>
+                                <input type="hidden"
+                                       name="regions[{{$key}}][id]"
+                                       value="{{$region->id}}"/>
+                            </x-data-table.td>
+                            <x-data-table.td>
+                                <x-form.element.input
+                                    name="regions[{{$key}}][zone]"
+                                    :value="$region->zone"/>
+                            </x-data-table.td>
+                        </x-data-table.tr>
+                    @endforeach
+                </x-data-table.body>
+            </x-data-table.table>
+            <footer class="mt-auto sticky-bottom">
+                <ul class="list-inline mb-0">
+                    @if(count($regions) > 0)
+                        <li class="list-inline-item">
+                            <x-form.button.save formId="regions_edit_form"/>
+                        </li>
+                    @endif
+                </ul>
+            </footer>
+        </x-form>
+    </x-card>
 @endsection
