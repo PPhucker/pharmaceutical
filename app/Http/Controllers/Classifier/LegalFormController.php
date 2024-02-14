@@ -3,99 +3,71 @@
 namespace App\Http\Controllers\Classifier;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\LegalForm\StoreLegalFormRequest;
-use App\Http\Requests\Classifiers\LegalForm\UpdateLegalFormRequest;
+use App\Http\Requests\Classifier\LegalForm\StoreLegalFormRequest;
+use App\Http\Requests\Classifier\LegalForm\UpdateLegalFormRequest;
 use App\Models\Classifier\LegalForm;
-use App\Repositories\Classifiers\LegalFormRepository;
-use Illuminate\Contracts\View\View;
+use App\Services\Classifier\LegalFormService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Контроллер организационно правовой формы.
+ */
 class LegalFormController extends CoreController
 {
+    protected $prefixLocalKey = 'classifiers.legal_forms';
     /**
-     * @return void
+     * @var LegalFormService
      */
-    protected function authorizeActions()
+    private $service;
+
+    /**
+     * @param LegalFormService $service
+     */
+    public function __construct(LegalFormService $service)
     {
+        $this->service = $service;
         $this->authorizeResource(LegalForm::class, 'legal_form');
     }
 
     /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return LegalFormRepository::class;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $legalForms = $this->repository->getAll();
-
         return view(
             'classifiers.legal-forms.index',
-            compact('legalForms')
+            $this->service->getIndexData()
         );
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreLegalFormRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreLegalFormRequest $request)
+    public function store(StoreLegalFormRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['legal_form'];
-
-        LegalForm::create(
-            [
-                'abbreviation' => $validated['abbreviation'],
-                'decoding' => $validated['decoding'],
-            ]
+        $this->service->create(
+            $request->validated()['legal_form']
         );
 
-        return back()
-            ->with(
-                'success',
-                __('classifiers.legal_forms.actions.create.success'),
-            );
+        return $this->successRedirect('create');
     }
 
-
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateLegalFormRequest $request
-     * @param LegalForm|null         $legal_form
+     * @param LegalForm              $legalForm
      *
      * @return RedirectResponse
      */
-    public function update(UpdateLegalFormRequest $request, LegalForm $legal_form = null)
+    public function update(UpdateLegalFormRequest $request, LegalForm $legalForm): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->service->update(
+            $legalForm,
+            $request->validated()['legal_forms']
+        );
 
-        foreach ($validated['legal_forms'] as $item) {
-            LegalForm::find($item['original_abbreviation'])
-                ->fill(
-                    [
-                        'abbreviation' => $item['abbreviation'],
-                        'decoding' => $item['decoding'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.legal_forms.actions.update.success')
-            );
+        return $this->successRedirect('update');
     }
 }

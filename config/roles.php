@@ -16,5 +16,10 @@ return [
             'digital_communication',
             'marketing',
         ],
+        'legal_form' => [
+            'bookkeeping',
+            'digital_communication',
+            'marketing',
+        ],
     ],
 ];

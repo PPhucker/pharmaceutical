@@ -2,87 +2,27 @@
 
 namespace App\Policies\Classifier;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Classifier\LegalForm;
+use App\Policies\CorePolicy;
 
-class LegalFormPolicy
+/**
+ * Политика классификатора организационно-правовых форм.
+ */
+class LegalFormPolicy extends CorePolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'bookkeeping',
-    ];
-
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return string
      */
-    public function viewAny(User $user)
+    protected function getModelClass(): string
     {
-        return $user->hasRole(self::ROLES);
+        return LegalForm::class;
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return array
      */
-    public function view(User $user)
+    protected function getRoles(): array
     {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function delete(User $user)
-    {
-        return $user->canDelete();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function restore(User $user)
-    {
-        return $user->canRestore();
+        return config('roles.classifier.legal_form', ['admin']);
     }
 }

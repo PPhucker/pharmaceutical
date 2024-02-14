@@ -22,20 +22,46 @@ class LegalFormRepository extends CrudRepository
     }
 
     /**
+     * @param array $validated
+     *
+     * @return LegalForm
+     */
+    public function create(array $validated): LegalForm
+    {
+        return $this->model
+            ->create(
+                [
+                    'abbreviation' => $validated['abbreviation'],
+                    'decoding' => $validated['decoding'],
+                ]
+            );
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return void
+     */
+    public function update($model, array $validated): void
+    {
+        foreach ($validated as $legalForm) {
+            $model->findOrFail($legalForm['original_abbreviation'])
+                ->fill(
+                    [
+                        'abbreviation' => $legalForm['abbreviation'],
+                        'decoding' => $legalForm['decoding'],
+                    ]
+                )
+                ->save();
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getModelClass(): string
     {
         return LegalForm::class;
-    }
-
-    public function create(array $validated)
-    {
-        // TODO: Implement create() method.
-    }
-
-    public function update($model, array $validated)
-    {
-        // TODO: Implement update() method.
     }
 }

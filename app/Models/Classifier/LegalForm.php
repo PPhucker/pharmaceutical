@@ -4,6 +4,8 @@ namespace App\Models\Classifier;
 
 use App\Models\Admin\Organization\Organization;
 use App\Models\Contractor\Contractor;
+use App\Traits\Contractor\Relation\HasContractors;
+use App\Traits\Model\RelationshipsTrait;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -11,26 +13,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Classifiers\LegalForm
- *
- * @property string $abbreviation
- * @property string|null $decoding
- * @property-read Collection<int, Contractor> $contractors
- * @property-read int|null $contractorsCount
- * @property-read Collection<int, Organization> $organizations
- * @property-read int|null $organizationsCount
- * @method static Builder|LegalForm newModelQuery()
- * @method static Builder|LegalForm newQuery()
- * @method static Builder|LegalForm query()
- * @method static Builder|LegalForm whereAbbreviation($value)
- * @method static Builder|LegalForm whereDecoding($value)
- * @property-read Collection<int, Contractor> $contractors
- * @property-read Collection<int, Organization> $organizations
- * @mixin Eloquent
+ * Модель организационно правовой формы.
  */
 class LegalForm extends Model
 {
     use HasFactory;
+    use RelationshipsTrait;
+    use HasContractors;
 
     protected $table = 'classifier_legal_forms';
 
@@ -38,22 +27,14 @@ class LegalForm extends Model
 
     protected $primaryKey = 'abbreviation';
 
+    protected $foreign_key = 'legal_form_type';
+
     public $incrementing = false;
 
     public $timestamps = false;
 
-    protected $fillable = ['abbreviation', 'decoding'];
-
-    public function organizations()
-    {
-        return $this->hasMany(Organization::class, 'legal_form_type')
-            ->withTrashed();
-    }
-
-    public function contractors()
-    {
-        return $this->hasMany(Contractor::class, 'legal_form_type')
-            ->withTrashed();
-    }
-
+    protected $fillable = [
+        'abbreviation',
+        'decoding',
+    ];
 }
