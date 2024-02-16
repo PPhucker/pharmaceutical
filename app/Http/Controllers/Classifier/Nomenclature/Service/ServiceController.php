@@ -6,7 +6,7 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Services\StoreServiceRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Services\UpdateServiceRequest;
 use App\Models\Classifier\Nomenclature\Services\Service;
-use App\Repositories\Classifiers\Nomenclature\OKEIRepository;
+use App\Repositories\Classifier\Nomenclature\OKEIRepository;
 use App\Repositories\Classifiers\Nomenclature\Services\ServiceRepository;
 use Auth;
 use Illuminate\Contracts\View\View;

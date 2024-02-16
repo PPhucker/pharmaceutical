@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Classifiers\Nomenclature\Products;
 
-use App\Repositories\Classifiers\Nomenclature\OKEIRepository;
-use App\Repositories\CoreRepository;
 use App\Models\Classifier\Nomenclature\Products\EndProduct as Model;
+use App\Repositories\Classifier\Nomenclature\OKEIRepository;
+use App\Repositories\CoreRepository;
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

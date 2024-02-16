@@ -180,16 +180,10 @@ return [
         App\Providers\RoleServiceProvider::class,
         App\Providers\PermissionServiceProvider::class,
 
-        App\Providers\ClassifierServiceProvider::class,
+        App\Providers\Classifier\ClassifierServiceProvider::class,
 
         App\Providers\Contractor\OrganizationServiceProvider::class,
         App\Providers\Contractor\ContractorServiceProvider::class,
-
-        //Nomenclature
-        App\Providers\Nomenclature\ProductProvider::class,
-        App\Providers\Nomenclature\OKEIProvider::class,
-        App\Providers\Nomenclature\MaterialProvider::class,
-        App\Providers\Nomenclature\ServiceProvider::class,
 
         //Documents
         App\Providers\Documents\InvoiceForPaymentProvider::class,

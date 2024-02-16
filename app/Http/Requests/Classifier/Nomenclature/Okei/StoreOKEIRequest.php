@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Okei;
+namespace App\Http\Requests\Classifier\Nomenclature\Okei;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreOKEIRequest extends FormRequest
+/**
+ * Валидация добавления записи в классификатор ОКЕИ.
+ */
+class StoreOKEIRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.okei';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'okei.';
 
@@ -37,31 +33,14 @@ class StoreOKEIRequest extends FormRequest
                 'required',
                 'string',
                 'max:20',
+                'unique:classifier_okei,unit',
             ],
             $prefix . 'symbol' => [
                 'required',
                 'string',
-                'max:10'
+                'max:10',
+                'unique:classifier_okei,symbol',
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

@@ -26,5 +26,9 @@ return [
             'digital_communication',
             'marketing',
         ],
+        'okei' => [
+            'planning',
+            'marketing',
+        ],
     ],
 ];
