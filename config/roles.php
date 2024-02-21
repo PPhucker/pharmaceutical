@@ -26,9 +26,15 @@ return [
             'digital_communication',
             'marketing',
         ],
-        'okei' => [
-            'planning',
-            'marketing',
+        'nomenclature' => [
+            'okei' => [
+                'planning',
+                'marketing',
+            ],
+            'service' => [
+                'bookkeeping',
+                'marketing',
+            ],
         ],
     ],
 ];

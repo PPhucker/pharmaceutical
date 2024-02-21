@@ -25,9 +25,7 @@ return [
                         'ProductRegionalAllowance' => 'Региональная надбавка',
                     ],
                     'OKEI' => 'Классификатор ОКЕИ',
-                    'Service' => [
-                        'Service' => 'Услуги',
-                    ],
+                    'Service' => 'Услуга',
                     'Material' => [
                         'TypeOfMaterial' => 'Тип комплектующего',
                         'Material' => 'Комплектующее',

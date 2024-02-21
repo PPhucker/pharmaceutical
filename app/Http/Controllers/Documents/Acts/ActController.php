@@ -11,7 +11,7 @@ use App\Http\Requests\Documents\Acts\StoreActRequest;
 use App\Http\Requests\Documents\Acts\UpdateActRequest;
 use App\Models\Documents\Acts\Act;
 use App\Repositories\Admin\Organization\OrganizationRepository;
-use App\Repositories\Classifiers\Nomenclature\Services\ServiceRepository;
+use App\Repositories\Classifier\Nomenclature\ServiceRepository;
 use App\Repositories\Documents\Acts\ActRepository;
 use Auth;
 use Carbon\Carbon;

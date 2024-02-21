@@ -3,6 +3,7 @@
 namespace App\Services\Classifier\Nomenclature;
 
 use App\Repositories\Classifier\Nomenclature\OKEIRepository;
+use App\Repositories\Classifier\Nomenclature\ServiceRepository;
 use App\Services\CoreDependencyService;
 
 /**
@@ -11,13 +12,16 @@ use App\Services\CoreDependencyService;
 class NomenclatureServiceDependencies extends CoreDependencyService
 {
     /**
-     * @param OKEIRepository $okei
+     * @param OKEIRepository    $okei
+     * @param ServiceRepository $service
      */
     public function __construct(
-        OKEIRepository $okei
+        OKEIRepository $okei,
+        ServiceRepository $service
     ) {
         $this->repositories = compact(
-            'okei'
+            'okei',
+            'service'
         );
     }
 }

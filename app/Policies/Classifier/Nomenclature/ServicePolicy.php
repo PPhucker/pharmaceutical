@@ -2,20 +2,20 @@
 
 namespace App\Policies\Classifier\Nomenclature;
 
-use App\Models\Classifier\Nomenclature\OKEI;
+use App\Models\Classifier\Nomenclature\Service;
 use App\Policies\CorePolicy;
 
 /**
- * Политика классификатора ОКЕИ.
+ * Политика услуги.
  */
-class OKEIPolicy extends CorePolicy
+class ServicePolicy extends CorePolicy
 {
     /**
      * @return string
      */
     protected function getModelClass(): string
     {
-        return OKEI::class;
+        return Service::class;
     }
 
     /**
@@ -23,6 +23,6 @@ class OKEIPolicy extends CorePolicy
      */
     protected function getRoles(): array
     {
-        return config('roles.classifier.nomeclature.okei', ['admin']);
+        return config('roles.classifier.nomenclature.service', ['admin']);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Providers\Classifier\Nomenclature;
 
 use App\Models\Classifier\Nomenclature\OKEI;
+use App\Models\Classifier\Nomenclature\Service;
 use App\Observers\CoreObserver;
 use App\Services\Classifier\Nomenclature\OKEIService;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +18,7 @@ class NomenclatureServiceProvider extends ServiceProvider
      */
     protected $observedModels = [
         OKEI::class,
+        Service::class,
     ];
 
     /**
@@ -24,6 +26,7 @@ class NomenclatureServiceProvider extends ServiceProvider
      */
     protected $services = [
         OKEIService::class,
+        Service::class,
     ];
 
     /**

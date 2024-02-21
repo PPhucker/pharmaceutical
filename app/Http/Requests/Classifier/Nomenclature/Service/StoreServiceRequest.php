@@ -1,14 +1,22 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Services;
+namespace App\Http\Requests\Classifier\Nomenclature\Service;
 
 use App\Http\Requests\CoreFormRequest;
 
+/**
+ * Валидация добавления услуги.
+ */
 class StoreServiceRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'classifiers.nomenclature.services.actions.create.fail';
+    protected $prefixLocalKey = 'classifiers.nomenclature.services';
 
-    public function rules()
+    protected $action = 'create';
+
+    /**
+     * @return array[]
+     */
+    public function rules(): array
     {
         $prefix = 'service.';
 

@@ -3,7 +3,7 @@
 namespace App\Helpers\Documents\Acts;
 
 use App\Helpers\Documents\Creator;
-use App\Models\Classifier\Nomenclature\Services\Service;
+use App\Models\Classifier\Nomenclature\Service;
 use App\Repositories\Documents\Acts\ActServiceRepository;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;

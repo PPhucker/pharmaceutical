@@ -1,14 +1,22 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Services;
+namespace App\Http\Requests\Classifier\Nomenclature\Service;
 
 use App\Http\Requests\CoreFormRequest;
 
+/**
+ * Валидация обновления услуг.
+ */
 class UpdateServiceRequest extends CoreFormRequest
 {
-    protected $afterValidatorFailKeyMessage = 'classifiers.nomenclature.services.actions.update.fail';
+    protected $prefixLocalKey = 'classifiers.nomenclature.services';
 
-    public function rules()
+    protected $action = 'update';
+
+    /**
+     * @return array[]
+     */
+    public function rules(): array
     {
         $prefix = 'services.*.';
 
