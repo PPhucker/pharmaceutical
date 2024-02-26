@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Price\Relation;
 
-use App\Models\Classifier\Nomenclature\Product\ProductPrice;
+use App\Models\Classifier\Nomenclature\Product\Catalog\Price\ProductPrice;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 trait HasPrices

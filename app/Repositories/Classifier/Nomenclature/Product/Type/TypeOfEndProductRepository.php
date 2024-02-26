@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Classifier\Nomenclature\Product\Type;
 
-use App\Models\Classifier\Nomenclature\Product\TypeOfEndProduct as Model;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfEndProduct as Model;
 use App\Repositories\CoreRepository;
 
 class TypeOfEndProductRepository extends CoreRepository

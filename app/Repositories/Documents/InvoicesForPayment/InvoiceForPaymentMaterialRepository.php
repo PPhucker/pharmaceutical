@@ -3,9 +3,9 @@
 namespace App\Repositories\Documents\InvoicesForPayment;
 
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
-use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
-use App\Repositories\CoreRepository;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial as Model;
+use App\Repositories\Classifier\Nomenclature\Material\MaterialRepository;
+use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

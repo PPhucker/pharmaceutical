@@ -2,9 +2,8 @@
 
 namespace App\Models\Classifier\Nomenclature\Materials;
 
-use App\Models\Auth\User;
 use App\Models\Classifier\Nomenclature\OKEI;
-use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

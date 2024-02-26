@@ -3,7 +3,7 @@
 namespace App\Traits\Classifiers\Nomenclature\Products;
 
 use App\Logging\Logger;
-use App\Models\Classifier\Nomenclature\Product\TypeOfAggregation;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfAggregation;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasAggregationTypes

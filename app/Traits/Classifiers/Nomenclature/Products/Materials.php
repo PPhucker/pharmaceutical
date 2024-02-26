@@ -5,7 +5,7 @@ namespace App\Traits\Classifiers\Nomenclature\Products;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\AttachMaterialRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\DetachMaterialRequest;
 use App\Models\Classifier\Nomenclature\Materials\Material;
-use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use Illuminate\Http\RedirectResponse;
 
 trait Materials

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Classifier\Nomenclature\Product\ProductRegionalAllowanceController as Controller;
+use App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\Price\ProductRegionalAllowanceController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('product_regional_allowances', Controller::class)

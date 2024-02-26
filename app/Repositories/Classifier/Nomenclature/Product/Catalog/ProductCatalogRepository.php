@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Classifier\Nomenclature\Product\Catalog;
 
-use App\Models\Classifier\Nomenclature\Product\ProductCatalog as Model;
+use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog as Model;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Admin\Organization\PlaceOfBusinessRepository;
+use App\Repositories\Classifier\Nomenclature\Material\MaterialRepository;
 use App\Repositories\Classifier\Nomenclature\Product\Type\TypeOfAggregationRepository;
-use App\Repositories\Classifiers\Nomenclature\Materials\MaterialRepository;
 use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Psr\Container\ContainerExceptionInterface;

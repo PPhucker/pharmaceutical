@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Documents\InvoicesForPayment\Data\Products;
 
-use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\Classifier\Nomenclature\Product\Catalog\ProductCatalogRepository;
 use Illuminate\Foundation\Http\FormRequest;

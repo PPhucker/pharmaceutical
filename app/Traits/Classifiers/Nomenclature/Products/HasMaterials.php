@@ -4,7 +4,6 @@ namespace App\Traits\Classifiers\Nomenclature\Products;
 
 use App\Logging\Logger;
 use App\Models\Classifier\Nomenclature\Materials\Material;
-use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

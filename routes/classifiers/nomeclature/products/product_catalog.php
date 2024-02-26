@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Classifier\Nomenclature\Product\ProductCatalogController as Controller;
+use App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\ProductCatalogController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('product_catalog', Controller::class)

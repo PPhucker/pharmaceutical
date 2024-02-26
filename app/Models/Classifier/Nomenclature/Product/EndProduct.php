@@ -2,6 +2,8 @@
 
 namespace App\Models\Classifier\Nomenclature\Product;
 
+use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfEndProduct;
 use App\Traits\Classifier\Nomenclature\Relation\HasOkeiClassifier;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
