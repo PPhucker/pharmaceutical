@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductPrice\StoreProductPriceRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductPrice\UpdateProductPriceRequest;
-use App\Models\Classifier\Nomenclature\Products\ProductPrice;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductPriceRepository;
+use App\Models\Classifier\Nomenclature\Product\ProductPrice;
+use App\Repositories\Classifier\Nomenclature\Product\Price\ProductPriceRepository;
 use Auth;
 use Illuminate\Http\RedirectResponse;
 

@@ -220,11 +220,7 @@
                                                     {{__('logs.after')}}:
                                                 </td>
                                                 <td>
-                                                    <mark>
-                                                        {{($attribute->after || $attribute->after === null) ?
-                                                            $attribute->after :
-                                                            $attribute}}
-                                                    </mark>
+                                                    <mark>{{$attribute->after ?? ''}}</mark>
                                                 </td>
                                             @endif
                                         </tr>

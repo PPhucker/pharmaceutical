@@ -8,10 +8,10 @@ use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\Statistic
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\StoreProductCatalogRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\UpdateProductCatalogRequest;
 use App\Models\Admin\Organization\PlaceOfBusiness;
-use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
 use App\Repositories\Admin\Organization\PlaceOfBusinessRepository;
-use App\Repositories\Classifiers\Nomenclature\Products\EndProductRepository;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
+use App\Repositories\Classifier\Nomenclature\Product\Catalog\ProductCatalogRepository;
+use App\Repositories\Classifier\Nomenclature\Product\EndProductRepository;
 use App\Repositories\Classifiers\RegionRepository;
 use App\Repositories\Contractor\ContractorRepository;
 use App\Traits\Classifiers\Nomenclature\Products\AggregationTypes;

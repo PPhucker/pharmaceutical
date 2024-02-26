@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Repositories\Classifiers\Nomenclature\Products;
+namespace App\Repositories\Classifier\Nomenclature\Product\Type;
 
+use App\Models\Classifier\Nomenclature\Product\TypeOfEndProduct as Model;
 use App\Repositories\CoreRepository;
-use App\Models\Classifier\Nomenclature\Products\TypeOfEndProduct as Model;
 
 class TypeOfEndProductRepository extends CoreRepository
 {
 
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return Model::class;
     }
 
-    public function getAll()
+    public function getAll(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->clone()
             ->select('*')

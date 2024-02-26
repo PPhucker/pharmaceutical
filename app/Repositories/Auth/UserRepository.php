@@ -68,16 +68,26 @@ class UserRepository extends ResourceRepository
         $permissions = $validated['permissions'] ?? null;
 
         $model->fill(
-            [
-                'name' => $validated['name'],
-                'email' => $validated['email']
-            ]
+            $this->getFilled($validated)
         )
             ->refreshRoles($roles)
             ->refreshPermissions($permissions)
             ->save();
 
         return $model;
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return array
+     */
+    protected function getFilled(array $validated): array
+    {
+        return [
+            'name' => $validated['name'],
+            'email' => $validated['email']
+        ];
     }
 
     /**

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfAggregation\StoreTypeOfAggregationRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfAggregation\UpdateTypeOfAggregationRequest;
-use App\Models\Classifier\Nomenclature\Products\TypeOfAggregation;
-use App\Repositories\Classifiers\Nomenclature\Products\TypeOfAggregationRepository;
+use App\Models\Classifier\Nomenclature\Product\TypeOfAggregation;
+use App\Repositories\Classifier\Nomenclature\Product\Type\TypeOfAggregationRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 

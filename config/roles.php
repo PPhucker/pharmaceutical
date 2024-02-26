@@ -35,6 +35,10 @@ return [
                 'bookkeeping',
                 'marketing',
             ],
+            'end_product' => [
+                'bookkeeping',
+                'marketing',
+            ],
         ],
     ],
 ];

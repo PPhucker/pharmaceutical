@@ -1,16 +1,14 @@
 <?php
 
-namespace App\Models\Classifier\Nomenclature\Products;
+namespace App\Models\Classifier\Nomenclature\Product;
 
-use App\Traits\Classifier\Nomenclature\Product\Relation\HasCatalogProducts;
-use App\Traits\Classifier\Nomenclature\Product\Relation\HasInternationalName;
-use App\Traits\Classifier\Nomenclature\Product\Relation\HasRegistrationNumber;
-use App\Traits\Classifier\Nomenclature\Product\Relation\HasTypeOfEndProduct;
 use App\Traits\Classifier\Nomenclature\Relation\HasOkeiClassifier;
-use App\Traits\Classifier\Nomenclature\Relation\HasOkpd2Classifier;
+use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -22,12 +20,8 @@ class EndProduct extends Model
     use HasFactory;
     use SoftDeletes;
     use HasUser;
-    use HasTypeOfEndProduct;
-    use HasInternationalName;
-    use HasRegistrationNumber;
     use HasOkeiClassifier;
-    use HasOkpd2Classifier;
-    use HasCatalogProducts;
+    use RelationshipsTrait;
 
     protected $table = 'classifier_end_products';
 
@@ -68,5 +62,45 @@ class EndProduct extends Model
     {
         return Carbon::parse($date)
             ->format('d.m.Y H:i:s');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function catalogProducts(): HasMany
+    {
+        return $this->hasMany(ProductCatalog::class, $this->foreign_key);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function okpd2(): BelongsTo
+    {
+        return $this->belongsTo(OKPD2::class, 'okpd2_code');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(TypeOfEndProduct::class, 'type_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function internationalName(): BelongsTo
+    {
+        return $this->belongsTo(InternationalNameOfEndProduct::class, 'international_name_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function registrationNumber(): BelongsTo
+    {
+        return $this->belongsTo(RegistrationNumberOfEndProduct::class, 'registration_number_id');
     }
 }

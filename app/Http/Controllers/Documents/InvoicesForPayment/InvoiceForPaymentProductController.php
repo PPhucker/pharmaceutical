@@ -6,7 +6,6 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\StoreInvoiceForPaymentProductRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Products\UpdateInvoiceForPaymentProductRequest;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;

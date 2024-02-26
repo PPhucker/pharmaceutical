@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Products\Okpd2\StoreOKPD2Request;
 use App\Http\Requests\Classifiers\Nomenclature\Products\Okpd2\UpdateOKPD2Request;
-use App\Models\Classifier\Nomenclature\Products\OKPD2;
-use App\Repositories\Classifiers\Nomenclature\Products\OKPD2Repository;
+use App\Models\Classifier\Nomenclature\Product\OKPD2;
+use App\Repositories\Classifier\Nomenclature\Product\OKPD2Repository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 

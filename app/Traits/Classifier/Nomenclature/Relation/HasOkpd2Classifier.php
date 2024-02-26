@@ -2,7 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Relation;
 
-use App\Models\Classifier\Nomenclature\Products\OKPD2;
+use App\Models\Classifier\Nomenclature\Product\OKPD2;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasOkpd2Classifier

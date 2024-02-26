@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct\StoreRegistrationNumberOfEndProductRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct\UpdateRegistrationNumberOfEndProductRequest;
-use App\Models\Classifier\Nomenclature\Products\RegistrationNumberOfEndProduct;
-use App\Repositories\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProductRepository;
+use App\Models\Classifier\Nomenclature\Product\RegistrationNumberOfEndProduct;
+use App\Repositories\Classifier\Nomenclature\Product\RegistrationNumberOfEndProductRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 

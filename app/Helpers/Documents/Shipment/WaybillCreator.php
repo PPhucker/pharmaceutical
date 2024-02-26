@@ -3,7 +3,7 @@
 namespace App\Helpers\Documents\Shipment;
 
 use App\Helpers\Documents\Creator;
-use App\Models\Classifier\Nomenclature\Products\EndProduct;
+use App\Models\Classifier\Nomenclature\Product\EndProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 
 class WaybillCreator extends Creator

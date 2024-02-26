@@ -3,7 +3,7 @@
 namespace App\Observers\Classifier\Nomenclature\Product;
 
 use App\Logging\Logger;
-use App\Models\Classifier\Nomenclature\Products\OKPD2;
+use App\Models\Classifier\Nomenclature\Product\OKPD2;
 
 class OKPD2Observer
 {

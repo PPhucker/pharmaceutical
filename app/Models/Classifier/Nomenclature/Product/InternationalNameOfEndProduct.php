@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Classifier\Nomenclature\Products;
+namespace App\Models\Classifier\Nomenclature\Product;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct
  *
- * @property int                                                                           $id
- * @property string                                                                        $name Международное непатентованное название
- * @property-read Collection<int, EndProduct>                                              $endProducts
- * @property-read int|null                                                                 $endProductsCount
+ * @property int                                                                          $id
+ * @property string                                                                       $name Международное непатентованное название
+ * @property-read Collection<int, EndProduct>                                             $endProducts
+ * @property-read int|null                                                                $endProductsCount
  * @method static Builder|InternationalNameOfEndProduct newModelQuery()
  * @method static Builder|InternationalNameOfEndProduct newQuery()
  * @method static Builder|InternationalNameOfEndProduct query()
  * @method static Builder|InternationalNameOfEndProduct whereId($value)
  * @method static Builder|InternationalNameOfEndProduct whereName($value)
- * @property-read Collection<int, \App\Models\Classifier\Nomenclature\Products\EndProduct> $endProducts
+ * @property-read Collection<int, \App\Models\Classifier\Nomenclature\Product\EndProduct> $endProducts
  * @mixin Eloquent
  */
 class InternationalNameOfEndProduct extends Model

@@ -3,7 +3,7 @@
 namespace App\Observers\Classifier\Nomenclature\Product;
 
 use App\Logging\Logger;
-use App\Models\Classifier\Nomenclature\Products\ProductRegionalAllowance;
+use App\Models\Classifier\Nomenclature\Product\ProductRegionalAllowance;
 
 /**
  * Наблюдатель региональной надбавки готовой продукции.

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductRegionalAllowance\StoreProductRegionalAllowanceRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductRegionalAllowance\UpdateProductRegionalAllowanceRequest;
-use App\Models\Classifier\Nomenclature\Products\ProductRegionalAllowance;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductRegionalAllowanceRepository;
+use App\Models\Classifier\Nomenclature\Product\ProductRegionalAllowance;
+use App\Repositories\Classifier\Nomenclature\Product\Price\ProductRegionalAllowanceRepository;
 use Auth;
 use Illuminate\Http\RedirectResponse;
 

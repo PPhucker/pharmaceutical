@@ -9,7 +9,7 @@ use App\Charts\Homepage\BestSellingProductsChart;
 use App\Helpers\DateHelper;
 use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;
-use App\Models\Classifier\Nomenclature\Products\EndProduct;
+use App\Models\Classifier\Nomenclature\Product\EndProduct;
 use App\Models\Contractor\Contractor;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Contracts\View\View;

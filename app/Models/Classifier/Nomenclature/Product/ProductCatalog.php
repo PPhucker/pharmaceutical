@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Classifier\Nomenclature\Products;
+namespace App\Models\Classifier\Nomenclature\Product;
 
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;

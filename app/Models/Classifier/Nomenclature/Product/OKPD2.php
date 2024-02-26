@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Classifier\Nomenclature\Products;
+namespace App\Models\Classifier\Nomenclature\Product;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Classifiers\Nomenclature\Products\OKPD2
  *
- * @property string                                                                        $code Код
- * @property string                                                                        $name Название
- * @property-read Collection<int, EndProduct>                                              $endProducts
- * @property-read int|null                                                                 $endProductsCount
+ * @property string                                                                       $code Код
+ * @property string                                                                       $name Название
+ * @property-read Collection<int, EndProduct>                                             $endProducts
+ * @property-read int|null                                                                $endProductsCount
  * @method static Builder|OKPD2 newModelQuery()
  * @method static Builder|OKPD2 newQuery()
  * @method static Builder|OKPD2 query()
  * @method static Builder|OKPD2 whereCode($value)
  * @method static Builder|OKPD2 whereName($value)
- * @property-read Collection<int, \App\Models\Classifier\Nomenclature\Products\EndProduct> $endProducts
+ * @property-read Collection<int, \App\Models\Classifier\Nomenclature\Product\EndProduct> $endProducts
  * @mixin Eloquent
  */
 class OKPD2 extends Model

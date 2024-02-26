@@ -13,6 +13,10 @@ use Illuminate\Support\ServiceProvider;
  */
 class NomenclatureServiceProvider extends ServiceProvider
 {
+    protected $providers = [
+        EndProductServiceProvider::class,
+    ];
+
     /**
      * @var string[]
      */
@@ -36,6 +40,10 @@ class NomenclatureServiceProvider extends ServiceProvider
     {
         foreach ($this->services as $service) {
             $this->app->singleton($service);
+        }
+
+        foreach ($this->providers as $provider) {
+            $this->app->register($provider);
         }
     }
 

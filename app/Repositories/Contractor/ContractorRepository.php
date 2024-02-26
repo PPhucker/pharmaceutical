@@ -208,17 +208,27 @@ class ContractorRepository extends ResourceRepository
     public function create(array $validated): Contractor
     {
         return $this->model->create(
-            [
-                'user_id' => Auth::user()->id,
-                'legal_form_type' => $validated['legal_form_type'],
-                'name' => $validated['name'],
-                'INN' => $validated['INN'],
-                'OKPO' => $validated['OKPO'],
-                'kpp' => $validated['kpp'],
-                'contacts' => $validated['contacts'],
-                'comment' => $validated['comment'],
-            ]
+            $this->getFilled($validated)
         );
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return array
+     */
+    protected function getFilled(array $validated): array
+    {
+        return [
+            'user_id' => Auth::user()->id,
+            'legal_form_type' => $validated['legal_form_type'],
+            'name' => $validated['name'],
+            'INN' => $validated['INN'],
+            'OKPO' => $validated['OKPO'],
+            'kpp' => $validated['kpp'],
+            'contacts' => $validated['contacts'],
+            'comment' => $validated['comment'],
+        ];
     }
 
     /**
@@ -230,16 +240,7 @@ class ContractorRepository extends ResourceRepository
     public function update($model, array $validated): Contractor
     {
         $model->fill(
-            [
-                'user_id' => Auth::user()->id,
-                'legal_form_type' => $validated['legal_form_type'],
-                'name' => $validated['name'],
-                'INN' => $validated['INN'],
-                'OKPO' => $validated['OKPO'],
-                'kpp' => $validated['kpp'],
-                'contacts' => $validated['contacts'],
-                'comment' => $validated['comment'],
-            ]
+            $this->getFilled($validated)
         )
             ->save();
 

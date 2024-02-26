@@ -47,7 +47,6 @@ class LogController extends Controller
             $endDate,
             $validated
         );
-        //dd($logs);
 
         return view(
             'admin.logs.index',

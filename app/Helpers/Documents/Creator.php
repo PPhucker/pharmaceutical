@@ -4,7 +4,7 @@ namespace App\Helpers\Documents;
 
 use App\Models\Admin\Organization\BankAccountDetail as OrganizationAccount;
 use App\Models\Admin\Organization\Organization;
-use App\Models\Classifier\Nomenclature\Products\EndProduct;
+use App\Models\Classifier\Nomenclature\Product\EndProduct;
 use App\Models\Contractor\BankAccountDetail as ContractorAccount;
 use App\Models\Contractor\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;

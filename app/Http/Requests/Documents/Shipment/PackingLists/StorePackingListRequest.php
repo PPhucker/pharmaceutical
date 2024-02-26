@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Documents\Shipment\PackingLists;
 
-use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 

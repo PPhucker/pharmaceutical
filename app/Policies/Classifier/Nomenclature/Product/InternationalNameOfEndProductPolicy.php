@@ -3,7 +3,7 @@
 namespace App\Policies\Classifier\Nomenclature\Product;
 
 use App\Models\Auth\User;
-use App\Models\Classifier\Nomenclature\Products\InternationalNameOfEndProduct;
+use App\Models\Classifier\Nomenclature\Product\InternationalNameOfEndProduct;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class InternationalNameOfEndProductPolicy

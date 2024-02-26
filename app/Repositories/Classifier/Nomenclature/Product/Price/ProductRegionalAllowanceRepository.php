@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Classifiers\Nomenclature\Products;
+namespace App\Repositories\Classifier\Nomenclature\Product\Price;
 
+use App\Models\Classifier\Nomenclature\Product\ProductRegionalAllowance as Model;
 use App\Repositories\CoreRepository;
-use App\Models\Classifier\Nomenclature\Products\ProductRegionalAllowance as Model;
 
 /**
  * Репозиторий региональной надбавки готовой продукции.

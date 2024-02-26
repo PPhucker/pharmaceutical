@@ -3,7 +3,7 @@
 namespace App\Policies\Classifier\Nomenclature\Product;
 
 use App\Models\Auth\User;
-use App\Models\Classifier\Nomenclature\Products\TypeOfAggregation;
+use App\Models\Classifier\Nomenclature\Product\TypeOfAggregation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 

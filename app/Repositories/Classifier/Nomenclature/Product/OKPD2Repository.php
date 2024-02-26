@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Classifiers\Nomenclature\Products;
+namespace App\Repositories\Classifier\Nomenclature\Product;
 
+use App\Models\Classifier\Nomenclature\Product\OKPD2 as Model;
 use App\Repositories\CoreRepository;
-use App\Models\Classifier\Nomenclature\Products\OKPD2 as Model;
 use Illuminate\Support\Collection;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -11,7 +11,7 @@ use Psr\Container\NotFoundExceptionInterface;
 class OKPD2Repository extends CoreRepository
 {
 
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
         return Model::class;
     }
@@ -21,7 +21,7 @@ class OKPD2Repository extends CoreRepository
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function getAll()
+    public function getAll(): \Illuminate\Database\Eloquent\Collection
     {
         return $this->clone()
             ->orderBy('name')

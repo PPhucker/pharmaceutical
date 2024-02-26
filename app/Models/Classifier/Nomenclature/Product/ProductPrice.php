@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Classifier\Nomenclature\Products;
+namespace App\Models\Classifier\Nomenclature\Product;
 
 use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;

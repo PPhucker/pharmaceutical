@@ -5,8 +5,8 @@ namespace App\Traits\Classifiers\Nomenclature\Products;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\AttachAggregationTypeRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\DetachAggregationTypeRequest;
 use App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog\UpdateProductQuantityRequest;
-use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
-use App\Models\Classifier\Nomenclature\Products\TypeOfAggregation;
+use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\TypeOfAggregation;
 use Illuminate\Http\RedirectResponse;
 
 trait AggregationTypes

@@ -3,7 +3,7 @@
 namespace App\Observers\Classifier\Nomenclature\Product;
 
 use App\Logging\Logger;
-use App\Models\Classifier\Nomenclature\Products\ProductPrice;
+use App\Models\Classifier\Nomenclature\Product\ProductPrice;
 
 class ProductPriceObserver
 {

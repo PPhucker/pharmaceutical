@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Classifier\Nomenclature\Products;
+namespace App\Models\Classifier\Nomenclature\Product;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -11,16 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Classifiers\Nomenclature\Products\TypeOfAggregation
  *
- * @property string                                                                            $code Код типа
- * @property string|null                                                                       $name Название типа
- * @property-read Collection<int, ProductCatalog>                                              $endProducts
- * @property-read int|null                                                                     $endProductsCount
+ * @property string                                                                           $code Код типа
+ * @property string|null                                                                      $name Название типа
+ * @property-read Collection<int, ProductCatalog>                                             $endProducts
+ * @property-read int|null                                                                    $endProductsCount
  * @method static Builder|TypeOfAggregation newModelQuery()
  * @method static Builder|TypeOfAggregation newQuery()
  * @method static Builder|TypeOfAggregation query()
  * @method static Builder|TypeOfAggregation whereCode($value)
  * @method static Builder|TypeOfAggregation whereName($value)
- * @property-read Collection<int, \App\Models\Classifier\Nomenclature\Products\ProductCatalog> $endProducts
+ * @property-read Collection<int, \App\Models\Classifier\Nomenclature\Product\ProductCatalog> $endProducts
  * @mixin Eloquent
  */
 class TypeOfAggregation extends Model

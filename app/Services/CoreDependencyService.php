@@ -7,7 +7,7 @@ use App\Interfaces\Service\ServiceDependenciesInterface;
 /**
  * Базовый сервис зависимостей.
  */
-class CoreDependencyService implements ServiceDependenciesInterface
+abstract class CoreDependencyService extends CoreService implements ServiceDependenciesInterface
 {
     /**
      * @var array
@@ -15,10 +15,31 @@ class CoreDependencyService implements ServiceDependenciesInterface
     protected $repositories;
 
     /**
+     * @var array
+     */
+    protected $relatedDependencies;
+
+    /**
      * @return array
      */
     public function getRepositories(): array
     {
         return $this->repositories;
+    }
+
+    /**
+     * @return void
+     */
+    public function registerRelatedDependencies(): void
+    {
+        $this->repositories = array_merge(
+            $this->repositories,
+            (array)$this->getRepositoriesFromDependencies(
+                collect($this->relatedDependencies)
+                    ->map(function ($d) {
+                        return app($d);
+                    })->toArray()
+            )
+        );
     }
 }

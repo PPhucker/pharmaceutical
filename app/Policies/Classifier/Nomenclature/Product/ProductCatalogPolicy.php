@@ -3,7 +3,7 @@
 namespace App\Policies\Classifier\Nomenclature\Product;
 
 use App\Models\Auth\User;
-use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ProductCatalogPolicy

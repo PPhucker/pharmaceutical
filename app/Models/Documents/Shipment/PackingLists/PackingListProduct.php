@@ -2,7 +2,7 @@
 
 namespace App\Models\Documents\Shipment\PackingLists;
 
-use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

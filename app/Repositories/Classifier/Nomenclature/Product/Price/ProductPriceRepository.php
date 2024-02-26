@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Repositories\Classifiers\Nomenclature\Products;
+namespace App\Repositories\Classifier\Nomenclature\Product\Price;
 
+use App\Models\Classifier\Nomenclature\Product\ProductPrice as Model;
 use App\Repositories\CoreRepository;
-use App\Models\Classifier\Nomenclature\Products\ProductPrice as Model;
 
 class ProductPriceRepository extends CoreRepository
 {

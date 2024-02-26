@@ -14,4 +14,11 @@ abstract class ResourceRepository extends CrudRepository
      * @return mixed
      */
     abstract public function getForEdit(int $id);
+
+    /**
+     * @param array $validated
+     *
+     * @return array
+     */
+    abstract protected function getFilled(array $validated): array;
 }

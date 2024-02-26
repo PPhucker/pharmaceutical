@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests\Documents\InvoicesForPayment\Data\Products;
 
-use App\Models\Classifier\Nomenclature\Products\ProductCatalog;
+use App\Models\Classifier\Nomenclature\Product\ProductCatalog;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
+use App\Repositories\Classifier\Nomenclature\Product\Catalog\ProductCatalogRepository;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Validator;
 
