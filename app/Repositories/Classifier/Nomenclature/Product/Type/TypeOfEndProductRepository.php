@@ -2,22 +2,67 @@
 
 namespace App\Repositories\Classifier\Nomenclature\Product\Type;
 
-use App\Models\Classifier\Nomenclature\Product\Type\TypeOfEndProduct as Model;
-use App\Repositories\CoreRepository;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfEndProduct;
+use App\Repositories\CrudRepository;
+use Illuminate\Database\Eloquent\Collection;
 
-class TypeOfEndProductRepository extends CoreRepository
+/**
+ * Репозиторий типа готовой продукции.
+ */
+class TypeOfEndProductRepository extends CrudRepository
 {
 
-    protected function getModelClass(): string
-    {
-        return Model::class;
-    }
-
-    public function getAll(): \Illuminate\Database\Eloquent\Collection
+    /**
+     * @return Collection
+     */
+    public function getAll(): Collection
     {
         return $this->clone()
             ->select('*')
             ->orderBy('name')
             ->get();
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return TypeOfEndProduct
+     */
+    public function create(array $validated): TypeOfEndProduct
+    {
+        return $this->model->create(
+            [
+                'name' => $validated['name'],
+                'color' => $validated['color']
+            ]
+        );
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return void
+     */
+    public function update($model, array $validated): void
+    {
+        foreach ($validated as $validatedType) {
+            $this->model->findOrFail((int)$validatedType['id'])
+                ->fill(
+                    [
+                        'name' => $validatedType['name'],
+                        'color' => $validatedType['color']
+                    ]
+                )
+                ->save();
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function getModelClass(): string
+    {
+        return TypeOfEndProduct::class;
     }
 }

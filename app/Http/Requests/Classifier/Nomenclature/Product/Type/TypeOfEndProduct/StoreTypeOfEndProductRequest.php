@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfEndProduct;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\Type\TypeOfEndProduct;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreTypeOfEndProductRequest extends FormRequest
+/**
+ * Валидация добавления нового типа готовой продукции.
+ */
+class StoreTypeOfEndProductRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_end_products';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'type_of_end_product.';
 
@@ -31,32 +27,13 @@ class StoreTypeOfEndProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:60',
-                'unique:classifier_types_of_end_products,name'
+                'unique:classifier_types_of_end_products,name',
             ],
             $prefix . 'color' => [
                 'nullable',
                 'string',
-                'max:7'
+                'max:7',
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

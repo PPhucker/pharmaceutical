@@ -14,12 +14,14 @@ return [
                 'Region' => 'Регион',
                 'Nomenclature' => [
                     'Product' => [
-                        'TypeOfEndProduct' => 'Тип готового продукта',
+                        'Type' => [
+                            'TypeOfEndProduct' => 'Тип готовой продукции',
+                            'TypeOfAggregation' => 'Тип аггрегации готовой продукции',
+                        ],
                         'InternationalNameOfEndProduct' => 'Международное название готового продукта',
                         'OKPD2' => 'Классификатор ОКПД2',
                         'RegistrationNumberOfEndProduct' => 'Регистрационный номер готового продукта',
                         'EndProduct' => 'Конечный продукт',
-                        'TypeOfAggregation' => 'Тип аггрегации',
                         'ProductCatalog' => 'Каталог готовой продукции',
                         'ProductPrice' => 'Прайс продукта',
                         'ProductRegionalAllowance' => 'Региональная надбавка',

@@ -1,29 +1,25 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfEndProduct;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\Type\TypeOfEndProduct;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
-class UpdateTypeOfEndProductRequest extends FormRequest
+/**
+ * Валидация обновления типов готовой продукции.
+ */
+class UpdateTypeOfEndProductRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_end_products';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'types_of_end_products.*.';
 
@@ -33,36 +29,17 @@ class UpdateTypeOfEndProductRequest extends FormRequest
                 'string',
                 'max:60',
                 Rule::unique('classifier_types_of_end_products', 'name')
-                    ->whereNotIn('name', $this->input($prefix . 'name'))
+                    ->whereNotIn('name', $this->input($prefix . 'name')),
             ],
             $prefix . 'color' => [
                 'nullable',
                 'string',
-                'max:7'
+                'max:7',
             ],
             $prefix . 'id' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

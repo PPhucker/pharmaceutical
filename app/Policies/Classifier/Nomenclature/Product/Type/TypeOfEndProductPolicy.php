@@ -2,63 +2,19 @@
 
 namespace App\Policies\Classifier\Nomenclature\Product\Type;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfEndProduct;
+use App\Policies\Classifier\Nomenclature\Product\EndProductPolicy;
 
-class TypeOfEndProductPolicy
+/**
+ * Политика типа готовой продукции.
+ */
+class TypeOfEndProductPolicy extends EndProductPolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'planning',
-    ];
-
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return string
      */
-    public function viewAny(User $user)
+    protected function getModelClass(): string
     {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function view(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user)
-    {
-        return $user->hasRole(self::ROLES);
+        return TypeOfEndProduct::class;
     }
 }

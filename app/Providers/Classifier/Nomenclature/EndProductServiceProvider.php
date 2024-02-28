@@ -6,8 +6,11 @@ use App\Models\Classifier\Nomenclature\Product\EndProduct;
 use App\Models\Classifier\Nomenclature\Product\InternationalNameOfEndProduct;
 use App\Models\Classifier\Nomenclature\Product\OKPD2;
 use App\Models\Classifier\Nomenclature\Product\RegistrationNumberOfEndProduct;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfAggregation;
+use App\Models\Classifier\Nomenclature\Product\Type\TypeOfEndProduct;
 use App\Observers\CoreObserver;
 use App\Services\Classifier\Nomenclature\Product\EndProductServiceDependencies;
+use App\Services\Classifier\Nomenclature\Product\Type\TypeServiceDependencies;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -20,10 +23,13 @@ class EndProductServiceProvider extends ServiceProvider
         InternationalNameOfEndProduct::class,
         OKPD2::class,
         RegistrationNumberOfEndProduct::class,
+        TypeOfEndProduct::class,
+        TypeOfAggregation::class,
     ];
 
     protected $services = [
         EndProductServiceDependencies::class,
+        TypeServiceDependencies::class,
     ];
 
     /**
