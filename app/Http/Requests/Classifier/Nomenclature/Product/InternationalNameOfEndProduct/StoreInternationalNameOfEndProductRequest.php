@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\InternationalNameOfEndProduct;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreInternationalNameOfEndProductRequest extends FormRequest
+/**
+ * Валидация добавления международного непатентованного названия готовой продукции.
+ */
+class StoreInternationalNameOfEndProductRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.international_names_of_end_products';
+
+    protected $action = 'create';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'international_name_of_end_product.';
 
@@ -31,27 +27,8 @@ class StoreInternationalNameOfEndProductRequest extends FormRequest
                 'required',
                 'string',
                 'max: 60',
-                'unique:classifier_international_names_of_end_products,name'
+                'unique:classifier_international_names_of_end_products,name',
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

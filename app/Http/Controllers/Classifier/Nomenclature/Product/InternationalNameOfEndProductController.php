@@ -3,20 +3,30 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct\StoreInternationalNameOfEndProductRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct\UpdateInternationalNameOfEndProductRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\InternationalNameOfEndProduct\StoreInternationalNameOfEndProductRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\InternationalNameOfEndProduct\UpdateInternationalNameOfEndProductRequest;
 use App\Models\Classifier\Nomenclature\Product\InternationalNameOfEndProduct;
-use App\Repositories\Classifier\Nomenclature\Product\InternationalNameOfEndProductRepository;
-use Illuminate\Contracts\View\View;
+use App\Services\Classifier\Nomenclature\Product\InternationalNameOfEndProductService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Контроллер международного непатентованного названия готовой продукции.
+ */
 class InternationalNameOfEndProductController extends CoreController
 {
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.international_names_of_end_products';
     /**
-     * @return void
+     * @var InternationalNameOfEndProductService
      */
-    protected function authorizeActions()
+    private $service;
+
+    /**
+     * @param InternationalNameOfEndProductService $service
+     */
+    public function __construct(InternationalNameOfEndProductService $service)
     {
+        $this->service = $service;
         $this->authorizeResource(
             InternationalNameOfEndProduct::class,
             'international_name'
@@ -24,83 +34,48 @@ class InternationalNameOfEndProductController extends CoreController
     }
 
     /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return InternationalNameOfEndProductRepository::class;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $internationalNamesOfEndProducts = $this->repository->getAll();
-
         return view(
-            'classifiers.nomenclature.products.international_names_of_end_products.index',
-            compact('internationalNamesOfEndProducts')
+            'classifiers.nomenclature.products.international-names-of-end-products.index',
+            $this->service->getIndexData()
         );
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreInternationalNameOfEndProductRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreInternationalNameOfEndProductRequest $request)
+    public function store(StoreInternationalNameOfEndProductRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['international_name_of_end_product'];
-
-        $internationalNameOfEndProduct = InternationalNameOfEndProduct::create(
-            [
-                'name' => $validated['name'],
-            ]
+        $createdIntrnationalName = $this->service->create(
+            $request->validated()['international_name_of_end_product']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.products.international_names_of_end_products.actions.create.success',
-                    ['name' => $internationalNameOfEndProduct->name]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $createdIntrnationalName->name]
+        );
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateInternationalNameOfEndProductRequest $request
-     * @param InternationalNameOfEndProduct              $international_name
+     * @param InternationalNameOfEndProduct              $internationalName
      *
      * @return RedirectResponse
      */
     public function update(
         UpdateInternationalNameOfEndProductRequest $request,
-        InternationalNameOfEndProduct $international_name
-    ) {
-        $validated = $request->validated();
+        InternationalNameOfEndProduct $internationalName
+    ): RedirectResponse {
+        $this->service->update(
+            $internationalName,
+            $request->validated()['international_names_of_end_products']
+        );
 
-        foreach ($validated['international_names_of_end_products'] as $internationlName) {
-            InternationalNameOfEndProduct::find((int)$internationlName['id'])
-                ->fill(
-                    [
-                        'name' => $internationlName['name'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                'classifiers.nomenclature.products.international_names_of_end_products.actions.update.success'
-            );
+        return $this->successRedirect('update');
     }
 }

@@ -1,36 +1,32 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\InternationalNameOfEndProduct;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\InternationalNameOfEndProduct;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
-class UpdateInternationalNameOfEndProductRequest extends FormRequest
+/**
+ * Валидация обновления международных непатентованных названий готовой продукции.
+ */
+class UpdateInternationalNameOfEndProductRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.international_names_of_end_products';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'international_names_of_end_products.*.';
 
         return [
             $prefix . 'id' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
             $prefix . 'name' => [
                 'required',
@@ -40,24 +36,5 @@ class UpdateInternationalNameOfEndProductRequest extends FormRequest
                     ->whereNotIn('name', $this->input($prefix . 'name')),
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }
