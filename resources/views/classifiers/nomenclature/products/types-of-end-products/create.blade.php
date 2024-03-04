@@ -1,6 +1,6 @@
 <x-card
     :title="__('form.titles.add')"
-    :back="route('types_of_end_products.store')">
+    :back="route('types_of_end_products.index')">
     <x-form
         formId="type_of_end_product_add_form"
         :route="route('types_of_end_products.store')">

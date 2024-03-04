@@ -1,29 +1,25 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfAggregation;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\Type\TypeOfAggregation;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
 
-class UpdateTypeOfAggregationRequest extends FormRequest
+/**
+ * Валидация обновления типов агрегации.
+ */
+class UpdateTypeOfAggregationRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_aggregation';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'types_of_aggregation.*.';
 
@@ -46,24 +42,5 @@ class UpdateTypeOfAggregationRequest extends FormRequest
                 'max:20'
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

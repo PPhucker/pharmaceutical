@@ -3,107 +3,76 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Product\Type;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfAggregation\StoreTypeOfAggregationRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Products\TypeOfAggregation\UpdateTypeOfAggregationRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\Type\TypeOfAggregation\StoreTypeOfAggregationRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\Type\TypeOfAggregation\UpdateTypeOfAggregationRequest;
 use App\Models\Classifier\Nomenclature\Product\Type\TypeOfAggregation;
-use App\Repositories\Classifier\Nomenclature\Product\Type\TypeOfAggregationRepository;
+use App\Services\Classifier\Nomenclature\Product\Type\TypeOfAggregationService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер типа агрегации.
+ */
 class TypeOfAggregationController extends CoreController
 {
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_aggregation';
     /**
-     * @return string
+     * @var TypeOfAggregationService
      */
-    protected function getRepository()
+    private $service;
+
+    /**
+     * @param TypeOfAggregationService $service
+     */
+    public function __construct(TypeOfAggregationService $service)
     {
-        return TypeOfAggregationRepository::class;
+        $this->service = $service;
+        $this->authorizeResource(TypeOfAggregation::class, 'type_of_aggregation');
     }
 
     /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(
-            TypeOfAggregation::class,
-            'types_of_aggregation'
-        );
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $typesOfAggregation = $this->repository->getAll();
-
         return view(
             'classifiers.nomenclature.products.types-of-aggregation.index',
-            compact('typesOfAggregation')
+            $this->service->getIndexData()
         );
     }
 
-
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreTypeOfAggregationRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreTypeOfAggregationRequest $request)
+    public function store(StoreTypeOfAggregationRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['type_of_aggregation'];
-
-        $typeOfAggregation = TypeOfAggregation::create(
-            [
-                'code' => $validated['code'],
-                'name' => $validated['name'],
-            ]
+        $createdType = $this->service->create(
+            $request->validated()['type_of_aggregation']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.products.types_of_aggregation.actions.create.success',
-                    ['name' => $typeOfAggregation->name]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $createdType->name]
+        );
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateTypeOfAggregationRequest $request
-     * @param TypeOfAggregation|null         $types_of_aggregation
+     * @param TypeOfAggregation              $typeOfAggregation
      *
      * @return RedirectResponse
      */
     public function update(
         UpdateTypeOfAggregationRequest $request,
-        TypeOfAggregation $types_of_aggregation = null
-    ) {
-        $validated = $request->validated();
+        TypeOfAggregation $typeOfAggregation
+    ): RedirectResponse {
+        $this->service->update(
+            $typeOfAggregation,
+            $request->validated()['types_of_aggregation']
+        );
 
-        foreach ($validated['types_of_aggregation'] as $type) {
-            TypeOfAggregation::find($type['original_code'])
-                ->fill(
-                    [
-                        'code' => $type['code'],
-                        'name' => $type['name'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.types_of_aggregation.actions.update.success')
-            );
+        return $this->successRedirect('update');
     }
 }

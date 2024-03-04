@@ -39,6 +39,11 @@ return [
                 'bookkeeping',
                 'marketing',
             ],
+            'product_catalog' => [
+                'bookkeeping',
+                'digital_communication',
+                'marketing',
+            ],
         ],
     ],
 ];

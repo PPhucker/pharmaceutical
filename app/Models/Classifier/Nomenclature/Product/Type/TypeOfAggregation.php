@@ -3,16 +3,20 @@
 namespace App\Models\Classifier\Nomenclature\Product\Type;
 
 use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
-use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-
+/**
+ * Модель типа агрегации готовой продукции.
+ */
 class TypeOfAggregation extends Model
 {
     use HasFactory;
+    use RelationshipsTrait;
+
+    public $timestamps = false;
 
     protected $table = 'classifier_types_of_aggregation';
 
@@ -20,11 +24,15 @@ class TypeOfAggregation extends Model
 
     protected $primaryKey = 'code';
 
-    public $timestamps = false;
+    protected $fillable = [
+        'code',
+        'name',
+    ];
 
-    protected $fillable = ['code', 'name'];
-
-    public function endProducts()
+    /**
+     * @return BelongsToMany
+     */
+    public function productCatalog(): BelongsToMany
     {
         return $this->belongsToMany(
             ProductCatalog::class,
