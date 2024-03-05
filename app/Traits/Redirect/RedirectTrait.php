@@ -15,7 +15,6 @@ trait RedirectTrait
     /**
      * RedirectResponse с сообщением об успешном действии.
      *
-     * @param string      $action  Действие
      * @param array       $replace Переменные для локаизации.
      *
      * @param string|null $route   Маршрут
@@ -24,12 +23,11 @@ trait RedirectTrait
      * @return RedirectResponse
      */
     public function successRedirect(
-        string $action,
         array $replace = [],
         ?string $route = null,
         array $routeParameters = []
     ): RedirectResponse {
-        $successMessage = $this->successMessage($action, $replace);
+        $successMessage = $this->successMessage($replace);
 
         if ($route) {
             $redirect = redirect()->route($route, $routeParameters);

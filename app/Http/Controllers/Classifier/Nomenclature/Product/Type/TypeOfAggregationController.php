@@ -53,7 +53,6 @@ class TypeOfAggregationController extends CoreController
         );
 
         return $this->successRedirect(
-            'create',
             ['name' => $createdType->name]
         );
     }
@@ -73,6 +72,6 @@ class TypeOfAggregationController extends CoreController
             $request->validated()['types_of_aggregation']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

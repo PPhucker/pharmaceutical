@@ -14,11 +14,6 @@ abstract class CoreFormRequest extends FormRequest
     use MessageTrait;
 
     /**
-     * @var string
-     */
-    protected $action;
-
-    /**
      * @var array
      */
     protected $rules = [];
@@ -52,7 +47,9 @@ abstract class CoreFormRequest extends FormRequest
             if ($validator->errors()->isNotEmpty()) {
                 $validator->errors()->add(
                     $this->failKey,
-                    __($this->getFullKeyForLocal($this->action, $this->failKey))
+                    __(
+                        $this->getFullKeyForLocal($this->failKey)
+                    )
                 );
             }
         });

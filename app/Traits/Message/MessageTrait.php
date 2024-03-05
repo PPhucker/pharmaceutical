@@ -8,12 +8,6 @@ namespace App\Traits\Message;
 trait MessageTrait
 {
     /**
-     * Префикс к массиву файла локализации.
-     *
-     * @var string
-     */
-    protected $prefixLocalKey;
-    /**
      * Ключ успешного действия.
      *
      * @var string
@@ -30,15 +24,14 @@ trait MessageTrait
     /**
      * Возвращает локализированное сообщение об успешном действии.
      *
-     * @param string $action  Действие (create, update, delete, restore)
-     * @param array  $replace Переменные для локализации.
+     * @param array $replace Переменные для локализации.
      *
      * @return string
      */
-    public function successMessage(string $action, array $replace = []): string
+    public function successMessage(array $replace = []): string
     {
         return __(
-            $this->getFullKeyForLocal($action, $this->successKey),
+            $this->getFullKeyForLocal($this->successKey),
             $replace
         );
     }
@@ -46,14 +39,13 @@ trait MessageTrait
     /**
      * Возвращает полный ключ для локализации.
      *
-     * @param string $action
      * @param string $key
      *
      * @return string
      */
-    protected function getFullKeyForLocal(string $action, string $key): string
+    protected function getFullKeyForLocal(string $key): string
     {
-        return $this->prefixLocalKey . '.actions.' . $action . '.' . $key;
+        return 'actions.' . request()->route()->getActionMethod() . '.' . $key;
     }
 
 
