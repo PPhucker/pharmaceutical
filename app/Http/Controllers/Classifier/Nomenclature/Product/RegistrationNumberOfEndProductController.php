@@ -3,104 +3,78 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct\StoreRegistrationNumberOfEndProductRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct\UpdateRegistrationNumberOfEndProductRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\RegistrationNumberOfEndProduct\StoreRegistrationNumberOfEndProductRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\RegistrationNumberOfEndProduct\UpdateRegistrationNumberOfEndProductRequest;
 use App\Models\Classifier\Nomenclature\Product\RegistrationNumberOfEndProduct;
-use App\Repositories\Classifier\Nomenclature\Product\RegistrationNumberOfEndProductRepository;
-use Illuminate\Contracts\View\View;
+use App\Services\Classifier\Nomenclature\Product\RegistrationNumberOfEndProductService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Контроллер регистрационных номеров готовой продукции.
+ */
 class RegistrationNumberOfEndProductController extends CoreController
 {
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.registration_numbers';
+
     /**
-     * @return void
+     * @var RegistrationNumberOfEndProductService
      */
-    protected function authorizeActions()
+    private $service;
+
+    /**
+     * @param RegistrationNumberOfEndProductService $service
+     */
+    public function __construct(RegistrationNumberOfEndProductService $service)
     {
-        $this->authorizeResource(
-            RegistrationNumberOfEndProduct::class,
-            'registration_number'
-        );
+        $this->service = $service;
+        $this->authorizeResource(RegistrationNumberOfEndProduct::class, 'registration_number');
     }
 
     /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return RegistrationNumberOfEndProductRepository::class;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $registrationNumbers = $this->repository->getAll();
-
         return view(
-            'classifiers.nomenclature.products.registration-numbers-of-end-products.index',
-            compact('registrationNumbers')
+            'classifiers.nomenclature.products.registration-numbers.index',
+            $this->service->getIndexData()
         );
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreRegistrationNumberOfEndProductRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreRegistrationNumberOfEndProductRequest $request)
+    public function store(StoreRegistrationNumberOfEndProductRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['registration_number'];
-
-        $registrationNumber = RegistrationNumberOfEndProduct::create(
-            [
-                'number' => $validated['number'],
-            ]
+        $createdRegistrationNumber = $this->service->create(
+            $request->validated()['registration_number']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.products.registration_numbers.actions.create.success',
-                    ['number' => $registrationNumber->number]
-                ),
-            );
+        return $this->successRedirect(
+            'create',
+            ['number' => $createdRegistrationNumber->number]
+        );
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateRegistrationNumberOfEndProductRequest $request
-     * @param RegistrationNumberOfEndProduct|null         $registration_number
+     * @param RegistrationNumberOfEndProduct              $registrationNumber
      *
      * @return RedirectResponse
      */
     public function update(
         UpdateRegistrationNumberOfEndProductRequest $request,
-        RegistrationNumberOfEndProduct $registration_number = null
-    ) {
-        $validated = $request->validated();
+        RegistrationNumberOfEndProduct $registrationNumber
+    ): RedirectResponse {
+        $this->service->update(
+            $registrationNumber,
+            $request->validated()['registration_numbers']
+        );
 
-        foreach ($validated['registration_numbers'] as $registrationNumber) {
-            RegistrationNumberOfEndProduct::find((int)$registrationNumber['id'])
-                ->fill(
-                    [
-                        'number' => $registrationNumber['number'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.registration_numbers.actions.update.success')
-            );
+        return $this->successRedirect('update');
     }
+
 }

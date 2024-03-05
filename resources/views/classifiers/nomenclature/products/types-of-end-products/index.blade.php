@@ -14,7 +14,7 @@
             <x-data-table.table
                 id="types_of_end_products_table"
                 class="table-bordered"
-                type="edit"
+                type="index"
                 pageLength="15"
                 :domOrderType="true">
                 <x-data-table.head>

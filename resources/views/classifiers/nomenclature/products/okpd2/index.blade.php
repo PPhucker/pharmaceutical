@@ -15,7 +15,7 @@
             <x-data-table.table
                 id="okpd2_table"
                 class="table-bordered"
-                type="edit"
+                type="index"
                 pageLength="15"
                 :domOrderType="true">
                 <x-data-table.head>

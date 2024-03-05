@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\RegistrationNumberOfEndProduct;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\RegistrationNumberOfEndProduct;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreRegistrationNumberOfEndProductRequest extends FormRequest
+/**
+ * Валидация добавления регистрационного номера готовой продукции.
+ */
+class StoreRegistrationNumberOfEndProductRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.registration_numbers';
+
+    protected $action = 'сreate';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'registration_number.';
 
@@ -31,27 +27,8 @@ class StoreRegistrationNumberOfEndProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:30',
-                'unique:classifier_registration_numbers_of_end_products,number'
+                'unique:classifier_registration_numbers_of_end_products,number',
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }
