@@ -38,11 +38,13 @@ return [
             'end_product' => [
                 'bookkeeping',
                 'marketing',
+                'planning',
             ],
             'product_catalog' => [
                 'bookkeeping',
                 'digital_communication',
                 'marketing',
+                'planning',
             ],
         ],
     ],

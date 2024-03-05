@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\Okpd2;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\Okpd2;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreOKPD2Request extends FormRequest
+/**
+ * Валидация добавления новой записи в классификатор ОКПД2.
+ */
+class StoreOKPD2Request extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.okpd2';
+
+    protected $action = 'update';
 
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'okpd2.';
 
@@ -38,24 +34,5 @@ class StoreOKPD2Request extends FormRequest
                 'max:150',
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

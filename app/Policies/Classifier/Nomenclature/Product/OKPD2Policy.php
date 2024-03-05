@@ -2,63 +2,27 @@
 
 namespace App\Policies\Classifier\Nomenclature\Product;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Classifier\Nomenclature\Product\OKPD2;
+use App\Policies\CorePolicy;
 
-class OKPD2Policy
+/**
+ * Политика классификатора ОКПД2.
+ */
+class OKPD2Policy extends CorePolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'planning',
-    ];
-
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return string
      */
-    public function viewAny(User $user)
+    protected function getModelClass(): string
     {
-        return $user->hasRole(self::ROLES);
+        return OKPD2::class;
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @return array
      */
-    public function view(User $user)
+    protected function getRoles(): array
     {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user)
-    {
-        return $user->hasRole(self::ROLES);
+        return config('classifier.nomenclature.end_product', ['admin']);
     }
 }

@@ -3,102 +3,75 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Product;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Products\Okpd2\StoreOKPD2Request;
-use App\Http\Requests\Classifiers\Nomenclature\Products\Okpd2\UpdateOKPD2Request;
+use App\Http\Requests\Classifier\Nomenclature\Product\Okpd2\StoreOKPD2Request;
+use App\Http\Requests\Classifier\Nomenclature\Product\Okpd2\UpdateOKPD2Request;
 use App\Models\Classifier\Nomenclature\Product\OKPD2;
-use App\Repositories\Classifier\Nomenclature\Product\OKPD2Repository;
-use Illuminate\Contracts\View\View;
+use App\Services\Classifier\Nomenclature\Product\OKPD2Service;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
+/**
+ * Контроллер классификатора ОКПД2.
+ */
 class OKPD2Controller extends CoreController
 {
+    protected $prefixLocalKey = 'classifiers.nomenclature.products.okpd2';
+
     /**
-     * @return void
+     * @var OKPD2Service
      */
-    protected function authorizeActions()
+    private $service;
+
+    /**
+     * @param OKPD2Service $service
+     */
+    public function __construct(OKPD2Service $service)
     {
+        $this->service = $service;
         $this->authorizeResource(OKPD2::class, 'okpd2');
     }
 
     /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return OKPD2Repository::class;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $okpd2 = $this->repository->getAll();
-
         return view(
             'classifiers.nomenclature.products.okpd2.index',
-            compact('okpd2')
+            $this->service->getIndexData()
         );
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreOKPD2Request $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreOKPD2Request $request)
+    public function store(StoreOKPD2Request $request): RedirectResponse
     {
-        $validated = $request->validated()['okpd2'];
-
-        $okpd2 = OKPD2::create(
-            [
-                'code' => $validated['code'],
-                'name' => $validated['name'],
-            ]
+        $createdClassifierItem = $this->service->create(
+            $request->validated()['okpd2']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.products.okpd2.actions.create.success',
-                    ['code' => $okpd2->code]
-                )
-            );
+        return $this->successRedirect(
+            'create',
+            ['name' => $createdClassifierItem->name]
+        );
     }
 
-
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateOKPD2Request $request
      * @param OKPD2              $okpd2
      *
      * @return RedirectResponse
      */
-    public function update(UpdateOKPD2Request $request, OKPD2 $okpd2)
+    public function update(UpdateOKPD2Request $request, OKPD2 $okpd2): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->service->update(
+            $okpd2,
+            $request->validated()['okpd2']
+        );
 
-        foreach ($validated['okpd2'] as $classifier) {
-            OKPD2::find($classifier['original_code'])
-                ->fill(
-                    [
-                        'code' => $classifier['code'],
-                        'name' => $classifier['name']
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.okpd2.actions.update.success')
-            );
+        return $this->successRedirect('update');
     }
 }
