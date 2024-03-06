@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class StoreStaffRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.staff';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -37,7 +33,7 @@ class StoreStaffRequest extends CoreFormRequest
             $prefix . 'name' => [
                 'required',
                 'string',
-                'max:50'
+                'max:50',
             ],
             $prefix . 'post' => [
                 'required',

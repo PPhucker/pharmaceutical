@@ -17,8 +17,6 @@ class DriverController extends CoreController
 {
     use DriverControllerTrait;
 
-    protected $prefixLocalKey = 'contractors.drivers';
-
     /**
      * @var DriverService
      */

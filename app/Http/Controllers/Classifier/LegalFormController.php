@@ -15,7 +15,6 @@ use Illuminate\View\View;
  */
 class LegalFormController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.legal_forms';
     /**
      * @var LegalFormService
      */
@@ -52,7 +51,7 @@ class LegalFormController extends CoreController
             $request->validated()['legal_form']
         );
 
-        return $this->successRedirect('create');
+        return $this->successRedirect();
     }
 
     /**
@@ -68,6 +67,6 @@ class LegalFormController extends CoreController
             $request->validated()['legal_forms']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

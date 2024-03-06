@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateUserRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'users';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +21,7 @@ class UpdateUserRequest extends CoreFormRequest
             'name' => [
                 'required',
                 'string',
-                'max:60'
+                'max:60',
             ],
             'email' => [
                 'required',
@@ -45,10 +41,10 @@ class UpdateUserRequest extends CoreFormRequest
             ],
 
             'roles' => [
-                'nullable'
+                'nullable',
             ],
             'permissions' => [
-                'nullable'
+                'nullable',
             ],
         ];
     }

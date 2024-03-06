@@ -15,9 +15,6 @@ use Illuminate\View\View;
  */
 class EndProductController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products';
-    private $prefixView = 'classifiers.nomenclature.products.end-products.';
-
     /**
      * @var EndProductService
      */
@@ -38,7 +35,7 @@ class EndProductController extends CoreController
     public function index(): View
     {
         return view(
-            $this->prefixView . 'index',
+            'classifiers.nomenclature.products.end-products.index',
             $this->service->getIndexData()
         );
     }
@@ -55,8 +52,6 @@ class EndProductController extends CoreController
         );
 
         return $this->successRedirect(
-            'create',
-            ['name' => $createdEndProduct->full_name],
             'end_products.edit',
             ['end_product' => $createdEndProduct->id]
         );
@@ -81,7 +76,7 @@ class EndProductController extends CoreController
     public function edit(EndProduct $endProduct): View
     {
         return view(
-            $this->prefixView . 'edit',
+            'classifiers.nomenclature.products.end-products.edit',
             $this->service->getEditData($endProduct)
         );
     }
@@ -99,10 +94,7 @@ class EndProductController extends CoreController
             $request->validated()
         );
 
-        return $this->successRedirect(
-            'update',
-            ['name' => $endProduct->full_name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -114,10 +106,7 @@ class EndProductController extends CoreController
     {
         $this->service->delete($endProduct);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $endProduct->full_name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -129,9 +118,6 @@ class EndProductController extends CoreController
     {
         $this->service->restore($endProduct);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $endProduct->full_name]
-        );
+        return $this->successRedirect();
     }
 }

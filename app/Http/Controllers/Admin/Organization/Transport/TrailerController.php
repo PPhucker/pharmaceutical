@@ -14,7 +14,6 @@ class TrailerController extends CoreController
 {
     use TrailerControllerTrait;
 
-    protected $prefixLocalKey = 'contractors.trailers';
     /**
      * @var TrailerService
      */

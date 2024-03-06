@@ -17,8 +17,6 @@ class CarController extends CoreController
 {
     use CarControllerTrait;
 
-    protected $prefixLocalKey = 'contractors.cars';
-
     /**
      * @var CarService
      */

@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateBankRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.banks';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

@@ -11,10 +11,6 @@ use Illuminate\Validation\Validator;
  */
 class UpdateOrganizationRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.organizations';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,12 +22,12 @@ class UpdateOrganizationRequest extends CoreFormRequest
             'legal_form_type' => [
                 'required',
                 'string',
-                'max:15'
+                'max:15',
             ],
             'name' => [
                 'required',
                 'string',
-                'max:120'
+                'max:120',
             ],
             'INN' => [
                 'required',
@@ -45,7 +41,7 @@ class UpdateOrganizationRequest extends CoreFormRequest
                 'numeric',
                 'digits_between:8,10',
                 Rule::unique('organizations', 'OKPO')
-                    ->ignore($this->input('id'))
+                    ->ignore($this->input('id')),
             ],
             'kpp' => [
                 'required',
@@ -55,7 +51,7 @@ class UpdateOrganizationRequest extends CoreFormRequest
             'contacts' => [
                 'nullable',
                 'string',
-                'max:120'
+                'max:120',
             ]
         ];
     }

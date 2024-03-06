@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class UpdateContactPersonRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.contact_persons';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,13 +21,13 @@ class UpdateContactPersonRequest extends CoreFormRequest
         return [
             $prefix . 'id' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
 
             $prefix . 'name' => [
                 'required',
                 'string',
-                'max:50'
+                'max:50',
             ],
             $prefix . 'post' => [
                 'nullable',
@@ -41,7 +37,7 @@ class UpdateContactPersonRequest extends CoreFormRequest
             $prefix . 'phone' => [
                 'nullable',
                 'string',
-                'max: 60'
+                'max: 60',
             ],
             $prefix . 'email' => [
                 'nullable',

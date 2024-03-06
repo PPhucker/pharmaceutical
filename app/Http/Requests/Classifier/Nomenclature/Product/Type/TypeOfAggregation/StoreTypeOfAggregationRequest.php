@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreTypeOfAggregationRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_aggregation';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,12 +23,12 @@ class StoreTypeOfAggregationRequest extends CoreFormRequest
                 'required',
                 'string',
                 'max:10',
-                'unique:classifier_types_of_aggregation,code'
+                'unique:classifier_types_of_aggregation,code',
             ],
             $prefix . 'name' => [
                 'required',
                 'string',
-                'max:20'
+                'max:20',
             ],
         ];
     }

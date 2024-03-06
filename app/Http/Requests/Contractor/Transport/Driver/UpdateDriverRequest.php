@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class UpdateDriverRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.drivers';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

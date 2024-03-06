@@ -15,7 +15,6 @@ use Illuminate\View\View;
  */
 class OKEIController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.okei';
     /**
      * @var OKEIService
      */
@@ -48,14 +47,11 @@ class OKEIController extends CoreController
      */
     public function store(StoreOKEIRequest $request): RedirectResponse
     {
-        $okei = $this->service->create(
+        $this->service->create(
             $request->validated()
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $okei->unit]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -71,6 +67,6 @@ class OKEIController extends CoreController
             $request->validated()['okei']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

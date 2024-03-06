@@ -7,5 +7,4 @@ namespace App\Http\Requests\Classifier\Nomenclature\Product\EndProduct;
  */
 class UpdateEndProductRequest extends StoreEndProductRequest
 {
-    protected $action = 'update';
 }

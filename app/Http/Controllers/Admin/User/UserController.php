@@ -14,8 +14,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class UserController extends CoreController
 {
-    protected $prefixLocalKey = 'users';
-
     /**
      * @var UserService
      */
@@ -68,12 +66,9 @@ class UserController extends CoreController
      */
     public function update(UpdateUserRequest $request, User $user): RedirectResponse
     {
-        $updatedUser = $this->service->update($user, $request->validated());
+        $this->service->update($user, $request->validated());
 
-        return $this->successRedirect(
-            'update',
-            ['name' => $updatedUser->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -87,10 +82,7 @@ class UserController extends CoreController
     {
         $this->service->delete($user);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $user->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -104,9 +96,6 @@ class UserController extends CoreController
     {
         $this->service->restore($user);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $user->name]
-        );
+        return $this->successRedirect();
     }
 }

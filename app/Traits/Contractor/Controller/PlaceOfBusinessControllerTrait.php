@@ -21,12 +21,9 @@ trait PlaceOfBusinessControllerTrait
     public function traitStore($request): RedirectResponse
     {
         $validated = $request->validated()['place_of_business'];
-        $placeOfBusiness = $this->service->create($validated);
+        $this->service->create($validated);
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $placeOfBusiness->address]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -44,7 +41,7 @@ trait PlaceOfBusinessControllerTrait
             $request->validated()
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -58,10 +55,7 @@ trait PlaceOfBusinessControllerTrait
     {
         $this->service->delete($placeOfBusiness);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $placeOfBusiness->address]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -75,9 +69,6 @@ trait PlaceOfBusinessControllerTrait
     {
         $this->service->restore($placeOfBusiness);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $placeOfBusiness->address]
-        );
+        return $this->successRedirect();
     }
 }

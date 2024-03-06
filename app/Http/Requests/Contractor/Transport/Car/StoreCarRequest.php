@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class StoreCarRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.cars';
-
-    protected $action = 'create';
-
     /**
      * @return array
      */

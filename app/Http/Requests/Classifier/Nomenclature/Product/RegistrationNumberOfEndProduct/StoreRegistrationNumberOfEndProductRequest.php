@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreRegistrationNumberOfEndProductRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.registration_numbers';
-
-    protected $action = 'сreate';
-
     /**
      * Get the validation rules that apply to the request.
      *

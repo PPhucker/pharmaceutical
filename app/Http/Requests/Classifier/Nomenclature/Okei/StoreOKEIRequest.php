@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreOKEIRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.okei';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

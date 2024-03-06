@@ -23,11 +23,6 @@ class OrganizationController extends CoreController
     protected $prefixViewKey = 'admin.organizations.';
 
     /**
-     * @var string
-     */
-    protected $prefixLocalKey = 'contractors.organizations';
-
-    /**
      * @var OrganizationService
      */
     private $service;
@@ -89,8 +84,6 @@ class OrganizationController extends CoreController
         $organization = $this->service->create($request->validated());
 
         return $this->successRedirect(
-            'create',
-            ['name' => $organization->full_name],
             'organizations.edit',
             ['organization' => $organization->id]
         );
@@ -136,12 +129,9 @@ class OrganizationController extends CoreController
         UpdateOrganizationRequest $request,
         Organization $organization
     ): RedirectResponse {
-        $updatedOrganization = $this->service->update($organization, $request->validated());
+        $this->service->update($organization, $request->validated());
 
-        return $this->successRedirect(
-            'update',
-            ['name' => $updatedOrganization->full_name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -155,10 +145,7 @@ class OrganizationController extends CoreController
     {
         $this->service->delete($organization);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $organization->full_name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -172,9 +159,6 @@ class OrganizationController extends CoreController
     {
         $this->service->restore($organization);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $organization->full_name]
-        );
+        return $this->successRedirect();
     }
 }

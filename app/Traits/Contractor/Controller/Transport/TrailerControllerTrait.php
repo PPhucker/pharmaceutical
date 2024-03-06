@@ -22,12 +22,9 @@ trait TrailerControllerTrait
     {
         $validated = $request->validated();
 
-        $trailer = $this->service->create($validated['trailer']);
+        $this->service->create($validated['trailer']);
 
-        return $this->successRedirect(
-            'create',
-            ['number' => $trailer->state_number]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -44,7 +41,7 @@ trait TrailerControllerTrait
 
         $this->service->update($trailer, $validated['trailers']);
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -58,10 +55,7 @@ trait TrailerControllerTrait
     {
         $this->service->delete($trailer);
 
-        return $this->successRedirect(
-            'delete',
-            ['number' => $trailer->state_number]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -75,9 +69,6 @@ trait TrailerControllerTrait
     {
         $this->service->restore($trailer);
 
-        return $this->successRedirect(
-            'restore',
-            ['number' => $trailer->state_number]
-        );
+        return $this->successRedirect();
     }
 }

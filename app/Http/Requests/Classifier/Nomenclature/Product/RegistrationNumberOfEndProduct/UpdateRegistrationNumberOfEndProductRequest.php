@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateRegistrationNumberOfEndProductRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.registration_numbers';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

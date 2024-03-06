@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class StorePlaceOfBusinessRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.places_of_business';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -44,11 +40,11 @@ class StorePlaceOfBusinessRequest extends CoreFormRequest
             $prefix . 'index' => [
                 'required',
                 'numeric',
-                'digits:6'
+                'digits:6',
             ],
             $prefix . 'address' => [
                 'required',
-                'string'
+                'string',
             ]
         ];
     }

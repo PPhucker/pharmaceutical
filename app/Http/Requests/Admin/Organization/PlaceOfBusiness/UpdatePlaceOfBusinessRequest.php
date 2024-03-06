@@ -5,12 +5,11 @@ namespace App\Http\Requests\Admin\Organization\PlaceOfBusiness;
 use App\Http\Requests\CoreFormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Валидация обновления мест осуществления деятельности организации.
+ */
 class UpdatePlaceOfBusinessRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.places_of_business';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

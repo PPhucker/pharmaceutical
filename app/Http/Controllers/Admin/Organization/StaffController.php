@@ -14,8 +14,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class StaffController extends CoreController
 {
-    protected $prefixLocalKey = 'contractors.staff';
-
     /**
      * @var StaffService
      */
@@ -39,14 +37,11 @@ class StaffController extends CoreController
      */
     public function store(StoreStaffRequest $request): RedirectResponse
     {
-        $staff = $this->service->create(
+        $this->service->create(
             $request->validated()['staff']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $staff->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -64,7 +59,7 @@ class StaffController extends CoreController
             $request->validated()['staff']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -78,10 +73,7 @@ class StaffController extends CoreController
     {
         $this->service->delete($staff);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $staff->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -95,9 +87,6 @@ class StaffController extends CoreController
     {
         $this->service->restore($staff);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $staff->name]
-        );
+        return $this->successRedirect();
     }
 }

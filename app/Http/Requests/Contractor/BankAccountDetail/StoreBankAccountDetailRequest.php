@@ -9,9 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreBankAccountDetailRequest extends CoreFormRequest
 {
-    protected $action = 'create';
-
-    protected $prefixLocalKey = 'contractors.bank_account_details';
     protected $prefixRuleKey = 'bank_account_detail.';
 
     /**

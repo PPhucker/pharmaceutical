@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class StoreContractorRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,12 +21,12 @@ class StoreContractorRequest extends CoreFormRequest
             'legal_form_type' => [
                 'required',
                 'string',
-                'max:15'
+                'max:15',
             ],
             'name' => [
                 'required',
                 'string',
-                'max:120'
+                'max:120',
             ],
             'INN' => [
                 'required',
@@ -52,12 +48,12 @@ class StoreContractorRequest extends CoreFormRequest
             'contacts' => [
                 'nullable',
                 'string',
-                'max:120'
+                'max:120',
             ],
             'comment' => [
                 'nullable',
                 'string',
-                'max:255'
+                'max:255',
             ]
         ];
     }

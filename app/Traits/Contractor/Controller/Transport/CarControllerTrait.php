@@ -20,14 +20,11 @@ trait CarControllerTrait
      */
     public function traitStore($request): RedirectResponse
     {
-        $car = $this->service->create(
+        $this->service->create(
             $request->validated()['car']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['number' => $car->state_number]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -45,7 +42,7 @@ trait CarControllerTrait
             $request->validated()['cars']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -59,10 +56,7 @@ trait CarControllerTrait
     {
         $this->service->delete($car);
 
-        return $this->successRedirect(
-            'delete',
-            ['number' => $car->state_number]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -76,9 +70,6 @@ trait CarControllerTrait
     {
         $this->service->restore($car);
 
-        return $this->successRedirect(
-            'restore',
-            ['number' => $car->state_number]
-        );
+        return $this->successRedirect();
     }
 }

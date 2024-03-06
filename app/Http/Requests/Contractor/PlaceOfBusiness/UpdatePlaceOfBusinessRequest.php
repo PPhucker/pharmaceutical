@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdatePlaceOfBusinessRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.places_of_business';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

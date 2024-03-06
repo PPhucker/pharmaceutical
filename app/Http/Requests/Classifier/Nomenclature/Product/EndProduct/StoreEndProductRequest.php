@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreEndProductRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,7 +23,7 @@ class StoreEndProductRequest extends CoreFormRequest
             ],
             'international_name_id' => [
                 'required',
-                'numeric'
+                'numeric',
             ],
             'registration_number_id' => [
                 'nullable',
@@ -41,7 +37,7 @@ class StoreEndProductRequest extends CoreFormRequest
             'okpd2_code' => [
                 'required',
                 'string',
-                'max:20'
+                'max:20',
             ],
             'short_name' => [
                 'required',
@@ -60,7 +56,7 @@ class StoreEndProductRequest extends CoreFormRequest
             'best_before_date' => [
                 'required',
                 'numeric',
-                'min:1'
+                'min:1',
             ],
         ];
     }

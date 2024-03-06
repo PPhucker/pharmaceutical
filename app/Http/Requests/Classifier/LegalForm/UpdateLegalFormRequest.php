@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateLegalFormRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.legal_forms';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

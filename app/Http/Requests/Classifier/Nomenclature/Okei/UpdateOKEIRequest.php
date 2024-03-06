@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateOKEIRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.okei';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

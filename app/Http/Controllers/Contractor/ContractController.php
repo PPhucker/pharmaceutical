@@ -15,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class ContractController extends CoreController
 {
-    protected $prefixLocalKey = 'contractors.contracts';
     /**
      * @var ContractorService
      */
@@ -39,11 +38,11 @@ class ContractController extends CoreController
      */
     public function store(StoreContractRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['contract'];
+        $this->service->create(
+            $request->validated()['contract']
+        );
 
-        $this->service->create($validated);
-
-        return $this->successRedirect('create');
+        return $this->successRedirect();
     }
 
 
@@ -57,9 +56,12 @@ class ContractController extends CoreController
      */
     public function update(UpdateContractRequest $request, Contract $contract): RedirectResponse
     {
-        $this->service->update($contract, $request->validated());
+        $this->service->update(
+            $contract,
+            $request->validated()
+        );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -73,7 +75,7 @@ class ContractController extends CoreController
     {
         $this->service->delete($contract);
 
-        return $this->successRedirect('delete');
+        return $this->successRedirect();
     }
 
     /**
@@ -87,6 +89,6 @@ class ContractController extends CoreController
     {
         $this->service->restore($contract);
 
-        return $this->successRedirect('restore');
+        return $this->successRedirect();
     }
 }

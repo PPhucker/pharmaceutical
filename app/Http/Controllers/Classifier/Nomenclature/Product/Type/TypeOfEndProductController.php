@@ -15,8 +15,6 @@ use Illuminate\View\View;
  */
 class TypeOfEndProductController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_end_products';
-
     /**
      * @var TypeOfEndProductService
      */
@@ -49,14 +47,11 @@ class TypeOfEndProductController extends CoreController
      */
     public function store(StoreTypeOfEndProductRequest $request): RedirectResponse
     {
-        $typeOfEndProduct = $this->service->create(
+        $this->service->create(
             $request->validated()['type_of_end_product']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $typeOfEndProduct->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -72,7 +67,7 @@ class TypeOfEndProductController extends CoreController
             $request->validated()['types_of_end_products']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
 }

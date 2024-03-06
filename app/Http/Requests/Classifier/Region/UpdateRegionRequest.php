@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateRegionRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.regions';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

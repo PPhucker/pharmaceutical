@@ -16,10 +16,6 @@ use Illuminate\View\View;
 class ContractorController extends CoreController
 {
     /**
-     * @var string
-     */
-    protected $prefixLocalKey = 'contractors';
-    /**
      * @var ContractorService
      */
     private $service;
@@ -55,8 +51,6 @@ class ContractorController extends CoreController
         $contractor = $this->service->create($request->validated());
 
         return $this->successRedirect(
-            'create',
-            ['name' => $contractor->full_name],
             'contractors.edit',
             ['contractor' => $contractor->id]
         );
@@ -94,12 +88,9 @@ class ContractorController extends CoreController
      */
     public function update(UpdateContractorRequest $request, Contractor $contractor): RedirectResponse
     {
-        $updatedContractor = $this->service->update($contractor, $request->validated());
+        $this->service->update($contractor, $request->validated());
 
-        return $this->successRedirect(
-            'update',
-            ['name' => $updatedContractor->full_name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -113,10 +104,7 @@ class ContractorController extends CoreController
     {
         $this->service->delete($contractor);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $contractor->full_name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -130,9 +118,6 @@ class ContractorController extends CoreController
     {
         $this->service->restore($contractor);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $contractor->full_name]
-        );
+        return $this->successRedirect();
     }
 }

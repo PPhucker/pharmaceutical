@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class UpdateServiceRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.services';
-
-    protected $action = 'update';
-
     /**
      * @return array[]
      */

@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreDriverRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.drivers';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

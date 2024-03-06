@@ -9,8 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class LogRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'logs';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,17 +20,17 @@ class LogRequest extends CoreFormRequest
             'user' => [
                 'nullable',
                 'string',
-                'max: 100'
+                'max: 100',
             ],
             'action' => [
                 'nullable',
                 'string',
-                'max: 20'
+                'max: 20',
             ],
             'model' => [
                 'nullable',
                 'string',
-                'max: 100'
+                'max: 100',
             ]
         ];
     }

@@ -15,7 +15,6 @@ use Illuminate\View\View;
  */
 class InternationalNameOfEndProductController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.international_names_of_end_products';
     /**
      * @var InternationalNameOfEndProductService
      */
@@ -51,14 +50,11 @@ class InternationalNameOfEndProductController extends CoreController
      */
     public function store(StoreInternationalNameOfEndProductRequest $request): RedirectResponse
     {
-        $createdIntrnationalName = $this->service->create(
+        $this->service->create(
             $request->validated()['international_name_of_end_product']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $createdIntrnationalName->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -76,6 +72,6 @@ class InternationalNameOfEndProductController extends CoreController
             $request->validated()['international_names_of_end_products']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

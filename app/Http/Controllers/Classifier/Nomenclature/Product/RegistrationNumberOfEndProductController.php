@@ -15,8 +15,6 @@ use Illuminate\View\View;
  */
 class RegistrationNumberOfEndProductController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.registration_numbers';
-
     /**
      * @var RegistrationNumberOfEndProductService
      */
@@ -49,14 +47,11 @@ class RegistrationNumberOfEndProductController extends CoreController
      */
     public function store(StoreRegistrationNumberOfEndProductRequest $request): RedirectResponse
     {
-        $createdRegistrationNumber = $this->service->create(
+        $this->service->create(
             $request->validated()['registration_number']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['number' => $createdRegistrationNumber->number]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -74,7 +69,7 @@ class RegistrationNumberOfEndProductController extends CoreController
             $request->validated()['registration_numbers']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
 }

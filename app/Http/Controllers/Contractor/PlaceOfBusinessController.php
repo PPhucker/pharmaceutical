@@ -17,8 +17,6 @@ class PlaceOfBusinessController extends CoreController
 {
     use PlaceOfBusinessControllerTrait;
 
-    protected $prefixLocalKey = 'contractors.places_of_business';
-
     /**
      * @var PlaceOfBusinessService
      */

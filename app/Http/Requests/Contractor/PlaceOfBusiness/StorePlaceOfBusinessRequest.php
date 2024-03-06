@@ -7,10 +7,6 @@ use Illuminate\Validation\Rule;
 
 class StorePlaceOfBusinessRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.places_of_business';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

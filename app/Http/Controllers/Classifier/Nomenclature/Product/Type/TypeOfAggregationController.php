@@ -15,7 +15,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class TypeOfAggregationController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_aggregation';
     /**
      * @var TypeOfAggregationService
      */
@@ -48,13 +47,11 @@ class TypeOfAggregationController extends CoreController
      */
     public function store(StoreTypeOfAggregationRequest $request): RedirectResponse
     {
-        $createdType = $this->service->create(
+        $this->service->create(
             $request->validated()['type_of_aggregation']
         );
 
-        return $this->successRedirect(
-            ['name' => $createdType->name]
-        );
+        return $this->successRedirect();
     }
 
     /**

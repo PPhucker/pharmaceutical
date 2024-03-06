@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreOKPD2Request extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.okpd2';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

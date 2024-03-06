@@ -22,12 +22,9 @@ trait DriverControllerTrait
     {
         $validated = $request->validated();
 
-        $driver = $this->service->create($validated['driver']);
+        $this->service->create($validated['driver']);
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $driver->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -44,7 +41,7 @@ trait DriverControllerTrait
 
         $this->service->update($driver, $validated['drivers']);
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -58,10 +55,7 @@ trait DriverControllerTrait
     {
         $this->service->delete($driver);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $driver->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -75,9 +69,6 @@ trait DriverControllerTrait
     {
         $this->service->restore($driver);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $driver->name]
-        );
+        return $this->successRedirect();
     }
 }

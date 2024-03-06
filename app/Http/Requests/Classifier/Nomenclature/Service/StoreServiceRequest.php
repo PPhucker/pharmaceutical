@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreServiceRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.services';
-
-    protected $action = 'create';
-
     /**
      * @return array[]
      */

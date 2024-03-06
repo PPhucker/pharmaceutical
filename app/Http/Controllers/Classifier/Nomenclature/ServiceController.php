@@ -15,7 +15,6 @@ use Illuminate\View\View;
  */
 class ServiceController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.services';
     /**
      * @var ServiceService
      */
@@ -48,14 +47,11 @@ class ServiceController extends CoreController
      */
     public function store(StoreServiceRequest $request): RedirectResponse
     {
-        $service = $this->service->create(
+        $this->service->create(
             $request->validated()['service']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $service->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -71,7 +67,7 @@ class ServiceController extends CoreController
             $request->validated()['services']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -81,12 +77,9 @@ class ServiceController extends CoreController
      */
     public function destroy(Service $service): RedirectResponse
     {
-        $deletedService = $this->service->delete($service);
+        $this->service->delete($service);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $deletedService->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -96,11 +89,8 @@ class ServiceController extends CoreController
      */
     public function restore(Service $service): RedirectResponse
     {
-        $restoredService = $this->service->restore($service);
+        $this->service->restore($service);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $restoredService->name]
-        );
+        return $this->successRedirect();
     }
 }

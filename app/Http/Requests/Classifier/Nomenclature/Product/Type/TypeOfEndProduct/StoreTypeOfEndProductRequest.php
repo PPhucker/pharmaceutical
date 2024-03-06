@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreTypeOfEndProductRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_end_products';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

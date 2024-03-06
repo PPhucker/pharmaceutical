@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateTypeOfEndProductRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_end_products';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class UpdateContractRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.contracts';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

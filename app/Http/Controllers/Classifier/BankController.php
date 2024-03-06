@@ -15,8 +15,6 @@ use Illuminate\Http\RedirectResponse;
  */
 class BankController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.banks';
-
     /**
      * @var BankService
      */
@@ -46,9 +44,11 @@ class BankController extends CoreController
      */
     public function store(StoreBankRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated()['bank']);
+        $this->service->create(
+            $request->validated()['bank']
+        );
 
-        return $this->successRedirect('create');
+        return $this->successRedirect();
     }
 
     /**
@@ -64,6 +64,6 @@ class BankController extends CoreController
             $request->validated()['banks']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

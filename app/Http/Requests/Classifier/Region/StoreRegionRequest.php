@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreRegionRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.regions';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

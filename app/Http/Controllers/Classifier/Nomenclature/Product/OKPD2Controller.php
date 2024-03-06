@@ -15,8 +15,6 @@ use Illuminate\View\View;
  */
 class OKPD2Controller extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.okpd2';
-
     /**
      * @var OKPD2Service
      */
@@ -49,14 +47,11 @@ class OKPD2Controller extends CoreController
      */
     public function store(StoreOKPD2Request $request): RedirectResponse
     {
-        $createdClassifierItem = $this->service->create(
+        $this->service->create(
             $request->validated()['okpd2']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $createdClassifierItem->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -72,6 +67,6 @@ class OKPD2Controller extends CoreController
             $request->validated()['okpd2']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

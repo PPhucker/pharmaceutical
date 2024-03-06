@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreBankRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.banks';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

@@ -15,10 +15,6 @@ use Illuminate\Http\RedirectResponse;
 class ContactPersonController extends CoreController
 {
     /**
-     * @var string
-     */
-    protected $prefixLocalKey = 'contractors.contact_persons';
-    /**
      * @var ContactPersonService
      */
     private $service;
@@ -41,14 +37,11 @@ class ContactPersonController extends CoreController
      */
     public function store(StoreContactPersonRequest $request): RedirectResponse
     {
-        $contactPerson = $this->service->create(
+        $this->service->create(
             $request->validated()['contact_person']
         );
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $contactPerson->name]
-        );
+        return $this->successRedirect();
     }
 
 
@@ -67,7 +60,7 @@ class ContactPersonController extends CoreController
             $request->validated()['contact_persons']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -81,10 +74,7 @@ class ContactPersonController extends CoreController
     {
         $this->service->delete($contactPerson);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $contactPerson->name]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -98,9 +88,6 @@ class ContactPersonController extends CoreController
     {
         $this->service->restore($contactPerson);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $contactPerson->name]
-        );
+        return $this->successRedirect();
     }
 }

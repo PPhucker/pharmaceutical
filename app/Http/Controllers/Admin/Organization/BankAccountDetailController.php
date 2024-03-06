@@ -17,8 +17,6 @@ class BankAccountDetailController extends CoreController
 {
     use BankAccountDetailControllerTrait;
 
-    protected $prefixLocalKey = 'contractors.bank_account_details';
-
     /**
      * @var AccountDetailService
      */

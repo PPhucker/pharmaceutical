@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateInternationalNameOfEndProductRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.international_names_of_end_products';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *

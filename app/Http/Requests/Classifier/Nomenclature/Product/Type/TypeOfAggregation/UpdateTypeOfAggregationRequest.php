@@ -10,10 +10,6 @@ use Illuminate\Validation\Rule;
  */
 class UpdateTypeOfAggregationRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.nomenclature.products.types_of_aggregation';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -39,7 +35,7 @@ class UpdateTypeOfAggregationRequest extends CoreFormRequest
             $prefix . 'name' => [
                 'required',
                 'string',
-                'max:20'
+                'max:20',
             ],
         ];
     }

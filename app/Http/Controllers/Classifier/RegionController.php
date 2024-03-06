@@ -15,7 +15,6 @@ use Illuminate\View\View;
  */
 class RegionController extends CoreController
 {
-    protected $prefixLocalKey = 'classifiers.regions';
     /**
      * @var RegionService
      */
@@ -52,7 +51,7 @@ class RegionController extends CoreController
             $request->validated()['region']
         );
 
-        return $this->successRedirect('create');
+        return $this->successRedirect();
     }
 
     /**
@@ -68,6 +67,6 @@ class RegionController extends CoreController
             $request->validated()['regions']
         );
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 }

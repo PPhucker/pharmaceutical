@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class StoreLegalFormRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'classifiers.legal_forms';
-
-    protected $action = 'create';
-
     /**
      * Get the validation rules that apply to the request.
      *

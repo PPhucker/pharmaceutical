@@ -22,12 +22,9 @@ trait BankAccountDetailControllerTrait
     {
         $validated = $request->validated()['bank_account_detail'];
 
-        $bankAccountDetail = $this->service->create($validated);
+        $this->service->create($validated);
 
-        return $this->successRedirect(
-            'create',
-            ['name' => $bankAccountDetail->payment_account]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -46,7 +43,7 @@ trait BankAccountDetailControllerTrait
 
         $this->service->update($bankAccountDetail, $validated);
 
-        return $this->successRedirect('update');
+        return $this->successRedirect();
     }
 
     /**
@@ -60,10 +57,7 @@ trait BankAccountDetailControllerTrait
     {
         $this->service->delete($bankAccountDetail);
 
-        return $this->successRedirect(
-            'delete',
-            ['name' => $bankAccountDetail->payment_account]
-        );
+        return $this->successRedirect();
     }
 
     /**
@@ -77,9 +71,6 @@ trait BankAccountDetailControllerTrait
     {
         $this->service->restore($bankAccountDetail);
 
-        return $this->successRedirect(
-            'restore',
-            ['name' => $bankAccountDetail->payment_account]
-        );
+        return $this->successRedirect();
     }
 }

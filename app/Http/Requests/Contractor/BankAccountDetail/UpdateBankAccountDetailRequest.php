@@ -9,10 +9,6 @@ use App\Http\Requests\CoreFormRequest;
  */
 class UpdateBankAccountDetailRequest extends CoreFormRequest
 {
-    protected $prefixLocalKey = 'contractors.bank_account_details';
-
-    protected $action = 'update';
-
     /**
      * Get the validation rules that apply to the request.
      *
