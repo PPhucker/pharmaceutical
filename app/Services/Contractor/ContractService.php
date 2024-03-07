@@ -15,6 +15,14 @@ class ContractService extends CrudService
     use SoftDeletesTrait;
 
     /**
+     * @throws BindingResolutionException
+     */
+    public function __construct()
+    {
+        $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
      * @return array
      */
     public function getIndexData(): array

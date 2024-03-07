@@ -15,6 +15,14 @@ class ContactPersonService extends CrudService
     use SoftDeletesTrait;
 
     /**
+     * @throws BindingResolutionException
+     */
+    public function __construct()
+    {
+        $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
      * @return object
      * @throws BindingResolutionException
      */
