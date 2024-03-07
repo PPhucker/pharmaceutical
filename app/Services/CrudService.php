@@ -3,12 +3,10 @@
 namespace App\Services;
 
 /**
- *
+ * Сервис для контроллеров без методов create и edit.
  */
 abstract class CrudService extends CoreService
 {
-    protected $selectedRepo;
-
     /**
      * Создать модель.
      *
@@ -33,4 +31,11 @@ abstract class CrudService extends CoreService
     {
         return $this->selectedRepo->update($model, $validated);
     }
+
+    /**
+     * Получить данные для метода index() контроллера.
+     *
+     * @return array
+     */
+    abstract public function getIndexData(): array;
 }

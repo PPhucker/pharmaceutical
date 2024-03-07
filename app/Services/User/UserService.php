@@ -24,7 +24,7 @@ class UserService extends ResourceService
             ]
         );
 
-        $this->selectedRepo = $this->repositories->user;
+        $this->selectedRepo = $this->selectRepository();
     }
 
     /**
@@ -61,5 +61,13 @@ class UserService extends ResourceService
     public function getCreateData(): array
     {
         return [];
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->user;
     }
 }

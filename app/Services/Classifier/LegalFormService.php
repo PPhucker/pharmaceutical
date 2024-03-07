@@ -2,27 +2,11 @@
 
 namespace App\Services\Classifier;
 
-use App\Services\CrudService;
-
 /**
  * Сервис классификатора орагнизационно правовых форм.
  */
-class LegalFormService extends CrudService
+class LegalFormService extends ClassifierService
 {
-    /**
-     * @param ClassifierServiceDependencies $classifierServiceDependencies
-     */
-    public function __construct(ClassifierServiceDependencies $classifierServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $classifierServiceDependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->legalForm;
-    }
-
     /**
      * @return array
      */
@@ -31,5 +15,13 @@ class LegalFormService extends CrudService
         $legalForms = $this->repositories->legalForm->getAll();
 
         return compact('legalForms');
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->legalForm;
     }
 }

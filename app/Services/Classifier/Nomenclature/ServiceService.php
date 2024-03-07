@@ -28,7 +28,15 @@ class ServiceService extends CrudService
             ]
         );
 
-        $this->selectedRepo = $this->repositories->service;
+        $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->service;
     }
 
     /**

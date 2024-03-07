@@ -2,27 +2,11 @@
 
 namespace App\Services\Classifier;
 
-use App\Services\CrudService;
-
 /**
  * Сервис классификатора банков.
  */
-class BankService extends CrudService
+class BankService extends ClassifierService
 {
-    /**
-     * @param ClassifierServiceDependencies $classifierServiceDependencies
-     */
-    public function __construct(ClassifierServiceDependencies $classifierServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $classifierServiceDependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->bank;
-    }
-
     /**
      * @return array
      */
@@ -31,5 +15,13 @@ class BankService extends CrudService
         $banks = $this->repositories->bank->getAll();
 
         return compact('banks');
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->bank;
     }
 }

@@ -2,27 +2,11 @@
 
 namespace App\Services\Classifier\Nomenclature;
 
-use App\Services\CrudService;
-
 /**
  * Сервис классификатора OKEI.
  */
-class OKEIService extends CrudService
+class OKEIService extends NomenclatureService
 {
-    /**
-     * @param NomenclatureServiceDependencies $nomenclatureServiceDependencies
-     */
-    public function __construct(NomenclatureServiceDependencies $nomenclatureServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $nomenclatureServiceDependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->okei;
-    }
-
     /**
      * @return array
      */
@@ -31,5 +15,13 @@ class OKEIService extends CrudService
         $okeiClassifier = $this->repositories->okei->getAll();
 
         return compact('okeiClassifier');
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->okei;
     }
 }

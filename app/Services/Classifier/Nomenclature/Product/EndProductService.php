@@ -27,8 +27,6 @@ class EndProductService extends ResourceService
                 $productServiceDependencies
             ]
         );
-
-        $this->selectedRepo = $this->repositories->endProduct;
     }
 
     /**
@@ -82,5 +80,13 @@ class EndProductService extends ResourceService
                 ->okpd2
                 ->getAll(),
         ];
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->endProduct;
     }
 }

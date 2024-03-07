@@ -2,27 +2,16 @@
 
 namespace App\Services\Contractor\Transport;
 
-use App\Services\CrudService;
-use App\Traits\Repository\SoftDeletesTrait;
-
 /**
  * Сервис автомобиля контрагента.
  */
-class CarService extends CrudService
+class CarService extends TransportService
 {
-    use SoftDeletesTrait;
-
     /**
-     * @param TransportServiceDependencies $dependencies
+     * @return object
      */
-    public function __construct(TransportServiceDependencies $dependencies)
+    protected function selectRepository(): object
     {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $dependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->car;
+        return $this->repositories->car;
     }
 }

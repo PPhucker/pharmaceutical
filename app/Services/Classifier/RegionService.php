@@ -2,27 +2,11 @@
 
 namespace App\Services\Classifier;
 
-use App\Services\CrudService;
-
 /**
  * Сервис региона.
  */
-class RegionService extends CrudService
+class RegionService extends ClassifierService
 {
-    /**
-     * @param ClassifierServiceDependencies $classifierServiceDependencies
-     */
-    public function __construct(ClassifierServiceDependencies $classifierServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $classifierServiceDependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->region;
-    }
-
     /**
      * @return array
      */
@@ -31,5 +15,13 @@ class RegionService extends CrudService
         $regions = $this->repositories->region->getAll();
 
         return compact('regions');
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->region;
     }
 }

@@ -13,6 +13,18 @@ abstract class CoreService
     protected $repositories;
 
     /**
+     * @var object
+     */
+    protected $selectedRepo;
+
+    /**
+     * Выбрать репозиторий.
+     *
+     * @return object
+     */
+    abstract protected function selectRepository(): object;
+
+    /**
      * Получить репозитории из зависимостей.
      *
      * @param array $dependencies

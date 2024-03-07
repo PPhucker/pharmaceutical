@@ -2,27 +2,12 @@
 
 namespace App\Services\Classifier\Nomenclature\Product\Type;
 
-use App\Services\CrudService;
 
 /**
  * Сервис типа готовой продукции.
  */
-class TypeOfEndProductService extends CrudService
+class TypeOfEndProductService extends TypeService
 {
-    /**
-     * @param TypeServiceDependencies $typeServiceDependencies
-     */
-    public function __construct(TypeServiceDependencies $typeServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $typeServiceDependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->typeOfEndProduct;
-    }
-
     /**
      * @return array
      */
@@ -31,5 +16,13 @@ class TypeOfEndProductService extends CrudService
         $typesOfEndProducts = $this->selectedRepo->getAll();
 
         return compact('typesOfEndProducts');
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->typeOfEndProduct;
     }
 }

@@ -7,7 +7,7 @@ use App\Interfaces\Service\ServiceDependenciesInterface;
 /**
  * Базовый сервис зависимостей.
  */
-abstract class CoreDependencyService extends CoreService implements ServiceDependenciesInterface
+abstract class CoreDependencyService implements ServiceDependenciesInterface
 {
     /**
      * @var array

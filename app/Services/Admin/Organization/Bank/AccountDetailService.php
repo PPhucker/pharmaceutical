@@ -23,7 +23,5 @@ class AccountDetailService extends ContractorAccountDetailService
 
         $this->repositories->accountDetail = app()
             ->make(BankAccountDetailRepository::class);
-
-        $this->selectedRepo = $this->repositories->accountDetail;
     }
 }

@@ -2,26 +2,11 @@
 
 namespace App\Services\Classifier\Nomenclature\Product\Type;
 
-use App\Services\CrudService;
-
 /**
  * Сервис типа агрегации.
  */
-class TypeOfAggregationService extends CrudService
+class TypeOfAggregationService extends TypeService
 {
-    /**
-     * @param TypeServiceDependencies $typeServiceDependencies
-     */
-    public function __construct(TypeServiceDependencies $typeServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $typeServiceDependencies
-            ]
-        );
-        $this->selectedRepo = $this->repositories->typeOfAggregation;
-    }
-
     /**
      * @return array
      */
@@ -30,5 +15,13 @@ class TypeOfAggregationService extends CrudService
         $typesOfAggregation = $this->selectedRepo->getAll();
 
         return compact('typesOfAggregation');
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->typeOfAggregation;
     }
 }

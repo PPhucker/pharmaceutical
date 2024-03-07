@@ -14,11 +14,25 @@ class StaffService extends CrudService
 {
     use SoftDeletesTrait;
 
-    /**
-     * @param StaffRepository $staff
-     */
-    public function __construct(StaffRepository $staff)
+    public function __construct()
     {
-        $this->selectedRepo = $staff;
+        $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
+     * @return object
+     * @throws BindingResolutionException
+     */
+    protected function selectRepository(): object
+    {
+        return app()->make(StaffRepository::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexData(): array
+    {
+        return [];
     }
 }

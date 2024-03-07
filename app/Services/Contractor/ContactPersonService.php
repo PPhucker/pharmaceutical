@@ -5,6 +5,7 @@ namespace App\Services\Contractor;
 use App\Repositories\Contractor\ContactPersonRepository;
 use App\Services\CrudService;
 use App\Traits\Repository\SoftDeletesTrait;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 /**
  * Сервис контактого лица контрагента.
@@ -14,10 +15,19 @@ class ContactPersonService extends CrudService
     use SoftDeletesTrait;
 
     /**
-     * @param ContactPersonRepository $contactPerson
+     * @return object
+     * @throws BindingResolutionException
      */
-    public function __construct(ContactPersonRepository $contactPerson)
+    protected function selectRepository(): object
     {
-        $this->selectedRepo = $contactPerson;
+        return app()->make(ContactPersonRepository::class);
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexData(): array
+    {
+        return [];
     }
 }

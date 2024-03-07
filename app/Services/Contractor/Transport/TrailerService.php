@@ -8,21 +8,13 @@ use App\Traits\Repository\SoftDeletesTrait;
 /**
  * Сервис прицепа контр агента.
  */
-class TrailerService extends CrudService
+class TrailerService extends TransportService
 {
-    use SoftDeletesTrait;
-
     /**
-     * @param TransportServiceDependencies $dependencies
+     * @return object
      */
-    public function __construct(TransportServiceDependencies $dependencies)
+    protected function selectRepository(): object
     {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $dependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->trailer;
+        return $this->repositories->trailer;
     }
 }

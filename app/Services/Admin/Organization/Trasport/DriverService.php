@@ -2,27 +2,16 @@
 
 namespace App\Services\Admin\Organization\Trasport;
 
-use App\Services\CrudService;
-use App\Traits\Repository\SoftDeletesTrait;
-
 /**
  * Сервис водителя орагнизации.
  */
-class DriverService extends CrudService
+class DriverService extends TransportService
 {
-    use SoftDeletesTrait;
-
     /**
-     * @param TrasportServiceDependencies $dependencies
+     * @return object
      */
-    public function __construct(TrasportServiceDependencies $dependencies)
+    protected function selectRepository(): object
     {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $dependencies
-            ]
-        );
-
-        $this->selectedRepo = $this->repositories->driver;
+        return $this->repositories->driver;
     }
 }

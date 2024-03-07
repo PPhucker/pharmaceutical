@@ -22,7 +22,21 @@ class AccountDetailService extends CrudService
                 $bankServiceDependencies
             ]
         );
+    }
 
-        $this->selectedRepo = $this->repositories->accountDetail;
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->accountDetail;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexData(): array
+    {
+        return [];
     }
 }

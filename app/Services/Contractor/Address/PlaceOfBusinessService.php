@@ -23,6 +23,22 @@ class PlaceOfBusinessService extends CrudService
             ]
         );
 
-        $this->selectedRepo = $this->repositories->placeOfBusiness;
+        $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->placeOfBusiness;
+    }
+
+    /**
+     * @return array
+     */
+    public function getIndexData(): array
+    {
+        return [];
     }
 }

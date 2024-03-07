@@ -33,7 +33,7 @@ class ContractorService extends ResourceService
             ]
         );
 
-        $this->selectedRepo = $this->repositories->contractor;
+        $this->selectedRepo = $this->selectRepository();
     }
 
     /**
@@ -66,7 +66,7 @@ class ContractorService extends ResourceService
             'legalForms',
             'banks',
             'organizations',
-            'regions'
+            'regions',
         );
     }
 
@@ -80,4 +80,11 @@ class ContractorService extends ResourceService
         return compact('legalForms');
     }
 
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->contractor;
+    }
 }

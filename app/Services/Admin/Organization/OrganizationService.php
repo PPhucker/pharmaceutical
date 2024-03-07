@@ -31,7 +31,15 @@ class OrganizationService extends ResourceService
         $this->repositories->bank = app()
             ->make(BankRepository::class);
 
-        $this->selectedRepo = $this->repositories->organization;
+        $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->organization;
     }
 
     /**
