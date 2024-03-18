@@ -22,6 +22,36 @@ const FormUtils = {
 
         form.submit();
     },
+    restore: function(route, id) {
+        event.preventDefault();
+
+        const formId = route + '-restore-form-' + id;
+        const buttonId = 'restore-href-' + id;
+
+        this.spinner(
+            buttonId,
+        );
+
+        document.getElementById(formId).submit();
+    },
+    destroy: function(route, id) {
+        event.preventDefault();
+
+        const formId = route + '-destroy-form-' + id;
+        const buttonId = 'destroy-href-' + id;
+
+        this.spinner(
+            buttonId,
+        );
+
+        document.getElementById(formId).submit();
+    },
+    spinner: function(elementId) {
+        console.log(elementId);
+        const spinner = document.getElementById(elementId).
+            querySelector('.spinner-border');
+        spinner.classList.remove('d-none');
+    },
 };
 
 window.FormUtils = FormUtils;
