@@ -1,7 +1,5 @@
 <x-form.nav-tab
     formId="account_details_main_form">
-    <x-notification.info
-        :text="__('contractors.bank_account_details.actions.create.info')"/>
     <div class="row">
         <div class="col-md-12">
             <div class="collapse card border-0"
