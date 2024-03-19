@@ -9,6 +9,8 @@ use App\Interfaces\Service\ServiceDependenciesInterface;
  */
 abstract class CoreDependencyService implements ServiceDependenciesInterface
 {
+    use RepoFromDepTrait;
+
     /**
      * @var array
      */
