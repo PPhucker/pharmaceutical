@@ -57,7 +57,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$trailer->trashed()"
-                                        :id="$trailer->id"
+                                        id="trailer-{{$trailer->id}}"
                                         route="organization.trailers"
                                         :params="['trailer' => $trailer->id]"/>
                                 </x-data-table.td>

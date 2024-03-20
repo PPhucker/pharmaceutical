@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-12 col-auto">
         <x-form
-            :route="route('staff.update', ['staff' => $organization->staff->first()->id ?? 1])"
+            :route="route('staff.update')"
             method="PATCH">
             <x-data-table.table
                 id="staff_table"
@@ -64,7 +64,7 @@
                                 class="col-md-1 col-auto text-center">
                                 <x-data-table.button.soft-delete
                                     :trashed="$staff->trashed()"
-                                    :id="$staff->id"
+                                    id="staff-{{$staff->id}}"
                                     route="staff"
                                     :params="['staff' => $staff->id]"/>
                             </x-data-table.td>

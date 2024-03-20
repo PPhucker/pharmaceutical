@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('organization.drivers.update', ['driver' => $organization->drivers->first()->id ?? 1])"
+                :route="route('organization.drivers.update')"
                 formId="drivers_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -39,7 +39,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$driver->trashed()"
-                                        :id="$driver->id"
+                                        id="driver-{{$driver->id}}"
                                         route="organization.drivers"
                                         :params="['driver' => $driver->id]"/>
                                 </x-data-table.td>

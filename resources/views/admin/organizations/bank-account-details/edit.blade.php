@@ -14,8 +14,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('organization.bank_account_details.update',
-                    ['bank_account_detail' => $organization->bankAccountDetails->first()->id ?? 1])"
+                :route="route('organization.bank_account_details.update')"
                 formId="account_details_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -64,7 +63,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$account->trashed()"
-                                        :id="$account->id"
+                                        id="bank-{{$account->id}}"
                                         route="organization.bank_account_details"
                                         :params="['bank_account_detail' => $account->id]"/>
                                 </x-data-table.td>
