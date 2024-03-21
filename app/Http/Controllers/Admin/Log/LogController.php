@@ -46,7 +46,7 @@ class LogController extends Controller
             $startDate,
             $endDate,
             $validated
-        );
+        )->sortByDesc('datetime');
 
         return view(
             'admin.logs.index',
