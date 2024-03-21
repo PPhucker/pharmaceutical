@@ -22,8 +22,7 @@ class PlaceOfBusinessRepository extends ContractorPlaceOfBusinessRepository
         foreach ($validated['places_of_business'] as $validatedPlace) {
             $placeOfBusinessId = (int)$validatedPlace['id'];
             $this->model
-                ->withTrashed()
-                ->find($placeOfBusinessId)
+                ->findOrFail($placeOfBusinessId)
                 ->fill(
                     [
                         'user_id' => Auth::user()->id,

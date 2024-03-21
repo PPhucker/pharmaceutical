@@ -49,7 +49,6 @@ class BankAccountDetailRepository extends CrudRepository
     {
         foreach ($validated['bank_account_details'] as $account) {
             $this->model
-                ->withTrashed()
                 ->findOrFail((int)$account['id'])
                 ->fill(
                     [

@@ -47,7 +47,6 @@ class DriverRepository extends CrudRepository
     {
         foreach ($validated as $validatedDriver) {
             $this->model
-                ->withTrashed()
                 ->findOrFail((int)$validatedDriver['id'])
                 ->fill(
                     [

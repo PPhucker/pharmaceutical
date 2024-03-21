@@ -48,7 +48,6 @@ class TrailerRepository extends CrudRepository
     {
         foreach ($validated as $validatedTrailer) {
             $this->model
-                ->withTrashed()
                 ->findOrFail((int)$validatedTrailer['id'])
                 ->fill(
                     [
