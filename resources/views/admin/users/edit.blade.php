@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-card
-        :title="__('users.actions.edit', ['name' => $user->name])"
+        :title="$user->name"
         :back="route('users.index')">
         <x-notification.alert/>
         <x-form
