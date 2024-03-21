@@ -22,6 +22,8 @@ class AccountDetailService extends CrudService
                 $bankServiceDependencies
             ]
         );
+
+        $this->selectedRepo = $this->selectRepository();
     }
 
     /**
