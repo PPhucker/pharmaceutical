@@ -61,8 +61,10 @@
 
         const listInline = wrapper.getElementsByClassName('list-inline')[0];
 
-        const filter = document.getElementById('filter_' + table.id);
-
-        listInline.append(filter);
+        if (listInline) {
+            listInline.append(
+                document.getElementById('filter_' + table.id),
+            );
+        }
     });
 </script>

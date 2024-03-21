@@ -1,5 +1,4 @@
 @props(['trashed', 'id', 'route', 'params'])
-<!-- Кнопка-триггер модального окна -->
 @if($trashed)
     @permissions(['restoring'])
     <div>
@@ -11,7 +10,6 @@
             <i class="bi bi-arrow-bar-up"></i>
         </a>
     </div>
-    <!-- Модальное окно -->
     <div class="modal fade"
          id="modal-restore-{{$id}}"
          tabindex="-1"
@@ -65,7 +63,6 @@
             <i class="bi bi-trash3-fill align-middle"></i>
         </a>
     </div>
-    <!-- Модальное окно -->
     <div class="modal fade"
          id="modal-destroy-{{$id}}"
          tabindex="-1"
