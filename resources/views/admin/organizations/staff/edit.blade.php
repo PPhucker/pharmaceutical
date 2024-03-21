@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-12 col-auto">
         <x-form
-            :route="route('staff.update')"
+            :route="route('organization.staff.update', ['staff' => $organization->staff->first()->id ?? 1])"
             method="PATCH">
             <x-data-table.table
                 id="staff_table"
@@ -24,9 +24,9 @@
                     @foreach($organization->staff as $key => $staff)
                         <x-data-table.tr
                             :model="$staff">
-                            <input type="hidden"
-                                   name="staff[{{$key}}][id]"
-                                   value="{{$staff->id}}"/>
+                            <x-form.element.input type="hidden"
+                                                  name="staff[{{$key}}][id]"
+                                                  value="{{$staff->id}}"/>
                             <x-data-table.td
                                 class="col-md-5 col-auto">
                                 <x-form.element.select
@@ -65,7 +65,7 @@
                                 <x-data-table.button.soft-delete
                                     :trashed="$staff->trashed()"
                                     id="staff-{{$staff->id}}"
-                                    route="staff"
+                                    route="organization.staff"
                                     :params="['staff' => $staff->id]"/>
                             </x-data-table.td>
                         </x-data-table.tr>

@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12 col-auto">
             <x-form
-                :route="route('organization.places_of_business.update')"
+                :route="route('organization.places_of_business.update', ['place_of_business' => 1])"
                 method="PATCH">
                 <x-data-table.table
                     id="places_of_business"
@@ -27,12 +27,12 @@
                         @foreach($organization->placesOfBusiness as $key => $place)
                             <x-data-table.tr :model="$place">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="places_of_business[{{$key}}][id]"
-                                           value="{{$place->id}}">
-                                    <input type="hidden"
-                                           name="places_of_business[{{$key}}][organization_id]"
-                                           value="{{$place->organization_id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="places_of_business[{{$key}}][id]"
+                                                          value="{{$place->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="places_of_business[{{$key}}][organization_id]"
+                                                          value="{{$place->organization_id}}"/>
                                 </x-slot>
                                 <x-data-table.td
                                     class="col-md-1 col-auto">

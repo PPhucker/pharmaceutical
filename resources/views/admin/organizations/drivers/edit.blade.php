@@ -23,12 +23,12 @@
                             <x-data-table.tr
                                 :model="$driver">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="drivers[{{$key}}][id]"
-                                           value="{{$driver->id}}">
-                                    <input type="hidden"
-                                           name="drivers[{{$key}}][organization_id]"
-                                           value="{{$organization->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="drivers[{{$key}}][id]"
+                                                          value="{{$driver->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="drivers[{{$key}}][organization_id]"
+                                                          value="{{$organization->id}}"/>
                                 </x-slot>
                                 <x-data-table.td>
                                     <x-form.element.input

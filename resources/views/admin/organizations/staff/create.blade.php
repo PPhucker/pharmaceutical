@@ -1,5 +1,5 @@
 <x-form
-    :route="route('staff.store')"
+    :route="route('organization.staff.store')"
     formId="staff_add_form">
     <input type="hidden"
            name="staff[organization_id]"

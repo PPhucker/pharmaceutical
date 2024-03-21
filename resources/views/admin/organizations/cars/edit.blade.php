@@ -25,12 +25,14 @@
                             <x-data-table.tr
                                 :model="$car">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="cars[{{$key}}][id]"
-                                           value="{{$car->id}}">
-                                    <input type="hidden"
-                                           name="cars[{{$key}}][organization_id]"
-                                           value="{{$organization->id}}">
+                                    <x-form.element.input
+                                        type="hidden"
+                                        name="cars[{{$key}}][id]"
+                                        value="{{$car->id}}"/>
+                                    <x-form.element.input
+                                        type="hidden"
+                                        name="cars[{{$key}}][organization_id]"
+                                        value="{{$organization->id}}"/>
                                 </x-slot>
                                 <x-data-table.td>
                                     <x-form.element.input

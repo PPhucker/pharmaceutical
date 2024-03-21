@@ -37,9 +37,9 @@
                             <x-data-table.tr
                                 :model="$account">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="bank_account_details[{{$key}}][id]"
-                                           value="{{$account->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="bank_account_details[{{$key}}][id]"
+                                                          value="{{$account->id}}"/>
                                 </x-slot>
                                 <x-data-table.td
                                     class="text-start">

@@ -27,12 +27,12 @@
                             <x-data-table.tr
                                 :model="$trailer">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="trailers[{{$key}}][id]"
-                                           value="{{$trailer->id}}">
-                                    <input type="hidden"
-                                           name="trailers[{{$key}}][organization_id]"
-                                           value="{{$organization->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="trailers[{{$key}}][id]"
+                                                          value="{{$trailer->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="trailers[{{$key}}][organization_id]"
+                                                          value="{{$organization->id}}"/>
                                 </x-slot>
                                 <x-data-table.td>
                                     <x-form.element.select
@@ -52,7 +52,8 @@
                                     <x-form.element.input
                                         name="trailers[{{$key}}][state_number]"
                                         :value="$trailer->state_number"
-                                        :required="true"/>
+                                        :required="true"
+                                        max="15"/>
                                 </x-data-table.td>
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
