@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('cars.update', ['car' => $contractor->cars->first()->id ?? 1])"
+                :route="route('cars.update', ['car' => $contractor->cars->first()->id ?: null])"
                 formId="cars_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -25,12 +25,12 @@
                             <x-data-table.tr
                                 :model="$car">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="cars[{{$key}}][id]"
-                                           value="{{$car->id}}">
-                                    <input type="hidden"
-                                           name="cars[{{$key}}][contractor_id]"
-                                           value="{{$contractor->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="cars[{{$key}}][id]"
+                                                          value="{{$car->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="cars[{{$key}}][contractor_id]"
+                                                          value="{{$contractor->id}}"/>
                                 </x-slot>
                                 <x-data-table.td>
                                     <x-form.element.input
@@ -47,7 +47,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$car->trashed()"
-                                        :id="$car->id"
+                                        id="cars-{{$car->id}}"
                                         route="cars"
                                         :params="['car' => $car->id]"/>
                                 </x-data-table.td>

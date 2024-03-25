@@ -7,7 +7,7 @@
         <div class="col-md-12 col-auto">
             <x-form
                 :route="route('places_of_business.update',
-                    ['place_of_business' => $contractor->placesOfBusiness->first()->id ?? 1])"
+                    ['place_of_business' => $contractor->placesOfBusiness->first()->id ?? null])"
                 method="PATCH">
                 <x-data-table.table
                     id="places_of_business"
@@ -32,12 +32,12 @@
                         @foreach($contractor->placesOfBusiness as $key => $place)
                             <x-data-table.tr :model="$place">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="places_of_business[{{$key}}][id]"
-                                           value="{{$place->id}}">
-                                    <input type="hidden"
-                                           name="places_of_business[{{$key}}][contractor_id]"
-                                           value="{{$place->contractor_id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="places_of_business[{{$key}}][id]"
+                                                          value="{{$place->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="places_of_business[{{$key}}][contractor_id]"
+                                                          value="{{$place->contractor_id}}"/>
                                 </x-slot>
                                 @roles(['digital_communication'])
                                 <x-data-table.td
@@ -92,7 +92,7 @@
                                     class="col-md-1 col-auto text-center">
                                     <x-data-table.button.soft-delete
                                         :trashed="$place->trashed()"
-                                        :id="$place->id"
+                                        id="place-{{$place->id}}"
                                         route="places_of_business"
                                         :params="['place_of_business' => $place->id]"/>
                                 </x-data-table.td>

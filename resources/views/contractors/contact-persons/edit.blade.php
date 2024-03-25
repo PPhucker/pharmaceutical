@@ -7,8 +7,7 @@
         </div>
         <div class="col-md-12 col-auto">
             <x-form
-                :route="route('contact_persons.update',
-                    ['contact_person' => $contractor->contactPersons->first()->id ?? 1])"
+                :route="route('contact_persons.update', ['contact_person' => $contractor->contactPersons->first()->id ?: null])"
                 formId="contact_persons_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -31,9 +30,9 @@
                             <x-data-table.tr
                                 :model="$contactPerson">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="contact_persons[{{$key}}][id]"
-                                           value="{{$contactPerson->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="contact_persons[{{$key}}][id]"
+                                                          value="{{$contactPerson->id}}"/>
                                 </x-slot>
                                 <x-data-table.td
                                     class="">
@@ -63,7 +62,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$contactPerson->trashed()"
-                                        :id="$contactPerson->id"
+                                        id="contact-person-{{$contactPerson->id}}"
                                         route="contact_persons"
                                         :params="['contact_person' => $contactPerson->id]"/>
                                 </x-data-table.td>

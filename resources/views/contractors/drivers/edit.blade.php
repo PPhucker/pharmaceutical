@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('drivers.update', ['driver' => $contractor->drivers->first()->id ?? 1])"
+                :route="route('drivers.update', ['driver' => $contractor->drivers->first()->id ?? null])"
                 formId="drivers_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -23,12 +23,12 @@
                             <x-data-table.tr
                                 :model="$driver">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="drivers[{{$key}}][id]"
-                                           value="{{$driver->id}}">
-                                    <input type="hidden"
-                                           name="drivers[{{$key}}][contractor_id]"
-                                           value="{{$contractor->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="drivers[{{$key}}][id]"
+                                                          value="{{$driver->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="drivers[{{$key}}][contractor_id]"
+                                                          value="{{$contractor->id}}"/>
                                 </x-slot>
                                 <x-data-table.td>
                                     <x-form.element.input
@@ -39,7 +39,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$driver->trashed()"
-                                        :id="$driver->id"
+                                        id="driver-{{$driver->id}}"
                                         route="drivers"
                                         :params="['driver' => $driver->id]"/>
                                 </x-data-table.td>

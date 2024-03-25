@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12 col-auto">
             <x-form
-                :route="route('contracts.update', ['contract' => $contractor->contracts()->first()->id ?? 1])"
+                :route="route('contracts.update', ['contract' => $contractor->contracts->first()->id ?? null])"
                 method="PATCH">
                 <x-data-table.table
                     id="contracts"
@@ -29,12 +29,12 @@
                         @foreach($contractor->contracts as $key => $contract)
                             <x-data-table.tr :model="$contract">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="contracts[{{$key}}][id]"
-                                           value="{{$contract->id}}">
-                                    <input type="hidden"
-                                           name="contracts[{{$key}}][contractor_id]"
-                                           value="{{$contract->contractor_id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="contracts[{{$key}}][id]"
+                                                          value="{{$contract->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="contracts[{{$key}}][contractor_id]"
+                                                          value="{{$contract->contractor_id}}"/>
                                 </x-slot>
                                 <x-data-table.td
                                     class="col-md-1 col-auto">
@@ -83,7 +83,7 @@
                                     class="col-md-1 col-auto text-center">
                                     <x-data-table.button.soft-delete
                                         :trashed="$contract->trashed()"
-                                        :id="$contract->id"
+                                        id="contract-{{$contract->id}}"
                                         route="contracts"
                                         :params="['contract' => $contract->id]"/>
                                 </x-data-table.td>

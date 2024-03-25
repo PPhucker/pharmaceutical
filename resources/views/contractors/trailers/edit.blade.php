@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('trailers.update', ['trailer' => $contractor->trailers->first()->id ?? 1])"
+                :route="route('trailers.update', ['trailer' => $contractor->trailers->first()->id ?? null])"
                 formId="trailers_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -27,12 +27,12 @@
                             <x-data-table.tr
                                 :model="$trailer">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="trailers[{{$key}}][id]"
-                                           value="{{$trailer->id}}">
-                                    <input type="hidden"
-                                           name="trailers[{{$key}}][contractor_id]"
-                                           value="{{$contractor->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="trailers[{{$key}}][id]"
+                                                          value="{{$trailer->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="trailers[{{$key}}][contractor_id]"
+                                                          value="{{$contractor->id}}"/>
                                 </x-slot>
                                 <x-data-table.td>
                                     <x-form.element.select
@@ -57,7 +57,7 @@
                                 <x-data-table.td>
                                     <x-data-table.button.soft-delete
                                         :trashed="$trailer->trashed()"
-                                        :id="$trailer->id"
+                                        id="trailer-{{$trailer->id}}"
                                         route="trailers"
                                         :params="['trailer' => $trailer->id]"/>
                                 </x-data-table.td>
