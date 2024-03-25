@@ -2,11 +2,11 @@
 
 namespace App\Models\Classifier\Nomenclature\Product\Catalog;
 
+use App\Models\Classifier\Nomenclature\Product\EndProduct;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Traits\Classifier\Nomenclature\Product\Price\Relation\HasPrices;
 use App\Traits\Classifier\Nomenclature\Product\Price\Relation\HasRegionalAllowances;
-use App\Traits\Classifier\Nomenclature\Product\Relation\HasEndProduct;
 use App\Traits\Classifiers\Nomenclature\Products\HasAggregationTypes;
 use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
 use App\Traits\Organization\Relation\HasOrganization;
@@ -14,6 +14,7 @@ use App\Traits\Organization\Relation\HasPlaceOfBusiness;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
@@ -28,7 +29,6 @@ class ProductCatalog extends Model
     use HasMaterials;
     use HasAggregationTypes;
     use HasUser;
-    use HasEndProduct;
     use HasOrganization;
     use HasPlaceOfBusiness;
     use HasPrices;
@@ -67,7 +67,7 @@ class ProductCatalog extends Model
     /**
      * @return HasMany
      */
-    public function invoiceForPaymentProduction()
+    public function invoiceForPaymentProduction(): HasMany
     {
         return $this->hasMany(InvoiceForPaymentProduct::class, 'product_catalog_id');
     }
@@ -75,8 +75,16 @@ class ProductCatalog extends Model
     /**
      * @return HasMany
      */
-    public function packingListProduction()
+    public function packingListProduction(): HasMany
     {
         return $this->hasMany(PackingListProduct::class, 'product_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function endProduct(): BelongsTo
+    {
+        return $this->belongsTo(EndProduct::class, 'product_id');
     }
 }

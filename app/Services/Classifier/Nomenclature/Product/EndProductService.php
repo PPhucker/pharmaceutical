@@ -27,6 +27,8 @@ class EndProductService extends ResourceService
                 $productServiceDependencies
             ]
         );
+
+        $this->selectedRepo = $this->selectRepository();
     }
 
     /**
