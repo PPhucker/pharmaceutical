@@ -15,6 +15,31 @@ use function dirname;
  */
 class RouteHelper
 {
+    private $name;
+
+    private $controller;
+
+    private $uriParameter;
+
+    private $prefix;
+
+    /**
+     * @param Collection $routeParameters
+     */
+    public function __construct(Collection $routeParameters)
+    {
+        foreach (['name', 'controller', 'uriParameter'] as $requiredParameter) {
+            if (!$routeParameters->has($requiredParameter)) {
+                throw new InvalidArgumentException("Missing required parameter: $requiredParameter");
+            }
+            $this->$requiredParameter = $routeParameters->get($requiredParameter);
+        }
+
+        $this->prefix = $routeParameters->has('prefix')
+            ? $routeParameters->get('prefix') . '.'
+            : '';
+    }
+
     /**
      * Метод рекурсивной загрузки маршрутов из директории routes.
      *
@@ -57,75 +82,102 @@ class RouteHelper
     }
 
     /**
-     * Создает маршруты store, update, destroy, restore для указанного контроллера.
-     *
-     * @param Collection $routeParameters Параметры маршрута, такие как имя, контроллер и дополнительные параметры.
-     *
-     * @return void
+     * @return RouteHelper
      */
-    public static function mapWritableRoutes(Collection $routeParameters): void
+    public function mapWritableRoutes(): RouteHelper
     {
-        $requiredParameters = [
-            'name',
-            'controller',
-            'uriParameter'
-        ];
+        $this->mapStoreMethod();
+        $this->mapUpdateRoute();
+        $this->mapDestroyRoute();
+        $this->mapRestoreRoute();
 
-        foreach ($requiredParameters as $requiredParameter) {
-            if (!$routeParameters->has($requiredParameter)) {
-                throw new InvalidArgumentException("Missing required parameter: $requiredParameter");
-            }
-        }
-
-        $resourceRoutes = Route::resource(
-            $routeParameters->get('name'),
-            $routeParameters->get('controller')
-        )
-            ->only(['store', 'destroy'])
-            ->parameters(
-                [
-                    $routeParameters->get('name') => $routeParameters->get('uriParameter')
-                ]
-            );
-
-        $updateRoute = Route::patch(
-            '/'
-            . $routeParameters->get('name')
-            . '/{'
-            . $routeParameters->get('uriParameter')
-            . '?}',
-            $routeParameters->get('controller')
-            . '@update'
-        )->defaults(
-            $routeParameters->get('uriParameter'),
-            1
-        );
-
-        $restoreRoute = Route::post(
-            '/'
-            . $routeParameters->get('name')
-            . '/{'
-            . $routeParameters->get('uriParameter')
-            . '}/restore',
-            $routeParameters->get('controller') . '@restore'
-        )->withTrashed();
-
-        if ($routeParameters->has('prefix')) {
-            $namePrefix = $routeParameters->get('prefix') . '.';
-            $resourceRoutes->names(
-                $namePrefix
-                . $routeParameters->get('name')
-            );
-            $updateRoute->name(
-                $namePrefix
-                . $routeParameters->get('name') . '.update'
-            );
-            $restoreRoute->name(
-                $namePrefix
-                . $routeParameters->get('name') . '.restore'
-            );
-        }
+        return $this;
     }
 
+    /**
+     * @return RouteHelper
+     */
+    public function mapStoreMethod(): RouteHelper
+    {
+        Route::post(
+            '/' . $this->name,
+            $this->controller . '@store'
+        )->withTrashed()
+            ->name(
+                $this->prefix
+                . $this->name
+                . '.store'
+            );
 
+        return $this;
+    }
+
+    /**
+     * @return RouteHelper
+     */
+    public function mapUpdateRoute(): RouteHelper
+    {
+        Route::patch(
+            '/'
+            . $this->name
+            . '/{'
+            . $this->uriParameter
+            . '?}',
+            $this->controller
+            . '@update'
+        )
+            ->name(
+                $this->prefix
+                . $this->name
+                . '.update'
+            );
+
+        return $this;
+    }
+
+    /**
+     * @return RouteHelper
+     */
+    public function mapDestroyRoute(): RouteHelper
+    {
+        Route::delete(
+            '/'
+            . $this->name
+            . '/{'
+            . $this->uriParameter
+            . '}/destroy',
+            $this->controller
+            . '@destroy'
+        )->withTrashed()
+            ->name(
+                $this->prefix
+                . $this->name
+                . '.destroy'
+            );
+
+        return $this;
+    }
+
+    /**
+     * @return RouteHelper
+     */
+    public function mapRestoreRoute(): RouteHelper
+    {
+        Route::post(
+            '/'
+            . $this->name
+            . '/{'
+            . $this->uriParameter
+            . '}/restore',
+            $this->controller
+            . '@restore'
+        )->withTrashed()
+            ->name(
+                $this->prefix
+                . $this->name
+                . '.restore'
+            );
+
+        return $this;
+    }
 }
