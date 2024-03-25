@@ -59,6 +59,7 @@ class ContractRepository extends CrudRepository
                     [
                         'updated_by_id' => Auth::user()->id,
                         'organization_id' => $validatedContract['organization_id'],
+                        'date' => $validatedContract['date'],
                         'number' => $validatedContract['number'],
                         'comment' => $validatedContract['comment'],
                         'is_valid' => isset($validatedContract['is_valid']) ? 1 : 0,
