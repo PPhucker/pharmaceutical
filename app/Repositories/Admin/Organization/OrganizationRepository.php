@@ -124,34 +124,30 @@ class OrganizationRepository extends CoreRepository
                     ->orderBy('abbreviation');
             },
             'placesOfBusiness' => static function ($query) {
-                $query
-                    ->orderBy('organizations_places_of_business.registered')
-                    ->orderByDesc('deleted_at');
+                $query->orderBy('deleted_at')
+                    ->orderBy('organizations_places_of_business.registered');
             },
             'bankAccountDetails' => static function ($query) {
                 $query->orderBy('deleted_at')
                     ->orderBy('organizations_bank_account_details.bank')
-                    ->orderByDesc('deleted_at')
                     ->with('bankClassifier');
             },
             'staff' => static function ($query) {
                 $query->orderBy('deleted_at')
                     ->orderBy('name')
-                    ->orderByDesc('deleted_at')
                     ->with('placeOfBusiness');
             },
             'drivers' => static function ($query) {
                 $query->orderBy('deleted_at')
-                    ->orderBy('name')
-                    ->orderByDesc('deleted_at');
+                    ->orderBy('name');
             },
             'cars' => static function ($query) {
-                $query->orderBy('car_model')
-                    ->orderByDesc('deleted_at');
+                $query->orderBy('deleted_at')
+                    ->orderBy('car_model');
             },
             'trailers' => static function ($query) {
-                $query->orderBy('type')
-                    ->orderByDesc('deleted_at');
+                $query->orderBy('deleted_at')
+                    ->orderBy('type');
             },
         ]);
 
