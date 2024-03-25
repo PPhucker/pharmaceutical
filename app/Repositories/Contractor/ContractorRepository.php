@@ -23,27 +23,47 @@ class ContractorRepository extends ResourceRepository
     public function getAll(bool $withTrashed = false): Collection
     {
         $contractors = $this->clone()
-            ->select(
-                [
-                    'id',
-                    'legal_form_type',
-                    'name',
-                    'INN',
-                    'OKPO',
-                    'contacts',
-                    'comment',
-                    'kpp',
-                    'deleted_at',
-                ]
-            );
+            ->select([
+                'id',
+                'legal_form_type',
+                'name',
+                'INN',
+                'OKPO',
+                'contacts',
+                'comment',
+                'kpp',
+                'deleted_at',
+            ]);
 
         if ($withTrashed) {
             $contractors->withTrashed();
         }
 
-        return $contractors->with('legalForm:abbreviation')
+        return $contractors
+            ->with([
+                'legalForm:abbreviation',
+                'contracts' => function ($query) {
+                    $query->with([
+                        'organization:id,legal_form_type,name'
+                    ])
+                        ->withoutTrashed()
+                        ->where('is_valid', 1)
+                        ->orderBy('date');
+                }
+            ])
             ->get()
-            ->sortBy('full_name');
+            ->map(function ($contractor) {
+                $contractor->contracts->each(function ($contract) {
+                    $contract->is_expired = $contract->isExpired();
+                });
+                return $contractor;
+            })
+            ->sortBy('full_name')
+            ->sortByDesc(
+                function ($contractor) {
+                    return [$contractor->contracts->count()];
+                }
+            );
     }
 
     /**
@@ -171,28 +191,35 @@ class ContractorRepository extends ResourceRepository
                         ->orderBy('abbreviation');
                 },
                 'placesOfBusiness' => static function ($query) {
-                    $query->orderByDesc('contractors_places_of_business.registered')
+                    $query->orderBy('deleted_at')
+                        ->orderByDesc('contractors_places_of_business.registered')
                         ->orderByDesc('contractors_places_of_business.address')
                         ->with('region');
                 },
                 'bankAccountDetails' => static function ($query) {
-                    $query->orderBy('contractors_bank_account_details.bank')
+                    $query->orderBy('deleted_at')
+                        ->orderBy('contractors_bank_account_details.bank')
                         ->with('bankClassifier');
                 },
                 'contactPersons' => static function ($query) {
-                    $query->orderByDesc('contractors_contact_persons.name');
+                    $query->orderBy('deleted_at')
+                        ->orderByDesc('contractors_contact_persons.name');
                 },
                 'drivers' => static function ($query) {
-                    $query->orderBy('name');
+                    $query->orderBy('deleted_at')
+                        ->orderBy('name');
                 },
                 'cars' => static function ($query) {
-                    $query->orderBy('car_model');
+                    $query->orderBy('deleted_at')
+                        ->orderBy('car_model');
                 },
                 'trailers' => static function ($query) {
-                    $query->orderBy('type');
+                    $query->orderBy('deleted_at')
+                        ->orderBy('type');
                 },
                 'contracts' => static function ($query) {
-                    $query->orderBy('date');
+                    $query->orderBy('deleted_at')
+                        ->orderBy('date');
                 },
             ]
         );
