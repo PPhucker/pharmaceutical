@@ -8,7 +8,7 @@
     <x-card
         :title="__('classifiers.nomenclature.services.services')">
         <x-form
-            :route="route('services.update', ['service' => $services->first()->id ?? 1])"
+            :route="route('services.update', ['service' => $services->first()->id ?? null])"
             formId="services_edit_form"
             method="PATCH">
             <x-data-table.table
@@ -17,6 +17,9 @@
                 type="index"
                 pageLength="15"
                 :domOrderType="true">
+                <x-slot name="filter">
+                    <x-data-table.filter.trashed-filter tableId="services_table"/>
+                </x-slot>
                 <x-data-table.head>
                     <x-data-table.th
                         class="col-md col-auto"
@@ -31,9 +34,9 @@
                         <x-data-table.tr
                             :model="$service">
                             <x-data-table.td>
-                                <input type="hidden"
-                                       name="services[{{$key}}][id]"
-                                       value="{{$service->id}}">
+                                <x-form.element.input type="hidden"
+                                                      name="services[{{$key}}][id]"
+                                                      value="{{$service->id}}"/>
                                 <x-form.element.input
                                     name="services[{{$key}}][name]"
                                     :value="$service->name"
@@ -54,7 +57,7 @@
                             <x-data-table.td>
                                 <x-data-table.button.soft-delete
                                     :trashed="$service->trashed()"
-                                    :id="$service->id"
+                                    id="service-{{$service->id}}"
                                     route="services"
                                     :params="['service' => $service->id]"/>
                             </x-data-table.td>

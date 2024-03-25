@@ -4,12 +4,15 @@ namespace App\Policies\Classifier\Nomenclature;
 
 use App\Models\Classifier\Nomenclature\Service;
 use App\Policies\CorePolicy;
+use App\Traits\Policy\SoftDeletesPolicy;
 
 /**
  * Политика услуги.
  */
 class ServicePolicy extends CorePolicy
 {
+    use SoftDeletesPolicy;
+
     /**
      * @return string
      */

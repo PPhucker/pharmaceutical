@@ -35,7 +35,8 @@ class ServiceRepository extends CrudRepository
                 'okei:code,symbol,unit'
             ]
         )
-            ->get();
+            ->get()
+            ->sortBy('deleted_at');
     }
 
     /**

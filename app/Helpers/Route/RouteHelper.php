@@ -180,4 +180,25 @@ class RouteHelper
 
         return $this;
     }
+
+    /**
+     * @return RouteHelper
+     */
+    public function mapIndexRoute(): RouteHelper
+    {
+        Route::get(
+            '/'
+            . $this->name
+            . '/',
+            $this->controller
+            . '@index'
+        )
+            ->name(
+                $this->prefix
+                . $this->name
+                . '.index'
+            );
+
+        return $this;
+    }
 }
