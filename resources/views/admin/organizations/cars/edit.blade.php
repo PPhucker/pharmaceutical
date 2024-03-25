@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('organization.cars.update')"
+                :route="route('organization.cars.update', ['car' => $organization->cars->first()->id ?: null])"
                 formId="cars_main_form"
                 method="PATCH">
                 <x-data-table.table

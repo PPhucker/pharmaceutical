@@ -21,6 +21,7 @@
                 <x-data-table.th
                     :text="__('contractors.kpp')"/>
                 <x-data-table.th/>
+                <x-data-table.th/>
             </x-data-table.head>
             <x-data-table.body>
                 @foreach($organizations as $key => $organization)
@@ -43,6 +44,13 @@
                             <x-data-table.button.edit
                                 route="{{route('organizations.edit', ['organization' => $organization->id])}}"
                                 disabled="{{$organization->trashed()}}"/>
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.soft-delete
+                                :trashed="$organization->trashed()"
+                                :id="$organization->id"
+                                route="organizations"
+                                :params="['organization' => $organization->id]"/>
                         </x-data-table.td>
                     </x-data-table.tr>
                 @endforeach

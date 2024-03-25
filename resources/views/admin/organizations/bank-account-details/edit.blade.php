@@ -14,7 +14,8 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('organization.bank_account_details.update')"
+                :route="route('organization.bank_account_details.update',
+                    ['bank_account_detail' => $organization->bankAccountDetails->first()->id ?: null])"
                 formId="account_details_main_form"
                 method="PATCH">
                 <x-data-table.table

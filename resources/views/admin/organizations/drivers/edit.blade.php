@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('organization.drivers.update')"
+                :route="route('organization.drivers.update', ['driver' => $organization->drivers->first()->id ?: null])"
                 formId="drivers_main_form"
                 method="PATCH">
                 <x-data-table.table
