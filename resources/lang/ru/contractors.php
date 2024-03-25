@@ -9,6 +9,7 @@ return [
     ],
     'organizations' => [
         'organizations' => 'Организации',
+        'organization' => 'Организация',
         'titles' => [
             'create' => 'Добавление новой организации'
         ]
@@ -64,7 +65,7 @@ return [
         'contract' => 'Договор',
         'organization_id' => 'Договор заключен с',
         'number' => 'Номер',
-        'date' => 'Дата',
+        'date' => 'Дата заключения',
         'comment' => 'Примечание',
         'is_valid' => 'ОК',
     ],

@@ -1,11 +1,14 @@
 <?php
 
+use App\Helpers\Route\RouteHelper;
 use App\Http\Controllers\Contractor\ContractController as Controller;
 
-Route::resource('contracts', Controller::class)
-    ->except(['create', 'edit', 'show', 'index']);
-Route::controller(Controller::class)->group(static function () {
-    Route::post('/contracts/{contract}/restore', 'restore')
-        ->name('contracts.restore')
-        ->withTrashed();
-});
+(new RouteHelper(
+    collect(
+        [
+            'controller' => Controller::class,
+            'name' => 'contracts',
+            'uriParameter' => 'contract',
+        ]
+    )
+))->mapWritableRoutes();
