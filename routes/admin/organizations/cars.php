@@ -3,7 +3,7 @@
 use App\Helpers\Route\RouteHelper;
 use App\Http\Controllers\Admin\Organization\Transport\CarController as Controller;
 
-RouteHelper::mapWritableRoutes(
+(new RouteHelper(
     collect(
         [
             'controller' => Controller::class,
@@ -12,4 +12,5 @@ RouteHelper::mapWritableRoutes(
             'prefix' => 'organization',
         ]
     )
-);
+))->mapWritableRoutes();
+

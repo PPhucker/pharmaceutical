@@ -4,7 +4,7 @@ use App\Helpers\Route\RouteHelper;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Organization\PlaceOfBusinessController as Controller;
 
-RouteHelper::mapWritableRoutes(
+(new RouteHelper(
     collect(
         [
             'controller' => Controller::class,
@@ -13,6 +13,6 @@ RouteHelper::mapWritableRoutes(
             'prefix' => 'organization',
         ]
     )
-);
+))->mapWritableRoutes();
 
 Route::get('/places_of_business/staff/{place_of_business}', [Controller::class, 'getStaff']);
