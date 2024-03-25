@@ -14,8 +14,7 @@
         </div>
         <div class="col-md-12">
             <x-form
-                :route="route('bank_account_details.update',
-                    ['bank_account_detail' => $contractor->bankAccountDetails->first()->id ?? 1])"
+                :route="route('bank_account_details.update', ['bank_account_detail' => $contractor->bankAccountDetails->first()->id ?? null])"
                 formId="account_details_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -38,9 +37,9 @@
                             <x-data-table.tr
                                 :model="$account">
                                 <x-slot name="hiddenInputs">
-                                    <input type="hidden"
-                                           name="bank_account_details[{{$key}}][id]"
-                                           value="{{$account->id}}">
+                                    <x-form.element.input type="hidden"
+                                                          name="bank_account_details[{{$key}}][id]"
+                                                          value="{{$account->id}}"/>
                                 </x-slot>
                                 <x-data-table.td
                                     class="text-start">
