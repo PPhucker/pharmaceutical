@@ -79,4 +79,20 @@ class Contract extends Model
         return Carbon::create($date)
             ->format('d.m.Y H:i:s');
     }
+
+    /**
+     * Проверяет, истек ли срок действия контракта.
+     *
+     * @return bool
+     */
+    public function isExpired(): bool
+    {
+        $currentDate = Carbon::now();
+
+        $creationDate = Carbon::parse($this->date);
+
+        $expirationDate = $creationDate->addYear();
+
+        return $currentDate->greaterThanOrEqualTo($expirationDate);
+    }
 }
