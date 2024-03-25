@@ -49,12 +49,19 @@ class OrganizationRepository extends CoreRepository
                             'date',
                         ]
                     )
+                        ->withoutTrashed()
                         ->where('is_valid', '=', 1)
                         ->orderBy('organization_id');
                 },
             ]
         )
             ->get()
+            /*->map(function ($organization) {
+                $organization->contracts->each(function ($contract) {
+                    $contract->is_expired = $contract->isExpired();
+                });
+                return $organization;
+            })*/
             ->sortBy('full_name');
     }
 
@@ -118,30 +125,33 @@ class OrganizationRepository extends CoreRepository
             },
             'placesOfBusiness' => static function ($query) {
                 $query
-                    ->orderBy('deleted_at')
-                    ->orderBy('organizations_places_of_business.registered');
+                    ->orderBy('organizations_places_of_business.registered')
+                    ->orderByDesc('deleted_at');
             },
             'bankAccountDetails' => static function ($query) {
                 $query->orderBy('deleted_at')
                     ->orderBy('organizations_bank_account_details.bank')
+                    ->orderByDesc('deleted_at')
                     ->with('bankClassifier');
             },
             'staff' => static function ($query) {
                 $query->orderBy('deleted_at')
                     ->orderBy('name')
+                    ->orderByDesc('deleted_at')
                     ->with('placeOfBusiness');
             },
             'drivers' => static function ($query) {
                 $query->orderBy('deleted_at')
-                    ->orderBy('name');
+                    ->orderBy('name')
+                    ->orderByDesc('deleted_at');
             },
             'cars' => static function ($query) {
-                $query->orderBy('deleted_at')
-                    ->orderBy('car_model');
+                $query->orderBy('car_model')
+                    ->orderByDesc('deleted_at');
             },
             'trailers' => static function ($query) {
-                $query->orderBy('deleted_at')
-                    ->orderBy('type');
+                $query->orderBy('type')
+                    ->orderByDesc('deleted_at');
             },
         ]);
 
