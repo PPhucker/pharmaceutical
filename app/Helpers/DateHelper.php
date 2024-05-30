@@ -4,36 +4,30 @@ namespace App\Helpers;
 
 use DateInterval;
 use DatePeriod;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
- * Класс-помощник для работы с датами и интервалами дат.
+ * Класс для работы с датами и интервалами дат.
  */
 class DateHelper
 {
     /**
      * Получить начальную и конечную дату интервала.
      *
-     * @param Request $request
-     * @param string  $defaultInterval
+     * @param array  $validated
+     * @param string $defaultInterval Интервал по умолчанию (по умолчанию 1 день).
      *
      * @return Collection
      */
     public static function getDateRange(
-        Request $request,
+        array $validated,
         string $defaultInterval = '1 day'
     ): Collection {
-        $startDate = $request->input(
-            'start_date',
-            Carbon::now()->sub($defaultInterval)->format('Y-m-d')
-        );
-
-        $endDate = $request->input(
-            'end_date',
-            Carbon::now()->format('Y-m-d')
-        );
+        $startDate = $validated['start_date']
+            ?? Carbon::now()->sub($defaultInterval)->format('Y-m-d');
+        $endDate = $validated['end_date']
+            ?? Carbon::now()->format('Y-m-d');
 
         return collect([
             'start_date' => $startDate,
