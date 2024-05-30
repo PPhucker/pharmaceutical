@@ -2,32 +2,59 @@
 
 namespace App\Repositories\Classifier\Nomenclature\Material;
 
-use App\Models\Classifier\Nomenclature\Materials\TypeOfMaterial as Model;
-use App\Repositories\CoreRepository;
-use Illuminate\Support\Collection;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
+use App\Models\Classifier\Nomenclature\Material\TypeOfMaterial;
+use App\Repositories\CrudRepository;
+use Illuminate\Database\Eloquent\Collection;
 
-class TypeOfMaterialRepository extends CoreRepository
+/**
+ * Репозиторий типа комплектующего.
+ */
+class TypeOfMaterialRepository extends CrudRepository
 {
-
-    /**
-     * @return string
-     */
-    protected function getModelClass()
-    {
-        return Model::class;
-    }
-
     /**
      * @return Collection
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this->clone()
             ->orderBy('name')
             ->get();
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return TypeOfMaterial
+     */
+    public function create(array $validated): TypeOfMaterial
+    {
+        return $this->model->create(
+            ['name' => $validated['name'],]
+        );
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return void
+     */
+    public function update($model, array $validated): void
+    {
+        foreach ($validated as $validatedType) {
+            $this->model->findOrFail((int)$validatedType['id'])
+                ->fill(
+                    ['name' => $validatedType['name'],]
+                )
+                ->save();
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getModelClass(): string
+    {
+        return TypeOfMaterial::class;
     }
 }

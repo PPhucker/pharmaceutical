@@ -2,64 +2,27 @@
 
 namespace App\Policies\Classifier\Nomenclature\Material;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
+use App\Models\Classifier\Nomenclature\Material\TypeOfMaterial;
+use App\Policies\CorePolicy;
 
-class TypeOfMaterialPolicy
+/**
+ * Политика типа комплектующего.
+ */
+class TypeOfMaterialPolicy extends CorePolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'planning',
-    ];
-
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function viewAny(User $user)
+    protected function getModelClass(): string
     {
-        return $user->hasRole(self::ROLES);
+        return TypeOfMaterial::class;
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function view(User $user)
+    protected function getRoles(): array
     {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user)
-    {
-        return $user->hasRole(self::ROLES);
+        return config('roles.classifier.nomenclature.material', ['admin']);
     }
 }

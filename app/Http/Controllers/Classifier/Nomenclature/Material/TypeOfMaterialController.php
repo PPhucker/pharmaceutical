@@ -3,29 +3,29 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Material;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Materials\TypeOfMaterial\StoreTypeOfMaterialRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Materials\TypeOfMaterial\UpdateTypeOfMaterialRequest;
-use App\Models\Classifier\Nomenclature\Materials\TypeOfMaterial;
-use App\Repositories\Classifier\Nomenclature\Material\TypeOfMaterialRepository;
+use App\Http\Requests\Classifier\Nomenclature\Material\TypeOfMaterial\StoreTypeOfMaterialRequest;
+use App\Http\Requests\Classifier\Nomenclature\Material\TypeOfMaterial\UpdateTypeOfMaterialRequest;
+use App\Models\Classifier\Nomenclature\Material\TypeOfMaterial;
+use App\Services\Classifier\Nomenclature\Matireal\TypeOfMaterialService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер типа комплектующих.
+ */
 class TypeOfMaterialController extends CoreController
 {
     /**
-     * @return void
+     * @var TypeOfMaterialService
      */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(TypeOfMaterial::class, 'types_of_material');
-    }
+    private $service;
 
     /**
-     * @return string
+     * @param TypeOfMaterialService $service
      */
-    protected function getRepository()
+    public function __construct(TypeOfMaterialService $service)
     {
-        return TypeOfMaterialRepository::class;
+        $this->service = $service;
     }
 
     /**
@@ -33,13 +33,11 @@ class TypeOfMaterialController extends CoreController
      *
      * @return View
      */
-    public function index()
+    public function index(): View
     {
-        $typesOfMaterials = $this->repository->getAll();
-
         return view(
             'classifiers.nomenclature.materials.types-of-materials.index',
-            compact('typesOfMaterials')
+            $this->service->getIndexData()
         );
     }
 
@@ -50,54 +48,32 @@ class TypeOfMaterialController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreTypeOfMaterialRequest $request)
+    public function store(StoreTypeOfMaterialRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['type_of_material'];
-
-        $typeOfMaterial = TypeOfMaterial::create(
-            [
-                'name' => $validated['name'],
-            ]
+        $this->service->create(
+            $request->validated()['type_of_material']
         );
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.materials.types_of_materials.actions.create.success',
-                    ['name' => $typeOfMaterial->name]
-                )
-            );
+        return $this->successRedirect();
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param UpdateTypeOfMaterialRequest $request
-     * @param TypeOfMaterial|null         $types_of_material
+     * @param TypeOfMaterial              $typeOfMaterial
      *
      * @return RedirectResponse
      */
     public function update(
         UpdateTypeOfMaterialRequest $request,
-        TypeOfMaterial $types_of_material = null
-    ) {
-        $validated = $request->validated();
+        TypeOfMaterial $typeOfMaterial
+    ): RedirectResponse {
+        $this->service->update(
+            $typeOfMaterial,
+            $request->validated()['types_of_materials']
+        );
 
-        foreach ($validated['types_of_materials'] as $type) {
-            TypeOfMaterial::find((int)$type['id'])
-                ->fill(
-                    [
-                        'name' => $type['name'],
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.materials.types_of_materials.actions.update.success')
-            );
+        return $this->successRedirect();
     }
 }
