@@ -7,6 +7,7 @@
        @if($required) required @endif
        @if($readonly) readonly @endif
        @if($checked) checked @endif
+       @if($disabled) disabled @endif
        @if($min) minlength="{{$min}}" @endif
        @if($max) maxlength="{{$max}}" @endif>
 <span class="d-none">{{$value}}</span>

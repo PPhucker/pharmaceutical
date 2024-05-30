@@ -38,7 +38,7 @@ const FormUtils = {
         event.preventDefault();
 
         const formId = route + '-destroy-form-' + id;
-        const buttonId = 'destroy-href-' + id;
+        const buttonId = route + '-destroy-href-' + id;
 
         this.spinner(
             buttonId,
