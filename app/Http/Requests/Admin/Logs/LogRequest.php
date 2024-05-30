@@ -31,7 +31,15 @@ class LogRequest extends CoreFormRequest
                 'nullable',
                 'string',
                 'max: 100',
-            ]
+            ],
+            'start_date' => [
+                'nullable',
+                'date',
+            ],
+            'end_date' => [
+                'nullable',
+                'date',
+            ],
         ];
     }
 

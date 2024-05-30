@@ -213,7 +213,8 @@ class LogManager
                         [
                             $attributesKey => [
                                 'table' => $relations ? $relations['table'] : null,
-                                'id' => $relations ? $relations['id'] : null
+                                'id' => $relations ? $relations['id'] : null,
+                                'quantity' => $relations ? $relations['quantity'] : null,
                             ]
                         ]
                     );

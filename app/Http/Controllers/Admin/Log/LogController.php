@@ -37,7 +37,7 @@ class LogController extends Controller
     {
         $validated = $request->validated();
 
-        $date = (new DateHelper())->getDateRange($request);
+        $date = (new DateHelper())->getDateRange($validated);
 
         $startDate = $date->get('start_date');
         $endDate = $date->get('end_date');
