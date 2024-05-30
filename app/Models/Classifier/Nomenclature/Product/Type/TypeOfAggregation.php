@@ -40,4 +40,12 @@ class TypeOfAggregation extends Model
         )
             ->withPivot('product_quantity');
     }
+
+    /**
+     * @return string
+     */
+    public function getNameWithCodeAttribute(): string
+    {
+        return $this->code . ' - ' . $this->name;
+    }
 }

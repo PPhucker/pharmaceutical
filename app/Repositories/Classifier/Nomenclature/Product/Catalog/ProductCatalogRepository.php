@@ -2,120 +2,92 @@
 
 namespace App\Repositories\Classifier\Nomenclature\Product\Catalog;
 
-use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog as Model;
+use App\Models\Admin\Organization\PlaceOfBusiness;
+use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
-use App\Repositories\Admin\Organization\OrganizationRepository;
-use App\Repositories\Admin\Organization\PlaceOfBusinessRepository;
-use App\Repositories\Classifier\Nomenclature\Material\MaterialRepository;
-use App\Repositories\Classifier\Nomenclature\Product\Type\TypeOfAggregationRepository;
-use App\Repositories\CoreRepository;
+use App\Repositories\ResourceRepository;
+use App\Traits\Classifier\Nomenclature\Product\Catalog\Repository\AggregationTypeRepositoryTrait;
+use Auth;
 use Illuminate\Database\Eloquent\Collection;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Репозиторий готовой продукции.
  */
-class ProductCatalogRepository extends CoreRepository
+class ProductCatalogRepository extends ResourceRepository
 {
+    use AggregationTypeRepositoryTrait;
+
     /**
      * @param int $id
      *
-     * @return \Illuminate\Support\Collection
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @return ProductCatalog
      */
-    public function getForEdit(int $id): \Illuminate\Support\Collection
+    public function getForEdit(int $id): ProductCatalog
     {
-        $product = $this->model::find($id);
-
-        $product->load(
-            [
-                'user' => static function ($query) {
-                    $query->select(['id', 'name'])
+        return $this->model
+            ->findOrFail($id)
+            ->load([
+                'user' => function ($query) {
+                    $query->select('id', 'name')
                         ->orderBy('name');
                 },
-                'endProduct' => static function ($query) {
-                    $query->select('*')
-                        ->orderBy('full_name');
+                'endProduct' => function ($query) {
+                    $query->orderBy('full_name');
                 },
-                'materials' => static function ($query) {
-                    $query->select(
-                        [
-                            'id',
-                            'type_id',
-                            'okei_code',
-                            'name'
-                        ]
-                    )
-                        ->withoutTrashed()
+                'materials' => function ($query) {
+                    $query->select('id', 'type_id', 'okei_code', 'name')
                         ->orderBy('type_id')
                         ->orderBy('name')
                         ->with('okei:code,symbol')
-                        ->get();
+                        ->withoutTrashed();
                 },
-                'aggregationTypes' => static function ($query) {
-                    $query->select(
-                        [
-                            'code',
-                            'name',
-                        ]
-                    )
+                'aggregationTypes' => function ($query) {
+                    $query->select('code', 'name')
                         ->orderBy('code');
                 },
-                'prices' => static function ($query) {
-                    $query->select('*')
-                        ->with('organization:id,name')
-                        ->orderBy('organization_id')
-                        ->get();
+                'prices' => function ($query) {
+                    $query->with('organization:id,name')
+                        ->orderBy('organization_id');
                 },
-                'regionalAllowances' => static function ($query) {
+                'regionalAllowances' => function ($query) {
                     $query->orderBy('region_id');
                 }
-            ]
-        );
-
-        return collect(
-            [
-                'product' => $product,
-                'end_products' => (new EndProductRepository())
-                    ->getAll(false),
-                'materials' => (new MaterialRepository())
-                    ->getAll(false),
-                'aggregation_types' => (new TypeOfAggregationRepository())
-                    ->getAll(false),
-                'places_of_business' => (new PlaceOfBusinessRepository())
-                    ->getAll(false),
-                'organizations' => (new OrganizationRepository())
-                    ->getAll(false),
-            ]
-        );
+            ]);
     }
 
+
     /**
+     * @param bool $withTrashed
+     *
      * @return Collection
      */
-    public function getAll(): Collection
+    public function getAll(bool $withTrashed = false): Collection
     {
-        return $this->clone()
-            ->select(
-                [
-                    'product_catalog.id',
-                    'product_catalog.organization_id',
-                    'product_catalog.place_of_business_id',
-                    'product_catalog.product_id',
-                    'product_catalog.GTIN',
-                    'product_catalog.deleted_at',
-                ]
-            )
-            ->withTrashed()
-            ->with('endProduct:id,full_name')
-            ->with('organization:id,name')
-            ->with('placeOfBusiness:id,address')
-            ->with('prices')
+        $productCatalog = $this->clone()
+            ->select([
+                'id',
+                'organization_id',
+                'place_of_business_id',
+                'product_id',
+                'GTIN',
+                'deleted_at',
+            ]);
+
+        if ($withTrashed) {
+            $productCatalog->withTrashed();
+        }
+
+        return $productCatalog->with([
+            'endProduct:id,full_name',
+            'organization:id,name,legal_form_type',
+            'placeOfBusiness:id,address',
+            'prices'
+        ])
             ->get()
-            ->sortBy('endProduct.full_name')
-            ->sortBy('organization.name');
+            ->sortBy([
+                'place_of_production',
+                'endProduct.full_name',
+            ]);
     }
 
     /**
@@ -127,20 +99,26 @@ class ProductCatalogRepository extends CoreRepository
     public function getProductCatalog(float $nds = 0, array $invoiceProducts = []): Collection
     {
         $catalog = $this->clone()
-            ->select(
-                [
-                    'product_catalog.id',
-                    'product_catalog.organization_id',
-                    'product_catalog.place_of_business_id',
-                    'product_catalog.product_id',
-                    'product_catalog.GTIN',
-                ]
-            );
+            ->select([
+                'id',
+                'organization_id',
+                'place_of_business_id',
+                'product_id',
+                'GTIN',
+            ])
+            ->with([
+                'endProduct' => function ($query) {
+                    $query->select('id', 'short_name', 'full_name', 'type_id')
+                        ->with('type:id,color');
+                },
+                'organization:id,name',
+                'placeOfBusiness:id,address',
+            ]);
 
         if ($nds) {
             $catalog->whereHas(
                 'prices',
-                static function ($query) use ($nds) {
+                function ($query) use ($nds) {
                     $query->where('nds', '=', $nds);
                 }
             );
@@ -150,29 +128,11 @@ class ProductCatalogRepository extends CoreRepository
             $catalog->whereNotIn('product_catalog.id', $invoiceProducts);
         }
 
-        $catalog->with(
-            [
-                'endProduct' => static function ($query) {
-                    $query->select(
-                        'id',
-                        'short_name',
-                        'full_name',
-                        'type_id',
-                    )
-                        ->with('type:id,color');
-                },
-            ]
-        );
-
-        return $catalog->with(
-            [
-                'organization:id,name',
-                'placeOfBusiness:id,address',
-            ]
-        )
+        return $catalog
             ->get()
             ->sortBy('endProduct.full_name');
     }
+
 
     /**
      * @param InvoiceForPayment $invoiceForPayment
@@ -191,44 +151,68 @@ class ProductCatalogRepository extends CoreRepository
         $priceList = $productCatalog->prices->where(
             'organization_id',
             $invoiceForPayment->organization_id
-        )
-            ->first();
+        )->first();
 
-        $price = 0;
+        $price = $priceList ? ($quantity >= $priceList->trade_quantity && $priceList->trade_price
+            ? $priceList->trade_price
+            : $priceList->retail_price) : 0;
 
-        $nds = $priceList ? $priceList->nds : 0;
+        $nds = $priceList->nds ?? 0;
 
         $regionalAllowance = $productCatalog->regionalAllowances
-            ->where(
-                'product_catalog_id',
-                $productCatalogId
-            )
-            ->where(
-                'region_id',
-                $invoiceForPayment->contractorPlaceOfBusiness->region_id
-            )
+            ->where('product_catalog_id', $productCatalogId)
+            ->where('region_id', $invoiceForPayment->contractorPlaceOfBusiness->region_id)
             ->first();
 
         $allowance = $regionalAllowance ? $regionalAllowance->allowance : 0;
 
-        if (!$priceList) {
-            return collect(
-                compact('price', 'nds', 'allowance')
-            );
-        }
+        return collect(compact('price', 'nds', 'allowance'));
+    }
 
-        /**
-         * Если кол-во в документе больше или равно оптовому кол-ву в прайсе и существует оптовая цена
-         */
-        if ($quantity >= $priceList->trade_quantity && $priceList->trade_price) {
-            $price = $priceList->trade_price;
-        } else {
-            $price = $priceList->retail_price;
-        }
-
-        return collect(
-            compact('price', 'nds', 'allowance')
+    /**
+     * @param array $validated
+     *
+     * @return ProductCatalog
+     */
+    public function create(array $validated): ProductCatalog
+    {
+        return $this->model->create(
+            $this->getFilled($validated)
         );
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return array
+     */
+    protected function getFilled(array $validated): array
+    {
+        $placeOfBusinessId = (int)$validated['place_of_business_id'];
+
+        return [
+            'user_id' => Auth::user()->id,
+            'product_id' => (int)$validated['product_id'],
+            'organization_id' => PlaceOfBusiness::find($placeOfBusinessId)->organization_id,
+            'place_of_business_id' => $placeOfBusinessId,
+            'GTIN' => $validated['GTIN'],
+        ];
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return ProductCatalog
+     */
+    public function update($model, array $validated): ProductCatalog
+    {
+        $model->fill(
+            $this->getFilled($validated)
+        )
+            ->save();
+
+        return $model;
     }
 
     /**
@@ -236,6 +220,6 @@ class ProductCatalogRepository extends CoreRepository
      */
     protected function getModelClass(): string
     {
-        return Model::class;
+        return ProductCatalog::class;
     }
 }

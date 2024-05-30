@@ -18,8 +18,8 @@ Route::controller(Controller::class)
             ->name('product_catalog.attach_aggregation_type');
         Route::patch('/product_catalog/{product_catalog}/detach_aggregation_type', 'detachAggregationType')
             ->name('product_catalog.detach_aggregation_type');
-        Route::patch('/product_catalog/{product_catalog}/update_product_quantity', 'updateProductQuantity')
+        Route::patch('/product_catalog/{product_catalog}/update_product_quantity', 'updateAggregationTypeProductQuantity')
             ->name('product_catalog.update_product_quantity');
-        Route::get('/product_catalog/{product_catalog}/statistic', 'statistic')
+        Route::get('/product_catalog/{product_catalog}/statistic', 'salesStatisticsByContracor')
             ->name('product_catalog.statistic');
     });
