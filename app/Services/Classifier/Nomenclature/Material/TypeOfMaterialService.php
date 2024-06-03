@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Classifier\Nomenclature\Matireal;
+namespace App\Services\Classifier\Nomenclature\Material;
 
 use App\Services\Classifier\Nomenclature\Product\Type\TypeService;
 

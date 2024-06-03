@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifier\Nomenclature\Product\Price\Relation;
+namespace App\Traits\Classifier\Nomenclature\Product\Catalog\Relation;
 
 use App\Models\Classifier\Nomenclature\Product\Catalog\Price\ProductPrice;
 use Illuminate\Database\Eloquent\Relations\HasMany;
