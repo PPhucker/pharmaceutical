@@ -2,21 +2,21 @@
 
 namespace App\Repositories\Classifier\Nomenclature\Material;
 
-use App\Models\Classifier\Nomenclature\Materials\Material as Model;
-use App\Repositories\CoreRepository;
+use App\Models\Classifier\Nomenclature\Material\Material;
+use App\Repositories\ResourceRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
-class MaterialRepository extends CoreRepository
+/**
+ * Репозиторий комплектующих.
+ */
+class MaterialRepository extends ResourceRepository
 {
-
     /**
+     * @param bool $withTrashed
+     *
      * @return Collection
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function getAll(bool $withTrashed = true)
+    public function getAll(bool $withTrashed = false): Collection
     {
         $materials = $this->clone()
             ->orderBy('type_id')
@@ -24,44 +24,11 @@ class MaterialRepository extends CoreRepository
 
         if ($withTrashed) {
             $materials->withTrashed();
-        } else {
-            $materials->withoutTrashed();
         }
+
         return $materials->with('type:id,name')
             ->with('okei:code,symbol')
             ->get();
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getForEndProduct()
-    {
-        return $this->clone()
-            ->orderBy('type_id')
-            ->orderBy('name')
-            ->with('type:id,name')
-            ->with('okei:code,symbol')
-            ->get();
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return Collection
-     */
-    public function getById(int $id)
-    {
-        $material = $this->clone()->find($id);
-
-        $material->load(
-            [
-                'type',
-                'okei',
-            ]
-        );
-
-        return $material;
     }
 
     /**
@@ -69,40 +36,88 @@ class MaterialRepository extends CoreRepository
      * @param array $invoiceProducts
      *
      * @return Collection
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function getMaterialCatalog(float $nds = 0, array $invoiceProducts = [])
+    public function getMaterialCatalog(float $nds = 0, array $invoiceProducts = []): Collection
     {
-        $catalog = $this->clone()
+        return $this->clone()
             ->select(
                 [
-                    'classifier_materials.id',
-                    'classifier_materials.name',
-                    'classifier_materials.price',
-                    'classifier_materials.nds',
+                    'id',
+                    'name',
+                    'price',
+                    'nds',
                 ]
-            );
-
-        if ($nds) {
-            $catalog->where('classifier_materials.nds', '=', $nds);
-        }
-
-        if ($invoiceProducts) {
-            $catalog->whereNotIn('classifier_materials.id', $invoiceProducts);
-        }
-
-        return $catalog
+            )
+            ->nds($nds)
+            ->without($invoiceProducts)
             ->orderBy('type_id')
             ->orderBy('name')
             ->get();
     }
 
     /**
+     * @param array $validated
+     *
+     * @return Material
+     */
+    public function create(array $validated): Material
+    {
+        return $this->model->create(
+            $this->getFilled($validated)
+        );
+    }
+
+    /**
+     * @param array $validated
+     *
+     * @return array
+     */
+    protected function getFilled(array $validated): array
+    {
+        return [
+            'type_id' => (int)$validated['type_id'],
+            'okei_code' => (int)$validated['okei_code'],
+            'name' => $validated['name'],
+            'nds' => (int)$validated['nds'] / 100,
+            'price' => (float)$validated['price'],
+        ];
+    }
+
+    /**
+     * @param       $model
+     * @param array $validated
+     *
+     * @return void
+     */
+    public function update($model, array $validated): void
+    {
+        $model->fill(
+            $this->getFilled($validated)
+        )
+            ->save();
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return Material
+     */
+    public function getForEdit(int $id): Material
+    {
+        return $this->model->findOrFail($id)
+            ->load(
+                [
+                    'type:id,name',
+                    'okei:code,symbol',
+                ]
+            );
+    }
+
+    /**
      * @return string
      */
-    protected function getModelClass()
+    protected function getModelClass(): string
     {
-        return Model::class;
+        return Material::class;
     }
 }

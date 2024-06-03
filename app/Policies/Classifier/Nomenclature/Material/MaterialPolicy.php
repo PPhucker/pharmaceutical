@@ -2,87 +2,21 @@
 
 namespace App\Policies\Classifier\Nomenclature\Material;
 
-use App\Models\Auth\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Classifier\Nomenclature\Material\Material;
+use App\Traits\Policy\SoftDeletesPolicy;
 
-class MaterialPolicy
+/**
+ * Политика комплектующего.
+ */
+class MaterialPolicy extends TypeOfMaterialPolicy
 {
-    use HandlesAuthorization;
-
-    private const ROLES = [
-        'marketing',
-        'planning',
-    ];
+    use SoftDeletesPolicy;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param User $user
-     *
-     * @return bool
+     * @inheritDoc
      */
-    public function viewAny(User $user)
+    protected function getModelClass(): string
     {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function view(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function create(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function update(User $user)
-    {
-        return $user->hasRole(self::ROLES);
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function delete(User $user)
-    {
-        return $user->canDelete();
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function restore(User $user)
-    {
-        return $user->canRestore();
+        return Material::class;
     }
 }

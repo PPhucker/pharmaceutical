@@ -3,35 +3,44 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Material;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Materials\StoreMaterialRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Materials\UpdateMaterialRequest;
-use App\Models\Classifier\Nomenclature\Materials\Material;
-use App\Repositories\Classifier\Nomenclature\Material\MaterialRepository;
-use App\Repositories\Classifier\Nomenclature\Material\TypeOfMaterialRepository;
-use App\Repositories\Classifier\Nomenclature\OKEIRepository;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
+use App\Http\Requests\Classifier\Nomenclature\Material\StoreMaterialRequest;
+use App\Http\Requests\Classifier\Nomenclature\Material\UpdateMaterialRequest;
+use App\Models\Classifier\Nomenclature\Material\Material;
+use App\Services\Classifier\Nomenclature\Material\MaterialService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 
+/**
+ * Контроллер комплектующего.
+ */
 class MaterialController extends CoreController
 {
+    private const VIEW_PREFIX = 'classifiers.nomenclature.materials.';
+
+    /**
+     * @var MaterialService
+     */
+    private $service;
+
+    /**
+     * @param MaterialService $service
+     */
+    public function __construct(MaterialService $service)
+    {
+        $this->service = $service;
+        $this->authorizeResource(Material::class, 'material');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function index()
+    public function index(): View
     {
-        $materials = $this->repository->getAll();
-
         return view(
-            'classifiers.nomenclature.materials.index',
-            compact('materials')
+            self::VIEW_PREFIX . 'index',
+            $this->service->getIndexData()
         );
     }
 
@@ -42,63 +51,36 @@ class MaterialController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function store(StoreMaterialRequest $request)
+    public function store(StoreMaterialRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        $material = Material::create(
-            [
-                'type_id' => $validated['type_id'],
-                'okei_code' => $validated['okei_code'],
-                'name' => $validated['name'],
-                'price' => (float)$validated['price'],
-                'nds' => (float)((int)$validated['nds'] / 100),
-            ]
+        $this->service->create(
+            $request->validated()
         );
 
-        return redirect()
-            ->route('materials.index')
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.materials.actions.create.success',
-                    ['name' => $material->name]
-                )
-            );
+        return $this->successRedirect('materials.index');
     }
 
     /**
      * @return View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
      */
-    public function create()
+    public function create(): View
     {
-        $okeiClassifier = (new OKEIRepository())->getAll();
-        $typesOfMaterials = (new TypeOfMaterialRepository())->getAll();
-
         return view(
-            'classifiers.nomenclature.materials.create',
-            compact('okeiClassifier', 'typesOfMaterials')
+            self::VIEW_PREFIX . 'create',
+            $this->service->getCreateData()
         );
     }
 
     /**
      * @param Material $material
      *
-     * @return Application|Factory|View
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
+     * @return View
      */
-    public function edit(Material $material)
+    public function edit(Material $material): View
     {
-        $material = $this->repository->getById($material->id);
-        $okeiClassifier = (new OKEIRepository())->getAll();
-        $typesOfMaterials = (new TypeOfMaterialRepository())->getAll();
-
         return view(
-            'classifiers.nomenclature.materials.edit',
-            compact('material', 'okeiClassifier', 'typesOfMaterials')
+            self::VIEW_PREFIX . 'edit',
+            $this->service->getEditData($material)
         );
     }
 
@@ -110,29 +92,14 @@ class MaterialController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function update(UpdateMaterialRequest $request, Material $material)
+    public function update(UpdateMaterialRequest $request, Material $material): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->service->update(
+            $material,
+            $request->validated()
+        );
 
-        $material->fill(
-            [
-                'type_id' => $validated['type_id'],
-                'okei_code' => $validated['okei_code'],
-                'name' => $validated['name'],
-                'price' => (float)$validated['price'],
-                'nds' => (float)((int)$validated['nds'] / 100),
-            ]
-        )
-            ->save();
-
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.materials.actions.update.success',
-                    ['name' => $material->name]
-                )
-            );
+        return $this->successRedirect();
     }
 
     /**
@@ -142,18 +109,11 @@ class MaterialController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function destroy(Material $material)
+    public function destroy(Material $material): RedirectResponse
     {
-        $material->delete();
+        $this->service->delete($material);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.materials.actions.delete.success',
-                    ['name' => $material->name]
-                )
-            );
+        return $this->successRedirect();
     }
 
     /**
@@ -163,33 +123,10 @@ class MaterialController extends CoreController
      *
      * @return RedirectResponse
      */
-    public function restore(Material $material)
+    public function restore(Material $material): RedirectResponse
     {
-        $material->restore();
+        $this->service->restore($material);
 
-        return back()
-            ->with(
-                'success',
-                __(
-                    'classifiers.nomenclature.materials.actions.restore.success',
-                    ['name' => $material->name]
-                )
-            );
-    }
-
-    /**
-     * @return void
-     */
-    protected function authorizeActions()
-    {
-        $this->authorizeResource(Material::class, 'material');
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRepository()
-    {
-        return MaterialRepository::class;
+        return $this->successRedirect();
     }
 }

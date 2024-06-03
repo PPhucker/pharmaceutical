@@ -3,7 +3,7 @@
 namespace App\Observers\Classifier\Nomenclature\Material;
 
 use App\Logging\Logger;
-use App\Models\Classifier\Nomenclature\Materials\Material;
+use App\Models\Classifier\Nomenclature\Material\Material;
 
 class MaterialObserver
 {
