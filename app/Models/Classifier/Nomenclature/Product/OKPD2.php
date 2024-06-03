@@ -26,4 +26,12 @@ class OKPD2 extends Model
         'code',
         'name',
     ];
+
+    /**
+     * @return string
+     */
+    public function getNameWithCodeAttribute(): string
+    {
+        return $this->name . ' - ' . $this->code;
+    }
 }
