@@ -27,6 +27,8 @@ class Input extends FormElement
 
     public $checked;
 
+    public $disabled;
+
     public $errorName;
 
     public $min;
@@ -39,7 +41,7 @@ class Input extends FormElement
      * @return void
      */
     public function __construct(
-        string $name,
+        string $name = null,
         string $value = null,
         string $id = null,
         string $type = 'text',
@@ -49,17 +51,19 @@ class Input extends FormElement
         string $max = null,
         bool $required = null,
         bool $readonly = null,
-        bool $checked = null
+        bool $checked = null,
+        bool $disabled = null
     ) {
-        $this->name = $name;
-        $this->errorName = $this->transformBracketedName($name);
-        $this->value = $value ?? old($this->transformBracketedName($name));
         $this->id = $id;
+        $this->name = $name ?: $id;
+        $this->errorName = $this->transformBracketedName($this->name);
+        $this->value = $value ?? old($this->transformBracketedName($this->name));
         $this->type = $type;
         $this->class = $class;
         $this->required = $required;
         $this->readonly = $readonly;
         $this->checked = $checked;
+        $this->disabled = $disabled;
         $this->max = $max;
         $this->min = $min;
     }
