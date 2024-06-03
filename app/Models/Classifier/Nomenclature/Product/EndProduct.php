@@ -67,6 +67,16 @@ class EndProduct extends Model
     }
 
     /**
+     * @return string
+     */
+    public function getMarkingFormattedStatusAttribute(): string
+    {
+        return $this->marking
+            ? __('classifiers.nomenclature.products.marking.yes')
+            : __('classifiers.nomenclature.products.marking.no');
+    }
+
+    /**
      * @return HasMany
      */
     public function catalogProducts(): HasMany
