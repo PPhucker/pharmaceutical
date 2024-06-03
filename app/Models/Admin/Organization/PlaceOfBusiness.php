@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Модель места осуществления деятельности контрагента.
+ * Модель места осуществления деятельности организации.
  */
 class PlaceOfBusiness extends ContractorPlaceOfBusiness
 {
@@ -41,5 +41,13 @@ class PlaceOfBusiness extends ContractorPlaceOfBusiness
     {
         return $this->hasMany(Staff::class, 'organization_place_of_business_id')
             ->withoutTrashed();
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddressWithOrganizationAttribute(): string
+    {
+        return $this->organization->full_name . ' - ' . $this->address;
     }
 }
