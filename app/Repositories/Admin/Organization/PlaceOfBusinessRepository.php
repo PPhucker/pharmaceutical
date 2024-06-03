@@ -3,6 +3,7 @@
 namespace App\Repositories\Admin\Organization;
 
 use App\Models\Admin\Organization\PlaceOfBusiness;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\Contractor\Address\PlaceOfBusinessRepository as ContractorPlaceOfBusinessRepository;
 
@@ -11,6 +12,27 @@ use App\Repositories\Contractor\Address\PlaceOfBusinessRepository as ContractorP
  */
 class PlaceOfBusinessRepository extends ContractorPlaceOfBusinessRepository
 {
+    /**
+     * @param bool $withTrashed
+     *
+     * @return Collection
+     */
+    public function getAll(bool $withTrashed = false): Collection
+    {
+        $places = $this->clone();
+
+        if ($withTrashed) {
+            $places->withTrashed();
+        }
+
+        return $places
+            ->with([
+                'organization:id,name,legal_form_type',
+            ])
+            ->orderBy('registered')
+            ->get();
+    }
+
     /**
      * @param       $model
      * @param array $validated
