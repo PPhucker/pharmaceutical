@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits\Classifiers\Nomenclature\Products;
+namespace App\Traits\Classifier\Nomenclature\Relation\Material;
 
 use App\Logging\Logger;
 use App\Models\Classifier\Nomenclature\Material\Material;
