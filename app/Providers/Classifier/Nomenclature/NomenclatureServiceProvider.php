@@ -6,6 +6,7 @@ use App\Models\Classifier\Nomenclature\OKEI;
 use App\Models\Classifier\Nomenclature\Service;
 use App\Observers\CoreObserver;
 use App\Providers\Classifier\Nomenclature\Catalog\ProductCatalogServiceProvider;
+use App\Providers\Classifier\Nomenclature\Material\MaterialSeriviceProvider;
 use App\Services\Classifier\Nomenclature\OKEIService;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +18,7 @@ class NomenclatureServiceProvider extends ServiceProvider
     protected $providers = [
         EndProductServiceProvider::class,
         ProductCatalogServiceProvider::class,
+        MaterialSeriviceProvider::class,
     ];
 
     /**
