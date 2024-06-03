@@ -6,7 +6,7 @@ use App\Http\Controllers\CoreController;
 use App\Http\Requests\Classifier\Nomenclature\Material\TypeOfMaterial\StoreTypeOfMaterialRequest;
 use App\Http\Requests\Classifier\Nomenclature\Material\TypeOfMaterial\UpdateTypeOfMaterialRequest;
 use App\Models\Classifier\Nomenclature\Material\TypeOfMaterial;
-use App\Services\Classifier\Nomenclature\Matireal\TypeOfMaterialService;
+use App\Services\Classifier\Nomenclature\Material\TypeOfMaterialService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
