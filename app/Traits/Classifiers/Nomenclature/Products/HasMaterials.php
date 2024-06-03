@@ -3,10 +3,13 @@
 namespace App\Traits\Classifiers\Nomenclature\Products;
 
 use App\Logging\Logger;
-use App\Models\Classifier\Nomenclature\Materials\Material;
+use App\Models\Classifier\Nomenclature\Material\Material;
 use Auth;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Трейт для моделей, связанных с комплектующими.
+ */
 trait HasMaterials
 {
     /**
@@ -38,7 +41,7 @@ trait HasMaterials
             ]
         );
 
-        Logger::userActionNotice(
+        (new Logger())->userActionNotice(
             'attach',
             $this,
             [
@@ -55,7 +58,7 @@ trait HasMaterials
      *
      * @return $this
      */
-    public function detachMaterial(Material $material)
+    public function detachMaterial(Material $material): HasMaterials
     {
         $this->materials()->detach(
             $material->id,
@@ -64,7 +67,7 @@ trait HasMaterials
             ]
         );
 
-        Logger::userActionNotice(
+        (new Logger())->userActionNotice(
             'detach',
             $this,
             [
@@ -79,7 +82,7 @@ trait HasMaterials
     /**
      * @return HasMaterials
      */
-    public function detachAllMaterials()
+    public function detachAllMaterials(): HasMaterials
     {
         $this->materials()->detach();
         return $this;
