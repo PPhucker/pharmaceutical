@@ -6,6 +6,7 @@ use App\Models\Contractor\Contractor;
 use App\Repositories\ResourceRepository;
 use DB;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
@@ -93,9 +94,9 @@ class ContractorRepository extends ResourceRepository
     }
 
     /**
-     * Стастистика продаж продукта по контрагентам.
+     * Статистика продаж продукта по контрагентам.
      *
-     * @param int   $productCatalogId
+     * @param int $productCatalogId
      * @param array $filters
      *
      * @return Collection
@@ -104,73 +105,57 @@ class ContractorRepository extends ResourceRepository
      */
     public function productCatalogSaleStatistic(int $productCatalogId, array $filters): Collection
     {
+        $startDate = Carbon::createFromFormat('Y-m-d', $filters['start_date']);
+        $endDate = Carbon::createFromFormat('Y-m-d', $filters['end_date']);
+
         return $this->clone()
-            ->whereHas('packingLists', function ($query) use ($productCatalogId, $filters) {
-                $query->whereBetween('date', [$filters['from_date'], $filters['to_date']])
-                    ->where('approved', '=', 1)
-                    ->whereHas('production', function ($query) use ($productCatalogId) {
-                        $query->where('product_id', '=', $productCatalogId);
+            ->with(['packingLists.production'])
+            ->whereHas('packingLists', function ($query) use ($productCatalogId, $startDate, $endDate) {
+                $query->where('approved', 1)
+                    ->whereBetween('date', [$startDate, $endDate])
+                    ->whereHas('production', function ($subQuery) use ($productCatalogId) {
+                        $subQuery->where('product_id', $productCatalogId);
                     });
             })
-            ->with(
-                [
-                    'packingLists' => function ($query) use ($productCatalogId) {
-                        $query->with(
-                            [
-                                'production' => function ($query) use ($productCatalogId) {
-                                    $query->where('product_id', '=', $productCatalogId);
-                                },
-                            ]
-                        );
-                    }
-                ]
-            )
             ->get();
     }
 
     /**
-     * Получить список покупателей на период.
+     * Получить список покупателей на период по продажам.
      *
-     * @param array $between
-     * @param int   $take
+     * @param array $between Массив, содержащий начальную и конечную дату периода.
+     * @param int   $take    Количество возвращаемых покупателей (по умолчанию 10).
      *
-     * @return mixed
+     * @return Collection
      */
-    public function getCustomersForPeriodBySales(array $between, int $take = 10)
+    public function getCustomersForPeriodBySales(array $between, int $take = 10): Collection
     {
-        return $this->model::select([
-            'contractors.id',
-            'contractors.name',
-            'contractors.legal_form_type',
-            DB::raw(
-                'SUM(
-                documents_shipment_packing_lists_production.price
-                    * documents_shipment_packing_lists_production.quantity
-                )
-                as sum'
-            )
+        $totalSalesQuery = 'SUM(documents_shipment_packing_lists_production.price
+            * documents_shipment_packing_lists_production.quantity)
+            as total_sales';
+
+        return $this->model->select([
+            'id',
+            'name',
+            'legal_form_type',
+            DB::raw($totalSalesQuery)
         ])
             ->withoutTrashed()
-            ->join('documents_shipment_packing_lists', function ($join) use ($between) {
-                $join->on(
-                    'documents_shipment_packing_lists.contractor_id',
-                    '=',
-                    'contractors.id'
-                )
-                    ->whereBetween(
-                        'documents_shipment_packing_lists.date',
-                        $between
-                    );
-            })
-            ->join('documents_shipment_packing_lists_production', function ($join) {
-                $join->on(
-                    'documents_shipment_packing_lists_production.packing_list_id',
-                    '=',
-                    'documents_shipment_packing_lists.id'
-                );
-            })
-            ->groupBy('contractors.id')
-            ->orderBy('sum', 'desc')
+            ->join(
+                'documents_shipment_packing_lists',
+                'documents_shipment_packing_lists.contractor_id',
+                '=',
+                'contractors.id'
+            )
+            ->whereBetween('documents_shipment_packing_lists.date', $between)
+            ->join(
+                'documents_shipment_packing_lists_production',
+                'documents_shipment_packing_lists_production.packing_list_id',
+                '=',
+                'documents_shipment_packing_lists.id'
+            )
+            ->groupBy('contractors.id', 'contractors.name', 'contractors.legal_form_type')
+            ->orderBy('total_sales', 'desc')
             ->take($take)
             ->get();
     }
