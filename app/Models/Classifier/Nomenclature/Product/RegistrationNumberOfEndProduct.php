@@ -14,15 +14,22 @@ class RegistrationNumberOfEndProduct extends Model
     use HasFactory;
     use RelationshipsTrait;
 
+    public $timestamps = false;
     protected $table = 'classifier_registration_numbers_of_end_products';
-
     protected $fillable = [
         'number',
     ];
-
     protected $guarded = [
         'id',
     ];
 
-    public $timestamps = false;
+    /**
+     * @return string
+     */
+    public function getNumAttribute(): string
+    {
+        return $this->number ?: __(
+            'classifiers.nomenclature.products.registration_numbers.without_registration_number'
+        );
+    }
 }
