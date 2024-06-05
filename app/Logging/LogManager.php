@@ -208,16 +208,13 @@ class LogManager
                     break;
                 case 'attach':
                 case 'detach':
-                    $info->put(
-                        $changesKey,
-                        [
-                            $attributesKey => [
-                                'table' => $relations ? $relations['table'] : null,
-                                'id' => $relations ? $relations['id'] : null,
-                                'quantity' => $relations ? $relations['quantity'] : null,
-                            ]
-                        ]
-                    );
+                    $changes = [];
+
+                    foreach ($relations as $key => $relation) {
+                        $changes[$attributesKey][$key] = $relation;
+                    }
+
+                    $info->put($changesKey, $changes);
                     break;
                 case 'destroy':
                 case 'restore':
