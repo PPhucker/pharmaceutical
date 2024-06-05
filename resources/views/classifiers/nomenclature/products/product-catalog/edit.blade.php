@@ -84,7 +84,7 @@
                     </x-slot>
                     <x-form.element.input
                         id="registration_number"
-                        :value="$productCatalog->endProduct->registrationNumber->num"
+                        :value="$productCatalog->endProduct->registrationNumber->num ?? ''"
                         :disabled="true"/>
                 </x-form.row>
                 <x-form.row>
