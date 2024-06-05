@@ -46,6 +46,10 @@ return [
                 'marketing',
                 'planning',
             ],
+            'material' => [
+                'marketing',
+                'planning',
+            ],
         ],
     ],
 ];
