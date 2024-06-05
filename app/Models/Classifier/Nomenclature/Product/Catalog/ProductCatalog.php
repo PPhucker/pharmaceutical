@@ -8,7 +8,7 @@ use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Traits\Classifier\Nomenclature\Product\Catalog\Relation\HasPrices;
 use App\Traits\Classifier\Nomenclature\Product\Catalog\Relation\HasRegionalAllowances;
-use App\Traits\Classifiers\Nomenclature\Products\HasMaterials;
+use App\Traits\Classifier\Nomenclature\Relation\Material\HasMaterials;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\Organization\Relation\HasOrganization;
 use App\Traits\Organization\Relation\HasPlaceOfBusiness;

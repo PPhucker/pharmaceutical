@@ -11,6 +11,7 @@ use App\Services\Classifier\Nomenclature\Product\EndProductServiceDependencies;
 use App\Services\Contractor\Address\AddressServiceDependencies;
 use App\Services\ResourceService;
 use App\Traits\Classifier\Nomenclature\Product\Catalog\Service\AggregationTypeServiceTrait;
+use App\Traits\Classifier\Nomenclature\Product\Catalog\Service\MaterialServiceTrait;
 use App\Traits\Repository\SoftDeletesTrait;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Psr\Container\ContainerExceptionInterface;
@@ -23,6 +24,7 @@ class ProductCatalogService extends ResourceService
 {
     use SoftDeletesTrait;
     use AggregationTypeServiceTrait;
+    use MaterialServiceTrait;
 
     /**
      * @param EndProductServiceDependencies $endProductServiceDependencies
@@ -41,6 +43,7 @@ class ProductCatalogService extends ResourceService
 
         $this->repositories->placeOfBusiness = app()
             ->make(PlaceOfBusinessRepository::class);
+
         $this->selectedRepo = $this->selectRepository();
     }
 
@@ -76,6 +79,9 @@ class ProductCatalogService extends ResourceService
             'placesOfBusiness' => $this->repositories->placeOfBusiness->getAll(),
             'typesOfAggregation' => $this->repositories->typeOfAggregation->getAll(),
             'regions' => $this->repositories->region->getAll(),
+            'materials' => $this->repositories->material->getFree(
+                $this->selectedRepo->getMaterialsId($model->id)
+            ),
         ];
     }
 

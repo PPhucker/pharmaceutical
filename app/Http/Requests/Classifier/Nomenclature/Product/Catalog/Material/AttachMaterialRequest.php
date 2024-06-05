@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\ProductCatalog;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\Catalog\Material;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class AttachMaterialRequest extends FormRequest
+/**
+ * Валидация добавления комплектующего в состав продукта из каталога.
+ */
+class AttachMaterialRequest extends CoreFormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
+     * @return array[]
      */
-    public function authorize()
-    {
-        return true;
-    }
-
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'material.';
 
@@ -27,24 +22,5 @@ class AttachMaterialRequest extends FormRequest
                 'numeric'
             ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.fail')
-                );
-            }
-        });
     }
 }

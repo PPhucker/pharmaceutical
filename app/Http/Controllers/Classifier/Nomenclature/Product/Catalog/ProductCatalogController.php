@@ -9,6 +9,7 @@ use App\Http\Requests\Classifier\Nomenclature\Product\Catalog\UpdateProductCatal
 use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use App\Services\Classifier\Nomenclature\Product\Catalog\ProductCatalogService;
 use App\Traits\Classifier\Nomenclature\Product\Catalog\Controller\AggregationTypeControllerTrait;
+use App\Traits\Classifier\Nomenclature\Product\Catalog\Controller\MaterialControllerTrait;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -21,6 +22,7 @@ use Psr\Container\NotFoundExceptionInterface;
 class ProductCatalogController extends CoreController
 {
     use AggregationTypeControllerTrait;
+    use MaterialControllerTrait;
 
     private const VIEW_NAME_PREFIX = 'classifiers.nomenclature.products.product-catalog.';
     /**

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+    <x-notification.alert/>
     <x-card
         :title="$productCatalog->name_with_GTIN"
         :back="route('product_catalog.index')">
@@ -19,7 +20,6 @@
                 :title="__('classifiers.nomenclature.materials.materials')"/>
             @end_planning
         </x-form.nav-tabs>
-        <x-notification.alert/>
         <x-form.nav-tab
             formId="product_catalog_main_form"
             :active="true">
@@ -161,5 +161,6 @@
             </x-form>
         </x-form.nav-tab>
         @include('classifiers.nomenclature.products.product-catalog.aggregation-types')
+        @include('classifiers.nomenclature.products.product-catalog.materials')
     </x-card>
 @endsection

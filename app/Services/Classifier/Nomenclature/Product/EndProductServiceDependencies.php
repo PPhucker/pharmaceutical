@@ -6,6 +6,7 @@ use App\Repositories\Classifier\Nomenclature\Product\EndProductRepository;
 use App\Repositories\Classifier\Nomenclature\Product\InternationalNameOfEndProductRepository;
 use App\Repositories\Classifier\Nomenclature\Product\OKPD2Repository;
 use App\Repositories\Classifier\Nomenclature\Product\RegistrationNumberOfEndProductRepository;
+use App\Services\Classifier\Nomenclature\Material\MaterialServiceDependencies;
 use App\Services\Classifier\Nomenclature\Product\Type\TypeServiceDependencies;
 use App\Services\CoreDependencyService;
 
@@ -16,6 +17,7 @@ class EndProductServiceDependencies extends CoreDependencyService
 {
     protected $relatedDependencies = [
         TypeServiceDependencies::class,
+        MaterialServiceDependencies::class,
     ];
 
     /**

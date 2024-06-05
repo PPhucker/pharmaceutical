@@ -7,6 +7,7 @@ use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Repositories\ResourceRepository;
 use App\Traits\Classifier\Nomenclature\Product\Catalog\Repository\AggregationTypeRepositoryTrait;
+use App\Traits\Classifier\Nomenclature\Product\Catalog\Repository\MaterialRepositoryTrait;
 use Auth;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 class ProductCatalogRepository extends ResourceRepository
 {
     use AggregationTypeRepositoryTrait;
+    use MaterialRepositoryTrait;
 
     /**
      * @param int $id
@@ -36,7 +38,6 @@ class ProductCatalogRepository extends ResourceRepository
                 },
                 'materials' => function ($query) {
                     $query->select('id', 'type_id', 'okei_code', 'name')
-                        ->orderBy('type_id')
                         ->orderBy('name')
                         ->with('okei:code,symbol')
                         ->withoutTrashed();
@@ -213,6 +214,23 @@ class ProductCatalogRepository extends ResourceRepository
             ->save();
 
         return $model;
+    }
+
+    /**
+     * Возвращает Id комплектующих, из которых состоит продукт каталога.
+     *
+     * @param int $productCatalogId
+     *
+     * @return array
+     */
+    public function getMaterialsId(int $productCatalogId): array
+    {
+        return $this->model->find($productCatalogId)
+            ->materials
+            ->map(function ($material) {
+                return $material->id;
+            })
+            ->toArray();
     }
 
     /**

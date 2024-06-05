@@ -2,9 +2,7 @@
 
 namespace App\Traits\Classifier\Nomenclature\Relation\Material;
 
-use App\Logging\Logger;
 use App\Models\Classifier\Nomenclature\Material\Material;
-use Auth;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -25,66 +23,5 @@ trait HasMaterials
         )
             ->withPivot('user_id')
             ->withTimestamps();
-    }
-
-    /**
-     * @param Material $material
-     *
-     * @return $this
-     */
-    public function attachMaterial(Material $material)
-    {
-        $this->materials()->attach(
-            $material->id,
-            [
-                'user_id' => Auth::user()->id,
-            ]
-        );
-
-        (new Logger())->userActionNotice(
-            'attach',
-            $this,
-            [
-                'table' => 'product_catalog_materials',
-                'id' => $material->id
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
-     * @param Material $material
-     *
-     * @return $this
-     */
-    public function detachMaterial(Material $material): HasMaterials
-    {
-        $this->materials()->detach(
-            $material->id,
-            [
-                'user_id' => Auth::user()->id
-            ]
-        );
-
-        (new Logger())->userActionNotice(
-            'detach',
-            $this,
-            [
-                'table' => 'product_catalog_materials',
-                'id' => $material->id
-            ]
-        );
-
-        return $this;
-    }
-
-    /**
-     * @return HasMaterials
-     */
-    public function detachAllMaterials(): HasMaterials
-    {
-        $this->materials()->detach();
-        return $this;
     }
 }

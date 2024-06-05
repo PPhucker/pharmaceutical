@@ -32,6 +32,19 @@ class MaterialRepository extends ResourceRepository
     }
 
     /**
+     * @param array $notIn
+     *
+     * @return Collection
+     */
+    public function getFree(array $notIn): Collection
+    {
+        return $this->clone()
+            ->withoutTrashed()
+            ->whereNotIn('id', $notIn)
+            ->get();
+    }
+
+    /**
      * @param float $nds
      * @param array $invoiceProducts
      *

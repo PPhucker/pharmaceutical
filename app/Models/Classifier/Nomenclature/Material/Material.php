@@ -97,19 +97,4 @@ class Material extends Model
 
         return $query;
     }
-
-    /**
-     * @param Builder $query
-     * @param array   $ids
-     *
-     * @return Builder
-     */
-    public function scopeWithout($query, array $ids = []): Builder
-    {
-        if (count($ids) > 0) {
-            return $query->whereNotIn('id', $ids);
-        }
-
-        return $query;
-    }
 }
