@@ -2,7 +2,7 @@
 
 namespace App\Models\Documents\InvoicesForPayment;
 
-use App\Models\Classifier\Nomenclature\Materials\Material;
+use App\Models\Classifier\Nomenclature\Material\Material;
 use App\Models\Auth\User;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

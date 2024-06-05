@@ -2,7 +2,6 @@
 
 namespace App\Traits\Classifier\Nomenclature\Product\Catalog\Repository;
 
-use App\Logging\Logger;
 use App\Traits\Repository\BelongsToManyRepositoryTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
