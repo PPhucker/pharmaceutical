@@ -10,7 +10,7 @@ use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use Illuminate\Http\RedirectResponse;
 
 /**
- *
+ * Трейт типов агрегации для контроллера каталога готовой продукции.
  */
 trait AggregationTypeControllerTrait
 {
