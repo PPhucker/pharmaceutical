@@ -20,23 +20,23 @@ class LogRequest extends CoreFormRequest
             'user' => [
                 'nullable',
                 'string',
-                'max: 100',
+                'max:100',
             ],
             'action' => [
                 'nullable',
                 'string',
-                'max: 20',
+                'max:20',
             ],
             'model' => [
                 'nullable',
                 'string',
-                'max: 100',
+                'max:100',
             ],
             'start_date' => [
                 'nullable',
                 'date',
             ],
-            'end_date' => [
+            'to_date' => [
                 'nullable',
                 'date',
             ],

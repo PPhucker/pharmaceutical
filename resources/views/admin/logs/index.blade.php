@@ -12,8 +12,7 @@
             <x-slot name="filter">
                 <form
                     id="filter_form"
-                    action="{{route('logs.index')}}"
-                    method="GET">
+                    action="{{route('logs.index')}}">
                     <div class="list-inline">
                         <x-data-table.filter.date-filter
                             :startDate="$startDate"
@@ -82,7 +81,7 @@
                         <x-data-table.td>
                             {{$log->get('context')->user->ip}}
                         </x-data-table.td>
-                        <x-data-table.td>
+                        <x-data-table.td class="text-start">
                             {{__('logs.actions.' . $log->get('context')->action)}}
                         </x-data-table.td>
                         <x-data-table.td
@@ -199,7 +198,7 @@
                                                     {{__('logs.changes')}}
                                                 </td>
                                             @endif
-                                            @if(in_array($log->get('context')->action, ['create', 'attach', 'detach']))
+                                            @if(in_array($log->get('context')->action, ['create', 'attach', 'detach', 'login_failed']))
                                                 <td>
                                                     {{$name}}
                                                 </td>

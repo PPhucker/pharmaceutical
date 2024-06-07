@@ -17,6 +17,7 @@ class Logger
      * @var DateHelper
      */
     private $dateHelper;
+
     /**
      * @var LogManager
      */
@@ -33,43 +34,46 @@ class Logger
      * @param string $endDate
      * @param array  $filters
      *
-     * @return Collection|string
+     * @return Collection|null
      */
-    public function parse(
-        string $startDate,
-        string $endDate,
-        array $filters = []
-    ) {
-        try {
-            $interval = $this->dateHelper
-                ->getDateInterval($startDate, $endDate);
+    public function parse(string $startDate, string $endDate, array $filters = []): ?Collection
+    {
+        return $this->executeWithLogging(function () use ($startDate, $endDate, $filters) {
+            $interval = $this->dateHelper->getDateInterval($startDate, $endDate);
+            return $this->logManager->parseLogs($interval, $filters);
+        }, 'Error parsing logs: ');
+    }
 
-            return $this->logManager
-                ->parseLogs($interval, $filters);
+    /**
+     * Выполняет переданное замыкание с логированием ошибок.
+     *
+     * @param callable $callback
+     * @param string   $errorMessage
+     *
+     * @return object
+     */
+    private function executeWithLogging(callable $callback, string $errorMessage): ?object
+    {
+        try {
+            return $callback();
         } catch (Exception $exception) {
-            Log::error('Error parsing logs: ' . $exception->getMessage());
-            return 'Error parsing logs.';
+            Log::error($errorMessage . $exception->getMessage());
+            return null;
         }
     }
 
-
     /**
-     * @param string     $action
-     * @param Model      $model
-     * @param array|null $relations
+     * @param string $action
+     * @param Model  $model
+     * @param array  $relations
      *
      * @return void
      */
-    public function userActionNotice(
-        string $action,
-        $model,
-        array $relations = []
-    ): void {
-        try {
+    public function userActionNotice(string $action, $model, array $relations = []): void
+    {
+        $this->executeWithLogging(function () use ($action, $model, $relations) {
             $this->logManager->userActionNotice($action, $model, $relations);
-        } catch (Exception $exception) {
-            Log::error('Error creating user action notice: ' . $exception->getMessage());
-        }
+        }, 'Error creating user action notice: ');
     }
 
     /**
@@ -77,11 +81,8 @@ class Logger
      */
     public function delete(): void
     {
-        try {
+        $this->executeWithLogging(function () {
             $this->logManager->delete();
-        } catch (Exception $exception) {
-            Log::error('Error deleting old logs: ' . $exception->getMessage());
-        }
+        }, 'Error deleting old logs: ');
     }
-
 }

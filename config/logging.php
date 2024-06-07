@@ -121,4 +121,16 @@ return [
         ],
     ],
 
+    'actions' => [
+        'create',
+        'update',
+        'destroy',
+        'restore',
+        'attach',
+        'detach',
+        'login',
+        'logout',
+        'login_failed',
+    ]
+
 ];

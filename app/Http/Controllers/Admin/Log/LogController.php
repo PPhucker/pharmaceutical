@@ -56,14 +56,7 @@ class LogController extends Controller
                 'endDate' => $endDate,
                 'users' => (new UserRepository())->getAll(),
                 'models' => ModelHelper::getModelsWithComments(),
-                'actions' => [
-                    'create',
-                    'update',
-                    'destroy',
-                    'restore',
-                    'attach',
-                    'detach',
-                ],
+                'actions' => config('logging.actions'),
             ]
         );
     }

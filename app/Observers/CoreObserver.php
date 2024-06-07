@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\ModelHelper;
 use App\Logging\Logger;
 
 /**
@@ -40,7 +41,9 @@ class CoreObserver
      */
     public function updated($model): void
     {
-        $this->logger->userActionNotice('update', $model);
+        if (ModelHelper::modelIsDirty($model)) {
+            $this->logger->userActionNotice('update', $model);
+        }
     }
 
     /**

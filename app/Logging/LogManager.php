@@ -2,10 +2,13 @@
 
 namespace App\Logging;
 
-use App\Helpers\ModelHelper;
+use App\Models\Auth\User;
 use DatePeriod;
 use Exception;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +17,6 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use JsonException;
 
-use function array_key_exists;
 use function get_class;
 use function in_array;
 
@@ -28,6 +30,23 @@ class LogManager
     private const DISK_NAME = 'logs';
 
     private const COUNT_DAYS_FOR_DELETING = 95;
+    /**
+     * @var Filesystem|FilesystemAdapter
+     */
+    private $disk;
+    /**
+     * @var ActionHandler
+     */
+    private $actionHandler;
+
+    /**
+     * @param string $diskName
+     */
+    public function __construct(string $diskName = self::DISK_NAME)
+    {
+        $this->disk = Storage::disk($diskName);
+        $this->actionHandler = new ActionHandler();
+    }
 
     /**
      * Парсинг логов за указанный инвервал времени.
@@ -36,25 +55,24 @@ class LogManager
      * @param array      $filters
      * @param array      $messages
      *
-     * @return Collection|string
+     * @return Collection
      */
     public function parseLogs(
         DatePeriod $interval,
         array $filters = [],
         array $messages = [self::USER_ACTION_NOTICE_MESSAGE]
-    ) {
+    ): Collection {
         $parsedLogs = collect();
 
         foreach ($interval as $day) {
             $logName = 'laravel-' . $day->format('Y-m-d') . '.log';
 
-            if (!Storage::disk(self::DISK_NAME)->exists($logName)) {
+            if (!$this->disk->exists($logName)) {
                 continue;
             }
 
             try {
-                $log = Storage::disk(self::DISK_NAME)
-                    ->get($logName);
+                $log = $this->disk->get($logName);
                 $parsedLogs = $parsedLogs->merge(
                     $this->parseLogContent(
                         $log,
@@ -63,7 +81,7 @@ class LogManager
                     )
                 );
             } catch (FileNotFoundException $exception) {
-                return $exception->getMessage();
+                Log::error($exception->getMessage());
             }
         }
 
@@ -86,47 +104,46 @@ class LogManager
     ): Collection {
         $parsedLogs = collect();
         foreach (explode("\n", trim($log)) as $row) {
-            try {
-                $row = collect(
-                    json_decode(
-                        $row,
-                        false,
-                        512,
-                        JSON_THROW_ON_ERROR
-                    )
-                );
-
-                if (
-                    !in_array(
-                        $row->get('message'),
-                        $messages,
-                        true
-                    )
-                ) {
-                    continue;
-                }
-
-                if (!$this->checkFilters($row, $filters)) {
-                    continue;
-                }
-
-                $parsedLogs->push(
-                    collect(
-                        [
-                            'context' => $row->get('context'),
-                            'datetime' => Carbon::create(
-                                $row->get('datetime')
-                            )
-                                ->format('d.m.Y H:i:s')
-                        ]
-                    )
-                );
-            } catch (JsonException $exception) {
-                Log::error('Error parsing JSON in log file: ' . $exception->getMessage());
+            $parsedRow = $this->parseLogRow($row);
+            if (!$parsedRow) {
+                continue;
             }
+
+            if (!in_array($parsedRow->get('message'), $messages, true)) {
+                continue;
+            }
+
+            if (!$this->checkFilters($parsedRow, $filters)) {
+                continue;
+            }
+
+            $parsedLogs->push(
+                collect([
+                    'context' => $parsedRow->get('context'),
+                    'datetime' => Carbon::create($parsedRow->get('datetime'))
+                        ->format('d.m.Y H:i:s')
+                ])
+            );
         }
 
         return $parsedLogs;
+    }
+
+    /**
+     * Парсинг строки лога.
+     *
+     * @param string $row
+     *
+     * @return Collection|null
+     */
+    private function parseLogRow(string $row): ?Collection
+    {
+        try {
+            return collect(json_decode($row, false, 512, JSON_THROW_ON_ERROR));
+        } catch (JsonException $exception) {
+            Log::error('Error parsing JSON in log file: ' . $exception->getMessage());
+            return null;
+        }
     }
 
     /**
@@ -139,91 +156,66 @@ class LogManager
      */
     protected function checkFilters(Collection $log, array $filters): bool
     {
-        foreach ($filters as $key => $value) {
-            switch ($key) {
-                case 'user':
-                    if ((int)$log->get('context')->user->id !== (int)$value) {
-                        return false;
-                    }
-                    break;
-                case 'action':
-                    if ($log->get('context')->action !== $value) {
-                        return false;
-                    }
-                    break;
-                case 'model':
-                    if ($log->get('context')->model !== $value) {
-                        return false;
-                    }
-                    break;
-            }
-        }
+        $context = $log->get('context');
 
-        return true;
+        return collect($filters)
+            ->every(function ($value, $key) use ($context) {
+                switch ($key) {
+                    case 'user':
+                        return (int)($context->user->id) === (int)$value;
+                    case 'action':
+                        return $context->action === $value;
+                    case 'model':
+                        return $context->model === $value;
+                    case 'start_date':
+                    case 'to_date':
+                        return true;
+                    default:
+                        return false;
+                }
+            });
     }
+
 
     /**
      * Создание сообщения о совершенном пользователем действии.
      *
      * @param string $action
-     * @param        $model
+     * @param Model  $model
      * @param array  $relations
      *
      * @return void
      */
-    public function userActionNotice(
-        string $action,
-        $model,
-        array $relations = []
-    ): void {
+    public function userActionNotice(string $action, $model, array $relations = []): void
+    {
         try {
-            $info = collect([
-                'action' => $action,
-                'user' => $this->getUserInfo(),
-                'model' => get_class($model),
-                'primary_key' => $model->getKey(),
-                'table' => $model->getTable(),
-            ]);
+            $info = $this->prepareBaseInfo($action, $model);
 
-            $changesKey = 'changes';
-            $attributesKey = 'attributes';
+            $this->actionHandler->handleAction($action, $info, $model, $relations);
 
-            switch ($action) {
-                case 'create':
-                    $info->put(
-                        $changesKey,
-                        [$attributesKey => $model->getAttributes()]
-                    );
-                    break;
-                case 'update':
-                    if (
-                        $model->isDirty()
-                        && !array_key_exists('deleted_at', $model->getChanges())
-                    ) {
-                        $info->put(
-                            $changesKey,
-                            [$attributesKey => ModelHelper::getDirtyAttributes($model)]
-                        );
-                    }
-                    break;
-                case 'attach':
-                case 'detach':
-                    $changes = [];
-
-                    foreach ($relations as $key => $relation) {
-                        $changes[$attributesKey][$key] = $relation;
-                    }
-
-                    $info->put($changesKey, $changes);
-                    break;
-                case 'destroy':
-                case 'restore':
-                    break;
-            }
-            \Log::notice(self::USER_ACTION_NOTICE_MESSAGE, $info->toArray());
+            Log::notice(self::USER_ACTION_NOTICE_MESSAGE, $info->toArray());
         } catch (Exception $exception) {
-            \Log::error('Error creating user action notice: ' . $exception->getMessage());
+            Log::error('Error creating user action notice: ' . $exception->getMessage());
         }
+    }
+
+    /**
+     * Подготовка базовой информации для логирования.
+     *
+     * @param string $action
+     * @param Model  $model
+     *
+     * @return Collection
+     */
+    private function prepareBaseInfo(string $action, $model): Collection
+    {
+        return collect([
+            'action' => $action,
+            'user' => $this->getUserInfo(),
+            'model' => $model ? get_class($model) : User::class,
+            'primary_key' => $model ? $model->getKey() : 0,
+            'table' => $model ? $model->getTable() : 'users',
+        ]);
     }
 
     /**
@@ -240,14 +232,14 @@ class LogManager
             return [
                 'ip' => $clientIp,
                 'id' => $user->id,
-                'name' => $user->name
+                'name' => $user->name,
             ];
         }
 
         return [
             'ip' => $clientIp,
-            'id' => null,
-            'name' => 'unauthorized user'
+            'id' => 0,
+            'name' => 'Неавторизованный пользователь',
         ];
     }
 
@@ -259,7 +251,7 @@ class LogManager
     public function delete(): void
     {
         try {
-            $logFiles = collect(Storage::disk(self::DISK_NAME)->listContents());
+            $logFiles = collect($this->disk->listContents());
 
             $timestamp = now()
                 ->subDays(self::COUNT_DAYS_FOR_DELETING)
@@ -271,11 +263,11 @@ class LogManager
                     $file['extension'] === 'log' &&
                     $file['timestamp'] < $timestamp
                 ) {
-                    Storage::disk(self::DISK_NAME)->delete($file['path']);
+                    $this->disk->delete($file['path']);
                 }
             });
         } catch (Exception $exception) {
-            \Log::error('Error deleting old logs: ' . $exception->getMessage());
+            Log::error('Error deleting old logs: ' . $exception->getMessage());
         }
     }
 }

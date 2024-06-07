@@ -3,18 +3,26 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Collection;
-use Str;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Класс помощник для работы с моделями.
+ */
 class ModelHelper
 {
+    private const DIRTY_IGNORED_FIELDS = [
+        'deleted_at',
+        'remember_token',
+    ];
+
     /**
      * Возвращает измененные атрибуты модели.
      *
-     * @param mixed $model
-     *
+     * @param Model $model
      * @return array
      */
-    public static function getDirtyAttributes($model): array
+    public static function getDirtyAttributes(Model $model): array
     {
         return collect($model->getDirty())
             ->map(function ($value, $attribute) use ($model) {
@@ -27,26 +35,20 @@ class ModelHelper
     }
 
     /**
+     * Возвращает модели с комментариями.
+     *
      * @return array
      */
     public static function getModelsWithComments(): array
     {
-        $modelsWithComments = [];
-
-        foreach (static::all() as $model) {
-            $comment = __(
-                'models.' . Str::replace('\\', '.', $model)
-            );
-
-            $modelsWithComments[] = [
+        $modelsWithComments = static::all()->map(function ($model) {
+            return [
                 'class' => $model,
-                'comment' => $comment,
+                'comment' => __(
+                    'models.' . Str::replace('\\', '.', $model)
+                ),
             ];
-        }
-
-        usort($modelsWithComments, static function ($a, $b) {
-            return strcmp($a['comment'], $b['comment']);
-        });
+        })->sortBy('comment')->values()->toArray();
 
         return $modelsWithComments;
     }
@@ -59,18 +61,22 @@ class ModelHelper
     public static function all(): Collection
     {
         return collect(get_declared_classes())
-            ->filter(function ($item) {
-                return strncmp($item, 'App\Models\\', 11) === 0;
-            });
+            ->filter(function ($class) {
+                return str_starts_with($class, 'App\Models\\');
+            })
+            ->values();
     }
 
     /**
-     * @param $model
+     * Проверяет, есть ли изменения в модели, не учитывая игнорируемые поля.
      *
-     * @return string
+     * @param Model $model
+     * @return bool
      */
-    protected static function getModelName($model): string
+    public static function modelIsDirty($model): bool
     {
-        return class_basename($model);
+        $dirty = array_diff_key($model->getDirty(), array_flip(self::DIRTY_IGNORED_FIELDS));
+
+        return !empty($dirty);
     }
 }

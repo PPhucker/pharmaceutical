@@ -4,9 +4,18 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Logging\Logger;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Контроллер авторизации.
+ */
 class LoginController extends Controller
 {
     /*
@@ -25,7 +34,7 @@ class LoginController extends Controller
     /**
      * Where to redirect users after login.
      *
-     * @var string
+     * @var string $redirectTo
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
@@ -40,12 +49,13 @@ class LoginController extends Controller
             ->except('logout');
     }
 
-    final public function validateLogin(LoginRequest $request)
-    {
-        return $request->validated();
-    }
-
-    final public function login(LoginRequest $request)
+    /**
+     * @param LoginRequest $request
+     *
+     * @return JsonResponse|RedirectResponse|Response
+     * @throws ValidationException
+     */
+    public function login(LoginRequest $request)
     {
         $this->validateLogin($request);
 
@@ -61,11 +71,34 @@ class LoginController extends Controller
                 $request->session()->put('auth.password_confirmed_at', time());
             }
 
+            (new Logger())->userActionNotice(
+                'login',
+                Auth::user()
+            );
+
             return $this->sendLoginResponse($request);
         }
 
         $this->incrementLoginAttempts($request);
 
+        (new Logger())->userActionNotice(
+            'login_failed',
+            Auth::user(),
+            [
+                'email' => $request->input('email'),
+            ]
+        );
+
         return $this->sendFailedLoginResponse($request);
+    }
+
+    /**
+     * @param LoginRequest $request
+     *
+     * @return array
+     */
+    public function validateLogin(LoginRequest $request): array
+    {
+        return $request->validated();
     }
 }
