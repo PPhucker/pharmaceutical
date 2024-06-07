@@ -6,18 +6,17 @@
                     href="#offcanvasSidebar"
                     type="button"
                     aria-controls="offcanvasSidebar"
-                    style="display: block">
+                    style="display: block;">
                 <span class="navbar-toggler-icon text-primary"></span>
             </button>
         @endauth
         <a class="navbar-brand text-primary"
            href="{{ url('/') }}">
-            {{ config('app.name', 'Laravel') }} {{config('app.version')}}
+            {{session('organization_name')}}
         </a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
+        <div class="collapse navbar-collapse"
+             id="navbarSupportedContent">
             <ul class="navbar-nav me-auto"></ul>
-            <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ms-auto">
                 @auth
                     <li class="nav-item">
@@ -46,7 +45,7 @@
                     href="#offcanvasAccount"
                     type="button"
                     aria-controls="offcanvasAccount"
-                    style="display: block">
+                    style="display: block;">
                 <span class="navbar-toggler-icon text-primary"></span>
             </button>
         @endauth

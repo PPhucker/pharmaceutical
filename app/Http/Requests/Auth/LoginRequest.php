@@ -25,11 +25,14 @@ class LoginRequest extends CoreFormRequest
                 'ends_with:' . config('mail.domain'),
                 'max:60'
             ],
-
             'password' => [
                 'required',
                 'string',
-            ]
+            ],
+            'organization' => [
+                'required',
+                'numeric',
+            ],
         ];
     }
 }

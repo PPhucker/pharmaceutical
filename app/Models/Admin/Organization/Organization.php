@@ -56,6 +56,22 @@ class Organization extends Model
         'full_name',
     ];
 
+    /**
+     * Bootstrap the model and its traits.
+     *
+     * @return void
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::addGlobalScope('organization', static function ($builder) {
+            $organizationId = session('organization_id');
+            if ($organizationId) {
+                $builder->where('id', $organizationId);
+            }
+        });
+    }
 
     /**
      * @return string

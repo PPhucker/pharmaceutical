@@ -51,11 +51,13 @@
                    placeholder="{{ __('auth.passwords.confirm.action') }}"
                    required>
         </div>
-        <div class="mb-0">
-            <button type="submit"
-                    class="btn btn-primary">
-                {{ __('auth.passwords.reset.button') }}
-            </button>
+        <div class="row mb-0">
+            <div class="col-6">
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    {{ __('auth.passwords.reset.button') }}
+                </button>
+            </div>
         </div>
     </form>
 @endsection

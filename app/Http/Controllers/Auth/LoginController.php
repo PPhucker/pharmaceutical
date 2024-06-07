@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\Auth\UserLoggedIn;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Logging\Logger;
+use App\Models\Admin\Organization\Organization;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -57,7 +60,7 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $this->validateLogin($request);
+        $validated = $this->validateLogin($request);
 
         if (method_exists($this, 'hasTooManyLoginAttempts') &&
             $this->hasTooManyLoginAttempts($request)) {
@@ -75,6 +78,8 @@ class LoginController extends Controller
                 'login',
                 Auth::user()
             );
+
+            event(new UserLoggedIn((int)$validated['organization']));
 
             return $this->sendLoginResponse($request);
         }
@@ -100,5 +105,23 @@ class LoginController extends Controller
     public function validateLogin(LoginRequest $request): array
     {
         return $request->validated();
+    }
+
+    /**
+     * @return View
+     */
+    public function showLoginForm(): View
+    {
+        $organizations = Organization::select([
+            'id',
+            'legal_form_type',
+            'name',
+            'INN'
+        ])
+            ->with(['legalForm:abbreviation'])
+            ->get()
+            ->sortBy('full_name');
+
+        return view('auth.login', compact('organizations'));
     }
 }
