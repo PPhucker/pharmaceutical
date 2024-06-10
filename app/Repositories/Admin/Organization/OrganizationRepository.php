@@ -35,6 +35,8 @@ class OrganizationRepository extends CoreRepository
 
         if ($withTrashed) {
             $organizations->withTrashed();
+        } else {
+            $organizations->withoutTrashed();
         }
 
         return $organizations->with(

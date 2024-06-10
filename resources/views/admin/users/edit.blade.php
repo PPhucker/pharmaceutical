@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
+    <x-notification.alert/>
     <x-card
         :title="$user->name"
         :back="route('users.index')">
-        <x-notification.alert/>
         <x-form
             :route="route('users.update', ['user' => $user->id])"
             formId="users_main_form"
@@ -32,6 +32,30 @@
                     type="email"
                     :value="$user->email"
                     :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="organizations"
+                        :text="__('contractors.organizations.organizations')"/>
+                </x-slot>
+                <div class="col-md-6 pt-2">
+                    @foreach($organizations as $organization)
+                        <div class="form-check form-switch ps-1">
+                            <x-form.element.input
+                                type="checkbox"
+                                name="organizations[]"
+                                class="form-check-input"
+                                id="organization-{{$organization->id}}"
+                                :value="$organization->id"
+                                :checked="$user->hasOrganization([$organization->id])"/>
+                            <label class="form-check-label"
+                                   for="organization-{{$organization->id}}">
+                                {{$organization->full_name}}
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
             </x-form.row>
             <x-form.row>
                 <x-slot name="label">

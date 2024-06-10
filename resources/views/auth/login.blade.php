@@ -1,6 +1,5 @@
 @extends('layouts.auth')
 @section('auth')
-
     <h1 class="text-primary mb-3 text-center">
         {{__('auth.login.action')}}
     </h1>
@@ -39,7 +38,13 @@
                 </span>
             @enderror
         </div>
-
+        <div class="mb-3">
+            @error('organization')
+            <strong class="text-danger">
+                {{ $message }}
+            </strong>
+            @enderror
+        </div>
         @foreach ($organizations as $organization)
             <div class="mb-2">
                 <div class="row text-primary">
@@ -63,13 +68,6 @@
                 </div>
             </div>
         @endforeach
-        <div class="mb-3">
-            @error('organization')
-            <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
         <div class="mt-2">
             <div class="row">
                 <div class="col-6">

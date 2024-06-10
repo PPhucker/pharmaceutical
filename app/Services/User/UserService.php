@@ -2,6 +2,7 @@
 
 namespace App\Services\User;
 
+use App\Services\Admin\Organization\OrganizationServiceDependencies;
 use App\Services\Auth\UserServiceDependencies;
 use App\Services\ResourceService;
 use App\Traits\Repository\SoftDeletesTrait;
@@ -14,17 +15,27 @@ class UserService extends ResourceService
     use SoftDeletesTrait;
 
     /**
-     * @param UserServiceDependencies $userServiceDependencies
+     * @param UserServiceDependencies         $userServiceDependencies
+     * @param OrganizationServiceDependencies $organizationServiceDependencies
      */
-    public function __construct(UserServiceDependencies $userServiceDependencies)
-    {
-        $this->repositories = $this->getRepositoriesFromDependencies(
-            [
-                $userServiceDependencies,
-            ]
-        );
+    public function __construct(
+        UserServiceDependencies $userServiceDependencies,
+        OrganizationServiceDependencies $organizationServiceDependencies
+    ) {
+        $this->repositories = $this->getRepositoriesFromDependencies([
+            $userServiceDependencies,
+            $organizationServiceDependencies
+        ]);
 
         $this->selectedRepo = $this->selectRepository();
+    }
+
+    /**
+     * @return object
+     */
+    protected function selectRepository(): object
+    {
+        return $this->repositories->user;
     }
 
     /**
@@ -47,11 +58,13 @@ class UserService extends ResourceService
         $user = $this->repositories->user->getForEdit($model->id);
         $roles = $this->repositories->role->getAll();
         $permissions = $this->repositories->permission->getAll();
+        $organizations = $this->repositories->organization->getAll();
 
         return compact(
             'user',
             'roles',
-            'permissions'
+            'permissions',
+            'organizations'
         );
     }
 
@@ -61,13 +74,5 @@ class UserService extends ResourceService
     public function getCreateData(): array
     {
         return [];
-    }
-
-    /**
-     * @return object
-     */
-    protected function selectRepository(): object
-    {
-        return $this->repositories->user;
     }
 }

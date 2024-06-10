@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Logging\Logger;
 use App\Models\Admin\Organization\Organization;
+use App\Models\Auth\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -101,10 +102,23 @@ class LoginController extends Controller
      * @param LoginRequest $request
      *
      * @return array
+     * @throws ValidationException
      */
     public function validateLogin(LoginRequest $request): array
     {
-        return $request->validated();
+        $validated = $request->validated();
+
+        $organizationId = (int)$validated['organization'];
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user->hasOrganization([$organizationId])) {
+            throw ValidationException::withMessages([
+                'organization' => [__('auth.organization_failed')],
+            ]);
+        }
+
+        return $validated;
     }
 
     /**

@@ -42,9 +42,15 @@ class UpdateUserRequest extends CoreFormRequest
 
             'roles' => [
                 'nullable',
+                'array',
             ],
             'permissions' => [
                 'nullable',
+                'array',
+            ],
+            'organizations' => [
+                'nullable',
+                'array',
             ],
         ];
     }

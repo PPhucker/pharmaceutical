@@ -5,6 +5,7 @@ namespace App\Models\Admin\Organization;
 use App\Models\Admin\Organization\Transport\Car;
 use App\Models\Admin\Organization\Transport\Driver;
 use App\Models\Admin\Organization\Transport\Trailer;
+use App\Models\Auth\User;
 use App\Models\Contractor\Contract;
 use App\Traits\Classifier\Relation\HasLegalForm;
 use App\Traits\Document\Relation\HasInvoicesAndPackingLists;
@@ -12,9 +13,11 @@ use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Модель организации.
@@ -57,20 +60,17 @@ class Organization extends Model
     ];
 
     /**
-     * Bootstrap the model and its traits.
+     * Применение глобальной области видимости для организации.
      *
      * @return void
      */
-    protected static function boot(): void
+    protected static function booted(): void
     {
-        parent::boot();
-
-        static::addGlobalScope('organization', static function ($builder) {
-            $organizationId = session('organization_id');
-            if ($organizationId) {
-                $builder->where('id', $organizationId);
-            }
-        });
+        if (!str_starts_with(request()->getPathInfo(), '/admin')) {
+            static::addGlobalScope('organization', static function (Builder $builder) {
+                $builder->where('id', '=', session('organization_id'));
+            });
+        }
     }
 
     /**
@@ -153,5 +153,13 @@ class Organization extends Model
     {
         return $this->hasMany(Contract::class, $this->foreign_key)
             ->withTrashed();
+    }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'organizations_users');
     }
 }

@@ -48,7 +48,11 @@ class UserRepository extends ResourceRepository
     {
         return $this->clone()
             ->findOrFail($id)
-            ->load('roles', 'permissions');
+            ->load(
+                'roles',
+                'permissions',
+                'organizations'
+            );
     }
 
     /**
@@ -66,12 +70,14 @@ class UserRepository extends ResourceRepository
     {
         $roles = $validated['roles'] ?? null;
         $permissions = $validated['permissions'] ?? null;
+        $organizations = $validated['organizations'] ?? null;
 
         $model->fill(
             $this->getFilled($validated)
         )
             ->refreshRoles($roles)
             ->refreshPermissions($permissions)
+            ->refreshOrganizations($organizations)
             ->save();
 
         return $model;

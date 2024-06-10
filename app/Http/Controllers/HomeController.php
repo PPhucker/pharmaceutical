@@ -50,7 +50,7 @@ class HomeController extends Controller
             ],
         ]);
 
-        $date = DateHelper::filter($request, '2 weeks');
+        /*$*//*date = DateHelper::filter($request, '2 weeks');
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');
@@ -78,10 +78,10 @@ class HomeController extends Controller
         $countContractors = Contractor::withoutTrashed()->count();
         $countOrganizations = Organization::withoutTrashed()->count();
         $countUsers = User::withoutTrashed()->count();
-        $countProducts = EndProduct::withoutTrashed()->count();
+        $countProducts = EndProduct::withoutTrashed()->count();*/
 
         return view(
-            'home',
+            'home'/*,
             compact(
                 'fromDate',
                 'toDate',
@@ -90,7 +90,7 @@ class HomeController extends Controller
                 'countUsers',
                 'countOrganizations',
                 'countProducts',
-            )
+            )*/
         );
     }
 }
