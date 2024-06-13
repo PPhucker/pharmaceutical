@@ -19,7 +19,8 @@ class PlaceOfBusinessRepository extends ContractorPlaceOfBusinessRepository
      */
     public function getAll(bool $withTrashed = false): Collection
     {
-        $places = $this->clone();
+        $places = $this->clone()
+            ->where('organization_id', '=', session('organization_id'));
 
         if ($withTrashed) {
             $places->withTrashed();

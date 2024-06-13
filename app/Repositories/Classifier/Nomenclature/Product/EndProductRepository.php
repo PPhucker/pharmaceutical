@@ -75,7 +75,7 @@ class EndProductRepository extends ResourceRepository
             $endProducts->withoutTrashed();
         }
 
-        return $endProducts->with('type:id,color')
+        return $endProducts->with('type:id,color,name')
             ->withTrashed()
             ->orderBy('full_name')
             ->orderBy('type_id')

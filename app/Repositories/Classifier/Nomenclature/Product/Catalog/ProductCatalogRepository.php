@@ -72,14 +72,18 @@ class ProductCatalogRepository extends ResourceRepository
                 'product_id',
                 'GTIN',
                 'deleted_at',
-            ]);
+            ])
+            ->where('organization_id', '=', session('organization_id'));
 
         if ($withTrashed) {
             $productCatalog->withTrashed();
         }
 
         return $productCatalog->with([
-            'endProduct:id,full_name',
+            'endProduct' => function ($query) {
+                $query->select('id', 'full_name', 'type_id');
+                $query->with('type:id,name,color');
+            },
             'organization:id,name,legal_form_type',
             'placeOfBusiness:id,address',
             'prices'

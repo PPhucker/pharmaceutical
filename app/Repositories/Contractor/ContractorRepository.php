@@ -49,6 +49,7 @@ class ContractorRepository extends ResourceRepository
                     ])
                         ->withoutTrashed()
                         ->where('is_valid', 1)
+                        ->where('organization_id', '=', session('organization_id'))
                         ->orderBy('date');
                 }
             ])
@@ -204,6 +205,7 @@ class ContractorRepository extends ResourceRepository
                 },
                 'contracts' => static function ($query) {
                     $query->orderBy('deleted_at')
+                        ->where('organization_id', session('organization_id'))
                         ->orderBy('date');
                 },
             ]
