@@ -11,6 +11,7 @@ use App\Traits\Classifier\Relation\HasLegalForm;
 use App\Traits\Document\Relation\HasInvoicesAndPackingLists;
 use App\Traits\Model\RelationshipsTrait;
 use App\Traits\User\HasUser;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -66,7 +67,18 @@ class Organization extends Model
      */
     protected static function booted(): void
     {
-        if (!str_starts_with(request()->getPathInfo(), '/admin')) {
+        $requestPath = request()->getPathInfo();
+        $includeRoutes = Config::get('scopes.include_route_prefixes.organization', []);
+
+        $include = false;
+        foreach ($includeRoutes as $route) {
+            if (str_starts_with($requestPath, $route)) {
+                $include = true;
+                break;
+            }
+        }
+
+        if ($include) {
             static::addGlobalScope('organization', static function (Builder $builder) {
                 $builder->where('id', '=', session('organization_id'));
             });
@@ -86,7 +98,7 @@ class Organization extends Model
      *
      * @return string
      */
-    public function getCreatedAtAttribute($date)
+    public function getCreatedAtAttribute($date): string
     {
         return Carbon::create($date)
             ->format('d.m.Y');
