@@ -4,6 +4,7 @@ return [
     'contractors' => 'Контрагенты',
     'contractor' => 'Контрагент',
     'quantity' => 'Количество',
+    'edit_card' => 'Карточка контрагента',
     'titles' => [
         'create' => 'Добавление нового контрагента'
     ],
@@ -12,7 +13,8 @@ return [
         'organization' => 'Организация',
         'titles' => [
             'create' => 'Добавление новой организации'
-        ]
+        ],
+        'edit_card' => 'Карточка организации',
     ],
     'places_of_business' => [
         'places_of_business' => 'Места осуществления деятельности',

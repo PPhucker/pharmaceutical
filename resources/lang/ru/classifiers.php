@@ -30,6 +30,7 @@ return [
         'nomenclature' => 'Номенклатура',
         'products' => [
             'products' => 'Готовая Продукция',
+            'edit_card' => 'Карточка готового продукта',
             'GTIN' => 'GTIN',
             'full_name' => 'Полное наименование',
             'short_name' => 'Краткое наименование',
@@ -47,7 +48,8 @@ return [
             'types_of_end_products' => [
                 'types_of_end_products' => 'Типы готовой продукции',
                 'type_of_end_product' => 'Тип готовой продукции',
-                'name' => 'Тип',
+                'name' => 'Название',
+                'type' => 'Тип',
                 'color' => 'Цвет',
             ],
             'international_names_of_end_products' => [
@@ -76,9 +78,11 @@ return [
             'product_catalog' => [
                 'product_catalog' => 'Каталог готовой продукции',
                 'product_id' => 'Готовый продукт',
+                'edit_card' => 'Карточка готового продукта из каталога',
                 'place_of_business_id' => 'Производство',
                 'GTIN' => 'GTIN',
                 'statistic' => 'Статистика',
+                'price_list' => 'Прайс',
             ],
             'product_prices' => [
                 'product_prices' => 'Прайс',
@@ -101,7 +105,7 @@ return [
         'materials' => [
             'materials' => 'Комплектующие',
             'material' => 'Комплектующее',
-            'type_id' => 'Тип комплектующего',
+            'type_id' => 'Тип',
             'okei_code' => 'Единица измерения',
             'name' => 'Наименование',
             'price' => 'Цена с НДС',
