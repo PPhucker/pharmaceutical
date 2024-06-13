@@ -24,18 +24,18 @@
                         {{auth()->user()->name}}
                     </span>
                     </li>
-                    <li class="nav-item">
+                    {{--<li class="nav-item">
                     <span class="text-primary me-2">
                         -
                     </span>
-                    </li>
-                    @foreach(auth()->user()->roles as $role)
+                    </li>--}}
+                    {{--@foreach(auth()->user()->roles as $role)
                         <li class="nav-item">
                             <span class="text-primary text-muted me-3">
                                 {{$role->name}}
                             </span>
                         </li>
-                    @endforeach
+                    @endforeach--}}
                 @endauth
             </ul>
         </div>

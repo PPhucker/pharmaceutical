@@ -3,7 +3,7 @@
     @if(isset($label))
         {{$label}}
     @endif
-    <div class="col-md">
+    <div class="col">
         {{$slot}}
     </div>
 </div>

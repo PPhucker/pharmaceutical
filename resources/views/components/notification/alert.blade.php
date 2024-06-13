@@ -1,6 +1,6 @@
 <div class="col-12">
     @if (session('success'))
-        <div class="alert alert-success m-2 ms-0 me-0"
+        <div class="alert alert-success m-2"
              role="alert">
             <svg class="bi flex-shrink-0"
                  width="16" height="16"

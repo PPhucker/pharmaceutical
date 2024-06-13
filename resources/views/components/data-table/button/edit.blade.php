@@ -1,4 +1,4 @@
-@props(['route', 'target' => '_blank', 'disabled' => false])
+@props(['route', 'target' => '', 'disabled' => false])
 <a class="btn btn-hover @if($disabled) disabled @endif"
    href="{{$route}}"
    title="{{__('datatable.buttons.edit')}}"
