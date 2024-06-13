@@ -4,7 +4,10 @@ namespace App\Traits\Auth\Relation;
 
 use App\Models\Auth\Permission;
 use App\Models\Auth\Role;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+use function is_array;
 
 /**
  * Трейт ролей и прав пользователя.
@@ -20,12 +23,15 @@ trait HasRolesAndPermissions
      */
     public function hasRole($roles): bool
     {
-        foreach ($roles as $role) {
-            if ($this->isAdmin() || $this->roles->contains('slug', $role)) {
-                return true;
-            }
+        if ($this->isAdmin()) {
+            return true;
         }
-        return false;
+
+        $roles = is_array($roles) ? $roles : [$roles];
+
+        return (bool)array_filter($roles, function ($role) {
+            return $this->roles->contains('slug', $role);
+        });
     }
 
     /**
@@ -33,59 +39,9 @@ trait HasRolesAndPermissions
      *
      * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
         return $this->roles->contains('slug', 'admin');
-    }
-
-    /**
-     * User has the permission, directly or through a role.
-     *
-     * @param $permissions
-     *
-     * @return bool
-     */
-    public function hasPermissionTo($permissions): bool
-    {
-        return $this->hasPermissionThroughRole($permissions)
-            || $this->hasPermission($permissions);
-    }
-
-    /**
-     * The user has the permission through the role.
-     *
-     * @param $permissions
-     *
-     * @return bool
-     */
-    public function hasPermissionThroughRole($permissions): bool
-    {
-        foreach ($permissions as $permission) {
-            foreach (Permission::where('slug', $permission)->roles as $role) {
-                if ($this->roles->contains($role)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * User has a permission.
-     *
-     * @param $permissions
-     *
-     * @return bool
-     */
-    public function hasPermission($permissions): bool
-    {
-        foreach ($permissions as $permission) {
-            if ($this->isAdmin() || $this->permissions->contains('slug', $permission)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
@@ -93,12 +49,12 @@ trait HasRolesAndPermissions
      *
      * @param $permissions
      *
-     * @return HasRolesAndPermissions
+     * @return $this
      */
-    public function refreshPermissions($permissions)
+    public function refreshPermissions($permissions): self
     {
         $this->permissions()->detach();
-        return $this->givePermissionsTo($permissions);
+        return $permissions ? $this->givePermissionsTo($permissions) : $this;
     }
 
     /**
@@ -106,7 +62,8 @@ trait HasRolesAndPermissions
      */
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(Permission::class, 'users_permissions');
+        return $this->belongsToMany(Permission::class, 'users_permissions')
+            ->withTimestamps();
     }
 
     /**
@@ -116,12 +73,8 @@ trait HasRolesAndPermissions
      *
      * @return $this
      */
-    public function givePermissionsTo($permissions)
+    public function givePermissionsTo($permissions): self
     {
-        if ($permissions === null) {
-            return $this;
-        }
-
         $permissions = $this->getAllPermissions($permissions);
 
         $this->permissions()->saveMany($permissions);
@@ -133,17 +86,11 @@ trait HasRolesAndPermissions
      *
      * @param $permissions
      *
-     * @return HasRolesAndPermissions|\Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function getAllPermissions($permissions)
+    public function getAllPermissions($permissions): Collection
     {
-        $permissions = Permission::whereIn('slug', $permissions)->get();
-
-        if (!$permissions) {
-            return $this;
-        }
-
-        return $permissions;
+        return Permission::whereIn('slug', $permissions)->get();
     }
 
     /**
@@ -151,12 +98,12 @@ trait HasRolesAndPermissions
      *
      * @param $roles
      *
-     * @return HasRolesAndPermissions
+     * @return $this
      */
-    public function refreshRoles($roles)
+    public function refreshRoles($roles): self
     {
         $this->roles()->detach();
-        return $this->giveRolesTo($roles);
+        return $roles ? $this->giveRolesTo($roles) : $this;
     }
 
     /**
@@ -164,7 +111,8 @@ trait HasRolesAndPermissions
      */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'users_roles');
+        return $this->belongsToMany(Role::class, 'users_roles')
+            ->withTimestamps();
     }
 
     /**
@@ -172,14 +120,9 @@ trait HasRolesAndPermissions
      *
      * @return $this
      */
-    public function giveRolesTo($roles)
+    public function giveRolesTo($roles): self
     {
-        if ($roles === null) {
-            return $this;
-        }
-
-        $roles = $this->getAllRoles($roles);
-        $this->roles()->saveMany($roles);
+        $this->roles()->saveMany($this->getAllRoles($roles));
         return $this;
     }
 
@@ -188,17 +131,11 @@ trait HasRolesAndPermissions
      *
      * @param $roles
      *
-     * @return HasRolesAndPermissions|\Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function getAllRoles($roles)
+    public function getAllRoles($roles): Collection
     {
-        $roles = Role::whereIn('slug', $roles)->get();
-
-        if (!$roles) {
-            return $this;
-        }
-
-        return $roles;
+        return Role::whereIn('slug', $roles)->get();
     }
 
     /**
@@ -207,6 +144,26 @@ trait HasRolesAndPermissions
     public function canDelete(): bool
     {
         return $this->hasPermission(['deleting']);
+    }
+
+    /**
+     * User has a permission.
+     *
+     * @param $permissions
+     *
+     * @return bool
+     */
+    public function hasPermission($permissions): bool
+    {
+        if ($this->isAdmin()) {
+            return true;
+        }
+
+        $permissions = is_array($permissions) ? $permissions : [$permissions];
+
+        return (bool)array_filter($permissions, function ($permission) {
+            return $this->permissions->contains('slug', $permission);
+        });
     }
 
     /**
