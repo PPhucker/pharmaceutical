@@ -19,21 +19,15 @@
                 :domOrderType="true">
                 <x-data-table.head>
                     <x-data-table.th
-                        class="col-md-1 col-auto"
-                        text="ID"/>
-                    <x-data-table.th
                         class="col-md col-auto"
                         :text="__('classifiers.nomenclature.products.registration_numbers.number')"/>
                 </x-data-table.head>
                 <x-data-table.body>
                     @foreach($registrationNumbers as $key => $registrationNumber)
                         <x-data-table.tr>
-                            <x-data-table.td>
-                                <input type="hidden"
-                                       name="registration_numbers[{{$key}}][id]"
-                                       value="{{$registrationNumber->id}}">
-                                {{$registrationNumber->id}}
-                            </x-data-table.td>
+                            <input type="hidden"
+                                   name="registration_numbers[{{$key}}][id]"
+                                   value="{{$registrationNumber->id}}">
                             <x-data-table.td>
                                 <x-form.element.input
                                     name="registration_numbers[{{$key}}][number]"

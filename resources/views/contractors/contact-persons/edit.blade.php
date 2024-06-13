@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-12 col-auto">
             <x-form
-                :route="route('contact_persons.update', ['contact_person' => $contractor->contactPersons->first()->id ?: null])"
+                :route="route('contact_persons.update', ['contact_person' => $contractor->contactPersons->first()->id ?? null])"
                 formId="contact_persons_main_form"
                 method="PATCH">
                 <x-data-table.table
@@ -32,7 +32,7 @@
                                 <x-slot name="hiddenInputs">
                                     <x-form.element.input type="hidden"
                                                           name="contact_persons[{{$key}}][id]"
-                                                          value="{{$contactPerson->id}}"/>
+                                                          value="{{$contactPerson->id ?? null}}"/>
                                 </x-slot>
                                 <x-data-table.td
                                     class="">

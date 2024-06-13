@@ -5,24 +5,10 @@
            id="contractor_id"
            name="contract[contractor_id]"
            value="{{$contractor->id}}">
-    <x-form.row>
-        <x-slot name="label">
-            <x-form.label
-                forId="contract_organization_id"
-                :text="__('contractors.contracts.organization_id')"/>
-        </x-slot>
-        <x-form.element.select
-            id="contract_organization_id"
-            name="contract[organization_id]"
-            :required="true">
-            @foreach($organizations as $organization)
-                <x-form.element.option
-                    :value="$organization->id"
-                    :selected="(int)old('contract[organization_id]') === $organization->id"
-                    :text="$organization->name"/>
-            @endforeach
-        </x-form.element.select>
-    </x-form.row>
+    <input type="hidden"
+           id="contract_organization_id"
+           name="contract[organization_id]"
+           value="{{session('organization_id')}}">
     <x-form.row>
         <x-slot name="label">
             <x-form.label

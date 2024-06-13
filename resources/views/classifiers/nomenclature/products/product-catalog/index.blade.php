@@ -14,14 +14,13 @@
             </x-slot>
             <x-data-table.head>
                 <x-data-table.th
-                    :text="__('ID')"/>
-                <x-data-table.th/>
+                    :text="__('classifiers.nomenclature.products.types_of_end_products.type')"/>
                 <x-data-table.th
                     :text="__('classifiers.nomenclature.products.full_name')"/>
                 <x-data-table.th
-                    :text="__('classifiers.nomenclature.products.product_catalog.place_of_business_id')"/>
-                <x-data-table.th
                     :text="__('classifiers.nomenclature.products.product_catalog.GTIN')"/>
+                <x-data-table.th
+                    :text="__('classifiers.nomenclature.products.product_catalog.price_list')"/>
                 <x-data-table.th/>
                 <x-data-table.th/>
                 <x-data-table.th/>
@@ -30,30 +29,33 @@
                 @foreach($productsCatalog as $key => $product)
                     <x-data-table.tr
                         :model="$product">
-                        <x-data-table.td>
-                            {{$product->id}}
-                        </x-data-table.td>
-                        <x-data-table.td>
-                            @if(!count($product->prices))
-                                <i class="bi bi-info-square-fill text-warning fs-5"
-                                   title="{{__('classifiers.nomenclature.products.product_prices.tips.price_not_added')}}">
-                                </i>
-                                <span class="d-none">0</span>
-                            @else
-                                <i class="bi bi-info-square-fill text-success fs-5"
-                                   title="{{__('classifiers.nomenclature.products.product_prices.tips.price_added')}}">
-                                </i>
-                                <span class="d-none">1</span>
-                            @endif
+                        <x-data-table.td
+                            :title="$product->endProduct->type->name">
+                            <span class="d-none">
+                                {{$product->endProduct->type->name}}
+                            </span>
+                            <i class="bi bi-info-square-fill fs-5" style="color: {{$product->endProduct->type->color}};"
+                               title="{{$product->endProduct->type->name}}">
+                            </i>
                         </x-data-table.td>
                         <x-data-table.td class="text-start">
                             {{$product->endProduct->full_name}}
                         </x-data-table.td>
-                        <x-data-table.td class="text-start text-nowrap">
-                            {{$product->place_of_production}}
-                        </x-data-table.td>
                         <x-data-table.td>
                             {{$product->GTIN}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            @if(!count($product->prices))
+                                <i class="bi bi-x text-danger fs-5"
+                                   title="{{__('classifiers.nomenclature.products.product_prices.tips.price_not_added')}}">
+                                </i>
+                                <span class="d-none">0</span>
+                            @else
+                                <i class="bi bi-check2 text-success fs-5"
+                                   title="{{__('classifiers.nomenclature.products.product_prices.tips.price_added')}}">
+                                </i>
+                                <span class="d-none">1</span>
+                            @endif
                         </x-data-table.td>
                         <x-data-table.td>
                             <x-data-table.button.href

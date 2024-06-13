@@ -15,6 +15,7 @@
             <x-data-table.head>
                 <x-data-table.th
                     text="ID"/>
+                <x-data-table.th :text="__('classifiers.nomenclature.products.types_of_end_products.type')"/>
                 <x-data-table.th
                     :text="__('classifiers.nomenclature.products.full_name')"/>
                 <x-data-table.th/>
@@ -26,6 +27,15 @@
                         :model="$endProduct">
                         <x-data-table.td>
                             {{$endProduct->id}}
+                        </x-data-table.td>
+                        <x-data-table.td
+                            :title="$endProduct->type->name">
+                            <span class="d-none">
+                                {{$endProduct->type->name}}
+                            </span>
+                            <i class="bi bi-info-square-fill fs-5" style="color: {{$endProduct->type->color}};"
+                               title="{{$endProduct->type->name}}">
+                            </i>
                         </x-data-table.td>
                         <x-data-table.td
                             class="text-start">

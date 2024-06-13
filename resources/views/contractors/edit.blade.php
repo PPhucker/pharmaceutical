@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-card
-        :title="$contractor->full_name"
+        :title="__('contractors.edit_card')"
         :back="route('contractors.index')">
         <x-token.dadata-token/>
         <x-form.nav-tabs>

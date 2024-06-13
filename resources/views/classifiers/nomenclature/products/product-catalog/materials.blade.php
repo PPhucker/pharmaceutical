@@ -18,17 +18,19 @@
                         targets="0"
                         pageLength="15">
                         <x-data-table.head>
-                            <x-data-table.th/>
                             <x-data-table.th
-                                class="col-md-3"
+                                class="col-1"/>
+                            <x-data-table.th
+                                class="col"
                                 :text="__('classifiers.nomenclature.materials.name')"/>
                             <x-data-table.th
+                                class="col-1"
                                 :text="__('classifiers.nomenclature.materials.okei_code')"/>
                         </x-data-table.head>
                         <x-data-table.body>
                             @foreach($materials as $key => $material)
                                 <x-data-table.tr>
-                                    <x-data-table.td>
+                                    <x-data-table.td class="col-1 text-center">
                                         <x-form.element.input
                                             id="product_catalog_materials[{{$key}}][material]"
                                             name="material[id]"
@@ -36,10 +38,10 @@
                                             type="radio"
                                             class="form-check-input"/>
                                     </x-data-table.td>
-                                    <x-data-table.td class="text-start">
+                                    <x-data-table.td class="text-start col">
                                         {{$material->name}}
                                     </x-data-table.td>
-                                    <x-data-table.td>
+                                    <x-data-table.td class="col-1 text-center">
                                         {{$material->okei->symbol}}
                                     </x-data-table.td>
                                 </x-data-table.tr>
@@ -62,7 +64,6 @@
                 type="edit"
                 targets="-1">
                 <x-data-table.head>
-                    <x-data-table.th :text="__('ID')"/>
                     <x-data-table.th
                         :text="__('classifiers.nomenclature.materials.name')"/>
                     <x-data-table.th :text="__('classifiers.nomenclature.materials.okei_code')"/>
@@ -71,9 +72,6 @@
                 <x-data-table.body>
                     @foreach($productCatalog->materials as $key => $material)
                         <x-data-table.tr>
-                            <x-data-table.td>
-                                {{$material->id}}
-                            </x-data-table.td>
                             <x-data-table.td class="text-start">
                                 {{$material->name}}
                             </x-data-table.td>

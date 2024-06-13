@@ -14,8 +14,6 @@
             </x-slot>
             <x-data-table.head>
                 <x-data-table.th
-                    text="ID"/>
-                <x-data-table.th
                     :text="__('classifiers.nomenclature.materials.type_id')"/>
                 <x-data-table.th
                     :text="__('classifiers.nomenclature.materials.name')"/>
@@ -26,9 +24,6 @@
                 @foreach($materials as $key => $material)
                     <x-data-table.tr
                         :model="$material">
-                        <x-data-table.td>
-                            {{$material->id}}
-                        </x-data-table.td>
                         <x-data-table.td>
                             {{$material->type->name}}
                         </x-data-table.td>

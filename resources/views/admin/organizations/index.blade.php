@@ -1,19 +1,17 @@
 @extends('layouts.app')
 @section('content')
+    <x-notification.alert/>
     <x-card
         :title="__('contractors.organizations.organizations')">
-        <x-notification.alert/>
         <x-data-table.table
             id="organizations_table"
             class="table-bordered"
-            targets="-1"
+            targets="-1,-2"
             type="index">
             <x-slot name="filter">
                 <x-data-table.filter.trashed-filter tableId="organizations_table"/>
             </x-slot>
             <x-data-table.head>
-                <x-data-table.th
-                    text="ID"/>
                 <x-data-table.th
                     :text="__('contractors.name')"/>
                 <x-data-table.th
@@ -27,9 +25,6 @@
                 @foreach($organizations as $key => $organization)
                     <x-data-table.tr
                         :model="$organization">
-                        <x-data-table.td>
-                            {{$organization->id}}
-                        </x-data-table.td>
                         <x-data-table.td
                             class="text-start">
                             {{$organization->full_name}}

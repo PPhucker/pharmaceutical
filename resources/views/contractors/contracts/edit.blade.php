@@ -14,8 +14,6 @@
                     targets="-1">
                     <x-data-table.head>
                         <x-data-table.th
-                            :text="__('contractors.contracts.organization_id')"/>
-                        <x-data-table.th
                             :text="__('contractors.contracts.number')"/>
                         <x-data-table.th
                             :text="__('contractors.contracts.date')"/>
@@ -35,20 +33,10 @@
                                     <x-form.element.input type="hidden"
                                                           name="contracts[{{$key}}][contractor_id]"
                                                           value="{{$contract->contractor_id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="contracts[{{$key}}][organization_id]"
+                                                          value="{{session('organization_id')}}"/>
                                 </x-slot>
-                                <x-data-table.td
-                                    class="col-md-1 col-auto">
-                                    <x-form.element.select
-                                        name="contracts[{{$key}}][organization_id]"
-                                        :readonly="$contract->trashed()">
-                                        @foreach($organizations as $organization)
-                                            <x-form.element.option
-                                                :value="$organization->id"
-                                                :text="$organization->name"
-                                                :selected="$organization->id === $contract->organization_id"/>
-                                        @endforeach
-                                    </x-form.element.select>
-                                </x-data-table.td>
                                 <x-data-table.td
                                     class="col-md-1 col-auto">
                                     <x-form.element.input

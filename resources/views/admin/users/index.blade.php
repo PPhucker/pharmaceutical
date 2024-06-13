@@ -13,8 +13,6 @@
             </x-slot>
             <x-data-table.head>
                 <x-data-table.th
-                    text="ID"/>
-                <x-data-table.th
                     :text="__('users.name')"/>
                 <x-data-table.th
                     text="Email"/>
@@ -29,9 +27,6 @@
                 @foreach($users as $key => $user)
                     <x-data-table.tr
                         :model="$user">
-                        <x-data-table.td>
-                            {{$user->id}}
-                        </x-data-table.td>
                         <x-data-table.td
                             class="text-start">
                             {{$user->name}}

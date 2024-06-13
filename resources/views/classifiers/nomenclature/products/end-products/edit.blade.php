@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <x-card
-        :title="$endProduct->full_name"
+        :title="__('classifiers.nomenclature.products.edit_card')"
         :back="route('end_products.index')">
         <x-notification.alert/>
         <x-form

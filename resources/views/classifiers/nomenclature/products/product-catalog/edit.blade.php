@@ -2,7 +2,7 @@
 @section('content')
     <x-notification.alert/>
     <x-card
-        :title="$productCatalog->name_with_GTIN"
+        :title="__('classifiers.nomenclature.products.product_catalog.edit_card')"
         :back="route('product_catalog.index')">
         <x-form.nav-tabs>
             <x-card.nav-link
@@ -132,7 +132,7 @@
                         @foreach($placesOfBusiness as $key => $placeOfBusiness)
                             <x-form.element.option
                                 :value="$placeOfBusiness->id"
-                                :text="$placeOfBusiness->address_with_organization"
+                                :text="$placeOfBusiness->address"
                                 :selected="$placeOfBusiness->id === $productCatalog->place_of_business_id"/>
                         @endforeach
                     </x-form.element.select>

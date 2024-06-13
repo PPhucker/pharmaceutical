@@ -43,11 +43,11 @@
                                                           value="{{$account->id}}"/>
                                 </x-slot>
                                 <x-data-table.td
-                                    class="text-start">
+                                    class="text-start col-3">
                                     {{$account->bankClassifier->name}}
                                 </x-data-table.td>
                                 <x-data-table.td
-                                    class="col-md-2 col-auto">
+                                    class="col">
                                     <x-form.element.input
                                         name="bank_account_details[{{$key}}][payment_account]"
                                         :value="$account->payment_account"
@@ -55,13 +55,16 @@
                                         max="20"
                                         min="20"/>
                                 </x-data-table.td>
-                                <x-data-table.td>
+                                <x-data-table.td
+                                    class="col-1 text-center">
                                     {{$account->bankClassifier->BIC}}
                                 </x-data-table.td>
-                                <x-data-table.td>
+                                <x-data-table.td
+                                    class="col-2 text-center">
                                     {{$account->bankClassifier->correspondent_account}}
                                 </x-data-table.td>
-                                <x-data-table.td>
+                                <x-data-table.td
+                                    class="col-1 text-center">
                                     <x-data-table.button.soft-delete
                                         :trashed="$account->trashed()"
                                         id="bank-{{$account->id}}"

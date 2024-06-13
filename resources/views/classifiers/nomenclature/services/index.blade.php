@@ -33,7 +33,7 @@
                     @foreach($services as $key => $service)
                         <x-data-table.tr
                             :model="$service">
-                            <x-data-table.td>
+                            <x-data-table.td class="col">
                                 <x-form.element.input type="hidden"
                                                       name="services[{{$key}}][id]"
                                                       value="{{$service->id}}"/>
@@ -43,7 +43,7 @@
                                     :required="true"
                                     max="255"/>
                             </x-data-table.td>
-                            <x-data-table.td>
+                            <x-data-table.td class="col-2">
                                 <x-form.element.select
                                     name="services[{{$key}}][okei_code]">
                                     @foreach($okeiClassifier as $okei)
@@ -54,7 +54,7 @@
                                     @endforeach
                                 </x-form.element.select>
                             </x-data-table.td>
-                            <x-data-table.td>
+                            <x-data-table.td class="col-1 text-center">
                                 <x-data-table.button.soft-delete
                                     :trashed="$service->trashed()"
                                     id="service-{{$service->id}}"

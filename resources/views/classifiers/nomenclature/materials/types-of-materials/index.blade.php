@@ -19,20 +19,14 @@
                 <x-data-table.head>
                     <x-data-table.th
                         class="col-md col-auto"
-                        text="ID"/>
-                    <x-data-table.th
-                        class="col-md col-auto"
                         :text="__('classifiers.nomenclature.materials.types_of_materials.name')"/>
                 </x-data-table.head>
                 <x-data-table.body>
                     @foreach($typesOfMaterials as $key => $type)
                         <x-data-table.tr>
-                            <x-data-table.td>
-                                <input type="hidden"
-                                       name="types_of_materials[{{$key}}][id]"
-                                       value="{{$type->id}}">
-                                {{$type->id}}
-                            </x-data-table.td>
+                            <input type="hidden"
+                                   name="types_of_materials[{{$key}}][id]"
+                                   value="{{$type->id}}">
                             <x-data-table.td>
                                 <x-form.element.input
                                     name="types_of_materials[{{$key}}][name]"

@@ -19,9 +19,6 @@
                 :domOrderType="true">
                 <x-data-table.head>
                     <x-data-table.th
-                        class="col-md-1 col-auto"
-                        text="ID"/>
-                    <x-data-table.th
                         class="col-md col-auto"
                         :text="__('classifiers.nomenclature.products.types_of_end_products.name')"/>
                     <x-data-table.th
@@ -31,12 +28,9 @@
                 <x-data-table.body>
                     @foreach($typesOfEndProducts as $key => $type)
                         <x-data-table.tr>
-                            <x-data-table.td>
-                                <input type="hidden"
-                                       name="types_of_end_products[{{$key}}][id]"
-                                       value="{{$type->id}}">
-                                {{$type->id}}
-                            </x-data-table.td>
+                            <input type="hidden"
+                                   name="types_of_end_products[{{$key}}][id]"
+                                   value="{{$type->id}}">
                             <x-data-table.td>
                                 <x-form.element.input
                                     name="types_of_end_products[{{$key}}][name]"
@@ -47,7 +41,7 @@
                             <x-data-table.td class="text-center">
                                 <x-form.element.input
                                     type="color"
-                                    class="form-control form-control-color"
+                                    class="form-control form-control-color w-100"
                                     name="types_of_end_products[{{$key}}][color]"
                                     :value="$type->color"
                                     max="7"/>

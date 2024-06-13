@@ -14,8 +14,6 @@
             </x-slot>
             <x-data-table.head>
                 <x-data-table.th
-                    :text="__('ID')"/>
-                <x-data-table.th
                     :text="__('contractors.name')"/>
                 <x-data-table.th
                     :text="__('contractors.inn')"/>
@@ -33,9 +31,6 @@
                 @foreach($contractors as $key => $contractor)
                     <x-data-table.tr
                         :model="$contractor">
-                        <x-data-table.td>
-                            {{$contractor->id}}
-                        </x-data-table.td>
                         <x-data-table.td
                             class="text-start">
                             {{$contractor->full_name}}
@@ -83,19 +78,23 @@
                                                     <tr>
                                                         <th scope="col"
                                                             class="text-center">
-                                                            {{__('contractors.contracts.organization_id')}}
+                                                            {{__('contractors.contracts.number')}}
                                                         </th>
                                                         <th scope="col"
                                                             class="text-center">
                                                             {{__('contractors.contracts.date')}}
+                                                        </th>
+                                                        <th scope="col"
+                                                            class="text-center">
+                                                            {{__('contractors.contracts.comment')}}
                                                         </th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     @foreach($contractor->contracts as $contract)
                                                         <tr>
-                                                            <td class="text-start">
-                                                                {{$contract->organization->full_name}}
+                                                            <td class="text-center">
+                                                                {{$contract->number}}
                                                             </td>
                                                             <td>
                                                                 @if($contract->is_expired)
@@ -104,6 +103,9 @@
                                                                     <i class="bi bi-check-square-fill text-success fs-6 fw-bolder"></i>
                                                                 @endif
                                                                 <span>{{$contract->date}}</span>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                {{$contract->comment}}
                                                             </td>
                                                         </tr>
                                                     @endforeach

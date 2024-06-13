@@ -1,7 +1,8 @@
 @extends('layouts.app')
 @section('content')
+    <x-notification.alert/>
     <x-card
-        :title="$organization->full_name"
+        :title="__('contractors.organizations.edit_card')"
         :back="route('organizations.index')">
         <x-token.dadata-token/>
         <x-form.nav-tabs>
@@ -40,7 +41,6 @@
                 </li>
             </x-card.nav-item-dropdown>
         </x-form.nav-tabs>
-        <x-notification.alert/>
         <x-form.nav-tab
             formId="organization_main_form"
             :active="true">

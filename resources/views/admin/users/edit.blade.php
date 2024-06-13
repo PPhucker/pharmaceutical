@@ -2,7 +2,7 @@
 @section('content')
     <x-notification.alert/>
     <x-card
-        :title="$user->name"
+        :title="__('users.edit_card')"
         :back="route('users.index')">
         <x-form
             :route="route('users.update', ['user' => $user->id])"

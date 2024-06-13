@@ -22,20 +22,14 @@
                 <x-data-table.head>
                     <x-data-table.th
                         class="col-md col-auto"
-                        text="ID"/>
-                    <x-data-table.th
-                        class="col-md col-auto"
                         :text="__('classifiers.nomenclature.products.international_names_of_end_products.name')"/>
                 </x-data-table.head>
                 <x-data-table.body>
                     @foreach($internationalNames as $key => $internationalName)
                         <x-data-table.tr>
-                            <x-data-table.td>
-                                <input type="hidden"
-                                       name="international_names_of_end_products[{{$key}}][id]"
-                                       value="{{$internationalName->id}}">
-                                {{$internationalName->id}}
-                            </x-data-table.td>
+                            <input type="hidden"
+                                   name="international_names_of_end_products[{{$key}}][id]"
+                                   value="{{$internationalName->id}}">
                             <x-data-table.td>
                                 <x-form.element.input
                                     name="international_names_of_end_products[{{$key}}][name]"
