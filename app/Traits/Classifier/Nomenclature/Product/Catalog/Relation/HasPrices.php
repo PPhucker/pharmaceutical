@@ -3,16 +3,19 @@
 namespace App\Traits\Classifier\Nomenclature\Product\Catalog\Relation;
 
 use App\Models\Classifier\Nomenclature\Product\Catalog\Price\ProductPrice;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * Трейт цен.
+ */
 trait HasPrices
 {
     /**
-     * @return HasMany
+     * @return HasOne
      */
-    public function prices(): HasMany
+    public function retailPrice(): HasOne
     {
-        return $this->hasMany(ProductPrice::class, $this->foreign_key)
+        return $this->hasOne(ProductPrice::class, $this->foreign_key)
             ->withTrashed();
     }
 }

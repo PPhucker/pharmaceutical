@@ -7,6 +7,7 @@ use App\Models\Classifier\Nomenclature\Product\Catalog\ProductCatalog;
 use App\Repositories\Admin\Organization\PlaceOfBusinessRepository;
 use App\Repositories\Classifier\Nomenclature\Product\Catalog\ProductCatalogRepository;
 use App\Repositories\Contractor\ContractorRepository;
+use App\Services\Classifier\Nomenclature\Product\Catalog\Price\PriceServiceDependencies;
 use App\Services\Classifier\Nomenclature\Product\EndProductServiceDependencies;
 use App\Services\Contractor\Address\AddressServiceDependencies;
 use App\Services\ResourceService;
@@ -29,16 +30,19 @@ class ProductCatalogService extends ResourceService
     /**
      * @param EndProductServiceDependencies $endProductServiceDependencies
      * @param AddressServiceDependencies    $addressServiceDependencies
+     * @param PriceServiceDependencies      $priceServiceDependencies
      *
      * @throws BindingResolutionException
      */
     public function __construct(
         EndProductServiceDependencies $endProductServiceDependencies,
-        AddressServiceDependencies $addressServiceDependencies
+        AddressServiceDependencies $addressServiceDependencies,
+        PriceServiceDependencies $priceServiceDependencies
     ) {
         $this->repositories = $this->getRepositoriesFromDependencies([
             $endProductServiceDependencies,
-            $addressServiceDependencies
+            $addressServiceDependencies,
+            $priceServiceDependencies
         ]);
 
         $this->repositories->placeOfBusiness = app()

@@ -3,130 +3,69 @@
 namespace App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\Price;
 
 use App\Http\Controllers\CoreController;
-use App\Http\Requests\Classifiers\Nomenclature\Products\ProductPrice\StoreProductPriceRequest;
-use App\Http\Requests\Classifiers\Nomenclature\Products\ProductPrice\UpdateProductPriceRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\Catalog\Price\StoreProductPriceRequest;
+use App\Http\Requests\Classifier\Nomenclature\Product\Catalog\Price\UpdateProductPriceRequest;
 use App\Models\Classifier\Nomenclature\Product\Catalog\Price\ProductPrice;
-use App\Repositories\Classifier\Nomenclature\Product\Catalog\Price\ProductPriceRepository;
-use Auth;
+use App\Services\Classifier\Nomenclature\Product\Catalog\Price\RetailPriceService;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
+/**
+ * Контроллер розничной цены готовой продукции.
+ */
 class ProductPriceController extends CoreController
 {
+    private const VIEW_PATH = 'classifiers.nomenclature.products.product-catalog.prices';
     /**
-     * @return void
+     * @var RetailPriceService
      */
-    protected function authorizeActions()
+    private $service;
+
+    /**
+     * @param RetailPriceService $service
+     */
+    public function __construct(RetailPriceService $service)
     {
+        $this->service = $service;
+
         $this->authorizeResource(ProductPrice::class, 'product_price');
     }
 
     /**
-     * @return string
+     * @return View
      */
-    protected function getRepository()
+    public function index(): View
     {
-        return ProductPriceRepository::class;
+        return view(
+            self::VIEW_PATH,
+            $this->service->getIndexData()
+        );
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
      * @param StoreProductPriceRequest $request
      *
      * @return RedirectResponse
      */
-    public function store(StoreProductPriceRequest $request)
+    public function store(StoreProductPriceRequest $request): RedirectResponse
     {
-        $validated = $request->validated()['product_price'];
-
-        ProductPrice::create(
-            [
-                'user_id' => Auth::user()->id,
-                'product_catalog_id' => (int)$validated['product_catalog_id'],
-                'organization_id' => (int)$validated['organization_id'],
-                'retail_price' => (float)$validated['retail_price'],
-                'trade_price' => (float)$validated['trade_price'],
-                'trade_quantity' => (int)$validated['trade_quantity'],
-                'nds' => (float)((int)$validated['nds'] / 100),
-            ]
+        $this->service->create(
+            $request->validated()['product_price']
         );
 
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.product_prices.actions.create.success')
-            );
+        return $this->successRedirect();
     }
 
-
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateProductPriceRequest $request
-     * @param ProductPrice|null         $product_price
+     * @param ProductPrice              $productPrice
      *
      * @return RedirectResponse
      */
-    public function update(UpdateProductPriceRequest $request, ProductPrice $product_price = null)
+    public function update(UpdateProductPriceRequest $request, ProductPrice $productPrice): RedirectResponse
     {
-        $validated = $request->validated();
+        $this->service->update($productPrice, $request->validated()['product_price']);
 
-        foreach ($validated['product_prices'] as $productPrice) {
-            ProductPrice::find((int)$productPrice['id'])
-                ->fill(
-                    [
-                        'user_id' => Auth::user()->id,
-                        'product_catalog_id' => (int)$productPrice['product_catalog_id'],
-                        'organization_id' => (int)$productPrice['organization_id'],
-                        'retail_price' => (float)$productPrice['retail_price'],
-                        'trade_price' => (float)$productPrice['trade_price'],
-                        'trade_quantity' => (int)$productPrice['trade_quantity'],
-                        'nds' => (float)((int)$productPrice['nds'] / 100),
-                    ]
-                )
-                ->save();
-        }
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.product_prices.actions.update.success')
-            );
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param ProductPrice $productPrice
-     *
-     * @return RedirectResponse
-     */
-    public function destroy(ProductPrice $productPrice)
-    {
-        $productPrice->delete();
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.product_prices.actions.delete.success')
-            );
-    }
-
-    /**
-     * Restore the specified resource from storage.
-     *
-     * @param ProductPrice $productPrice
-     *
-     * @return RedirectResponse
-     */
-    public function restore(ProductPrice $productPrice)
-    {
-        $productPrice->restore();
-
-        return back()
-            ->with(
-                'success',
-                __('classifiers.nomenclature.products.product_prices.actions.restore.success')
-            );
+        return $this->successRedirect();
     }
 }

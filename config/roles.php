@@ -45,6 +45,10 @@ return [
                 'digital_communication',
                 'marketing',
                 'planning',
+                'prices' => [
+                    'bookkeeping',
+                    'marketing',
+                ],
             ],
             'material' => [
                 'marketing',

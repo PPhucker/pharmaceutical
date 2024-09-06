@@ -19,6 +19,11 @@
                 id="materials_main_form"
                 :title="__('classifiers.nomenclature.materials.materials')"/>
             @end_planning
+            @roles(['marketing', 'bookkeeping'])
+            <x-card.nav-link
+                id="prices_main_form"
+                :title="__('classifiers.nomenclature.products.prices.prices')"/>
+            @end_roles
         </x-form.nav-tabs>
         <x-form.nav-tab
             formId="product_catalog_main_form"
@@ -162,5 +167,6 @@
         </x-form.nav-tab>
         @include('classifiers.nomenclature.products.product-catalog.aggregation-types')
         @include('classifiers.nomenclature.products.product-catalog.materials')
+        @include('classifiers.nomenclature.products.product-catalog.prices')
     </x-card>
 @endsection

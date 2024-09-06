@@ -84,17 +84,13 @@ return [
                 'statistic' => 'Статистика',
                 'price_list' => 'Прайс',
             ],
-            'product_prices' => [
-                'product_prices' => 'Прайс',
-                'organization_id' => 'Поставщик',
-                'retail_price' => 'Розничная цена',
-                'trade_price' => 'Оптовая цена',
-                'nds' => 'НДС %',
-                'trade_quantity' => 'Оптовое кол-во',
-                'tips' => [
-                    'price_added' => 'Прайс добавлен',
-                    'price_not_added' => 'Прайс не добавлен',
-                ],
+            'prices' => [
+                'prices' => 'Цены',
+                'price' => 'Цена (руб.)',
+                'nds' => 'НДС (%)',
+                'retail' => 'Розничная цена',
+                'wholesale' => 'Оптовые цены',
+                'specific' => 'Индивидуальные цены'
             ],
             'regional_allowances' => [
                 'regional_allowances' => 'Региональные надбавки',

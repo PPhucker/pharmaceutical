@@ -45,7 +45,7 @@
                             {{$product->GTIN}}
                         </x-data-table.td>
                         <x-data-table.td>
-                            @if(!count($product->prices))
+                            @if(!$product->retailPrice)
                                 <i class="bi bi-x text-danger fs-5"
                                    title="{{__('classifiers.nomenclature.products.product_prices.tips.price_not_added')}}">
                                 </i>

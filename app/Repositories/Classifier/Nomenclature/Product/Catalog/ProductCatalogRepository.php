@@ -46,7 +46,7 @@ class ProductCatalogRepository extends ResourceRepository
                     $query->select('code', 'name')
                         ->orderBy('code');
                 },
-                'prices' => function ($query) {
+                'retailPrice' => function ($query) {
                     $query->with('organization:id,name')
                         ->orderBy('organization_id');
                 },
@@ -86,7 +86,7 @@ class ProductCatalogRepository extends ResourceRepository
             },
             'organization:id,name,legal_form_type',
             'placeOfBusiness:id,address',
-            'prices'
+            'retailPrice'
         ])
             ->get()
             ->sortBy([

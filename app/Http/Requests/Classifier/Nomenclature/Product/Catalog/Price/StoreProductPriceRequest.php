@@ -1,29 +1,20 @@
 <?php
 
-namespace App\Http\Requests\Classifiers\Nomenclature\Products\ProductPrice;
+namespace App\Http\Requests\Classifier\Nomenclature\Product\Catalog\Price;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Validator;
+use App\Http\Requests\CoreFormRequest;
 
-class StoreProductPriceRequest extends FormRequest
+/**
+ * Валидация добавления цены готовой продукции из каталога.
+ */
+class StoreProductPriceRequest extends CoreFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         $prefix = 'product_price.';
 
@@ -35,17 +26,9 @@ class StoreProductPriceRequest extends FormRequest
             $prefix . 'organization_id' => [
                 'required',
                 'numeric',
-                Rule::unique('product_prices', 'organization_id')
-                ->where('organization_id', $this->input($prefix . 'organization_id'))
-                ->where('product_catalog_id', $this->input($prefix . 'product_catalog_id'))
             ],
-            $prefix . 'retail_price' => [
+            $prefix . 'price' => [
                 'required',
-                'numeric',
-                'min:1',
-            ],
-            $prefix . 'trade_price' => [
-                'nullable',
                 'numeric',
                 'min:1',
             ],
@@ -54,30 +37,6 @@ class StoreProductPriceRequest extends FormRequest
                 'numeric',
                 'min:10',
             ],
-            $prefix . 'trade_quantity' => [
-                'nullable',
-                'numeric',
-                'min:1',
-            ],
         ];
-    }
-
-    /**
-     * Configure the validator instance.
-     *
-     * @param Validator $validator
-     *
-     * @return void
-     */
-    public function withValidator(Validator $validator)
-    {
-        $validator->after(function ($validator) {
-            if ($validator->errors()->isNotEmpty()) {
-                $validator->errors()->add(
-                    'fail',
-                    __('classifiers.nomenclature.products.product_prices.actions.create.fail')
-                );
-            }
-        });
     }
 }

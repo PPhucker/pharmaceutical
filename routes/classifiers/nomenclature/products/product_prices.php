@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\Price\ProductPriceController as Controller;
 use Illuminate\Support\Facades\Route;
 
