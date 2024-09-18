@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md col-auto mb-2">
             <div class="card">
-                <div class="card-header bg-secondary text-primary fw-bold">
+                <div class="card-header bg-secondary text-primary fw-bold border-0">
                     {{__('classifiers.nomenclature.products.prices.retail')}}
                 </div>
                 <div class="card-body">
@@ -72,17 +72,19 @@
     <div class="row">
         <div class="col-md col-auto mb-2">
             <div class="card">
-                <div class="card-header bg-secondary text-primary fw-bold">
+                <div class="card-header bg-secondary text-primary fw-bold border-0">
                     {{__('classifiers.nomenclature.products.prices.wholesale')}}
                 </div>
-                <div class="card-body">2</div>
+                <div class="card-body">
+                    @include('classifiers.nomenclature.products.product-catalog.wholesale-prices')
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md col-auto mb-2">
             <div class="card">
-                <div class="card-header bg-secondary text-primary fw-bold">
+                <div class="card-header bg-secondary text-primary fw-bold border-0">
                     {{__('classifiers.nomenclature.products.prices.specific')}}
                 </div>
                 <div class="card-body">2</div>

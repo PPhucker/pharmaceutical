@@ -90,7 +90,8 @@ return [
                 'nds' => 'НДС (%)',
                 'retail' => 'Розничная цена',
                 'wholesale' => 'Оптовые цены',
-                'specific' => 'Индивидуальные цены'
+                'specific' => 'Индивидуальные цены',
+                'quantity' => 'Количество',
             ],
             'regional_allowances' => [
                 'regional_allowances' => 'Региональные надбавки',

@@ -1,13 +1,25 @@
 <?php
 
-use App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\Price\ProductPriceController as Controller;
-use Illuminate\Support\Facades\Route;
+use App\Helpers\Route\RouteHelper;
+use App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\Price\ProductPriceController;
+use App\Http\Controllers\Classifier\Nomenclature\Product\Catalog\Price\WholesalePriceController;
 
-Route::resource('product_prices', Controller::class)
-    ->only(['store', 'update', 'destroy']);
-Route::controller(Controller::class)
-    ->group(static function () {
-        Route::post('/prices/{product_price}/restore', 'restore')
-            ->name('product_prices.restore')
-            ->withTrashed();
-    });
+$priceRoutesData = collect(
+    [
+        collect([
+            'controller' => ProductPriceController::class,
+            'name' => 'product_prices',
+            'uriParameter' => 'product_price',
+        ]),
+        collect([
+            'controller' => WholesalePriceController::class,
+            'name' => 'wholesale_prices',
+            'uriParameter' => 'wholesale_price',
+        ]),
+    ]
+);
+
+foreach ($priceRoutesData as $priceRouteData) {
+    $routeHelper = new RouteHelper(collect($priceRouteData));
+    $routeHelper->mapWritableRoutes();
+}

@@ -20,6 +20,11 @@ return [
                         ],
                         'Catalog' => [
                             'ProductCatalog' => 'Каталог готовой продукции',
+                            'Price' => [
+                                'ProductPrice' => 'Розничная цена',
+                                'WholesalePrice' => 'Оптовая цена',
+                                'ConytactorSpecificPrice' => 'Индивидуальная цена контрагента',
+                            ],
                         ],
                         'InternationalNameOfEndProduct' => 'Международное непатентованное название готовой продукции',
                         'OKPD2' => 'Классификатор ОКПД2',

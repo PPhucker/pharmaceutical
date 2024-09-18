@@ -50,6 +50,10 @@ class ProductCatalogRepository extends ResourceRepository
                     $query->with('organization:id,name')
                         ->orderBy('organization_id');
                 },
+                'wholesalePrices' => function ($query) {
+                    $query->with('organization:id,name')
+                        ->orderBy('organization_id');
+                },
                 'regionalAllowances' => function ($query) {
                     $query->orderBy('region_id');
                 }

@@ -3,6 +3,7 @@
 namespace App\Services\Classifier\Nomenclature\Product\Catalog\Price;
 
 use App\Repositories\Classifier\Nomenclature\Product\Catalog\Price\ProductPriceRepository;
+use App\Repositories\Classifier\Nomenclature\Product\Catalog\Price\ProductWholesalePriceRepository;
 use App\Services\CoreDependencyService;
 
 /**
@@ -11,13 +12,16 @@ use App\Services\CoreDependencyService;
 class PriceServiceDependencies extends CoreDependencyService
 {
     /**
-     * @param ProductPriceRepository $retailPrice
+     * @param ProductPriceRepository          $retailPrice
+     * @param ProductWholesalePriceRepository $wholesalePrice
      */
     public function __construct(
-        ProductPriceRepository $retailPrice
+        ProductPriceRepository $retailPrice,
+        ProductWholesalePriceRepository $wholesalePrice
     ) {
         $this->repositories = compact(
-            'retailPrice'
+            'retailPrice',
+            'wholesalePrice',
         );
     }
 }
