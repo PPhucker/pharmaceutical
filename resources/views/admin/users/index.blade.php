@@ -1,82 +1,67 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('users.users')}}">
-        <x-tables.main id="users"
-                       targets='-1,-2'>
+    <x-card
+        :title="__('users.users')">
+        <x-notification.alert/>
+        <x-data-table.table
+            id="users_table"
+            class="table-bordered"
+            targets="-1,-2,-3"
+            type="index">
             <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="users"/>
+                <x-data-table.filter.trashed-filter tableId="users_table"/>
             </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('ID')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('users.name')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    E-mail
-                </th>
-                <th scope="col"
-                    class="text-center d-none d-lg-table-cell">
-                    {{__('users.verified')}}
-                </th>
-                <th scope="col"
-                    class="text-center d-none d-lg-table-cell">
-                    {{__('users.registration_date')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                </th>
-                <th scope="col"
-                    class="text-center">
-                </th>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($users as $key => $user)
-                <tr @if($user->trashed()) class="d-none trashed" @endif>
-                    <td class="align-middle text-center">
-                        {{$user->id}}
-                    </td>
-                    <td class="align-middle">
-                        {{$user->name}}
-                    </td>
-                    <td class="align-middle">
-                        {{$user->email}}
-                    </td>
-                    <td class="text-center align-middle d-none d-lg-table-cell">
-                        @if($user->email_verified_at)
-                            <span class="d-none">{{true}}</span>
-                            <i class="bi bi-check-circle text-success"></i>
-                        @else
-                            <span class="d-none">{{false}}</span>
-                            <i class="bi bi-exclamation-circle text-danger"></i>
-                        @endif
-                    </td>
-                    <td class="text-center align-middle d-none d-lg-table-cell">
-                        {{$user->created_at}}
-                    </td>
-                    <td class="text-center align-middle">
-                        <x-buttons.edit route="{{route('users.edit', ['user' => $user->id])}}"
-                                        disabled="{{$user->trashed()}}"/>
-                    </td>
-                    <td class="text-center align-middle">
-                        @if ($user->trashed())
-                            <x-buttons.restore route="{{route('users.restore', ['user' => $user->id])}}"
-                                               itemId="{{$user->id}}"/>
-                        @else
-                            <x-buttons.delete route="{{route('users.destroy', ['user' => $user->id])}}"
-                                              formId="destroy"
-                                              itemId="{{$user->id}}"/>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-forms.main>
+            <x-data-table.head>
+                <x-data-table.th
+                    :text="__('users.name')"/>
+                <x-data-table.th
+                    text="Email"/>
+                <x-data-table.th
+                    :text="__('users.verified')"/>
+                <x-data-table.th
+                    :text="__('users.registration_date')"/>
+                <x-data-table.th/>
+                <x-data-table.th/>
+            </x-data-table.head>
+            <x-data-table.body>
+                @foreach($users as $key => $user)
+                    <x-data-table.tr
+                        :model="$user">
+                        <x-data-table.td
+                            class="text-start">
+                            {{$user->name}}
+                        </x-data-table.td>
+                        <x-data-table.td
+                            class="text-start">
+                            {{$user->email}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            @if($user->email_verified_at)
+                                <span class="d-none">{{true}}</span>
+                                <i class="bi bi-check-circle text-success"></i>
+                            @else
+                                <span class="d-none">{{false}}</span>
+                                <i class="bi bi-exclamation-circle text-danger"></i>
+                            @endif
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$user->created_at}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.edit
+                                route="{{route('users.edit', ['user' => $user->id])}}"
+                                disabled="{{$user->trashed()}}"/>
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.soft-delete
+                                :trashed="$user->trashed()"
+                                :id="$user->id"
+                                route="users"
+                                :params="['user' => $user->id]"/>
+                        </x-data-table.td>
+                    </x-data-table.tr>
+                @endforeach
+            </x-data-table.body>
+        </x-data-table.table>
+    </x-card>
 @endsection

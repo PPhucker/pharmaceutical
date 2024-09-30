@@ -27,7 +27,6 @@ class DadataClient extends Dadata
                 'name' => $name['short'] ?: $name['full'],
                 'inn' => $data['inn'],
                 'okpo' => $data['okpo'],
-                'kpp' => $data['kpp'],
             ]
         );
     }

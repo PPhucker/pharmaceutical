@@ -1,113 +1,145 @@
-@php use App\Models\Admin\Organizations\Organization; @endphp
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('contractors.contractors')}}">
-        <x-tables.main id="table_contractors"
-                       targets="-1,-2,-3">
+    <x-card
+        :title="__('contractors.contractors')">
+        <x-notification.alert/>
+        <x-data-table.table
+            id="contractors_table"
+            class="table-bordered"
+            targets="-1,-2,-3"
+            type="index"
+            pageLength="20">
             <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_contractors"/>
+                <x-data-table.filter.trashed-filter tableId="contractors_table"/>
             </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center align-middle"
-                    rowspan="2">
-                    {{__('ID')}}
-                </th>
-                <th scope="col"
-                    class="text-center align-middle"
-                    rowspan="2">
-                    {{__('contractors.name')}}
-                </th>
-                <th scope="col"
-                    class="text-center align-middle"
-                    rowspan="2">
-                    {{__('contractors.comment')}}
-                </th>
-                <th scope="col"
-                    class="text-center align-middle"
-                    colspan="{{$organizations->count()}}">
-                    {{__('contractors.contracts.contracts')}}
-                </th>
-                <th scope="col"
-                    class="text-center align-middle"
-                    rowspan="2">
-                    {{__('contractors.inn')}}
-                </th>
-                <th rowspan="2">
-                    <span class="d-none">
-                        {{__('documents.invoices_for_payment.buttons.create')}}
-                    </span>
-                </th>
-                <th rowspan="2">
-                    <span class="d-none">
-                        {{__('datatable.buttons.edit')}}
-                    </span>
-                </th>
-                <th rowspan="2">
-                    <span class="d-none">
-                        {{__('datatable.buttons.delete')}}
-                    </span>
-                </th>
-            </tr>
-            <tr>
-                @foreach($organizations as $organization)
-                    <th class="text-center text-primary">
-                        {{trim($organization->name, '"')}}
-                    </th>
-                @endforeach
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($contractors as $key => $contractor)
-                <tr @if($contractor->trashed()) class="d-none trashed" @endif>
-                    <td class="align-middle text-center">
-                        {{$contractor->id}}
-                    </td>
-                    <td class="align-middle">
-                        {{$contractor->legalForm->abbreviation}} {{$contractor->name}}
-                    </td>
-                    <td class="align-middle">
-                        {{$contractor->comment}}
-                    </td>
-                    @foreach($organizations as $organization)
-                        <td class="align-middle text-center">
-                            @if($contractor->hasContract($organization->id))
-                                <span class="d-none">{{true}}</span>
-                                <i class="bi bi-check-square-fill text-success fs-5 fw-bolder"></i>
-                            @else
-                                <span class="d-none">{{false}}</span>
+            <x-data-table.head>
+                <x-data-table.th
+                    :text="__('contractors.name')"/>
+                <x-data-table.th
+                    :text="__('contractors.inn')"/>
+                <x-data-table.th
+                    :text="__('contractors.kpp')"/>
+                <x-data-table.th
+                    :text="__('contractors.comment')"/>
+                <x-data-table.th
+                    :text="__('contractors.contracts.contracts')"/>
+                <x-data-table.th/>
+                <x-data-table.th/>
+                <x-data-table.th/>
+            </x-data-table.head>
+            <x-data-table.body>
+                @foreach($contractors as $key => $contractor)
+                    <x-data-table.tr
+                        :model="$contractor">
+                        <x-data-table.td
+                            class="text-start">
+                            {{$contractor->full_name}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$contractor->INN}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            {{$contractor->kpp}}
+                        </x-data-table.td>
+                        <x-data-table.td
+                            class="text-start">
+                            {{$contractor->comment}}
+                        </x-data-table.td>
+
+                        <x-data-table.td>
+                            @if($contractor->contracts->count())
+                                <button type="button"
+                                        title="{{__('datatable.entries.show')}}"
+                                        class="btn btn-hover"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#contractsModal{{$key}}">
+                                    <i class="bi bi-eye-fill fs-6"></i>
+                                </button>
+                                <div class="modal fade"
+                                     id="contractsModal{{$key}}"
+                                     tabindex="-1"
+                                     aria-labelledby="contractsModal{{$key}}Label"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-primary">
+                                                <h5 class="modal-title"
+                                                    id="contractsModal{{$key}}Label">
+                                                    {{__('contractors.contracts.contracts') . ' ' . $contractor->full_name}}
+                                                </h5>
+                                                <button type="button"
+                                                        class="btn-close"
+                                                        data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered text-primary">
+                                                    <thead class="text-center">
+                                                    <tr>
+                                                        <th scope="col"
+                                                            class="text-center">
+                                                            {{__('contractors.contracts.number')}}
+                                                        </th>
+                                                        <th scope="col"
+                                                            class="text-center">
+                                                            {{__('contractors.contracts.date')}}
+                                                        </th>
+                                                        <th scope="col"
+                                                            class="text-center">
+                                                            {{__('contractors.contracts.comment')}}
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($contractor->contracts as $contract)
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                {{$contract->number}}
+                                                            </td>
+                                                            <td>
+                                                                @if($contract->is_expired)
+                                                                    <i class="bi bi bi-exclamation-square-fill text-danger fs-6 fw-bolder"></i>
+                                                                @else
+                                                                    <i class="bi bi-check-square-fill text-success fs-6 fw-bolder"></i>
+                                                                @endif
+                                                                <span>{{$contract->date}}</span>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                {{$contract->comment}}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endif
-                        </td>
-                    @endforeach
-                    <td class="align-middle text-center">
-                        {{$contractor->INN}}
-                    </td>
-                    <td class="text-center align-middle">
-                        <x-buttons.href
-                            route="{{route('invoices_for_payment.create', ['contractor' => $contractor->id])}}"
-                            title="{{__('documents.invoices_for_payment.buttons.create')}}"
-                            icon="{{'bi bi-file-earmark-fill'}}"/>
-                    </td>
-                    <td class="text-center align-middle">
-                        <x-buttons.edit route="{{route('contractors.edit', ['contractor' => $contractor->id])}}"
-                                        disabled="{{$contractor->trashed()}}"/>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if ($contractor->trashed())
-                            <x-buttons.restore
-                                route="{{route('contractors.restore', ['contractor' => $contractor->id])}}"
-                                itemId="{{$contractor->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('contractors.destroy', ['contractor' => $contractor->id])}}"
-                                formId="destroy"
-                                itemId="{{$contractor->id}}"/>
-                        @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-forms.main>
+                        </x-data-table.td>
+
+                        <x-data-table.td>
+                            <x-data-table.button.href
+                                route="{{route('invoices_for_payment.create', ['contractor' => $contractor->id])}}"
+                                title="{{__('documents.invoices_for_payment.buttons.create')}}"
+                                icon="bi bi-file-earmark-fill"
+                                :disabled="$contractor->trashed()"/>
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.edit
+                                route="{{route('contractors.edit', ['contractor' => $contractor->id])}}"
+                                disabled="{{$contractor->trashed()}}"/>
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.soft-delete
+                                :trashed="$contractor->trashed()"
+                                :id="$contractor->id"
+                                route="contractors"
+                                :params="['contractor' => $contractor->id]"/>
+                        </x-data-table.td>
+                    </x-data-table.tr>
+                @endforeach
+            </x-data-table.body>
+        </x-data-table.table>
+    </x-card>
 @endsection

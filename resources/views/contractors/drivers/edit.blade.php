@@ -1,63 +1,65 @@
-<x-forms.collapse.card route="{{route('drivers.update', ['driver' => 1])}}"
-                       cardId="card_drivers"
-                       formId="form_drivers"
-                       title="{{__('contractors.drivers.drivers')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_drivers"
-                       targets="-1"
-                       domOrderType="{{true}}">
-            <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_drivers"/>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.drivers.name')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($contractor->drivers as $key => $driver)
-                <tr @if($driver->trashed()) class="d-none trashed" @endif>
-                    <input type="hidden"
-                           name="drivers[{{$key}}][id]"
-                           value="{{$driver->id}}">
-                    <input type="hidden"
-                           name="drivers[{{$key}}][contractor_id]"
-                           value="{{$contractor->id}}">
-                    <td class="col-11 border-start">
-                        <span class="d-none">
-                            {{$driver->name}}
-                        </span>
-                        <input type="text"
-                               name="drivers[{{$key}}][name]"
-                               value="{{$driver->name}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('drivers.' . $key . '.name') is-invalid @enderror">
-                        <x-forms.span-error name="drivers.{{$key}}.name"/>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if($driver->trashed())
-                            <x-buttons.restore
-                                route="{{route('drivers.restore', ['driver' => $driver->id])}}"
-                                itemId="driver-{{$driver->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('drivers.destroy', ['driver' => $driver->id])}}"
-                                itemId="driver-{{$driver->id}}"/>
+<x-form.nav-tab
+    formId="drivers_main_form">
+    <div class="row">
+        <div class="col-md col-auto mb-2">
+            @include('contractors.drivers.create')
+        </div>
+        <div class="col-md-12">
+            <x-form
+                :route="route('drivers.update', ['driver' => $contractor->drivers->first()->id ?? null])"
+                formId="drivers_main_form"
+                method="PATCH">
+                <x-data-table.table
+                    id="drivers_main_table"
+                    type="edit"
+                    targets="-1">
+                    <x-data-table.head>
+                        <x-data-table.th
+                            :text="__('contractors.drivers.name')"/>
+                        <x-data-table.th/>
+                    </x-data-table.head>
+                    <x-data-table.body>
+                        @foreach($contractor->drivers as $key => $driver)
+                            <x-data-table.tr
+                                :model="$driver">
+                                <x-slot name="hiddenInputs">
+                                    <x-form.element.input type="hidden"
+                                                          name="drivers[{{$key}}][id]"
+                                                          value="{{$driver->id}}"/>
+                                    <x-form.element.input type="hidden"
+                                                          name="drivers[{{$key}}][contractor_id]"
+                                                          value="{{$contractor->id}}"/>
+                                </x-slot>
+                                <x-data-table.td>
+                                    <x-form.element.input
+                                        name="drivers[{{$key}}][name]"
+                                        :value="$driver->name"
+                                        :required="true"/>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-data-table.button.soft-delete
+                                        :trashed="$driver->trashed()"
+                                        id="driver-{{$driver->id}}"
+                                        route="drivers"
+                                        :params="['driver' => $driver->id]"/>
+                                </x-data-table.td>
+                            </x-data-table.tr>
+                        @endforeach
+                    </x-data-table.body>
+                </x-data-table.table>
+                <footer class="mt-auto">
+                    <ul class="list-inline mb-0">
+                        @if(count($contractor->drivers) > 0)
+                            <li class="list-inline-item">
+                                <x-form.button.save formId="drivers_main_form"/>
+                            </li>
                         @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        @if(count($contractor->drivers) > 0)
-            <x-buttons.save formId="form_drivers"/>
-        @endif
-        <x-buttons.collapse formId="div_add_driver"/>
-    </x-slot>
-</x-forms.collapse.card>
+                        <li class="list-inline-item">
+                            <x-data-table.filter.trashed-filter id="drivers_main_table"/>
+                        </li>
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+    </div>
+</x-form.nav-tab>

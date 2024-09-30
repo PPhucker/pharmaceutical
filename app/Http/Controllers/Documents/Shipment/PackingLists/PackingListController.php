@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\Shipment\PackingLists;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\Shipment\PackingListCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -18,9 +18,9 @@ use App\Models\Documents\Shipment\PackingLists\PackingList;
 use App\Models\Documents\Shipment\PackingLists\PackingListProduct;
 use App\Notifications\Shipment\ToDigitalCommunication;
 use App\Notifications\Shipment\ToMarketing;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
-use App\Repositories\Admin\UserRepository;
-use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
+use App\Repositories\Auth\UserRepository;
+use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
@@ -49,7 +49,7 @@ class PackingListController extends CoreController
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request);
+        $date = DateHelper::filter($request);
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');
@@ -343,7 +343,7 @@ class PackingListController extends CoreController
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request, 'day');
+        $date = DateHelper::filter($request, 'day');
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

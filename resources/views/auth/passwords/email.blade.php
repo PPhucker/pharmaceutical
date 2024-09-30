@@ -1,18 +1,18 @@
 @extends('layouts.auth')
 @section('auth')
-    <h1 class="text-primary mb-3">
+    <h1 class="text-primary">
         {{ __('auth.passwords.email') }}
     </h1>
-    @if (session('status'))
-        <div class="alert alert-success"
-             role="alert">
-            {{ session('status') }}
-        </div>
-    @endif
     <form method="POST"
           action="{{ route('password.email') }}">
         @csrf
         <div class="mb-3">
+            @if (session('status'))
+                <div class="alert alert-success"
+                     role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
             <input id="email"
                    type="email"
                    class="form-control form-control-lg text-primary
@@ -30,10 +30,14 @@
                 </span>
             @enderror
         </div>
-        <button type="submit"
-                class="btn btn-primary">
-           OK
-        </button>
+        <div class="row mb-0">
+            <div class="col-2">
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    {{__('OK')}}
+                </button>
+            </div>
+        </div>
     </form>
 @endsection
 

@@ -1,111 +1,115 @@
 @digital_communication
-<x-forms.collapse.creation cardId="div_attach_aggregation_type"
-                           errorName="aggregation_type.*">
-    <x-slot name="cardBody">
-        <form id="form_attach_aggregation_type"
-              method="POST"
-              action="{{route('product_catalog.attach_aggregation_type', ['product_catalog' => $product->id])}}">
-            @method('PATCH')
-            @csrf
-            <x-forms.row id="code"
-                         label="{{__('classifiers.nomenclature.products.types_of_aggregation.type_of_aggregation')}}">
-                <select id="code"
-                        name="aggregation_type[code]"
-                        class="form-control form-control-sm
-                        @error('aggregation_type.code') is-invalid @enderror"
-                        required>
-                    @foreach($aggregation_types as $type)
-                        <option value="{{$type->code}}">
-                            {{$type->code}} - {{$type->name}}
-                        </option>
-                    @endforeach
-                </select>
-            </x-forms.row>
-            <x-forms.row id="product_quantity"
-                         label="{{__('classifiers.nomenclature.products.types_of_aggregation.product_quantity')}}">
-                <input id="product_quantity"
-                       name="aggregation_type[product_quantity]"
-                       class="form-control form-control-sm
-                       @error('aggregation_type.product_quantity') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="product_quantity"/>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_attach_aggregation_type"/>
-    </x-slot>
-</x-forms.collapse.creation>
-<x-forms.collapse.card route="{{route('product_catalog.update_product_quantity', ['product_catalog' => $product->id])}}"
-                       cardId="card_aggregation_types"
-                       formId="form_aggregation_types"
-                       title="{{__('classifiers.nomenclature.products.types_of_aggregation.types_of_aggregation')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_aggregation_types"
-                       targets="-1">
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="align-middle text-center border-start">
-                    {{__('classifiers.nomenclature.products.types_of_aggregation.code')}}
-                </th>
-                <th scope="col"
-                    class="text-center align-middle">
-                    {{__('classifiers.nomenclature.products.types_of_aggregation.name')}}
-                </th>
-                <th scope="col"
-                    class="text-center align-middle col-md-2">
-                    {{__('classifiers.nomenclature.products.types_of_aggregation.product_quantity')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($product->aggregationTypes as $key => $type)
-                <tr>
-                    <input type="hidden"
-                           name="aggregation_types[{{$key}}][code]"
-                           value="{{$type->code}}">
-                    <td class="align-middle border-start">
-                    <span class="d-none">
-                        {{$type->code}}
-                    </span>
-                        {{$type->code}}
-                    </td>
-                    <td class="align-middle">
-                    <span class="d-none">
-                        {{$type->name}}
-                    </span>
-                        {{$type->name}}
-                    </td>
-                    <td class="align-middle col-md-2">
-                    <span class="d-none">
-                        {{$type->pivot->product_quantity}}
-                    </span>
-                        <input type="text"
-                               name="aggregation_types[{{$key}}][product_quantity]"
-                               class="form-control form-control-sm mb-1 mt-1
-                    @error('aggregation_types' . $key . '.product_quntity') is-invalid @enderror"
-                               value="{{$type->pivot->product_quantity}}"
-                               required>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        <x-buttons.detach
-                            route="{{route('product_catalog.detach_aggregation_type', ['product_catalog' => $product->id])}}"
-                            itemId="detach-aggregation-type-{{$type->code}}"
-                            detachId="{{$type->code}}"
-                            detachName="aggregation_type[code]"/>
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.collapse formId="div_attach_aggregation_type"/>
-        @if(count($product->aggregationTypes) > 0)
-            <x-buttons.save formId="form_aggregation_types"/>
-        @endif
-    </x-slot>
-</x-forms.collapse.card>
+<x-form.nav-tab
+    formId="aggregation_types_main_form">
+    <div class="row">
+        <div class="col-md col-auto mb-2">
+            <x-form
+                :route="route('product_catalog.attach_aggregation_type', ['product_catalog' => $productCatalog->id])"
+                formId="aggregation_type_add_form"
+                method="PATCH">
+                <x-form.element.input
+                    type="hidden"
+                    name="product_catalog_types_of_aggregation[product_catalog_id]"
+                    :value="$productCatalog->id"/>
+                <x-form.row>
+                    <x-slot name="label">
+                        <x-form.label
+                            forId="aggregation_type_code"
+                            :text="__('classifiers.nomenclature.products.types_of_aggregation.code')"/>
+                    </x-slot>
+                    <x-form.element.select
+                        id="aggregation_type_code"
+                        name="product_catalog_types_of_aggregation[aggregation_type]">
+                        @foreach($typesOfAggregation as $type)
+                            <x-form.element.option
+                                :value="$type->code"
+                                :text="$type->name_with_code"
+                                :selected="$type->code === old('product_catalog_types_of_aggregation.aggregation_type')"/>
+                        @endforeach
+                    </x-form.element.select>
+                </x-form.row>
+                <x-form.row>
+                    <x-slot name="label">
+                        <x-form.label
+                            forId="product_quantity"
+                            :text="__('classifiers.nomenclature.products.types_of_aggregation.product_quantity')"/>
+                    </x-slot>
+                    <x-form.element.input
+                        id="product_quantity"
+                        name="product_catalog_types_of_aggregation[product_quantity]"
+                        :value="old('product_catalog_types_of_aggregation.product_quantity')"/>
+                </x-form.row>
+                <footer class="mt-auto me-auto">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item">
+                            <x-form.button.save formId="aggregation_type_add_form"/>
+                        </li>
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+        <div class="col-md-12 col-auto">
+            <x-form
+                :route="route('product_catalog.update_product_quantity', ['product_catalog' => $productCatalog->id])"
+                method="PATCH">
+                <x-data-table.table
+                    id="aggregation_types"
+                    type="edit"
+                    targets="-1">
+                    <x-data-table.head>
+                        <x-data-table.th
+                            :text="__('classifiers.nomenclature.products.types_of_aggregation.code')"/>
+                        <x-data-table.th
+                            :text="__('classifiers.nomenclature.products.types_of_aggregation.name')"/>
+                        <x-data-table.th
+                            :text="__('classifiers.nomenclature.products.types_of_aggregation.product_quantity')"/>
+                        <x-data-table.th/>
+                    </x-data-table.head>
+                    <x-data-table.body>
+                        @foreach($productCatalog->aggregationTypes as $key => $aggregationType)
+                            <x-data-table.tr>
+                                <x-slot name="hiddenInputs">
+                                    <x-form.element.input type="hidden"
+                                                          name="aggregation_types[{{$key}}][aggregation_type]"
+                                                          value="{{$aggregationType->code}}"/>
+                                </x-slot>
+                                <x-data-table.td>
+                                    {{$aggregationType->code}}
+                                </x-data-table.td>
+                                <x-data-table.td class="text-start">
+                                    {{$aggregationType->name}}
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-form.element.input
+                                        name="aggregation_types[{{$key}}][product_quantity]"
+                                        :value="$aggregationType->pivot->product_quantity"/>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-data-table.button.detach
+                                        id="type-{{$aggregationType->code}}"
+                                        route="product_catalog.detach_aggregation_type"
+                                        :params="['product_catalog' => $productCatalog->id]">
+                                        <x-form.element.input
+                                            type="hidden"
+                                            name="aggregation_type[aggregation_type]"
+                                            :value="$aggregationType->code"/>
+                                    </x-data-table.button.detach>
+                                </x-data-table.td>
+                            </x-data-table.tr>
+                        @endforeach
+                    </x-data-table.body>
+                </x-data-table.table>
+                <footer class="mt-auto">
+                    <ul class="list-inline mb-0">
+                        @if(count($productCatalog->aggregationTypes) > 0)
+                            <li class="list-inline-item">
+                                <x-form.button.save formId="aggregation_types_main_form"/>
+                            </li>
+                        @endif
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+    </div>
+</x-form.nav-tab>
 @end_digital_communication

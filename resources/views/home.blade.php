@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="d-flex justify-content-center m-3">
-        <div class="w-100">
+        {{--<div class="w-100">
             <div class="row mb-2">
                 <div class="col-12">
                     <form action="{{route('/')}}"
@@ -111,10 +111,10 @@
                     </div>
                 @endforeach
             </div>
-        </div>
+        </div>--}}
     </div>
 @endsection
-@foreach($charts as $chart)
+{{--@foreach($charts as $chart)
     <script src="{{ $chart->cdn() }}"></script>
-@endforeach
+@endforeach--}}
 

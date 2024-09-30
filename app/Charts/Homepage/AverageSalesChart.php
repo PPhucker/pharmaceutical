@@ -3,8 +3,8 @@
 namespace App\Charts\Homepage;
 
 use App\Charts\Chart;
-use App\Helpers\Date;
-use App\Models\Admin\Organizations\Organization;
+use App\Helpers\DateHelper;
+use App\Models\Admin\Organization\Organization;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use ArielMejiaDev\LarapexCharts\AreaChart;
 use Carbon\CarbonPeriod;
@@ -52,7 +52,7 @@ class AverageSalesChart extends Chart
         $labels = [];
         $values = [];
 
-        $periods = Date::period($this->fromDate, $this->toDate);
+        $periods = DateHelper::period($this->fromDate, $this->toDate);
 
         $organizations = Organization::select(
             [

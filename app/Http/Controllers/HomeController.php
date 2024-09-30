@@ -6,11 +6,11 @@ use App\Charts\Homepage\AverageCountSalesChart;
 use App\Charts\Homepage\AverageSalesChart;
 use App\Charts\Homepage\BestSalesToContractorsChart;
 use App\Charts\Homepage\BestSellingProductsChart;
-use App\Helpers\Date;
-use App\Models\Admin\Organizations\Organization;
+use App\Helpers\DateHelper;
+use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;
-use App\Models\Classifiers\Nomenclature\Products\EndProduct;
-use App\Models\Contractors\Contractor;
+use App\Models\Classifier\Nomenclature\Product\EndProduct;
+use App\Models\Contractor\Contractor;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -50,7 +50,7 @@ class HomeController extends Controller
             ],
         ]);
 
-        $date = Date::filter($request, '2 weeks');
+        /*$*//*date = DateHelper::filter($request, '2 weeks');
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');
@@ -78,10 +78,10 @@ class HomeController extends Controller
         $countContractors = Contractor::withoutTrashed()->count();
         $countOrganizations = Organization::withoutTrashed()->count();
         $countUsers = User::withoutTrashed()->count();
-        $countProducts = EndProduct::withoutTrashed()->count();
+        $countProducts = EndProduct::withoutTrashed()->count();*/
 
         return view(
-            'home',
+            'home'/*,
             compact(
                 'fromDate',
                 'toDate',
@@ -90,7 +90,7 @@ class HomeController extends Controller
                 'countUsers',
                 'countOrganizations',
                 'countProducts',
-            )
+            )*/
         );
     }
 }

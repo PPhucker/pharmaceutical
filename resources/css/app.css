@@ -99,3 +99,9 @@ div.dataTables_wrapper div.dt-buttons.btn-group div.btn-group button.dt-btn-spli
 .dt-buttons {
     margin-bottom: 0;
 }
+
+.auto-expand {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+}

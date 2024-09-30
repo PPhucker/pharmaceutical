@@ -63,7 +63,7 @@ class RegisterController extends Controller
         return back()
             ->with(
                 'success',
-                __('users.action.register.success', ['name' => $user->name])
+                __('users.actions.register.success', ['name' => $user->name])
             );
     }
 

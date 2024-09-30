@@ -1,41 +1,58 @@
-<x-forms.collapse.creation cardId="div_add_bank_account_detail"
-                           errorName="bank_account_detail.*">
-    <x-slot name="cardBody">
-        <form id="form_add_bank_account_detail"
-              method="POST"
-              action="{{route('bank_account_details.store')}}">
-            @csrf
-            <input type="hidden"
-                   name="bank_account_detail[contractor_id]"
-                   value="{{$contractor->id}}">
-            <x-forms.row id="bank"
-                         label="{{__('contractors.bank_account_details.bank')}}">
-                <select id="bank"
-                        name="bank_account_detail[bank]"
-                        class="form-control form-control-sm text-primary
-                        @error('bank_account_detail.bank') is-invalid @enderror">
-                    @foreach($banks as $bank)
-                        <option value="{{$bank->BIC}}">
-                            {{"$bank->name ---- $bank->BIC"}}
-                        </option>
-                    @endforeach
-                </select>
-                <x-forms.span-error name="bank_account_detail.bank"/>
-            </x-forms.row>
-            <x-forms.row id="payment_account"
-                         label="{{__('contractors.bank_account_details.payment_account')}}">
-                <input id="payment_account"
-                       name="bank_account_detail[payment_account]"
-                       type="text"
-                       value="{{old('bank_account_details[payment_account]')}}"
-                       class="form-control form-control-sm text-primary
-                       @error('bank_account_detail.payment_account') is-invalid @enderror"
-                       required>
-                <x-forms.span-error name="bank_account_detail.payment_account"/>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_add_bank_account_detail"/>
-    </x-slot>
-</x-forms.collapse.creation>
+<x-form
+    :route="route('bank_account_details.store')"
+    formId="account_details_add_form"
+    class="mt-2">
+    <input type="hidden"
+           name="bank_account_detail[contractor_id]"
+           value="{{$contractor->id}}">
+    <x-data-table.table
+        id="account_details_add_table"
+        type="create"
+        targets="0,1"
+        pageLength="5">
+        <x-data-table.head>
+            <x-data-table.th/>
+            <x-data-table.th
+                class="col-md-3"
+                :text="__('contractors.bank_account_details.payment_account')"/>
+            <x-data-table.th
+                :text="__('contractors.bank_account_details.bank')"/>
+            <x-data-table.th
+                :text="__('contractors.bank_account_details.BIC')"/>
+        </x-data-table.head>
+        <x-data-table.body>
+            @foreach($banks as $key => $bank)
+                <x-data-table.tr>
+                    <x-data-table.td>
+                        <x-form.element.input
+                            id="bank_account_detail[{{$key}}][bank]"
+                            name="bank_account_detail[bank]"
+                            :value="$bank->BIC"
+                            type="radio"
+                            class="form-check-input"/>
+                    </x-data-table.td>
+                    <x-data-table.td>
+                        <x-form.element.input
+                            name="bank_account_detail[payment_account][{{$bank->BIC}}]"
+                            min="20"
+                            max="20"/>
+                    </x-data-table.td>
+                    <x-data-table.td
+                        class="text-start">
+                        {{$bank->name}}
+                    </x-data-table.td>
+                    <x-data-table.td>
+                        {{$bank->BIC}}
+                    </x-data-table.td>
+                </x-data-table.tr>
+            @endforeach
+        </x-data-table.body>
+    </x-data-table.table>
+    <footer class="mt-auto me-auto sticky-top">
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                <x-form.button.save formId="account_details_add_form"/>
+            </li>
+        </ul>
+    </footer>
+</x-form>

@@ -8,11 +8,11 @@ return [
                 'User' => 'User',
                 'Permission' => 'Permission',
             ],
-            'Classifiers' => [
+            'Classifier' => [
                 'LegalForm' => 'Legal Form',
                 'Bank' => 'Bank',
                 'Nomenclature' => [
-                    'Products' => [
+                    'Product' => [
                         'TypeOfEndProduct' => 'Type of finished product',
                         'InternationalNameOfEndProduct' => 'International name of the finished product',
                         'OKPD2' => 'OKPD2 classifier',
@@ -24,62 +24,66 @@ return [
                         'ProductRegionalAllowance' => 'Regional allowance',
                     ],
                     'OKEI' => 'OKEI classifier',
-                    'Services' => [
+                    'Service' => [
                         'Service' => 'Service',
                     ],
-                    'Materials' => [
+                    'Material' => [
                         'TypeOfMaterial' => 'Type of accessory',
                         'Material' => 'Accessories',
                     ],
                 ],
             ],
             'Admin' => [
-                'Organizations' => [
+                'Organization' => [
                     'Organization' => 'Organization',
                     'PlaceOfBusiness' => 'Place of business',
                     'BankAccountDetail' => 'Bank details of the organization',
                     'Staff' => 'Employee of the organization',
-                    'Car' => 'Company car',
-                    'Driver' => 'Driver of the organization',
-                    'Trailer' => 'Company trailer',
-                    'Contract' => 'Contractor contract',
+                    'Transport' => [
+                        'Car' => 'Company car',
+                        'Driver' => 'Driver of the organization',
+                        'Trailer' => 'Company trailer',
+                    ],
                 ],
             ],
-            'Contractors' => [
+            'Contractor' => [
                 'Contractor' => 'Contractor',
                 'PlaceOfBusiness' => 'Place of business',
                 'BankAccountDetail' => 'Bank details of the organization',
                 'ContactPerson' => 'Contractor contact person',
-                'Car' => 'Car of the contractor',
-                'Driver' => 'Driver of the contractor',
-                'Trailer' => 'Trailer of the contractor',
+                'Contract' => 'Contractor contract',
+                'Transport' => [
+                    'Car' => 'Car of the contractor',
+                    'Driver' => 'Driver of the contractor',
+                    'Trailer' => 'Trailer of the contractor',
+                ],
             ],
-            'Documents' => [
+            'Document' => [
                 'InvoicesForPayment' => [
                     'InvoiceForPayment' => 'Invoice for payment',
                     'InvoiceForPaymentProduct' => 'The finished product of the invoice for payment',
                     'InvoiceForPaymentMaterial' => 'Complete invoices for payment',
                 ],
-                'Acts' => [
+                'Act' => [
                     'Act' => 'Act',
                     'ActService' => 'Service of the act'
                 ],
                 'Shipment' => [
-                    'PackingLists' => [
+                    'PackingList' => [
                         'PackingList' => 'Packing List',
                         'PackingListProduct' => 'The product of the packing list',
                     ],
                     'Shipment' => 'Shipment',
-                    'Bills' => [
+                    'Bill' => [
                         'Bill' => 'Bill',
                     ],
-                    'Appendixes' => [
+                    'Appendixe' => [
                         'Appendix' => 'Appendix',
                     ],
-                    'Protocols' => [
+                    'Protocol' => [
                         'Protocol' => 'Protocol',
                     ],
-                    'Waybills' => [
+                    'Waybill' => [
                         'Waybill' => 'Waybill',
                     ],
                 ],

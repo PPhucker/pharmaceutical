@@ -1,135 +1,62 @@
 @extends('layouts.app')
 @section('content')
-    <div id="div_add_legal_form"
-         class="@if ($errors->has('legal_form.*')) collapsed @else collapse @endif mb-2">
-        <x-forms.main title="{{__('form.titles.add')}}"
-                      withAlert="{{false}}">
-            <form id="form_add_legal_form"
-                  method="POST"
-                  action="{{route('legal_forms.store')}}">
-                @csrf
-                <div class="row mb-2">
-                    <label for="abbrebiation"
-                           class="col-md-2 col-form-label text-md-end">
-                        {{__('classifiers.legal_forms.abbreviation')}}
-                    </label>
-                    <div class="col-md">
-                        <input id="abbreviation"
-                               type="text"
-                               class="form-control form-control-sm
-                               @error('legal_form.abbreviation') is-invalid @enderror"
-                               name="legal_form[abbreviation]"
-                               value="{{ old('legal_form[abbreviation]') }}"
-                               required>
-                        @error('legal_form.abbreviation')
-                        <span class="invalid-feedback"
-                              role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <label for="decoding"
-                           class="col-md-2 col-form-label text-md-end">
-                        {{__('classifiers.legal_forms.decoding')}}
-                    </label>
-                    <div class="col-md">
-                        <input id="decoding"
-                               type="text"
-                               class="form-control form-control-sm
-                               @error('legal_form.decoding') is-invalid @enderror"
-                               name="legal_form[decoding]"
-                               value="{{ old('legal_form.decoding') }}">
-                        @error('legal_form.decoding')
-                        <span class="invalid-feedback"
-                              role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <x-slot name="footer">
-                    <x-buttons.save formId="form_add_legal_form"/>
-                </x-slot>
-            </form>
-        </x-forms.main>
+    <div class="ps-2 pe-2">
+        <x-notification.alert/>
     </div>
-    <x-forms.main title="{{__('classifiers.legal_forms.legal_forms')}}">
-        <form id="form_legal_forms"
-              method="POST"
-              action="{{route('legal_forms.update', ['legal_form' => $legalForms->first()->abbreviation ?? 'ООО'])}}">
-            @method('PATCH')
-            @csrf
-            <x-tables.main id="table_legal_forms"
-                           domOrderType="{{true}}">
-                <thead class="bg-secondary">
-                <tr class="text-primary">
-                    <th scope="col"
-                        class="text-center col-md-2">
-                        {{__('classifiers.legal_forms.abbreviation')}}
-                    </th>
-                    <th scope="col"
-                        class="text-center col-md">
-                        {{__('classifiers.legal_forms.decoding')}}
-                    </th>
-                </tr>
-                </thead>
-                <tbody class="text-primary">
-                @foreach($legalForms as $key => $legalForm)
-                    <tr>
-                        <td class="align-middle col-md-2">
-                            <span class="d-none">
-                                {{$legalForm->abbreviation}}
-                            </span>
-                            <input type="hidden"
-                                   name="legal_forms[{{$key}}][original_abbreviation]"
-                                   value="{{$legalForm->abbreviation}}">
-                            <input type="text"
-                                   id="abbreviation-{{$key}}"
-                                   name="legal_forms[{{$key}}][abbreviation]"
-                                   class="form-control form-control-sm text-primary mt-1 mb-1
-                                    @error('legal_forms.' . $key . '.abbreviation') is-invalid @enderror"
-                                   value="{{$legalForm->abbreviation}}"
-                                   required>
-                            @error('legal_forms.' . $key . '.abbreviation')
-                            <span class="invalid-feedback"
-                                  role="alert">
-                            <strong>
-                                {{$message}}
-                            </strong>
-                            </span>
-                            @enderror
-                        </td>
-                        <td class="align-middle col-md">
-                            <span class="d-none">{{$legalForm->decoding}}</span>
-                            <input type="text"
-                                   id="decoding-{{$key}}"
-                                   name="legal_forms[{{$key}}][decoding]"
-                                   class="form-control form-control-sm text-primary mt-1 mb-1
-                                    @error('legal_forms.' . $key . '.decoding') is-invalid @enderror"
-                                   value="{{$legalForm->decoding}}">
-                            @error('legal_forms.' . $key . '.decoding')
-                            <span class="invalid-feedback"
-                                  role="alert">
-                            <strong>
-                                {{$message}}
-                            </strong>
-                            </span>
-                            @enderror
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </x-tables.main>
-            <x-slot name="footer">
-                <x-buttons.save formId="form_legal_forms"/>
-                <x-buttons.collapse formId="div_add_legal_form"/>
-            </x-slot>
-        </form>
-    </x-forms.main>
+    <x-token.dadata-token/>
+    @include('classifiers.legal-forms.create')
+    <x-card
+        :title="__('classifiers.legal_forms.legal_forms')">
+        <x-form
+            :route="route('legal_forms.update', ['legal_form' => $legalForms->first()->abbreviation ?? 1])"
+            formId="legal_forms_edit_form"
+            method="PATCH">
+            <x-data-table.table
+                id="legal_forms_table"
+                class="table-bordered"
+                type="index"
+                pageLength="15"
+                :domOrderType="true">
+                <x-data-table.head>
+                    <x-data-table.th
+                        class="col-md-2 col-auto"
+                        :text="__('classifiers.legal_forms.abbreviation')"/>
+                    <x-data-table.th
+                        class="col-md col-auto"
+                        :text="__('classifiers.legal_forms.decoding')"/>
+                </x-data-table.head>
+                <x-data-table.body>
+                    @foreach($legalForms as $key => $legalForm)
+                        <x-data-table.tr>
+                            <x-data-table.td>
+                                <input type="hidden"
+                                       name="legal_forms[{{$key}}][original_abbreviation]"
+                                       value="{{$legalForm->abbreviation}}"/>
+                                <x-form.element.input
+                                    name="legal_forms[{{$key}}][abbreviation]"
+                                    :value="$legalForm->abbreviation"
+                                    :required="true"
+                                    max="15"/>
+                            </x-data-table.td>
+                            <x-data-table.td>
+                                <x-form.element.input
+                                    name="legal_forms[{{$key}}][decoding]"
+                                    :value="$legalForm->decoding"
+                                    max="120"/>
+                            </x-data-table.td>
+                        </x-data-table.tr>
+                    @endforeach
+                </x-data-table.body>
+            </x-data-table.table>
+            <footer class="mt-auto sticky-bottom">
+                <ul class="list-inline mb-0">
+                    @if(count($legalForms) > 0)
+                        <li class="list-inline-item">
+                            <x-form.button.save formId="legal_forms_edit_form"/>
+                        </li>
+                    @endif
+                </ul>
+            </footer>
+        </x-form>
+    </x-card>
 @endsection

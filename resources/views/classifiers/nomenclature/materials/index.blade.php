@@ -1,62 +1,50 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('classifiers.nomenclature.materials.materials')}}">
-        <x-tables.main id="table_materials"
-                       domOrderType="{{true}}">
+    <x-notification.alert/>
+    <x-card
+        :title="__('classifiers.nomenclature.materials.materials')">
+        <x-data-table.table
+            id="matrials_table"
+            class="table-bordered"
+            targets="-1,-2"
+            type="index"
+            pageLength="25">
             <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_materials"/>
+                <x-data-table.filter.trashed-filter tableId="matrials_table"/>
             </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center col-md-1">
-                    ID
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('classifiers.nomenclature.materials.name')}}
-                </th>
-                <th class="col-md-1">
-                    <span class="d-none">
-                        {{__('datatable.buttons.edit')}}
-                    </span>
-                </th>
-                <th class="col-md-1">
-                    <span class="d-none">
-                        {{__('datatable.buttons.delete')}}
-                    </span>
-                </th>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($materials as $key => $material)
-                <tr @if($material->trashed()) class="d-none trashed" @endif>
-                    <td class="align-middle text-center">
-                        {{$material->id}}
-                    </td>
-                    <td class="align-middle text-start">
-                        {{$material->name}}
-                    </td>
-                    <td class="text-center align-middle col-md-1">
-                        <x-buttons.edit
-                            route="{{route('materials.edit', ['material' => $material->id])}}"
-                            disabled="{{$material->trashed()}}"/>
-                    </td>
-                    <td class="text-center align-middle col-md-1">
-                        @if ($material->trashed())
-                            <x-buttons.restore
-                                route="{{route('materials.restore', ['material' => $material->id])}}"
-                                itemId="{{$material->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('materials.destroy', ['material' => $material->id])}}"
-                                formId="destroy"
-                                itemId="{{$material->id}}"/>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-forms.main>
+            <x-data-table.head>
+                <x-data-table.th
+                    :text="__('classifiers.nomenclature.materials.type_id')"/>
+                <x-data-table.th
+                    :text="__('classifiers.nomenclature.materials.name')"/>
+                <x-data-table.th/>
+                <x-data-table.th/>
+            </x-data-table.head>
+            <x-data-table.body>
+                @foreach($materials as $key => $material)
+                    <x-data-table.tr
+                        :model="$material">
+                        <x-data-table.td>
+                            {{$material->type->name}}
+                        </x-data-table.td>
+                        <x-data-table.td class="text-start">
+                            {{$material->name}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.edit
+                                route="{{route('materials.edit', ['material' => $material->id])}}"
+                                disabled="{{$material->trashed()}}"/>
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.soft-delete
+                                :trashed="$material->trashed()"
+                                :id="$material->id"
+                                route="materials"
+                                :params="['material' => $material->id]"/>
+                        </x-data-table.td>
+                    </x-data-table.tr>
+                @endforeach
+            </x-data-table.body>
+        </x-data-table.table>
+    </x-card>
 @endsection

@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\Admin\Organizations\DriverController as Controller;
+use App\Helpers\Route\RouteHelper;
+use App\Http\Controllers\Admin\Organization\Transport\DriverController as Controller;
 
-Route::resource('drivers', Controller::class)
-    ->except(['create', 'edit', 'show', 'index']);
-Route::controller(Controller::class)->group(static function () {
-    Route::post('/drivers/{driver}/restore', 'restore')
-        ->name('drivers.restore')
-        ->withTrashed();
-});
+(new RouteHelper(
+    collect(
+        [
+            'controller' => Controller::class,
+            'name' => 'drivers',
+            'uriParameter' => 'driver',
+            'prefix' => 'organization',
+        ]
+    )
+))->mapWritableRoutes();

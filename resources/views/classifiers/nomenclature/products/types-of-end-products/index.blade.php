@@ -1,147 +1,64 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.dadata-token/>
-    <div id="div_add_type_of_end_product"
-         class="@if ($errors->has('types_of_end_products.*')) collapsed @else collapse @endif mb-2">
-        <x-forms.main title="{{__('form.titles.add')}}"
-                      withAlert="{{false}}">
-            <form id="form_add_type_of_end_product"
-                  method="POST"
-                  action="{{route('types_of_end_products.store')}}">
-                @csrf
-                <div class="row mb-2">
-                    <label for="name"
-                           class="col-md-2 col-form-label text-md-end">
-                        {{__('classifiers.nomenclature.products.types_of_end_products.name')}}
-                    </label>
-                    <div class="col-md">
-                        <input id="name"
-                               type="text"
-                               class="form-control form-control-sm
-                               @error('type_of_end_product.name') is-invalid @enderror"
-                               name="type_of_end_product[name]"
-                               value="{{ old('type_of_end_product[name]') }}"
-                               required>
-                        @error('type_of_end_product.name')
-                        <span class="invalid-feedback"
-                              role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <label for="color"
-                           class="col-md-2 col-form-label text-md-end">
-                        {{__('classifiers.nomenclature.products.types_of_end_products.color')}}
-                    </label>
-                    <div class="col-md">
-                        <input id="color"
-                               type="color"
-                               class="form-control form-control-sm
-                               @error('type_of_end_product.color') is-invalid @enderror"
-                               name="type_of_end_product[color]"
-                               value="{{ old('type_of_end_product[color]') }}"
-                               required>
-                        @error('type_of_end_product.color')
-                        <span class="invalid-feedback"
-                              role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <x-slot name="footer">
-                    <x-buttons.save formId="form_add_type_of_end_product"/>
-                </x-slot>
-            </form>
-        </x-forms.main>
+    <div class="ps-2 pe-2">
+        <x-notification.alert/>
     </div>
-    <x-forms.main title="{{__('classifiers.nomenclature.products.types_of_end_products.types_of_end_products')}}">
-        <form id="form_types_of_end_products"
-              method="POST"
-              action="{{route('types_of_end_products.update', ['types_of_end_product' => 1])}}">
-            @method('PATCH')
-            @csrf
-            <x-tables.main id="table_types_of_end_products"
-                           domOrderType="{{true}}">
-                <thead class="bg-secondary">
-                <tr class="text-primary">
-                    <th scope="col"
-                        class="text-center">
-                        ID
-                    </th>
-                    <th scope="col"
-                        class="text-center">
-                        {{__('classifiers.nomenclature.products.types_of_end_products.name')}}
-                    </th>
-                    <th scope="col"
-                        class="text-center">
-                        {{__('classifiers.nomenclature.products.types_of_end_products.color')}}
-                    </th>
-                </tr>
-                </thead>
-                <tbody class="text-primary">
-                @foreach($typesOfEndProducts as $key => $type)
-                    <tr>
-                        <td class="align-middle text-center">
+    @include('classifiers.nomenclature.products.types-of-end-products.create')
+    <x-card
+        :title="__('classifiers.nomenclature.products.types_of_end_products.types_of_end_products')">
+        <x-form
+            :route="route('types_of_end_products.update',
+                ['type_of_end_product' => $typesOfEndProducts->first()->id ?? 1])"
+            formId="types_of_end_products_edit_form"
+            method="PATCH">
+            <x-data-table.table
+                id="types_of_end_products_table"
+                class="table-bordered"
+                type="index"
+                pageLength="15"
+                :domOrderType="true">
+                <x-data-table.head>
+                    <x-data-table.th
+                        class="col-md col-auto"
+                        :text="__('classifiers.nomenclature.products.types_of_end_products.name')"/>
+                    <x-data-table.th
+                        class="col-md-1 col-auto"
+                        :text="__('classifiers.nomenclature.products.types_of_end_products.color')"/>
+                </x-data-table.head>
+                <x-data-table.body>
+                    @foreach($typesOfEndProducts as $key => $type)
+                        <x-data-table.tr>
                             <input type="hidden"
                                    name="types_of_end_products[{{$key}}][id]"
                                    value="{{$type->id}}">
-                            {{$type->id}}
-                        </td>
-                        <td class="align-middle text-center">
-                        <span class="d-none">
-                            {{$type->name}}
-                        </span>
-                            <input type="text"
-                                   id="name-{{$key}}"
-                                   name="types_of_end_products[{{$key}}][name]"
-                                   class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('types_of_end_products.' . $key . '.name') is-invalid @enderror"
-                                   value="{{$type->name}}"
-                                   required>
-                            @error('types_of_end_products.' . $key . '.name')
-                            <span class="invalid-feedback"
-                                  role="alert">
-                            <strong>
-                                {{$message}}
-                            </strong>
-                            </span>
-                            @enderror
-                        </td>
-                        <td class="align-middle text-center">
-                        <span class="d-none">
-                            {{$type->color}}
-                        </span>
-                            <input type="color"
-                                   id="name-{{$key}}"
-                                   name="types_of_end_products[{{$key}}][color]"
-                                   class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('types_of_end_products.' . $key . '.color') is-invalid @enderror"
-                                   value="{{$type->color}}"
-                                   required>
-                            @error('types_of_end_products.' . $key . '.color')
-                            <span class="invalid-feedback"
-                                  role="alert">
-                            <strong>
-                                {{$message}}
-                            </strong>
-                            </span>
-                            @enderror
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </x-tables.main>
-            <x-slot name="footer">
-                <x-buttons.save formId="form_types_of_end_products"/>
-                <x-buttons.collapse formId="div_add_type_of_end_product"/>
-            </x-slot>
-        </form>
-    </x-forms.main>
+                            <x-data-table.td>
+                                <x-form.element.input
+                                    name="types_of_end_products[{{$key}}][name]"
+                                    :value="$type->name"
+                                    :required="true"
+                                    max="50"/>
+                            </x-data-table.td>
+                            <x-data-table.td class="text-center">
+                                <x-form.element.input
+                                    type="color"
+                                    class="form-control form-control-color w-100"
+                                    name="types_of_end_products[{{$key}}][color]"
+                                    :value="$type->color"
+                                    max="7"/>
+                            </x-data-table.td>
+                        </x-data-table.tr>
+                    @endforeach
+                </x-data-table.body>
+            </x-data-table.table>
+            <footer class="mt-auto sticky-bottom">
+                <ul class="list-inline mb-0">
+                    @if(count($typesOfEndProducts) > 0)
+                        <li class="list-inline-item">
+                            <x-form.button.save formId="types_of_end_products_edit_form"/>
+                        </li>
+                    @endif
+                </ul>
+            </footer>
+        </x-form>
+    </x-card>
 @endsection

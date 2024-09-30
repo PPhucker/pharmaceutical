@@ -2,8 +2,8 @@
 
 namespace App\Helpers\Documents;
 
-use App\Repositories\Admin\Organizations\OrganizationRepository;
-use App\Repositories\Contractors\ContractorRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
+use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use Illuminate\Support\Str;

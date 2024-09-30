@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Documents\InvoicesForPayment;
 use App\Http\Controllers\CoreController;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Materials\StoreInvoiceForPaymentMaterialRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\Data\Materials\UpdateInvoiceForPaymentMaterialRequest;
-use App\Models\Classifiers\Nomenclature\Materials\Material;
+use App\Models\Classifier\Nomenclature\Material\Material;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use Illuminate\Http\RedirectResponse;

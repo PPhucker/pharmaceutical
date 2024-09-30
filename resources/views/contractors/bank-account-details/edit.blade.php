@@ -1,96 +1,94 @@
-@roles(['marketing', 'bookkeeping'])
-<x-forms.collapse.card route="{{route('bank_account_details.update', ['bank_account_detail' => 1])}}"
-                       cardId="card_bank_account_details"
-                       formId="form_bank_account_details"
-                       title="{{__('contractors.bank_account_details.bank_account_details')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_bank_account_details"
-                       targets='-1'
-                       domOrderType="{{true}}">
-            <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_bank_account_details"/>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.bank_account_details.bank')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.bank_account_details.payment_account')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('classifiers.banks.BIC')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('classifiers.banks.correspondent_account')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($contractor->bankAccountDetails as $key => $account)
-                <tr @if($account->trashed()) class="d-none trashed" @endif>
-                    <input type="hidden"
-                           name="bank_account_details[{{$key}}][id]"
-                           value="{{$account->id}}">
-                    <td class="border-start">
-                        <span class="d-none" name="print">
-                            {{$account->bankClassifier->name}}
-                        </span>
-                        <select name="bank_account_details[{{$key}}][bank]"
-                                class="form-control form-control-sm text-primary mt-1 mb-1
-                                @error('bank_account_details.' . $key . '.bank') is-invalid @enderror">
-                            @foreach($banks as $bank)
-                                <option value="{{$bank->BIC}}"
-                                        @if($bank->BIC === $account->bank) selected @endif>
-                                    {{$bank->name}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$account->payment_account}}
-                        </span>
-                        <input name="bank_account_details[{{$key}}][payment_account]"
-                               type="text"
-                               value="{{$account->payment_account}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                                   @error('bank_account_details.' . $key . '.payment_account') is-invalid @enderror"
-                               required>
-                        <x-forms.span-error name="bank_account_details.{{$key}}.payment_account"/>
-                    </td>
-                    <td class="text-center align-middle">
-                        {{$account->bankClassifier->BIC}}
-                    </td>
-                    <td class="text-center align-middle">
-                        {{$account->bankClassifier->correspondent_account}}
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if($account->trashed())
-                            <x-buttons.restore
-                                route="{{route('bank_account_details.restore', ['bank_account_detail' => $account->id])}}"
-                                itemId="bankAccount-details-{{$account->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('bank_account_details.destroy', ['bank_account_detail' => $account->id])}}"
-                                itemId="bankAccount-details-{{$account->id}}"/>
+<x-form.nav-tab
+    formId="account_details_main_form">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="collapse card border-0"
+                 id="account_details_add_card">
+                <div class="card-header bg-primary text-white">
+                    {{__('form.titles.add')}}
+                </div>
+                <div class="card-body p-1 border-0">
+                    @include('contractors.bank-account-details.create')
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <x-form
+                :route="route('bank_account_details.update', ['bank_account_detail' => $contractor->bankAccountDetails->first()->id ?? null])"
+                formId="account_details_main_form"
+                method="PATCH">
+                <x-data-table.table
+                    id="account_details_main_table"
+                    type="edit"
+                    targets="-1">
+                    <x-data-table.head>
+                        <x-data-table.th
+                            :text="__('contractors.bank_account_details.bank')"/>
+                        <x-data-table.th
+                            :text="__('contractors.bank_account_details.payment_account')"/>
+                        <x-data-table.th
+                            :text="__('classifiers.banks.BIC')"/>
+                        <x-data-table.th
+                            :text="__('classifiers.banks.correspondent_account')"/>
+                        <x-data-table.th/>
+                    </x-data-table.head>
+                    <x-data-table.body>
+                        @foreach($contractor->bankAccountDetails as $key => $account)
+                            <x-data-table.tr
+                                :model="$account">
+                                <x-slot name="hiddenInputs">
+                                    <x-form.element.input type="hidden"
+                                                          name="bank_account_details[{{$key}}][id]"
+                                                          value="{{$account->id}}"/>
+                                </x-slot>
+                                <x-data-table.td
+                                    class="text-start">
+                                    {{$account->bankClassifier->name}}
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="col-md-2 col-auto">
+                                    <x-form.element.input
+                                        name="bank_account_details[{{$key}}][payment_account]"
+                                        :value="$account->payment_account"
+                                        :required="true"
+                                        max="20"
+                                        min="20"/>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    {{$account->bankClassifier->BIC}}
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    {{$account->bankClassifier->correspondent_account}}
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-data-table.button.soft-delete
+                                        :trashed="$account->trashed()"
+                                        :id="$account->id"
+                                        route="bank_account_details"
+                                        :params="['bank_account_detail' => $account->id]"/>
+                                </x-data-table.td>
+                            </x-data-table.tr>
+                        @endforeach
+                    </x-data-table.body>
+                </x-data-table.table>
+                <footer class="mt-auto">
+                    <ul class="list-inline mb-0">
+                        @if(count($contractor->bankAccountDetails) > 0)
+                            <li class="list-inline-item">
+                                <x-form.button.save formId="account_details_main_form"/>
+                            </li>
                         @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        @if(count($contractor->bankAccountDetails) > 0)
-            <x-buttons.save formId="form_bank_account_details"/>
-        @endif
-        <x-buttons.collapse formId="div_add_bank_account_detail"/>
-    </x-slot>
-</x-forms.collapse.card>
-@end_roles
+                        <li class="list-inline-item">
+                            <x-form.button.collapse
+                                divId="account_details_add_card"
+                                :title="__('form.titles.add')"/>
+                        </li>
+                        <li class="list-inline-item">
+                            <x-data-table.filter.trashed-filter id="account_details_main_table"/>
+                        </li>
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+    </div>
+</x-form.nav-tab>

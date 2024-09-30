@@ -1,131 +1,117 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main back="{{route('users.index')}}"
-                  title="{{__('users.action.edit', ['name' => $user->name])}}">
-        <form method="POST"
-              action="{{ route('users.update', ['user' => $user->id]) }}" class="text-primary">
-            @csrf
-            @method('PATCH')
-            <div class="row mb-3">
-                <label for="name"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('users.name')}}
-                </label>
-                <div class="col-md-6">
-                    <input id="name"
-                           type="text"
-                           class="form-control text-primary
-                           @error('name') is-invalid @enderror"
-                           name="name"
-                           value="{{$user->name}}"
-                           required>
-                    @error('name')
-                    <span class="invalid-feedback"
-                          role="alert">
-                        <strong>
-                            {{ $message }}
-                        </strong>
-                    </span>
-                    @enderror
+    <x-notification.alert/>
+    <x-card
+        :title="__('users.edit_card')"
+        :back="route('users.index')">
+        <x-form
+            :route="route('users.update', ['user' => $user->id])"
+            formId="users_main_form"
+            method="PATCH">
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="name"
+                        :text="__('users.name')"/>
+                </x-slot>
+                <x-form.element.input
+                    id="name"
+                    name="name"
+                    :value="$user->name"
+                    :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="email"
+                        text="Email"/>
+                </x-slot>
+                <x-form.element.input
+                    id="email"
+                    name="email"
+                    type="email"
+                    :value="$user->email"
+                    :required="true"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="organizations"
+                        :text="__('contractors.organizations.organizations')"/>
+                </x-slot>
+                <div class="col-md-6 pt-2">
+                    @foreach($organizations as $organization)
+                        <div class="form-check form-switch ps-1">
+                            <x-form.element.input
+                                type="checkbox"
+                                name="organizations[]"
+                                class="form-check-input"
+                                id="organization-{{$organization->id}}"
+                                :value="$organization->id"
+                                :checked="$user->hasOrganization([$organization->id])"/>
+                            <label class="form-check-label"
+                                   for="organization-{{$organization->id}}">
+                                {{$organization->full_name}}
+                            </label>
+                        </div>
+                    @endforeach
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="email"
-                       class="col-md-4 col-form-label text-md-end">
-                    E-Mail
-                </label>
-                <div class="col-md-6">
-                    <input id="email"
-                           type="email"
-                           class="form-control text-primary
-                           @error('email') is-invalid @enderror"
-                           name="email"
-                           value="{{$user->email}}">
-                    @error('email')
-                    <span class="invalid-feedback"
-                          role="alert">
-                        <strong>
-                            {{$message}}
-                        </strong>
-                    </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="roles"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('auth.roles')}}
-                </label>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="roles"
+                        :text="__('auth.roles')"/>
+                </x-slot>
                 <div class="col-md-6 pt-2">
                     @foreach($roles as $role)
-                        <div class="form-check form-switch">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="roles[]"
-                                   id="{{$role->slug}}"
-                                   value="{{$role->slug}}"
-                                   @foreach($user->roles as $userRole)
-                                       @if($role->slug === $userRole->slug)
-                                           checked
-                                @endif
-                                @endforeach
-                            >
+                        <div class="form-check form-switch ps-1">
+                            <x-form.element.input
+                                type="checkbox"
+                                name="roles[]"
+                                class="form-check-input"
+                                :id="$role->slug"
+                                :value="$role->slug"
+                                :checked="$user->hasRole([$role->slug])"/>
                             <label class="form-check-label"
                                    for="{{$role->slug}}">
                                 {{$role->name}}
                             </label>
                         </div>
                     @endforeach
-                    @error('roles')
-                    <label class="text-danger">
-                        <strong>
-                            {{ $message }}
-                        </strong>
-                    </label>
-                    @enderror
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="permissions"
-                       class="col-md-4 col-form-label text-md-end">
-                    {{__('auth.permissions')}}
-                </label>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="permissions"
+                        :text="__('auth.permissions')"/>
+                </x-slot>
                 <div class="col-md-6 pt-2">
                     @foreach($permissions as $permission)
-                        <div class="form-check form-switch">
-                            <input class="form-check-input"
-                                   type="checkbox"
-                                   name="permissions[]"
-                                   id="{{$permission->slug}}"
-                                   value="{{$permission->slug}}"
-                                   @foreach($user->permissions as $userPermission)
-                                       @if($permission->slug === $userPermission->slug)
-                                           checked
-                                @endif
-                                @endforeach>
+                        <div class="form-check form-switch ps-1">
+                            <x-form.element.input
+                                type="checkbox"
+                                name="permissions[]"
+                                class="form-check-input"
+                                :id="$permission->slug"
+                                :value="$permission->slug"
+                                :checked="$user->hasPermission([$permission->slug])"/>
                             <label class="form-check-label"
                                    for="{{$permission->slug}}">
                                 {{$permission->name}}
                             </label>
                         </div>
                     @endforeach
-                    @error('permissions')
-                    <label class="text-danger">
-                        <strong>
-                            {{ $message }}
-                        </strong>
-                    </label>
-                    @enderror
                 </div>
-            </div>
-            <div class="row mb-0">
-                <div class="col-md-6 offset-md-4">
-                    <button type="submit"
-                            class="btn btn-primary">
-                        {{__('form.button.save')}}
-                    </button>
-                </div>
-            </div>
-        </form>
-    </x-forms.main>
+            </x-form.row>
+            <footer class="mt-auto me-auto ps-2">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <x-form.button.save formId="users_main_form"/>
+                    </li>
+                </ul>
+            </footer>
+        </x-form>
+    </x-card>
 @endsection

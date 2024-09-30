@@ -2,49 +2,21 @@
 
 namespace App\Models\Auth;
 
-use Eloquent;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
 
 /**
- * App\Models\Auth\Permission
- *
- * @property int            $id
- * @property string         $name
- * @property string         $slug
- * @property Carbon|null    $createdAt
- * @property Carbon|null    $updatedAt
- * @property Carbon|null    $deletedAt
- * @property-read Role|null $roles
- * @method static Builder|Permission newModelQuery()
- * @method static Builder|Permission newQuery()
- * @method static Builder|Permission onlyTrashed()
- * @method static Builder|Permission query()
- * @method static Builder|Permission whereCreatedAt($value)
- * @method static Builder|Permission whereDeletedAt($value)
- * @method static Builder|Permission whereId($value)
- * @method static Builder|Permission whereName($value)
- * @method static Builder|Permission whereSlug($value)
- * @method static Builder|Permission whereUpdatedAt($value)
- * @method static Builder|Permission withTrashed()
- * @method static Builder|Permission withoutTrashed()
- * @mixin Builder
- * @property-read Collection<int, User> $usersForEmailNotification
- * @property-read int|null                                            $usersForEmailNotificationCount
- * @property-read Collection<int, \App\Models\Auth\User> $usersForEmailNotification
- * @mixin Eloquent
+ * Модель прав пользователя.
  */
 class Permission extends Model
 {
-    protected $table = 'permissions';
+    use HasFactory;
+    use SoftDeletes;
 
-    use HasFactory, SoftDeletes;
+    protected $table = 'permissions';
 
     /**
      * @return BelongsTo
@@ -55,12 +27,19 @@ class Permission extends Model
     }
 
     /**
+     * @param bool $withTrashed
+     *
      * @return BelongsToMany
      */
-    public function usersForEmailNotification()
+    public function users(bool $withTrashed = false): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'users_permissions')
-            ->withTimestamps()
+        $users = $this->belongsToMany(User::class, 'users_permissions');
+
+        if ($withTrashed) {
+            return $users->withTrashed();
+        }
+
+        return $users->withTimestamps()
             ->withoutTrashed();
     }
 }
