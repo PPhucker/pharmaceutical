@@ -2,8 +2,12 @@
 $body-bg: #f8fafc;
 
 // Main Colors
-$primary: #033E8C;
-$secondary: #e9ecef;
+$primary: #16537E;
+$success: #b4e1c5;
+$secondary: #E7EDF2;
+$danger: #fc7b8b;
+$warning: #ffecb8;
+$info: #D0DCE5;
 
 // Typography
 $font-family-sans-serif: 'Nunito', sans-serif;
@@ -18,10 +22,10 @@ $btn-close-width: 0.75em;
 $btn-close-height: $btn-close-width;
 
 //Borders
-$border-radius: 0;
+$border-radius: .0;
 $border-radius-sm: 0;
 $border-radius-lg: 0;
+$border-radius-pill: 0;
 
 //Offcanvas
 $offcanvas-horizontal-width: 600px;
-

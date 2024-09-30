@@ -2,10 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\Auth\UserLoggedIn;
+use App\Listeners\Auth\LogoutEventListener;
+use App\Listeners\Auth\SetOrganizationListener;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,6 +20,12 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        Logout::class => [
+            LogoutEventListener::class,
+        ],
+        UserLoggedIn::class => [
+            SetOrganizationListener::class,
         ],
     ];
 

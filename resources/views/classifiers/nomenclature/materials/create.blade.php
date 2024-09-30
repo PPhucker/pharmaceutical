@@ -1,134 +1,83 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('form.titles.add')}}"
-                  withAlert="{{false}}">
-        <form id="form_add_material"
-              method="POST"
-              action="{{route('materials.store')}}">
-            @csrf
-            <div class="row mb-2">
-                <label for="type_id"
-                       class="col-md-2 col-form-label text-md-end">
-                    {{__('classifiers.nomenclature.materials.type_id')}}
-                </label>
-                <div class="col-md">
-                    <select
-                        name="type_id"
-                        class="form-control form-control-sm text-primary
-                            @error('type_id') is-invalid @enderror">
-                        @foreach($typesOfMaterials as $type)
-                            <option value="{{$type->id}}">
-                                {{$type->name}}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('type_id')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-2">
-                <label for="okei_code"
-                       class="col-md-2 col-form-label text-md-end">
-                    {{__('classifiers.nomenclature.materials.okei_code')}}
-                </label>
-                <div class="col-md">
-                    <select
-                        name="okei_code"
-                        class="form-control form-control-sm text-primary
-                            @error('okei_code') is-invalid @enderror">
-                        @foreach($okeiClassifier as $item)
-                            <option value="{{$item->code}}">
-                                {{$item->symbol}}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('okei_code')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-2">
-                <label for="name"
-                       class="col-md-2 col-form-label text-md-end">
-                    {{__('classifiers.nomenclature.materials.name')}}
-                </label>
-                <div class="col-md">
-                    <input id="name"
-                           type="text"
-                           class="form-control form-control-sm text-primary
-                               @error('name') is-invalid @enderror"
-                           name="name"
-                           value="{{ old('name') }}"
-                           required>
-                    @error('name')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-2">
-                <label for="price"
-                       class="col-md-2 col-form-label text-md-end">
-                    {{__('classifiers.nomenclature.materials.price')}}
-                </label>
-                <div class="col-md">
-                    <input id="price"
-                           type="text"
-                           class="form-control form-control-sm text-primary
-                               @error('price') is-invalid @enderror"
-                           name="price"
-                           value="{{ old('price') }}">
-                    @error('price')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="row mb-2">
-                <label for="nds"
-                       class="col-md-2 col-form-label text-md-end">
-                    {{__('classifiers.nomenclature.materials.nds')}}
-                </label>
-                <div class="col-md">
-                    <input id="name"
-                           type="text"
-                           class="form-control form-control-sm text-primary
-                               @error('nds') is-invalid @enderror"
-                           name="nds"
-                           value="{{ old('nds') }}"
-                           required>
-                    @error('nds')
-                    <span class="invalid-feedback"
-                          role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <x-slot name="footer">
-                <x-buttons.save formId="form_add_material"/>
-            </x-slot>
-        </form>
-    </x-forms.main>
+    <x-card
+        :title="__('form.titles.add')"
+        :back="route('materials.index')">
+        <x-form
+            :route="route('materials.store')"
+            formId="material_add_form">
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="short_name"
+                        :text="__('classifiers.nomenclature.materials.name')"/>
+                </x-slot>
+                <x-form.element.input
+                    id="name"
+                    name="name"
+                    :required="true"
+                    max="150"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="short_name"
+                        :text="__('classifiers.nomenclature.materials.type_id')"/>
+                </x-slot>
+                <x-form.element.select
+                    id="type_id"
+                    name="type_id">
+                    @foreach($typesOfMaterials as $key => $type)
+                        <x-form.element.option
+                            :text="$type->name"
+                            :value="$type->id"/>
+                    @endforeach
+                </x-form.element.select>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="short_name"
+                        :text="__('classifiers.nomenclature.materials.okei_code')"/>
+                </x-slot>
+                <x-form.element.select
+                    id="okei_code"
+                    name="okei_code">
+                    @foreach($okeiClassifier as $key => $okei)
+                        <x-form.element.option
+                            :text="$okei->symbol"
+                            :value="$okei->code"/>
+                    @endforeach
+                </x-form.element.select>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="price"
+                        :text="__('classifiers.nomenclature.materials.price') . ' ' .  __('currency.rub')"/>
+                </x-slot>
+                <x-form.element.input
+                    id="price"
+                    name="price"/>
+            </x-form.row>
+            <x-form.row>
+                <x-slot name="label">
+                    <x-form.label
+                        forId="nds"
+                        :text="__('classifiers.nomenclature.materials.nds') . ' ' . '%'"/>
+                </x-slot>
+                <x-form.element.input
+                    id="nds"
+                    name="nds"
+                    max="100"/>
+            </x-form.row>
+            <footer class="mt-auto me-auto">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item">
+                        <x-form.button.save formId="materials_add_form"/>
+                    </li>
+                </ul>
+            </footer>
+        </x-form>
+    </x-card>
 @endsection

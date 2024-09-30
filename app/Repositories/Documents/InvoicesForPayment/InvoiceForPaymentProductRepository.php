@@ -4,9 +4,9 @@ namespace App\Repositories\Documents\InvoicesForPayment;
 
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct as Model;
+use App\Repositories\Classifier\Nomenclature\Product\Catalog\ProductCatalogRepository;
 use App\Repositories\CoreRepository;
 use Illuminate\Database\Eloquent\Collection;
-use App\Repositories\Classifiers\Nomenclature\Products\ProductCatalogRepository;
 
 class InvoiceForPaymentProductRepository extends CoreRepository
 {

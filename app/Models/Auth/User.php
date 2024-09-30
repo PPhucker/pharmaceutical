@@ -2,27 +2,20 @@
 
 namespace App\Models\Auth;
 
-use App\Models\Contractors\BankAccountDetail;
+use App\Models\Admin\Organization\Organization;
 use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail;
-use App\Traits\Auth\Documents\HasDocuments;
-use App\Traits\Auth\HasContractors;
-use App\Traits\Auth\HasNomenclature;
-use App\Traits\Auth\HasOrganizations;
-use App\Traits\Auth\HasRolesAndPermissions;
-use Eloquent;
+use App\Traits\Auth\Relation\HasRolesAndPermissions;
+use App\Traits\Auth\Relation\HasUsersOrganizations;
+use App\Traits\Model\RelationshipsTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\DatabaseNotification;
-use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Sanctum\PersonalAccessToken;
 
 /**
  * Модель пользователя.
@@ -33,13 +26,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use Notifiable;
     use HasRolesAndPermissions;
-    use HasDocuments;
+    use HasUsersOrganizations;
     use SoftDeletes;
-    use HasNomenclature;
-    use HasOrganizations;
-    use HasContractors;
+    use RelationshipsTrait;
 
     protected $dates = ['email_verified_at',];
+
+    protected $foreign_key = 'user_id';
 
     /**
      * The attributes that are mass assignable.
@@ -71,18 +64,31 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function sendPasswordResetNotification($token)
+    /**
+     * @param $date
+     *
+     * @return string
+     */
+    public function getCreatedAtAttribute($date): string
+    {
+        return Carbon::create($date)->format('d.m.Y');
+    }
+
+    /**
+     * @param $token
+     *
+     * @return void
+     */
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPassword($token));
     }
 
-    public function sendEmailVerificationNotification()
+    /**
+     * @return void
+     */
+    public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerifyEmail());
-    }
-
-    public function getCreatedAtAttribute($date)
-    {
-        return Carbon::create($date)->format('d.m.Y');
     }
 }

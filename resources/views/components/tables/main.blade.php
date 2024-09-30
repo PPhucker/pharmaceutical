@@ -23,6 +23,7 @@
                  class="d-none d-print-none">
             {{$title}}
         </caption>
+        <tfoot></tfoot>
     </table>
 </div>
 <script>

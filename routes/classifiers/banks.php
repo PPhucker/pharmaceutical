@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Classifiers\BankController as Controller;
+use App\Http\Controllers\Classifier\BankController as Controller;
 use Illuminate\Support\Facades\Route;
 
 Route::resource('banks', Controller::class)

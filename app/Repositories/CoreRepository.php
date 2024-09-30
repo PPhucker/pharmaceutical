@@ -2,35 +2,32 @@
 
 namespace App\Repositories;
 
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ * Базовый класс репозитория.
+ */
 abstract class CoreRepository
 {
-    /**
-     * @var Model
-     */
     protected $model;
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->model = app($this->getModelClass());
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    abstract protected function getModelClass();
+    abstract protected function getModelClass(): string;
 
-    /**
-     * @return Application|Model|mixed
-     */
     protected function clone()
     {
         return clone $this->model;
     }
 
+    /**
+     * @return Collection
+     */
+    abstract public function getAll(): Collection;
 }

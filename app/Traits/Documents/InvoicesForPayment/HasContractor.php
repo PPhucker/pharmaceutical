@@ -2,9 +2,9 @@
 
 namespace App\Traits\Documents\InvoicesForPayment;
 
-use App\Models\Contractors\BankAccountDetail;
-use App\Models\Contractors\Contractor;
-use App\Models\Contractors\PlaceOfBusiness;
+use App\Models\Contractor\BankAccountDetail;
+use App\Models\Contractor\Contractor;
+use App\Models\Contractor\PlaceOfBusiness;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasContractor

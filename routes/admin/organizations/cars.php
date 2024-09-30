@@ -1,11 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\Organizations\CarController as Controller;
+use App\Helpers\Route\RouteHelper;
+use App\Http\Controllers\Admin\Organization\Transport\CarController as Controller;
 
-Route::resource('cars', Controller::class)
-    ->except(['create', 'edit', 'show', 'index']);
-Route::controller(Controller::class)->group(static function () {
-    Route::post('/cars/{car}/restore', 'restore')
-        ->name('cars.restore')
-        ->withTrashed();
-});
+(new RouteHelper(
+    collect(
+        [
+            'controller' => Controller::class,
+            'name' => 'cars',
+            'uriParameter' => 'car',
+            'prefix' => 'organization',
+        ]
+    )
+))->mapWritableRoutes();
+

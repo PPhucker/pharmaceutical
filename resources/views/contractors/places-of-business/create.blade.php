@@ -1,75 +1,60 @@
-<x-forms.collapse.creation cardId="div_add_place_of_business"
-                           errorName="place_of_business.*">
-    <x-slot name="cardBody">
-        <form id="form_add_place_of_business"
-              method="POST"
-              action="{{route('places_of_business.store')}}">
-            @csrf
-            <input type="hidden"
-                   id="contractor_id"
-                   name="place_of_business[contractor_id]"
-                   value="{{$contractor->id}}">
-            <x-forms.row id="identifier"
-                         label="{{__('contractors.places_of_business.identifier')}}">
-                <input id="identifier"
-                       type="text"
-                       class="form-control form-control-sm text-primary
-                           @error('place_of_business.identifier') is-invalid @enderror"
-                       name="place_of_business[identifier]"
-                       value="{{old('place_of_business[identifier]')}}"
-                       required>
-                <x-forms.span-error name="place_of_business.identifier"/>
-            </x-forms.row>
-            <x-forms.row id="index" label="{{__('contractors.places_of_business.index')}}">
-                <input id="index"
-                       type="text"
-                       class="form-control form-control-sm text-primary
-                           @error('place_of_business.index') is-invalid @enderror"
-                       name="place_of_business[index]"
-                       value="{{old('place_of_business[index]')}}"
-                       required>
-                <x-forms.span-error name="place_of_busuness.index"/>
-            </x-forms.row>
-            <x-forms.row id="address"
-                         label="{{__('contractors.places_of_business.address')}}">
-                <input id="address"
-                       type="text"
-                       class="form-control form-control-sm text-primary
-                           @error('place_of_business.address') is-invalid @enderror"
-                       name="place_of_business[address]"
-                       value="{{old('place_of_business[address]')}}"
-                       required>
-                <x-forms.span-error name="place_of_business.address"/>
-            </x-forms.row>
-            <x-forms.row id="registered"
-                         label="{{__('contractors.places_of_business.registered')}}">
-                <ul class="list-inline mb-0 mt-2">
-                    <li class="list-inline-item">
-                        <input class="form-check-input mb-2"
-                               type="checkbox"
-                               id="registered"
-                               name="place_of_business[registered]"
-                               value="1">
-                        <x-forms.span-error name="place_of_business.registered"/>
-                    </li>
-                </ul>
-            </x-forms.row>
-        </form>
-    </x-slot>
-    <x-slot name="footer">
-        <x-buttons.save formId="form_add_place_of_business"/>
-    </x-slot>
-</x-forms.collapse.creation>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        $('#address, #index').suggestions({
-            token: $('#dadata_token').val(),
-            type: 'ADDRESS',
-            onSelect: function(suggestion) {
-                const address = suggestion.data;
-                $('#index').val(DaData.showPostalCode(address));
-                $('#address').val(DaData.showAddress(address));
-            },
-        });
-    });
-</script>
+<x-form
+    :route="route('places_of_business.store')"
+    formId="places_add_form">
+    <input type="hidden"
+           name="place_of_business[contractor_id]"
+           value="{{$contractor->id}}">
+    @roles(['digital_communication'])
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="identifier"
+                :text="__('contractors.places_of_business.identifier')"/>
+        </x-slot>
+        <x-form.element.input
+            id="identifier"
+            name="place_of_business[identifier]"/>
+    </x-form.row>
+    @end_roles
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="address"
+                :text="__('contractors.places_of_business.address')"/>
+        </x-slot>
+        <x-form.element.input
+            id="address"
+            name="place_of_business[address]"
+            :required="true"/>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="index"
+                :text="__('contractors.places_of_business.index')"/>
+        </x-slot>
+        <x-form.element.input
+            id="index"
+            name="place_of_business[index]"
+            :required="true"/>
+    </x-form.row>
+    <x-form.row>
+        <x-slot name="label">
+            <x-form.label
+                forId="registered"
+                :text="__('contractors.places_of_business.registered')"/>
+        </x-slot>
+        <x-form.element.input
+            id="registered"
+            type="checkbox"
+            class="form-check-input mt-2"
+            name="place_of_business[registered]"/>
+    </x-form.row>
+    <footer class="mt-auto me-auto">
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                <x-form.button.save formId="places_add_form"/>
+            </li>
+        </ul>
+    </footer>
+</x-form>

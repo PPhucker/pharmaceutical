@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\Shipment\Bills;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\Shipment\BillCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -13,7 +13,7 @@ use App\Http\Requests\Documents\Shipment\Bills\StoreBillRequest;
 use App\Http\Requests\Documents\Shipment\Bills\UpdateBillRequest;
 use App\Models\Documents\Shipment\Bills\Bill;
 use App\Models\Documents\Shipment\PackingLists\PackingList;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\Shipment\Bills\BillRepository;
 use Auth;
 use Carbon\Carbon;
@@ -37,7 +37,7 @@ class BillController extends CoreController
     {
         $validated = $request->validated();
 
-        $interval = Date::filter($request);
+        $interval = DateHelper::filter($request);
 
         $filters = [
             'organization_id' => $validated['organization_id'] ?? null,

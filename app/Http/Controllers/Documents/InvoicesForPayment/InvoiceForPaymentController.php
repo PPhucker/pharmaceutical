@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Documents\InvoicesForPayment;
 
-use App\Helpers\Date;
+use App\Helpers\DateHelper;
 use App\Helpers\Documents\InvoiceForPaymentCreator;
 use App\Helpers\File;
 use App\Http\Controllers\CoreController;
@@ -10,11 +10,11 @@ use App\Http\Requests\Documents\InvoicesForPayment\CopyInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\IndexInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\StoreInvoiceForPaymentRequest;
 use App\Http\Requests\Documents\InvoicesForPayment\UpdateInvoiceForPaymentRequest;
-use App\Models\Contractors\Contractor;
+use App\Models\Contractor\Contractor;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPayment;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentMaterial;
 use App\Models\Documents\InvoicesForPayment\InvoiceForPaymentProduct;
-use App\Repositories\Admin\Organizations\OrganizationRepository;
+use App\Repositories\Admin\Organization\OrganizationRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentMaterialRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentProductRepository;
 use App\Repositories\Documents\InvoicesForPayment\InvoiceForPaymentRepository;
@@ -46,7 +46,7 @@ class InvoiceForPaymentController extends CoreController
     {
         $validated = $request->validated();
 
-        $date = Date::filter($request);
+        $date = DateHelper::filter($request);
 
         $fromDate = $date->get('fromDate');
         $toDate = $date->get('toDate');

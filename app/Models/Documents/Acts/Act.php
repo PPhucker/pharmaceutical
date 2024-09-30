@@ -2,7 +2,7 @@
 
 namespace App\Models\Documents\Acts;
 
-use App\Models\Admin\Organizations\Organization;
+use App\Models\Admin\Organization\Organization;
 use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

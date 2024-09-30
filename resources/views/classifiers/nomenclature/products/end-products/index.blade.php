@@ -1,53 +1,61 @@
 @extends('layouts.app')
 @section('content')
-    <x-forms.main title="{{__('classifiers.nomenclature.products.products')}}">
-        <x-tables.main id="table_end_products"
-                       targets="-1,-2">
+    <x-card
+        :title="__('classifiers.nomenclature.products.products')">
+        <x-notification.alert/>
+        <x-data-table.table
+            id="end_products_table"
+            class="table-bordered"
+            targets="-1,-2"
+            type="index"
+            pageLength="25">
             <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_end_products"/>
+                <x-data-table.filter.trashed-filter tableId="end_products_table"/>
             </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('ID')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('classifiers.nomenclature.products.full_name')}}
-                </th>
-                <x-tables.columns.thead.edit/>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($endProducts as $key => $product)
-                <tr @if($product->trashed()) class="d-none trashed" @endif>
-                    <td class="align-middle text-center">
-                        {{$product->id}}
-                    </td>
-                    <td class="align-middle">
-                        {{$product->full_name}}
-                    </td>
-                    <td class="text-center align-middle">
-                        <x-buttons.edit route="{{route('end_products.edit', ['end_product' => $product->id])}}"
-                                        disabled="{{$product->trashed()}}"/>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if ($product->trashed())
-                            <x-buttons.restore
-                                route="{{route('end_products.restore', ['end_product' => $product->id])}}"
-                                itemId="{{$product->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('end_products.destroy', ['end_product' => $product->id])}}"
-                                formId="destroy"
-                                itemId="{{$product->id}}"/>
-                        @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-forms.main>
+            <x-data-table.head>
+                <x-data-table.th
+                    text="ID"/>
+                <x-data-table.th :text="__('classifiers.nomenclature.products.types_of_end_products.type')"/>
+                <x-data-table.th
+                    :text="__('classifiers.nomenclature.products.full_name')"/>
+                <x-data-table.th/>
+                <x-data-table.th/>
+            </x-data-table.head>
+            <x-data-table.body>
+                @foreach($endProducts as $key => $endProduct)
+                    <x-data-table.tr
+                        :model="$endProduct">
+                        <x-data-table.td>
+                            {{$endProduct->id}}
+                        </x-data-table.td>
+                        <x-data-table.td
+                            :title="$endProduct->type->name">
+                            <span class="d-none">
+                                {{$endProduct->type->name}}
+                            </span>
+                            <i class="bi bi-info-square-fill fs-5" style="color: {{$endProduct->type->color}};"
+                               title="{{$endProduct->type->name}}">
+                            </i>
+                        </x-data-table.td>
+                        <x-data-table.td
+                            class="text-start">
+                            {{$endProduct->full_name}}
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.edit
+                                route="{{route('end_products.edit', ['end_product' => $endProduct->id])}}"
+                                disabled="{{$endProduct->trashed()}}"/>
+                        </x-data-table.td>
+                        <x-data-table.td>
+                            <x-data-table.button.soft-delete
+                                :trashed="$endProduct->trashed()"
+                                :id="$endProduct->id"
+                                route="end_products"
+                                :params="['end_product' => $endProduct->id]"/>
+                        </x-data-table.td>
+                    </x-data-table.tr>
+                @endforeach
+            </x-data-table.body>
+        </x-data-table.table>
+    </x-card>
 @endsection

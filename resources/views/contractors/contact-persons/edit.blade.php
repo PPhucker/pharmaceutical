@@ -1,107 +1,89 @@
 @roles(['marketing'])
-<x-forms.collapse.card route="{{route('contact_persons.update', ['contact_person' => 1])}}"
-                       cardId="card_contact_persons"
-                       formId="form_contact_persons"
-                       title="{{__('contractors.contact_persons.contact_persons')}}">
-    <x-slot name="cardBody">
-        <x-tables.main id="table_contact_persons"
-                       targets="-1"
-                       domOrderType="{{true}}">
-            <x-slot name="filter">
-                <x-tables.filters.trashed-filter tableId="table_contact_persons"/>
-            </x-slot>
-            <thead class="bg-secondary">
-            <tr class="text-primary">
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.contact_persons.name')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.contact_persons.post')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.contact_persons.phone')}}
-                </th>
-                <th scope="col"
-                    class="text-center">
-                    {{__('contractors.contact_persons.email')}}
-                </th>
-                <x-tables.columns.thead.delete/>
-            </tr>
-            </thead>
-            <tbody class="text-primary">
-            @foreach($contractor->contactPersons as $key => $contactPerson)
-                <tr @if($contactPerson->trashed()) class="d-none trashed" @endif>
-                    <input type="hidden"
-                           name="contact_persons[{{$key}}][id]"
-                           value="{{$contactPerson->id}}">
-                    <td>
-                        <span class="d-none">
-                            {{$contactPerson->name}}
-                        </span>
-                        <input type="text"
-                               name="contact_persons[{{$key}}][name]"
-                               value="{{$contactPerson->name}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('contact_persons.' . $key . '.name') is-invalid @enderror">
-                        <x-forms.span-error name="contact_persons.{{$key}}.name"/>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$contactPerson->post}}
-                        </span>
-                        <input type="text"
-                               name="contact_persons[{{$key}}][post]"
-                               value="{{$contactPerson->post}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('contact_persons.' . $key . '.post') is-invalid @enderror">
-                        <x-forms.span-error name="contact_persons.{{$key}}.post"/>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$contactPerson->phone}}
-                        </span>
-                        <input type="text"
-                               name="contact_persons[{{$key}}][phone]"
-                               value="{{$contactPerson->phone}}"
-                               class="form-control form-control-sm text-primary mt-1 mb-1
-                               @error('contact_persons.' . $key . '.phone') is-invalid @enderror">
-                        <x-forms.span-error name="contact_persons.{{$key}}.phone"/>
-                    </td>
-                    <td>
-                        <span class="d-none">
-                            {{$contactPerson->email}}
-                        </span>
-                        <input type="text"
-                               name="contact_persons[{{$key}}][email]"
-                               value="{{$contactPerson->email}}"
-                               class="form-control form-control-sm text-primary mb-1 mt-1
-                               @error('contact_persons.' . $key . '.email') is-invalid @enderror">
-                        <x-forms.span-error name="contact_persons.{{$key}}.email"/>
-                    </td>
-                    <x-tables.columns.tbody.delete>
-                        @if($contactPerson->trashed())
-                            <x-buttons.restore
-                                route="{{route('contact_persons.restore', ['contact_person' => $contactPerson->id])}}"
-                                itemId="staff-{{$contactPerson->id}}"/>
-                        @else
-                            <x-buttons.delete
-                                route="{{route('contact_persons.destroy', ['contact_person' => $contactPerson->id])}}"
-                                itemId="staff-{{$contactPerson->id}}"/>
+<x-form.nav-tab
+    formId="contact_persons_main_form">
+    <div class="row">
+        <div class="col-md-12 col-auto">
+            @include('contractors.contact-persons.create')
+        </div>
+        <div class="col-md-12 col-auto">
+            <x-form
+                :route="route('contact_persons.update', ['contact_person' => $contractor->contactPersons->first()->id ?? null])"
+                formId="contact_persons_main_form"
+                method="PATCH">
+                <x-data-table.table
+                    id="contact_persons_main_table"
+                    type="edit"
+                    targets="-1">
+                    <x-data-table.head>
+                        <x-data-table.th
+                            :text="__('contractors.contact_persons.name')"/>
+                        <x-data-table.th
+                            :text="__('contractors.contact_persons.post')"/>
+                        <x-data-table.th
+                            :text="__('contractors.contact_persons.phone')"/>
+                        <x-data-table.th
+                            :text="__('contractors.contact_persons.email')"/>
+                        <x-data-table.th/>
+                    </x-data-table.head>
+                    <x-data-table.body>
+                        @foreach($contractor->contactPersons as $key => $contactPerson)
+                            <x-data-table.tr
+                                :model="$contactPerson">
+                                <x-slot name="hiddenInputs">
+                                    <x-form.element.input type="hidden"
+                                                          name="contact_persons[{{$key}}][id]"
+                                                          value="{{$contactPerson->id ?? null}}"/>
+                                </x-slot>
+                                <x-data-table.td
+                                    class="">
+                                    <x-form.element.input
+                                        name="contact_persons[{{$key}}][name]"
+                                        :value="$contactPerson->name"
+                                        :required="true"/>
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="">
+                                    <x-form.element.input
+                                        name="contact_persons[{{$key}}][post]"
+                                        :value="$contactPerson->post"/>
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="">
+                                    <x-form.element.input
+                                        name="contact_persons[{{$key}}][phone]"
+                                        :value="$contactPerson->phone"/>
+                                </x-data-table.td>
+                                <x-data-table.td
+                                    class="">
+                                    <x-form.element.input
+                                        name="contact_persons[{{$key}}][email]"
+                                        :value="$contactPerson->email"/>
+                                </x-data-table.td>
+                                <x-data-table.td>
+                                    <x-data-table.button.soft-delete
+                                        :trashed="$contactPerson->trashed()"
+                                        id="contact-person-{{$contactPerson->id}}"
+                                        route="contact_persons"
+                                        :params="['contact_person' => $contactPerson->id]"/>
+                                </x-data-table.td>
+                            </x-data-table.tr>
+                        @endforeach
+                    </x-data-table.body>
+                </x-data-table.table>
+                <footer class="mt-auto">
+                    <ul class="list-inline mb-0">
+                        @if(count($contractor->contactPersons) > 0)
+                            <li class="list-inline-item">
+                                <x-form.button.save formId="contact_persons_main_form"/>
+                            </li>
                         @endif
-                    </x-tables.columns.tbody.delete>
-                </tr>
-            @endforeach
-            </tbody>
-        </x-tables.main>
-    </x-slot>
-    <x-slot name="footer">
-        @if(count($contractor->contactPersons) > 0)
-            <x-buttons.save formId="form_contact_persons"/>
-        @endif
-        <x-buttons.collapse formId="div_add_contact_person"/>
-    </x-slot>
-</x-forms.collapse.card>
+                        <li class="list-inline-item">
+                            <x-data-table.filter.trashed-filter id="contact_persons_main_table"/>
+                        </li>
+                    </ul>
+                </footer>
+            </x-form>
+        </div>
+    </div>
+</x-form.nav-tab>
 @end_roles

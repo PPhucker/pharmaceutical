@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\Contractors\TrailerController as Controller;
+use App\Helpers\Route\RouteHelper;
+use App\Http\Controllers\Contractor\Transport\TrailerController as Controller;
 
-Route::resource('trailers', Controller::class)
-    ->except(['create', 'edit', 'show', 'index']);
-Route::controller(Controller::class)->group(static function () {
-    Route::post('/trailer/{trailers}/restore', 'restore')
-        ->name('trailers.restore')
-        ->withTrashed();
-});
+(new RouteHelper(
+    collect(
+        [
+            'controller' => Controller::class,
+            'name' => 'trailers',
+            'uriParameter' => 'trailer',
+        ]
+    )
+))->mapWritableRoutes();

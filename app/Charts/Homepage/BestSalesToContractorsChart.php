@@ -3,8 +3,8 @@
 namespace App\Charts\Homepage;
 
 use App\Charts\Chart;
-use App\Helpers\Date;
-use App\Repositories\Contractors\ContractorRepository;
+use App\Helpers\DateHelper;
+use App\Repositories\Contractor\ContractorRepository;
 use App\Repositories\Documents\Shipment\PackingLists\PackingListProductRepository;
 use ArielMejiaDev\LarapexCharts\BarChart;
 
@@ -58,7 +58,7 @@ class BestSalesToContractorsChart extends Chart
         $labels = [];
         $values = [];
 
-        $periods = Date::period($this->fromDate, $this->toDate);
+        $periods = DateHelper::period($this->fromDate, $this->toDate);
 
         $contractors = (new ContractorRepository())
             ->getCustomersForPeriodBySales(

@@ -7,8 +7,8 @@
         <div class="list-inline-item">
             <form action="{{route('product_catalog.statistic', ['product_catalog' => $productCatalog->id])}}"
                   method="GET">
-                <x-tables.filters.date-filter fromDate="{{$fromDate}}"
-                                              toDate="{{$toDate}}"/>
+                <x-tables.filters.date-filter fromDate="{{$dateRange['start_date']}}"
+                                              toDate="{{$dateRange['end_date']}}"/>
                 <button type="submit"
                         class="btn btn-sm btn-primary">
                     {{__('datatable.filter')}}

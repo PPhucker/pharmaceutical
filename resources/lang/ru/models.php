@@ -8,78 +8,90 @@ return [
                 'User' => 'Пользователь',
                 'Permission' => 'Право',
             ],
-            'Classifiers' => [
+            'Classifier' => [
                 'LegalForm' => 'Организационно-правовая форма',
                 'Bank' => 'Банк',
                 'Region' => 'Регион',
                 'Nomenclature' => [
-                    'Products' => [
-                        'TypeOfEndProduct' => 'Тип готового продукта',
-                        'InternationalNameOfEndProduct' => 'Международное название готового продукта',
+                    'Product' => [
+                        'Type' => [
+                            'TypeOfEndProduct' => 'Тип готовой продукции',
+                            'TypeOfAggregation' => 'Тип аггрегации готовой продукции',
+                        ],
+                        'Catalog' => [
+                            'ProductCatalog' => 'Каталог готовой продукции',
+                            'Price' => [
+                                'ProductPrice' => 'Розничная цена',
+                                'WholesalePrice' => 'Оптовая цена',
+                                'ConytactorSpecificPrice' => 'Индивидуальная цена контрагента',
+                            ],
+                        ],
+                        'InternationalNameOfEndProduct' => 'Международное непатентованное название готовой продукции',
                         'OKPD2' => 'Классификатор ОКПД2',
-                        'RegistrationNumberOfEndProduct' => 'Регистрационный номер готового продукта',
+                        'RegistrationNumberOfEndProduct' => 'Регистрационный номер готовой продукции',
                         'EndProduct' => 'Конечный продукт',
-                        'TypeOfAggregation' => 'Тип аггрегации',
-                        'ProductCatalog' => 'Каталог готовой продукции',
                         'ProductPrice' => 'Прайс продукта',
+                        'ProductRegionalAllowance' => 'Региональная надбавка',
                     ],
                     'OKEI' => 'Классификатор ОКЕИ',
-                    'Services' => [
-                        'Service' => 'Услуги',
-                    ],
-                    'Materials' => [
+                    'Service' => 'Услуга',
+                    'Material' => [
                         'TypeOfMaterial' => 'Тип комплектующего',
                         'Material' => 'Комплектующее',
                     ],
                 ],
             ],
             'Admin' => [
-                'Organizations' => [
+                'Organization' => [
                     'Organization' => 'Организация',
-                    'PlaceOfBusiness' => 'Место деятельности организации',
+                    'PlaceOfBusiness' => 'Место осущещствления деятельности организации',
                     'BankAccountDetail' => 'Банковские реквизиты организации',
                     'Staff' => 'Сотрудник организации',
-                    'Car' => 'Автомобиль организации',
-                    'Driver' => 'Водитель организации',
-                    'Trailer' => 'Прицеп организации',
+                    'Transport' => [
+                        'Car' => 'Автомобиль организации',
+                        'Driver' => 'Водитель организации',
+                        'Trailer' => 'Прицеп организации',
+                    ],
                 ],
             ],
-            'Contractors' => [
+            'Contractor' => [
                 'Contractor' => 'Контрагент',
                 'PlaceOfBusiness' => 'Место осуществления контрагента',
                 'BankAccountDetail' => 'Банковские реквизиты контрагента',
                 'ContactPerson' => 'Контактное лицо контрагента',
-                'Car' => 'Автомобиль контрагента',
-                'Driver' => 'Водитель контрагента',
-                'Trailer' => 'Прицеп контрагента',
                 'Contract' => 'Договор c контрагентом',
+                'Transport' => [
+                    'Car' => 'Автомобиль контрагента',
+                    'Driver' => 'Водитель контрагента',
+                    'Trailer' => 'Прицеп контрагента',
+                ],
             ],
-            'Documents' => [
+            'Document' => [
                 'InvoicesForPayment' => [
                     'InvoiceForPayment' => 'Счет на оплату',
                     'InvoiceForPaymentProduct' => 'Готовый продукт счета на оплату',
                     'InvoiceForPaymentMaterial' => 'Комлектующее счета на оплату',
                 ],
-                'Acts' => [
+                'Act' => [
                     'Act' => 'Акт',
                     'ActService' => 'Устуга акта'
                 ],
                 'Shipment' => [
-                    'PackingLists' => [
+                    'PackingList' => [
                         'PackingList' => 'Товарная накладная',
                         'PackingListProduct' => 'Продукт товарной накладной',
                     ],
                     'Shipment' => 'Отгрузка',
-                    'Bills' => [
+                    'Bill' => [
                         'Bill' => 'Счет-фактура',
                     ],
-                    'Appendixes' => [
+                    'Appendixe' => [
                         'Appendix' => 'Приложение',
                     ],
-                    'Protocols' => [
+                    'Protocol' => [
                         'Protocol' => 'Протокол',
                     ],
-                    'Waybills' => [
+                    'Waybill' => [
                         'Waybill' => 'Товарно-транспортная накладная',
                     ],
                 ],
